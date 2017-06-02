@@ -1,0 +1,19 @@
+.app-auth {
+  @import "auth/navbar";
+  @import "auth/sidebar";
+  @import "auth/breadcrumbs";
+
+  #flash-message-container,
+  #session-message-container {
+    max-width: 450px;
+    margin: 25px auto 25px auto;
+  }
+
+  #content {
+    margin-left: $app-sidebar-width;
+  }
+
+  #content-panel {
+    margin-top: 55px;
+  }
+}

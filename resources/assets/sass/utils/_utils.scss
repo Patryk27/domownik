@@ -1,0 +1,16 @@
+@import "calendar";
+
+.no-gutter {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.required-field {
+  color: #b94e4c;
+}
+
+.form-group.required .control-label:after {
+  @extend .required-field;
+
+  content: "*";
+}

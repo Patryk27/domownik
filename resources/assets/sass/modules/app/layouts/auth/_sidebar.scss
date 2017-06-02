@@ -1,0 +1,49 @@
+#sidebar-wrapper {
+  z-index: 1000;
+
+  position: absolute;
+  left: $app-sidebar-width;
+
+  width: $app-sidebar-width;
+  height: 100%;
+
+  margin-left: -$app-sidebar-width;
+
+  background-color: $navbar-default-bg;
+  border-right: 1px solid $navbar-default-border;
+
+  box-shadow: -2px 0 2px 1px #000000;
+
+  overflow-x: hidden;
+  overflow-y: auto;
+
+  transition: all 0.5s ease;
+}
+
+#sidebar {
+  margin-top: $navbar-height;
+
+  padding: 12px 10px;
+
+  a {
+    display: inline-block;
+    width: 100%;
+
+    text-decoration: none;
+  }
+
+  .icon {
+    position: relative;
+    left: -5px;
+    float: left;
+
+    display: inline-block;
+    width: 20px;
+
+    text-align: center;
+  }
+
+  .badge-label {
+    float: right;
+  }
+}

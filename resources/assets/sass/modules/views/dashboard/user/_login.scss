@@ -1,0 +1,22 @@
+.view-dashboard-user-login {
+  #loginForm {
+    max-width: 350px;
+    margin: 0 auto;
+    padding: 25px 20px 15px 20px;
+
+    text-align: center;
+
+    background-color: #f7f7f7;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+
+    .dummy-avatar {
+      width: 125px;
+      margin-bottom: 20px;
+    }
+
+    .required-fields-wrapper {
+      text-align: right;
+    }
+  }
+}

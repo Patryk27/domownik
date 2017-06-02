@@ -1,0 +1,16 @@
+<sidebar module-name="Dashboard">
+    <item name="system"
+          icon="fa fa-cube">
+        <item name="users"
+              icon="fa fa-user"
+              url="/dashboard/users/"/>
+
+        <item name="permissions"
+              icon="fa fa-chain"
+              url="/dashboard/permissions"/>
+
+        <item name="modules"
+              icon="fa fa-cubes"
+              url="/dashboard/modules"/>
+    </item>
+</sidebar>
