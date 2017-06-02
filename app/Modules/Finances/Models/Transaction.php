@@ -25,8 +25,10 @@ use Illuminate\Support\Collection;
  * @property Carbon $created_at
  * @property Model $value
  * @property Collection|TransactionPeriodicityOneShot[] $periodicityOneShots
+ * @property Collection|TransactionPeriodicityDaily[] $periodicityDailies
  * @property Collection|TransactionPeriodicityWeekly[] $periodicityWeeklies
  * @property Collection|TransactionPeriodicityMonthly[] $periodicityMonthlies
+ * @property Collection|TransactionPeriodicityYearly[] $periodicityYearlies
  * @method TransactionPresenter getPresenter()
  */
 class Transaction
@@ -93,6 +95,13 @@ class Transaction
 	/**
 	 * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
 	 */
+	public function periodicityDaily() {
+		return $this->morphedByMany(TransactionPeriodicityDaily::class, 'transaction_periodicity');
+	}
+
+	/**
+	 * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
+	 */
 	public function periodicityWeeklies() {
 		return $this->morphedByMany(TransactionPeriodicityWeekly::class, 'transaction_periodicity');
 	}
@@ -102,6 +111,13 @@ class Transaction
 	 */
 	public function periodicityMonthlies() {
 		return $this->morphedByMany(TransactionPeriodicityMonthly::class, 'transaction_periodicity');
+	}
+
+	/**
+	 * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
+	 */
+	public function periodicityYearlies() {
+		return $this->morphedByMany(TransactionPeriodicityYearly::class, 'transaction_periodicity');
 	}
 
 	/**

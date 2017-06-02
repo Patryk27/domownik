@@ -173,6 +173,18 @@
 
                       echo sprintf('AppView.Periodicity.Monthly.prepare([%s]);', $rows->implode(','));
                       break;
+
+                  case \App\Modules\Finances\Models\Transaction::PERIODICITY_TYPE_YEARLY:
+                      $rows = $transaction->periodicityYearlies->map(function($row) {
+                         /**
+                          * @var \App\Modules\Finances\Models\TransactionPeriodicityYearly $row
+                          */
+
+                          return sprintf('[%d,%d]', $row->month, $row->day);
+                      });
+
+                      echo sprintf('AppView.Periodicity.Yearly.prepare([%s]);', $rows->implode(','));
+                      break;
               }
           }
       @endphp

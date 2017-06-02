@@ -17,10 +17,12 @@ require('./utils');
   $(document).ready(function() {
     var locale = window.App.Configuration.getLocale();
 
-    console.log('Set locale: ' + locale);
+    console.log('Application locale: ' + locale);
 
     moment.locale(locale);
+
     bootbox.setLocale(locale);
+    bootbox.setDefaults({ backdrop: true });
 
     $.ajaxSetup({
       headers: {

@@ -1,1 +1,1 @@
-require('./utils/stringFormat');
+require('./utils/string');

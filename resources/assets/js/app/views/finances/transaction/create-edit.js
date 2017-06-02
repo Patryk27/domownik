@@ -155,6 +155,7 @@ module.exports = (function() {
     },
 
     Periodicity: {
+
       OneShot: {
 
         /**
@@ -202,7 +203,32 @@ module.exports = (function() {
           });
 
           return this;
-        }
+        },
+
+      },
+
+      Yearly: {
+
+        /**
+         * @param {Number[][]} dates
+         * @returns {exports}
+         */
+        prepare: function(dates) {
+          var periodicityType = getSelectedPeriodicityType();
+
+          var year = new String(new Date().getFullYear());
+
+          calendarDates[periodicityType] = dates.map(function(date) {
+            var month = new String(date[0]),
+                day = new String(date[1]);
+
+            return year.leftPad(4, '0') + '-' + month.leftPad(2, '0') + '-' + day.leftPad(2, '0');
+          });
+
+          refreshCalendar();
+
+          return this;
+        },
 
       },
 

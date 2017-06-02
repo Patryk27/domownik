@@ -12,6 +12,7 @@ use App\Modules\Finances\Services\Transaction\PeriodicityParser\Matchers\Matcher
 use App\Modules\Finances\Services\Transaction\PeriodicityParser\Matchers\MonthlyMatcher;
 use App\Modules\Finances\Services\Transaction\PeriodicityParser\Matchers\OneShotMatcher;
 use App\Modules\Finances\Services\Transaction\PeriodicityParser\Matchers\WeeklyMatcher;
+use App\Modules\Finances\Services\Transaction\PeriodicityParser\Matchers\YearlyMatcher;
 use App\ServiceContracts\BasicSearchContract;
 use Carbon\Carbon;
 use Dotenv\Exception\ValidationException;
@@ -104,6 +105,10 @@ class PeriodicityParserService
 
 			case Transaction::PERIODICITY_TYPE_MONTHLY:
 				$matcher = new MonthlyMatcher();
+				break;
+
+			case Transaction::PERIODICITY_TYPE_YEARLY:
+				$matcher = new YearlyMatcher();
 				break;
 
 			default:

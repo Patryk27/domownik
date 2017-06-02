@@ -4,9 +4,11 @@ namespace App\Modules\Finances\Module;
 
 use App\Modules\Finances\Models\Budget;
 use App\Modules\Finances\Models\Transaction;
+use App\Modules\Finances\Models\TransactionPeriodicityDaily;
 use App\Modules\Finances\Models\TransactionPeriodicityMonthly;
 use App\Modules\Finances\Models\TransactionPeriodicityOneShot;
 use App\Modules\Finances\Models\TransactionPeriodicityWeekly;
+use App\Modules\Finances\Models\TransactionPeriodicityYearly;
 use App\Modules\Finances\Models\TransactionValueConstant;
 use App\Modules\Finances\Models\TransactionValueRange;
 use App\Modules\Scaffolding\Module\ServiceProvider as AbstractServiceProvider;
@@ -42,8 +44,10 @@ class ServiceProvider
 			'budget' => Budget::class,
 			'transaction' => Transaction::class,
 			'transaction-periodicity-one-shot' => TransactionPeriodicityOneShot::class,
+			'transaction-periodicity-daily' => TransactionPeriodicityDaily::class,
 			'transaction-periodicity-weekly' => TransactionPeriodicityWeekly::class,
 			'transaction-periodicity-monthly' => TransactionPeriodicityMonthly::class,
+			'transaction-periodicity-yearly' => TransactionPeriodicityYearly::class,
 			'transaction-value-constant' => TransactionValueConstant::class,
 			'transaction-value-range' => TransactionValueRange::class,
 		]);

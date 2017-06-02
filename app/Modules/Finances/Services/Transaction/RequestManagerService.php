@@ -6,10 +6,12 @@ use App\Exceptions\InvalidRequestException;
 use App\Modules\Finances\Http\Requests\Transaction\StoreRequest;
 
 use App\Modules\Finances\Models\Transaction;
+use App\Modules\Finances\Models\TransactionSchedule;
 use App\Modules\Finances\Models\TransactionValueConstant;
 use App\Modules\Finances\Models\TransactionValueRange;
 use App\Modules\Finances\Repositories\Contracts\TransactionRepositoryContract;
 use App\Support\Facades\MyLog;
+use Carbon\Carbon;
 use Illuminate\Database\Connection;
 use Illuminate\Database\Eloquent\Model;
 
@@ -97,6 +99,14 @@ class RequestManagerService
 
 		$this->transactionRepository->delete($transactionId);
 
+		Transaction
+			::getFlushCache()
+			->flush();
+
+		TransactionSchedule
+			::getFlushCache()
+			->flush();
+
 		return $this;
 	}
 
@@ -155,12 +165,20 @@ class RequestManagerService
 				$periodicityModels = $this->transaction->periodicityOneShots;
 				break;
 
+			case Transaction::PERIODICITY_TYPE_DAILY:
+				$periodicityModels = $this->transaction->periodicityDailes;
+				break;
+
 			case Transaction::PERIODICITY_TYPE_WEEKLY:
 				$periodicityModels = $this->transaction->periodicityWeeklies;
 				break;
 
 			case Transaction::PERIODICITY_TYPE_MONTHLY:
 				$periodicityModels = $this->transaction->periodicityMonthlies;
+				break;
+
+			case Transaction::PERIODICITY_TYPE_YEARLY:
+				$periodicityModels = $this->transaction->periodicityYearlies;
 				break;
 		}
 
@@ -268,6 +286,20 @@ class RequestManagerService
 						->periodicityMonthlies()
 						->create([
 							'day_number' => $dayNumber,
+						]);
+				}
+
+				break;
+
+			case Transaction::PERIODICITY_TYPE_YEARLY:
+				foreach ($this->request->get('calendarDates') as $calendarDate) {
+					$date = new Carbon($calendarDate);
+
+					$this->transaction
+						->periodicityYearlies()
+						->create([
+							'month' => $date->month,
+							'day' => $date->day,
 						]);
 				}
 
