@@ -57,7 +57,7 @@ class ProcessorService
 	/**
 	 * @inheritDoc
 	 */
-	public function processTransactionSchedule(): ProcessorServiceContract {
+	public function processTransactionsSchedule(): ProcessorServiceContract {
 		try {
 			// process transaction schedule
 			MyLog::info('Processing transaction schedule...');

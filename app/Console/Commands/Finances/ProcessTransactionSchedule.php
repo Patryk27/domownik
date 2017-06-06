@@ -38,7 +38,7 @@ class ProcessTransactionSchedule
 	 * @return void
 	 */
 	public function handle() {
-		$this->transactionScheduleProcessorService->processTransactionSchedule();
+		$this->transactionScheduleProcessorService->processTransactionsSchedule();
 	}
 
 }
