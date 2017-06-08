@@ -8,6 +8,14 @@
 
 @extends('layouts/auth')
 
+@push('scripts')
+<script>
+  var AppView = App.Views.Finances.Budget.Show.initializeView({
+    budgetId: {{ $budget->id }},
+  });
+</script>
+@endpush
+
 @section('title')
     {{ __('Finances::views/budget/show.page.title', [
         'budgetName' => $budget->name,
@@ -74,8 +82,38 @@
     <div class="row">
         <div class="col-md-12">
             <h4>
-                {{ __('Finances::views/budget/show.budget-charts.header') }}
+                {{ __('Finances::views/budget/show.history.header') }}
+
+                &nbsp;
+
+                <div style="display:inline-block">
+                    {!!
+                    Form::select()
+                        ->setIdAndName('budget-history-group-mode')
+                        ->setItems(function() {
+                            $items = [
+                                \App\Modules\Finances\Services\Transaction\HistoryCollectorServiceContract::GROUP_MODE_DAILY,
+                                \App\Modules\Finances\Services\Transaction\HistoryCollectorServiceContract::GROUP_MODE_WEEKLY,
+                                \App\Modules\Finances\Services\Transaction\HistoryCollectorServiceContract::GROUP_MODE_MONTHLY,
+                                \App\Modules\Finances\Services\Transaction\HistoryCollectorServiceContract::GROUP_MODE_YEARLY,
+                            ];
+
+                            $result = [];
+
+                            foreach ($items as $item) {
+                                $result[$item] = __(sprintf('Finances::views/budget/show.history-group-mode.%s', $item));
+                            }
+
+                            return $result;
+                        })
+                    !!}
+                </div>
             </h4>
+
+            <div id="budget-history">
+                ...
+                {{-- @todo nice loading message --}}
+            </div>
         </div>
     </div>
 @endsection

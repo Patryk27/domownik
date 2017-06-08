@@ -87,7 +87,7 @@ class TransactionScheduleRepository
 
 	/**
 	 * @param Collection $rows
-	 * @return ScheduledTransaction[]|Collection
+	 * @return Collection|ScheduledTransaction[]
 	 */
 	protected function convertToScheduledTransactionCollection($rows) {
 		$transactionRepository = $this->getTransactionRepository();

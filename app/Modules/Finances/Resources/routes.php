@@ -8,14 +8,21 @@ use App\Modules\Finances\Controllers\TransactionController;
 Route::group(['prefix' => 'finances', 'middleware' => 'auth'], function() {
 	// /finances/budget
 	Route::group(['prefix' => 'budget'], function() {
+		// /finances/budget/create
 		Route::get('create', '\\' . BudgetController::class . '@actionCreate')
 			 ->name('finances.budget.create');
 
+		// /finances/budget/store
 		Route::post('store', '\\' . BudgetController::class . '@actionStore')
 			 ->name('finances.budget.store');
 
+		// /finances/budget/show
 		Route::get('show/{budget}', '\\' . BudgetController::class . '@actionShow')
 			 ->name('finances.budget.show');
+
+		// /finances/budget/get-history
+		Route::get('get-history', '\\' . BudgetController::class . '@actionGetHistory')
+			 ->name('finances.budget.get-history');
 	});
 
 	// /finances/transaction

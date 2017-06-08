@@ -11,6 +11,9 @@ use Carbon\Carbon;
 use Illuminate\Database\Connection;
 use Illuminate\Support\Collection;
 
+/**
+ * @todo replace with @see HistoryCollectorService
+ */
 class FindRecentlyBookedTransactionsService
 	implements FindRecentlyBookedTransactionsServiceContract {
 

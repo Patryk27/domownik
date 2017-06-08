@@ -2,7 +2,6 @@
 
 namespace App\Modules\Finances\Repositories\Eloquent;
 
-
 use App\Modules\Finances\Models\TransactionPeriodicityOneShot;
 use App\Modules\Finances\Repositories\Contracts\TransactionPeriodicityRepositoryContract;
 
@@ -13,9 +12,13 @@ class TransactionPeriodicityRepository
 	 * @inheritDoc
 	 */
 	public function getOneShotById(int $periodicityId, bool $joinTransaction = false) {
+		// @todo cache
+
 		if ($joinTransaction) {
-			return TransactionPeriodicityOneShot::with('transaction', 'transaction.value')
-												->find($periodicityId);
+			return
+				TransactionPeriodicityOneShot
+					::with('transaction', 'transaction.value')
+					->find($periodicityId);
 		} else {
 			return TransactionPeriodicityOneShot::find($periodicityId);
 		}
@@ -24,15 +27,17 @@ class TransactionPeriodicityRepository
 	/**
 	 * @inheritDoc
 	 */
-	public function getOneShotByIds($periodicityIds, bool $joinTransactions = false) {
+	public function getOneShotByIds(array $periodicityIds, bool $joinTransactions = false) {
+		// @todo cache
+
 		if ($joinTransactions) {
-			return TransactionPeriodicityOneShot::with('transaction', 'transaction.value')
-												->findMany($periodicityIds);
+			return
+				TransactionPeriodicityOneShot
+					::with('transaction', 'transaction.value')
+					->findMany($periodicityIds);
 		} else {
 			return TransactionPeriodicityOneShot::findMany($periodicityIds);
 		}
 	}
-
-
 
 }

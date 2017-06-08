@@ -8,6 +8,10 @@ require('./bootstrap');
 require('./jquery');
 require('./utils');
 
+window.Highcharts = require('highcharts/highstock');
+
+require('highcharts/modules/exporting')(window.Highcharts);
+
 /**
  * Bootstraps the application.
  */
@@ -22,7 +26,13 @@ require('./utils');
     moment.locale(locale);
 
     bootbox.setLocale(locale);
-    bootbox.setDefaults({ backdrop: true });
+    bootbox.setDefaults({backdrop: true});
+
+    // @todo
+    /* Highcharts.setOptions({
+     lang: {
+     }
+     }); */
 
     $.ajaxSetup({
       headers: {

@@ -96,6 +96,10 @@ class ServiceProvider
 		/**
 		 * Services/Transaction/
 		 */
+		$this->app->bind(\App\Modules\Finances\Services\Transaction\HistoryCollectorServiceContract::class, function(Application $app) {
+			return $app->make(\App\Modules\Finances\Services\Transaction\HistoryCollectorService::class);
+		});
+
 		$this->app->bind(\App\Modules\Finances\Services\Transaction\PeriodicityParserServiceContract::class, function(Application $app) {
 			return $app->make(\App\Modules\Finances\Services\Transaction\PeriodicityParserService::class);
 		});
@@ -132,7 +136,7 @@ class ServiceProvider
 		$breadcrumbManager = $this->app->make(\App\Services\Breadcrumb\Manager::class);
 
 		/**
-		 * Breadcrumb of a Budget.
+		 * Breadcrumb of a budget.
 		 */
 		$breadcrumbManager->registerCustomPushHandler(new class
 			implements CustomPushHandlerContract {

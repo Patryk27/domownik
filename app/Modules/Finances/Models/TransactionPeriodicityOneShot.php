@@ -10,6 +10,7 @@ use Carbon\Carbon;
  * @property Carbon $date
  * @property Carbon $created_at
  * @property Carbon $updated_at
+ * @property Transaction[] $transaction
  */
 class TransactionPeriodicityOneShot
 	extends Model {
@@ -28,7 +29,6 @@ class TransactionPeriodicityOneShot
 	 * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
 	 */
 	public function transaction() {
-		// @todo cache
 		return $this->morphToMany(Transaction::class, 'transaction_periodicity');
 	}
 
