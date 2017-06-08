@@ -112,7 +112,10 @@
             </h4>
 
             <div id="budget-history">
-                {{ __('js/ajax.common.loading') }}
+                @include('common.ajax.loader', [
+                    'icon' => true,
+                    'label' => true,
+                ])
             </div>
         </div>
     </div>
