@@ -87,13 +87,6 @@ class ServiceProvider
 	 */
 	protected function bindServices() {
 		/**
-		 * Services/BudgetTransaction/
-		 */
-		$this->app->bind(\App\Modules\Finances\Services\BudgetTransaction\Search\FindRecentlyBookedTransactionsServiceContract::class, function(Application $app) {
-			return $app->make(\App\Modules\Finances\Services\BudgetTransaction\Search\FindRecentlyBookedTransactionsService::class);
-		});
-
-		/**
 		 * Services/Transaction/
 		 */
 		$this->app->bind(\App\Modules\Finances\Services\Transaction\HistoryCollectorServiceContract::class, function(Application $app) {

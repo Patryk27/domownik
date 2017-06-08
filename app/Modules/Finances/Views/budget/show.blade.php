@@ -3,6 +3,7 @@
      * @var \App\Modules\Finances\Models\Budget $budget
      * @var \App\Modules\Finances\Models\Transaction[] $recentlyBookedTransactions
      * @var \App\Modules\Finances\ValueObjects\ScheduledTransaction[] $incomingTransactions
+     * @var array $budgetHistory
      */
 @endphp
 
@@ -12,6 +13,7 @@
 <script>
   var AppView = App.Views.Finances.Budget.Show.initializeView({
     budgetId: {{ $budget->id }},
+    budgetHistoryRows: {{ $budgetHistoryRows }}
   });
 </script>
 @endpush

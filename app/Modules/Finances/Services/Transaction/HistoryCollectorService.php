@@ -52,6 +52,11 @@ class HistoryCollectorService
 	protected $sortDirection;
 
 	/**
+	 * @var Collection|null
+	 */
+	protected $rows;
+
+	/**
 	 * HistoryCollectorService constructor.
 	 * @param DatabaseConnection $databaseConnection
 	 * @param TransactionPeriodicityRepositoryContract $transactionPeriodicityRepository
@@ -68,6 +73,7 @@ class HistoryCollectorService
 	 * @inheritDoc
 	 */
 	public function reset(): BasicSearchContract {
+		$this->rows = null;
 		return $this;
 	}
 
@@ -75,6 +81,10 @@ class HistoryCollectorService
 	 * @inheritDoc
 	 */
 	public function getRows(): Collection {
+		if (isset($this->rows)) {
+			return new Collection($this->rows);
+		}
+
 		// prepare rows
 		$stmt = $this->databaseConnection
 			->table('transactions AS t')
@@ -115,6 +125,8 @@ class HistoryCollectorService
 
 		$result = $result->sortBy('periodicity.date.timestamp', SORT_REGULAR, $this->sortDirection === self::SORT_DIRECTION_DESCENDING);
 
+		$this->rows = $result;
+
 		return $result;
 	}
 
@@ -122,8 +134,6 @@ class HistoryCollectorService
 	 * @inheritDoc
 	 */
 	public function getRowsForChart(): array {
-		// @todo can be optimized (no need for building that whole transaction-collection bubble)
-
 		$rows = $this->getRows();
 
 		$rows = $rows
