@@ -57,6 +57,10 @@ module.exports = function() {
           enabled: false,
         },
 
+        tooltip: {
+          valueDecimals: 2,
+        },
+
         plotOptions: {
           area: {
             fillColor: {
@@ -86,36 +90,36 @@ module.exports = function() {
             {
               type: 'day',
               count: 3,
-              text: '3d',
+              text: __(':highcharts.custom.range-selectors.3-days'),
             },
 
             {
               type: 'week',
               count: 1,
-              text: '1t',
+              text: __(':highcharts.custom.range-selectors.1-week'),
             },
 
             {
               type: 'month',
               count: 1,
-              text: '1m',
+              text: __(':highcharts.custom.range-selectors.1-month'),
             },
 
             {
               type: 'month',
               count: 6,
-              text: '6m',
+              text: __(':highcharts.custom.range-selectors.6-months'),
             },
 
             {
               type: 'year',
               count: 1,
-              text: '1r',
+              text: __(':highcharts.custom.range-selectors.1-year'),
             },
 
             {
               type: 'all',
-              text: 'wsz.',
+              text: __(':highcharts.custom.range-selectors.all'),
             },
           ],
 

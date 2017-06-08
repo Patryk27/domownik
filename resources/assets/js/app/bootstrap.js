@@ -20,7 +20,7 @@ module.exports = (function() {
 
     // highcharts
     Highcharts.setOptions({
-      lang: __(':highcharts'),
+      lang: __(':highcharts.language'),
     });
   }
 
