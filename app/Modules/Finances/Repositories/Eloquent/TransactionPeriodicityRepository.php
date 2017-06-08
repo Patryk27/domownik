@@ -15,11 +15,7 @@ class TransactionPeriodicityRepository
 	 * @inheritDoc
 	 */
 	public function getOneShotById(int $periodicityId, bool $joinTransaction = false) {
-		$cacheKey = $this->getCacheKey(__FUNCTION__, [
-			$periodicityId,
-			$joinTransaction,
-		]);
-
+		$cacheKey = $this->getCacheKey(__FUNCTION__, func_get_args());
 		$cache = TransactionPeriodicityOneShot::getCache();
 
 		return $cache->rememberForever($cacheKey, function() use ($periodicityId, $joinTransaction) {
@@ -42,11 +38,7 @@ class TransactionPeriodicityRepository
 	 * @inheritDoc
 	 */
 	public function getOneShotByIds(array $periodicityIds, bool $joinTransactions = false) {
-		$cacheKey = $this->getCacheKey(__FUNCTION__, [
-			$periodicityIds,
-			$joinTransactions,
-		]);
-
+		$cacheKey = $this->getCacheKey(__FUNCTION__, func_get_args());
 		$cache = TransactionPeriodicityOneShot::getCache();
 
 		return $cache->rememberForever($cacheKey, function() use ($periodicityIds, $joinTransactions) {
