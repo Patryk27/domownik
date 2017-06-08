@@ -2,13 +2,14 @@
 
 namespace App\Modules\Finances\Controllers;
 
+use App\Modules\Finances\Models\Transaction;
 use App\Modules\Finances\Repositories\Contracts\TransactionScheduleRepositoryContract;
-use App\Modules\Finances\Services\BudgetTransaction\Search\FindRecentlyBookedTransactionsServiceContract;
 use App\Modules\Finances\Http\Requests\Budget\StoreRequest;
 use App\Modules\Finances\Models\Budget;
 use App\Modules\Finances\Models\BudgetConsolidation;
 use App\Modules\Finances\Repositories\Contracts\BudgetRepositoryContract;
 use App\Modules\Finances\Repositories\Contracts\TransactionRepositoryContract;
+use App\Modules\Finances\Services\Transaction\HistoryCollectorServiceContract;
 use App\Services\Breadcrumb\Manager as BreadcrumbManager;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -32,35 +33,35 @@ class BudgetController
 	protected $budgetTransactionRepository;
 
 	/**
-	 * @var FindRecentlyBookedTransactionsServiceContract
-	 */
-	protected $findRecentlyBookedTransactionsService;
-
-	/**
 	 * @var TransactionScheduleRepositoryContract
 	 */
 	protected $transactionScheduleRepository;
+
+	/**
+	 * @var HistoryCollectorServiceContract
+	 */
+	protected $transactionHistoryCollectorService;
 
 	/**
 	 * BudgetController constructor.
 	 * @param BreadcrumbManager $breadcrumbManager
 	 * @param BudgetRepositoryContract $budgetRepository
 	 * @param TransactionRepositoryContract $budgetTransactionRepository
-	 * @param FindRecentlyBookedTransactionsServiceContract $findRecentlyBookedTransactionsService
 	 * @param TransactionScheduleRepositoryContract $transactionScheduleRepository
+	 * @param HistoryCollectorServiceContract $historyCollectorService
 	 */
 	public function __construct(
 		BreadcrumbManager $breadcrumbManager,
 		BudgetRepositoryContract $budgetRepository,
 		TransactionRepositoryContract $budgetTransactionRepository,
-		FindRecentlyBookedTransactionsServiceContract $findRecentlyBookedTransactionsService,
-		TransactionScheduleRepositoryContract $transactionScheduleRepository
+		TransactionScheduleRepositoryContract $transactionScheduleRepository,
+		HistoryCollectorServiceContract $transactionHistoryCollectorService
 	) {
 		$this->breadcrumbManager = $breadcrumbManager;
 		$this->budgetRepository = $budgetRepository;
 		$this->budgetTransactionRepository = $budgetTransactionRepository;
-		$this->findRecentlyBookedTransactionsService = $findRecentlyBookedTransactionsService;
 		$this->transactionScheduleRepository = $transactionScheduleRepository;
+		$this->transactionHistoryCollectorService = $transactionHistoryCollectorService;
 	}
 
 	/**
@@ -116,16 +117,20 @@ class BudgetController
 	public function actionShow(Budget $budget) {
 		$this->breadcrumbManager->pushCustom($budget);
 
-		// prepare recently booked transactions
-		$this->findRecentlyBookedTransactionsService
+		// prepare budget history
+		$this->transactionHistoryCollectorService
 			->reset()
-			->setBudgetId($budget->id)
-			->setLimit(FindRecentlyBookedTransactionsServiceContract::LIMIT_THIS_MONTH);
+			->setParentType(Transaction::PARENT_TYPE_BUDGET)
+			->setParentId($budget->id)
+			->setEndDate(new Carbon('now'))
+			->setSortDirection('asc');
 
-		$recentlyBookedTransactions = $this->findRecentlyBookedTransactionsService->getRows();
+		$budgetHistoryRows = $this->transactionHistoryCollectorService->getRowsForChart();
+
 		$recentlyBookedTransactions =
-			$recentlyBookedTransactions
-				->sortBy('periodicity.date', SORT_REGULAR, true)
+			$this->transactionHistoryCollectorService
+				->getRows()
+				->reverse()
 				->take(5); // @todo make this value configurable somewhere for the user
 
 		// prepare incoming transactions
@@ -144,6 +149,7 @@ class BudgetController
 			'budget' => $budget,
 			'recentlyBookedTransactions' => $recentlyBookedTransactions,
 			'incomingTransactions' => $incomingTransactions,
+			'budgetHistoryRows' => json_encode($budgetHistoryRows),
 		]);
 	}
 

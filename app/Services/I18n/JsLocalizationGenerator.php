@@ -49,7 +49,7 @@ class JsLocalizationGenerator {
 	public function generateLocalizationFile() {
 		$messages = array_merge($this->getModuleMessages(), $this->getBaseMessages());
 
-		$fileContent = sprintf('App.Language.initialize(%s);', json_encode($messages));
+		$fileContent = sprintf('window.AppLocalizationMessages = %s;', json_encode($messages));
 		$this->filesystem->put($this->localizationFileName, $fileContent);
 
 		return $this;

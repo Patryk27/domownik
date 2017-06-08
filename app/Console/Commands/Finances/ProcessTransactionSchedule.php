@@ -11,7 +11,7 @@ class ProcessTransactionSchedule
 	/**
 	 * @var string
 	 */
-	protected $signature = 'finances:process-transaction-schedule';
+	protected $signature = 'dk:finances:process-transaction-schedule';
 
 	/**
 	 * @var string
@@ -38,7 +38,7 @@ class ProcessTransactionSchedule
 	 * @return void
 	 */
 	public function handle() {
-		$this->transactionScheduleProcessorService->processTransactionSchedule();
+		$this->transactionScheduleProcessorService->processTransactionsSchedule();
 	}
 
 }

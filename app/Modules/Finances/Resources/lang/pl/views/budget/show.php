@@ -19,7 +19,14 @@ return [
 		'show-more' => 'pokaż więcej',
 	],
 
-	'budget-charts' => [
+	'history' => [
 		'header' => 'Historia budżetu',
+	],
+
+	'history-group-mode' => [
+		'daily' => 'dziennie',
+		'weekly' => 'tygodniowo',
+		'monthly' => 'miesięcznie',
+		'yearly' => 'rocznie',
 	],
 ];

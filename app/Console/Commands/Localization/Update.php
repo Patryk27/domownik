@@ -11,7 +11,7 @@ class Update
 	/**
 	 * @var string
 	 */
-	protected $signature = 'localization:update';
+	protected $signature = 'dk:localization:update';
 
 	/**
 	 * @var string

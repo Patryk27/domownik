@@ -3,8 +3,7 @@
         {{-- Modules list --}}
         <select id="module-select" title="" class="form-control">
             @foreach ($enabledModules as $enabledModule)
-                <option
-                        name="{{ $enabledModule->getName() }}"
+                <option name="{{ $enabledModule->getName() }}"
                         {{ $enabledModule->is($activeModule) ? 'selected' : '' }}>
                     {{ Translation::getModuleName($enabledModule->getName()) }}
                 </option>

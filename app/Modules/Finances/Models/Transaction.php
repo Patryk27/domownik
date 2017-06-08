@@ -11,8 +11,8 @@ use Illuminate\Support\Collection;
 /**
  * @property int $id
  * @property int $parent_transaction_id
- * @property int $parent_id
  * @property string $parent_type
+ * @property int $parent_id
  * @property int $category_id
  * @property TransactionCategory $category
  * @property string $type

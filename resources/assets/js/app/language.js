@@ -2,18 +2,21 @@ module.exports = (function() {
 
   /**
    * Message list.
+   * @type {{}}
    */
   var messages = {};
 
   /**
-   * Currently selected language.
-   * Automatically initialized.
-   * @type {String}
+   * Currently selected locale.
+   * @type {?String}
    */
   var locale = null;
 
   /**
-   * Returns given message translation.
+   * Returns given translation.
+   * Example keys:
+   *  'Finances:something.someone' or
+   *  ':something.someone', when referring to global namespace.
    * @param {String} key
    * @returns {String}
    */
@@ -21,18 +24,16 @@ module.exports = (function() {
     return module.exports.getMessage(key);
   }
 
+  //noinspection JSUnusedGlobalSymbols
   return {
 
     /**
-     * @param {{}} optMessages
+     * @param {String} paramLocale
      * @returns {exports}
      */
-    initialize: function(optMessages) {
-      messages = optMessages;
-
-      $(function() {
-        locale = App.Configuration.getLocale();
-      });
+    initialize: function(paramLocale) {
+      messages = window.AppLocalizationMessages;
+      locale = paramLocale;
 
       return this;
     },
@@ -45,15 +46,37 @@ module.exports = (function() {
       var split = key.split(':');
 
       var moduleName = split[0],
-          itemPath = split[1].split('.');
+          keyPath = split[1].split('.');
 
-      var message = messages[moduleName][locale];
+      try {
+        keyPath = [moduleName, locale].concat(keyPath);
 
-      for (var i = 0; i < itemPath.length; ++i) {
-        message = message[itemPath[i]];
+        var keys = messages;
+
+        for (var i = 0; i < keyPath.length; ++i) {
+          var keyItem = keyPath[i];
+
+          if (!keys.hasOwnProperty(keyItem)) {
+            throw 'translation-not-found';
+          }
+
+          keys = keys[keyItem];
+        }
+
+        return keys;
+      } catch (ex) {
+        if (ex === 'translation-not-found') {
+          /**
+           * Mock the Laravel behaviour - that is: return referenced language key
+           * except throwing an exception. Makes it easier for debugging.
+           */
+
+          console.log('Translation key could not have been found: ' + key);
+          return key;
+        }
+
+        throw ex;
       }
-
-      return message;
     },
 
   };
