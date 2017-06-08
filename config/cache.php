@@ -9,5 +9,5 @@ return [
 		],
     ],
 
-    'prefix' => 'dk_',
+    'prefix' => 'dk',
 ];
