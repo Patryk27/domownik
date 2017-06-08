@@ -11,7 +11,7 @@ class ProcessTransactionSchedule
 	/**
 	 * @var string
 	 */
-	protected $signature = 'finances:process-transaction-schedule';
+	protected $signature = 'dk:finances:process-transaction-schedule';
 
 	/**
 	 * @var string

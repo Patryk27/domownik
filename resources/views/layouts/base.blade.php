@@ -21,8 +21,8 @@
         ]) !!};
     </script>
 
-    <script src="{{ asset('js/app.js') }}"></script>
     <script src="{{ asset('js/localization.js') }}"></script>
+    <script src="{{ asset('js/app.js') }}"></script>
 
     <script>
       window.App.Configuration.setLocale('{{ Configuration::getLanguage() }}');

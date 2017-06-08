@@ -79,6 +79,7 @@
 
     <hr>
 
+    {{-- Budget history --}}
     <div class="row">
         <div class="col-md-12">
             <h4>
@@ -111,8 +112,7 @@
             </h4>
 
             <div id="budget-history">
-                ...
-                {{-- @todo nice loading message --}}
+                {{ __('js/ajax.common.loading') }}
             </div>
         </div>
     </div>

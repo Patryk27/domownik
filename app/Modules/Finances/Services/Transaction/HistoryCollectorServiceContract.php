@@ -55,17 +55,6 @@ interface HistoryCollectorServiceContract
 	public function setParentId(int $parentId): HistoryCollectorServiceContract;
 
 	/**
-	 * @return string
-	 */
-	public function getGroupMode(): string;
-
-	/**
-	 * @param string $groupMode
-	 * @return HistoryCollectorServiceContract
-	 */
-	public function setGroupMode(string $groupMode): HistoryCollectorServiceContract;
-
-	/**
 	 * @return Carbon|null
 	 */
 	public function getBeginDate();

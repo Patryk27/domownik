@@ -37,11 +37,6 @@ class HistoryCollectorService
 	protected $parentId;
 
 	/**
-	 * @var string
-	 */
-	protected $groupMode;
-
-	/**
 	 * @var Carbon|null
 	 */
 	protected $beginDate;
@@ -179,21 +174,6 @@ class HistoryCollectorService
 	 */
 	public function setParentId(int $parentId): HistoryCollectorServiceContract {
 		$this->parentId = $parentId;
-		return $this;
-	}
-
-	/**
-	 * @inheritDoc
-	 */
-	public function getGroupMode(): string {
-		return $this->groupMode;
-	}
-
-	/**
-	 * @inheritDoc
-	 */
-	public function setGroupMode(string $groupMode): HistoryCollectorServiceContract {
-		$this->groupMode = $groupMode;
 		return $this;
 	}
 

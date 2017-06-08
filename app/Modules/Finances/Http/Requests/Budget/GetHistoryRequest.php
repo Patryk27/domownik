@@ -21,7 +21,6 @@ class GetHistoryRequest
 	public function rules() {
 		return [
 			'budgetId' => 'required|numeric',
-			'groupMode' => 'required',
 		];
 	}
 

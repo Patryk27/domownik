@@ -163,16 +163,11 @@ class BudgetController
 	 * @param GetHistoryRequest $request
 	 * @return \Illuminate\Http\Response
 	 */
-	//public function actionGetHistory(GetHistoryRequest $request) {
-	public function actionGetHistory(Request $request) {
-		$budget = $this->budgetRepository->getOrFail(14);
-		$groupMode = HistoryCollectorServiceContract::GROUP_MODE_DAILY;
-
+	public function actionGetHistory(GetHistoryRequest $request) {
 		$this->transactionHistoryCollectorService
 			->reset()
 			->setParentType(Transaction::PARENT_TYPE_BUDGET)
-			->setParentId($budget->id)
-			->setGroupMode($groupMode)
+			->setParentId($request->get('budgetId'))
 			->setEndDate(new Carbon('now'))
 			->setSortDirection('asc');
 
