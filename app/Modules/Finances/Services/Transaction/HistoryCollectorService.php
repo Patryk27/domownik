@@ -9,12 +9,22 @@ use App\Modules\Finances\Models\TransactionValueConstant;
 use App\Modules\Finances\Models\TransactionValueRange;
 use App\Modules\Finances\Repositories\Contracts\TransactionPeriodicityRepositoryContract;
 use App\ServiceContracts\BasicSearchContract;
+use App\Support\Facades\Date;
+use App\Support\UsesCache;
 use Carbon\Carbon;
 use Illuminate\Database\Connection as DatabaseConnection;
 use Illuminate\Support\Collection;
+use Illuminate\Cache\Repository as CacheRepository;
 
 class HistoryCollectorService
 	implements HistoryCollectorServiceContract {
+
+	use UsesCache;
+
+	/**
+	 * @var CacheRepository
+	 */
+	protected $cacheRepository;
 
 	/**
 	 * @var DatabaseConnection
@@ -58,13 +68,16 @@ class HistoryCollectorService
 
 	/**
 	 * HistoryCollectorService constructor.
+	 * @param CacheRepository $cacheRepository
 	 * @param DatabaseConnection $databaseConnection
 	 * @param TransactionPeriodicityRepositoryContract $transactionPeriodicityRepository
 	 */
 	public function __construct(
+		CacheRepository $cacheRepository,
 		DatabaseConnection $databaseConnection,
 		TransactionPeriodicityRepositoryContract $transactionPeriodicityRepository
 	) {
+		$this->cacheRepository = $cacheRepository;
 		$this->databaseConnection = $databaseConnection;
 		$this->transactionPeriodicityRepository = $transactionPeriodicityRepository;
 	}
@@ -85,49 +98,58 @@ class HistoryCollectorService
 			return new Collection($this->rows);
 		}
 
-		// prepare rows
-		$stmt = $this->databaseConnection
-			->table('transactions AS t')
-			->select([
-				't.id AS transaction_id',
-				'tpos.id AS transaction_periodicity_id'
-			])
-			->leftJoin('transaction_periodicities AS tp', 'tp.transaction_id', '=', 't.id')
-			->leftJoin('transaction_periodicity_one_shots AS tpos', 'tpos.id', '=', 'tp.transaction_periodicity_id')
-			->where('t.parent_type', $this->parentType)
-			->where('t.parent_id', $this->parentId)
-			->where('tp.transaction_periodicity_type', Transaction::PERIODICITY_TYPE_ONE_SHOT);
+		$cacheKey = $this->getCacheKey(__FUNCTION__, [
+			$this->parentType,
+			$this->parentId,
+			$this->beginDate,
+			$this->endDate,
+			$this->sortDirection,
+		]);
 
-		if (isset($this->beginDate)) {
-			$stmt->where('tpos.date', '>=', $this->beginDate);
-		}
+		$this->rows = $this->cacheRepository->rememberForever($cacheKey, function() {
+			$stmt = $this->databaseConnection
+				->table('transactions AS t')
+				->select([
+					't.id AS transaction_id',
+					'tpos.id AS transaction_periodicity_id'
+				])
+				->leftJoin('transaction_periodicities AS tp', 'tp.transaction_id', '=', 't.id')
+				->leftJoin('transaction_periodicity_one_shots AS tpos', 'tpos.id', '=', 'tp.transaction_periodicity_id')
+				->where('t.parent_type', $this->parentType)
+				->where('t.parent_id', $this->parentId)
+				->where('tp.transaction_periodicity_type', Transaction::PERIODICITY_TYPE_ONE_SHOT);
 
-		if (isset($this->endDate)) {
-			$stmt->where('tpos.date', '<=', $this->endDate);
-		}
+			if (isset($this->beginDate)) {
+				$stmt->where('tpos.date', '>=', $this->beginDate);
+			}
 
-		$rows = $stmt->get();
+			if (isset($this->endDate)) {
+				$stmt->where('tpos.date', '<=', $this->endDate);
+			}
 
-		// parse rows
-		$transactionPeriodicityIds = array_column($rows->toArray(), 'transaction_periodicity_id');
-		$transactionPeriodicities = $this->transactionPeriodicityRepository->getOneShotByIds($transactionPeriodicityIds, true);
+			$rows = $stmt->get();
 
-		$result = new Collection();
+			// parse rows
+			$transactionPeriodicityIds = array_column($rows->toArray(), 'transaction_periodicity_id');
+			$transactionPeriodicities = $this->transactionPeriodicityRepository->getOneShotByIds($transactionPeriodicityIds, true);
 
-		foreach ($transactionPeriodicities as $transactionPeriodicity) {
-			$transaction = $transactionPeriodicity->transaction[0];
+			$result = new Collection();
 
-			$transaction->periodicity = $transactionPeriodicity;
-			$transaction->periodicity_type = Transaction::PERIODICITY_TYPE_ONE_SHOT;
+			foreach ($transactionPeriodicities as $transactionPeriodicity) {
+				$transaction = $transactionPeriodicity->transaction[0];
 
-			$result->push($transaction);
-		}
+				$transaction->periodicity = $transactionPeriodicity;
+				$transaction->periodicity_type = Transaction::PERIODICITY_TYPE_ONE_SHOT;
 
-		$result = $result->sortBy('periodicity.date.timestamp', SORT_REGULAR, $this->sortDirection === self::SORT_DIRECTION_DESCENDING);
+				$result->push($transaction);
+			}
 
-		$this->rows = $result;
+			$result = $result->sortBy('periodicity.date.timestamp', SORT_REGULAR, $this->sortDirection === self::SORT_DIRECTION_DESCENDING);
 
-		return $result;
+			return $result;
+		});
+
+		return $this->rows;
 	}
 
 	/**
@@ -198,7 +220,7 @@ class HistoryCollectorService
 	 * @inheritDoc
 	 */
 	public function setBeginDate($beginDate): HistoryCollectorServiceContract {
-		$this->beginDate = $beginDate;
+		$this->beginDate = Date::stripTime($beginDate);
 		return $this;
 	}
 
@@ -213,7 +235,7 @@ class HistoryCollectorService
 	 * @inheritDoc
 	 */
 	public function setEndDate($endDate): HistoryCollectorServiceContract {
-		$this->endDate = $endDate;
+		$this->endDate = Date::stripTime($endDate);
 		return $this;
 	}
 

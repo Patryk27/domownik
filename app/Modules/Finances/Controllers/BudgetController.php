@@ -11,6 +11,7 @@ use App\Modules\Finances\Repositories\Contracts\BudgetRepositoryContract;
 use App\Modules\Finances\Repositories\Contracts\TransactionRepositoryContract;
 use App\Modules\Finances\Services\Transaction\HistoryCollectorServiceContract;
 use App\Services\Breadcrumb\Manager as BreadcrumbManager;
+use App\Support\Facades\Date;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
@@ -134,8 +135,7 @@ class BudgetController
 				->take(5); // @todo make this value configurable somewhere for the user
 
 		// prepare incoming transactions
-		$dateFrom = new Carbon('now');
-		$dateFrom->setTime(0, 0, 0);
+		$dateFrom = Date::stripTime(new Carbon('now'));
 
 		$dateTo =
 			$dateFrom

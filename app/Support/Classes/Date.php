@@ -36,4 +36,19 @@ class Date {
 		return $formatted;
 	}
 
+	/**
+	 * Strips (sets to zero) time of given Carbon date.
+	 * Does not modify given parameter - returns a new, modified date instead.
+	 * @param Carbon|null $date
+	 * @return Carbon|null
+	 */
+	public function stripTime($date) {
+		if (isset($date) && $date instanceof Carbon) {
+			$date = $date->copy();
+			$date->setTime(0, 0, 0);
+		}
+
+		return $date;
+	}
+
 }

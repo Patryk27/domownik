@@ -5,6 +5,7 @@ namespace App\Modules\Finances\Services\TransactionSchedule;
 use App\Modules\Finances\Models\TransactionSchedule;
 use App\Modules\Finances\Repositories\Contracts\TransactionScheduleRepositoryContract;
 use App\Modules\Finances\Services\Transaction\PeriodicityParserServiceContract;
+use App\Support\Facades\Date;
 use App\Support\Facades\MyLog;
 use Carbon\Carbon;
 use Illuminate\Database\Connection;
@@ -97,8 +98,7 @@ class UpdaterService
 	 * @return Carbon
 	 */
 	protected function getScheduleUpdateBeginningDate() {
-		$date = new Carbon('now');
-		$date->setTime(0, 0, 0);
+		$date = Date::stripTime(new Carbon('now'));
 
 		return $date;
 	}
