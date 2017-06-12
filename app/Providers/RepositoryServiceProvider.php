@@ -2,9 +2,6 @@
 
 namespace App\Providers;
 
-use App\Repositories\Contracts\SettingsRepositoryContract;
-use App\Repositories\Eloquent\SettingsRepository;
-use Illuminate\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
 
 class RepositoryServiceProvider
@@ -14,9 +11,9 @@ class RepositoryServiceProvider
 	 * @return void
 	 */
 	public function register() {
-		$this->app->singleton(SettingsRepositoryContract::class, function(Application $app) {
-			return new SettingsRepository($app);
-		});
+		$this->app->singleton(\App\Repositories\Contracts\ModuleRepositoryContract::class, \App\Repositories\Eloquent\ModuleRepository::class);
+		$this->app->singleton(\App\Repositories\Contracts\ModuleSettingRepositoryContract::class, \App\Repositories\Eloquent\ModuleSettingRepository::class);
+		$this->app->singleton(\App\Repositories\Contracts\SettingRepositoryContract::class, \App\Repositories\Eloquent\SettingRepository::class);
 	}
 
 	/**

@@ -7,11 +7,17 @@ use App\Modules\Finances\Models\TransactionValueConstant;
 use App\Modules\Finances\Models\TransactionValueRange;
 use App\Modules\Finances\Services\TransactionSchedule\ProcessorServiceContract as TransactionScheduleProcessorServiceContract;
 use App\Modules\Finances\Services\TransactionSchedule\UpdaterServiceContract as TransactionScheduleUpdaterServiceContract;
+use App\Support\Classes\MyLog;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 
 class BudgetTransactionSeeder
 	extends Seeder {
+
+	/**
+	 * @var MyLog
+	 */
+	protected $myLog;
 
 	/**
 	 * @var TransactionScheduleProcessorServiceContract
@@ -30,13 +36,16 @@ class BudgetTransactionSeeder
 
 	/**
 	 * BudgetTransactionSeeder constructor.
+	 * @param MyLog $myLog
 	 * @param TransactionScheduleProcessorServiceContract $transactionScheduleProcessorService
 	 * @param TransactionScheduleUpdaterServiceContract $transactionScheduleUpdaterService
 	 */
 	public function __construct(
+		MyLog $myLog,
 		TransactionScheduleProcessorServiceContract $transactionScheduleProcessorService,
 		TransactionScheduleUpdaterServiceContract $transactionScheduleUpdaterService
 	) {
+		$this->myLog = $myLog;
 		$this->transactionScheduleProcessorService = $transactionScheduleProcessorService;
 		$this->transactionScheduleUpdaterService = $transactionScheduleUpdaterService;
 	}
@@ -50,14 +59,14 @@ class BudgetTransactionSeeder
 		$transactionCount = 500;
 
 		for ($i = 1; $i <= $transactionCount; ++$i) {
-			MyLog::debug('Creating transaction %d of %d...', $i, $transactionCount);
+			$this->myLog->info('Creating transaction %d of %d...', $i, $transactionCount);
 			$this->createNewTransaction($i, 'budget', $this->firstBudget->id);
 		}
 
-		MyLog::debug('Processing transaction schedule...');
+		$this->myLog->info('Processing transaction schedule...');
 		$this->transactionScheduleProcessorService->processTransactionsSchedule();
 
-		MyLog::debug('Flushing cache...');
+		$this->myLog->info('Flushing cache...');
 		Cache::flush();
 	}
 

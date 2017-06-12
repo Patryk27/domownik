@@ -1,4 +1,4 @@
-@extends('layouts/auth')
+@extends('layouts.application.auth')
 
 @push('scripts')
 <script>

@@ -14,7 +14,7 @@ class Controller {
 	/**
 	 * Controller constructor.
 	 * The route parameter is nullable because it is null when the application is called from Artisan.
-	 * Not-nulling it does not make errors but raises warnings and, in order to avoid them, this parameter is nullable.
+	 * Not-nulling it does not make errors but raises warnings and in order to avoid them, this parameter is nulled.
 	 * @param Route|null $currentRoute
 	 */
 	public function __construct(Route $currentRoute = null) {
@@ -34,16 +34,21 @@ class Controller {
 	 * @return string
 	 */
 	protected function getRouteModuleName() {
-		$controller = explode('\\', get_class($this->currentRoute->getController()));
-		return strtolower($controller[2]);
+		$controllerNameParts = $this->getControllerNameParts();
+
+		if ($controllerNameParts[1] === 'Modules') {
+			return strtolower($controllerNameParts[2]);
+		} else {
+			return 'base';
+		}
 	}
 
 	/**
 	 * @return string
 	 */
 	protected function getRouteControllerName() {
-		$controller = explode('\\', get_class($this->currentRoute->getController()));
-		$controllerName = $controller[4];
+		$controllerNameParts = $this->getControllerNameParts();
+		$controllerName = end($controllerNameParts);
 
 		if (!ends_with($controllerName, 'Controller')) {
 			throw new \App\Exceptions\Exception('Route has unknown controller name: %s.', $controllerName);
@@ -64,6 +69,13 @@ class Controller {
 		}
 
 		return camel_case(substr($actionMethod, 6));
+	}
+
+	/**
+	 * @return string[]
+	 */
+	protected function getControllerNameParts() {
+		return explode('\\', get_class($this->currentRoute->getController()));
 	}
 
 }

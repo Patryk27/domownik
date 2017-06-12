@@ -2,8 +2,8 @@
 
 namespace App\Providers;
 
+use App\Services\Install\Manager as InstallManager;
 use Carbon\Carbon;
-use Illuminate\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider
@@ -13,9 +13,8 @@ class AppServiceProvider
 	 * @return void
 	 */
 	public function register() {
-		$this->app->singleton(\App\Services\Breadcrumb\Manager::class, function(Application $app) {
-			return new \App\Services\Breadcrumb\Manager();
-		});
+		$this->app->singleton(\App\Services\Breadcrumb\Manager::class);
+		$this->app->singleton(InstallManager::class);
 
 		if ($this->app->environment() !== 'production') {
 			$this->app->register(\Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class);
@@ -27,15 +26,11 @@ class AppServiceProvider
 	 */
 	public function boot() {
 		// @todo should not be hard-coded
-
 		date_default_timezone_set('Europe/Warsaw');
 		Carbon::setLocale('pl');
 		app()->setLocale('pl');
 
-		setlocale(LC_TIME, [
-			'pl',
-			'pl-PL'
-		]);
+		setlocale(LC_TIME, 'pl', 'pl-PL');
 	}
 
 }

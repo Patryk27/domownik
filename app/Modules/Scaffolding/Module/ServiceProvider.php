@@ -3,7 +3,9 @@
 namespace App\Modules\Scaffolding\Module;
 
 use App\Modules\ScaffoldingContract\Module\ServiceProvider as ServiceProviderContract;
+use App\Modules\ScaffoldingContract\Module\Sidebar as SidebarContract;
 use App\Services\Module\Manager;
+use Illuminate\Contracts\Foundation\Application;
 
 abstract class ServiceProvider
 	extends \Illuminate\Support\ServiceProvider
@@ -15,21 +17,53 @@ abstract class ServiceProvider
 	protected $moduleName;
 
 	/**
-	 * ServiceProvider constructor.
-	 * @param \Illuminate\Contracts\Foundation\Application $app
+	 * @var Sidebar
 	 */
-	public function __construct(\Illuminate\Contracts\Foundation\Application $app) {
+	protected $sidebar;
+
+	/**
+	 * ServiceProvider constructor.
+	 * @param Application $app
+	 */
+	public function __construct(Application $app) {
 		parent::__construct($app);
 	}
 
 	/**
 	 * @inheritdoc
 	 */
-	public function boot(): ServiceProviderContract {
-		$viewsDir = $this->getModuleDirectory('Views') . DIRECTORY_SEPARATOR;
-		$resourcesDir = $this->getModuleDirectory('Resources') . DIRECTORY_SEPARATOR;
+	public function boot(string $moduleName): ServiceProviderContract {
+		$this->moduleName = $moduleName;
 
+		$this->loadViews()
+			 ->loadResources()
+			 ->loadSidebar();
+
+		return $this;
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public function getSidebar(): SidebarContract {
+		return $this->sidebar;
+	}
+
+	/**
+	 * @return ServiceProvider
+	 */
+	protected function loadViews(): self {
+		$viewsDir = $this->getModuleDirectory('Views') . DIRECTORY_SEPARATOR;
 		$this->loadViewsFrom($viewsDir, $this->moduleName);
+
+		return $this;
+	}
+
+	/**
+	 * @return $this
+	 */
+	protected function loadResources(): self {
+		$resourcesDir = $this->getModuleDirectory('Resources') . DIRECTORY_SEPARATOR;
 		$this->loadTranslationsFrom($resourcesDir . 'lang', $this->moduleName);
 
 		require_once $resourcesDir . 'routes.php';
@@ -38,18 +72,15 @@ abstract class ServiceProvider
 	}
 
 	/**
-	 * @return string
-	 */
-	public function getModuleName(): string {
-		return $this->moduleName;
-	}
-
-	/**
-	 * @param string $moduleName
 	 * @return $this
 	 */
-	public function setModuleName(string $moduleName): ServiceProviderContract {
-		$this->moduleName = $moduleName;
+	protected function loadSidebar() {
+		$resourcesDir = $this->getModuleDirectory('Resources') . DIRECTORY_SEPARATOR;
+		$sidebarFileName = $resourcesDir . 'sidebar.xml';
+
+		$this->sidebar = $this->app->make(Sidebar::class);
+		$this->sidebar->loadFromFile($sidebarFileName);
+
 		return $this;
 	}
 

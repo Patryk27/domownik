@@ -9,6 +9,8 @@ class DatabaseSeeder
 	 * @return void
 	 */
 	public function run() {
+		$this->call(UserSeeder::class);
+
 		$this->call(BudgetSeeder::class);
 		$this->call(BudgetTransactionSeeder::class);
 	}

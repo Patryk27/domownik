@@ -3,21 +3,21 @@
 namespace App\Services\Configuration;
 
 use App\Exceptions\ConfigurationException;
-use App\Repositories\Contracts\SettingsRepositoryContract;
+use App\Repositories\Contracts\SettingRepositoryContract;
 use Illuminate\Support\Facades\Auth;
 
 class Manager {
 
 	/**
-	 * @var SettingsRepositoryContract
+	 * @var SettingRepositoryContract
 	 */
 	protected $settingsRepository;
 
 	/**
 	 * Manager constructor.
-	 * @param SettingsRepositoryContract $settingsRepository
+	 * @param SettingRepositoryContract $settingsRepository
 	 */
-	public function __construct(SettingsRepositoryContract $settingsRepository) {
+	public function __construct(SettingRepositoryContract $settingsRepository) {
 		$this->settingsRepository = $settingsRepository;
 	}
 
