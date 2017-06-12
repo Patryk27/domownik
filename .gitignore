@@ -1,9 +1,11 @@
 /node_modules
-/public/storage
-/public/hot
 /storage/*.key
 /vendor
+
+/.env
 /.idea
+/.phpstorm.meta.php
+/_ide_helper.php
 /Homestead.json
 /Homestead.yaml
-/.env
+/refresh-ide.bat

@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Contracts;
 
+use App\Models\Model as BaseModel;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 
@@ -44,6 +45,12 @@ interface CrudRepositoryContract {
 	 * @return mixed
 	 */
 	public function delete(int $id): CrudRepositoryContract;
+
+	/**
+	 * @param BaseModel $model
+	 * @return CrudRepositoryContract
+	 */
+	public function persist(BaseModel $model): CrudRepositoryContract;
 
 	/**
 	 * @return \Illuminate\Cache\TaggedCache

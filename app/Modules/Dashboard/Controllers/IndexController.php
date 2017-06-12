@@ -2,8 +2,6 @@
 
 namespace App\Modules\Dashboard\Controllers;
 
-
-
 class IndexController
 	extends \App\Http\Controllers\Controller {
 

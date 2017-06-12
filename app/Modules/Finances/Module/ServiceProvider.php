@@ -24,8 +24,8 @@ class ServiceProvider
 	/**
 	 * @inheritdoc
 	 */
-	public function boot(): ServiceProviderContract {
-		parent::boot();
+	public function boot(string $moduleName): ServiceProviderContract {
+		parent::boot($moduleName);
 
 		$this
 			->prepareDatabase()

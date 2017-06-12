@@ -2,16 +2,10 @@
 
 namespace App\Modules\Dashboard\Module;
 
-class Director
-	extends \App\Modules\Scaffolding\Module\Director {
+use App\Modules\Scaffolding\Module\Director as AbstractDirector;
 
-	/**
-	 * Director constructor.
-	 * @param Sidebar $sidebar
-	 */
-	public function __construct(Sidebar $sidebar) {
-		$this->sidebar = $sidebar;
-	}
+class Director
+	extends AbstractDirector {
 
 	/**
 	 * @inheritDoc

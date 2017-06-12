@@ -47,6 +47,8 @@ class Parser {
 	 * @return $this
 	 */
 	public function parseFile($fileName): Parser {
+		// @todo cache
+
 		if (!$this->filesystem->exists($fileName)) {
 			throw new Exception('Could not find sidebar file: %s.', $fileName);
 		}

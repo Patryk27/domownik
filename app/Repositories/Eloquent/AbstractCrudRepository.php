@@ -120,9 +120,24 @@ abstract class AbstractCrudRepository
 			$model->delete();
 		}
 
-		$this
-			->getFlushCache()
-			->flush();
+		$this->getFlushCache()
+			 ->flush();
+
+		return $this;
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public function persist(Model $model): CrudRepositoryContract {
+		if (get_class($model) !== get_class($this->model)) {
+			throw new RepositoryException('Repository was given a model of class \'%s\' which does not match its base model class \'%s\'.', get_class($model), get_class($this->model));
+		}
+
+		$model->save();
+
+		$this->getFlushCache()
+			 ->flush();
 
 		return $this;
 	}

@@ -3,6 +3,7 @@
 namespace App\Modules\Scaffolding\Module;
 
 use App\Modules\ScaffoldingContract\Module\Director as DirectorContract;
+use App\Modules\ScaffoldingContract\Module\ServiceProvider as ServiceProviderContract;
 use App\Modules\ScaffoldingContract\Module\Sidebar as SidebarContract;
 use App\Services\Module\Manager as ModuleManager;
 
@@ -17,9 +18,8 @@ abstract class Director
 	/**
 	 * @inheritdoc
 	 */
-	public function boot(): DirectorContract {
-		$resourcesDir = $this->getDirectory('Resources') . DIRECTORY_SEPARATOR;
-		$this->sidebar->loadFromFile($resourcesDir . 'sidebar.xml');
+	public function boot(ServiceProviderContract $serviceProvider): DirectorContract {
+		$this->sidebar = $serviceProvider->getSidebar();
 
 		return $this;
 	}

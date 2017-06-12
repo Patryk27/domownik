@@ -2,11 +2,12 @@
 
 namespace App\Modules\Finances\Module;
 
+use App\Modules\Scaffolding\Module\Director as AbstractDirector;
 use App\Modules\ScaffoldingContract\Module\Director as DirectorContract;
 use App\Modules\Finances\Repositories\Contracts\BudgetRepositoryContract;
 
 class Director
-	extends \App\Modules\Scaffolding\Module\Director {
+	extends AbstractDirector {
 
 	/**
 	 * @var BudgetRepositoryContract
@@ -15,11 +16,11 @@ class Director
 
 	/**
 	 * Director constructor.
-	 * @param Sidebar $sidebar
 	 * @param BudgetRepositoryContract $budgetRepository
 	 */
-	public function __construct(Sidebar $sidebar, BudgetRepositoryContract $budgetRepository) {
-		$this->sidebar = $sidebar;
+	public function __construct(
+		BudgetRepositoryContract $budgetRepository
+	) {
 		$this->budgetRepository = $budgetRepository;
 	}
 
@@ -30,6 +31,7 @@ class Director
 		parent::initialize();
 
 		$this->includeActiveBudgetsInSidebar();
+
 		return $this;
 	}
 
@@ -44,7 +46,7 @@ class Director
 	 * @return $this
 	 * @throws \App\Exceptions\Exception
 	 */
-	protected function includeActiveBudgetsInSidebar(): Director {
+	protected function includeActiveBudgetsInSidebar(): self {
 		$budgets = $this->budgetRepository->getActiveBudgets();
 
 		$item = $this->sidebar->getItemByName('budget.list');

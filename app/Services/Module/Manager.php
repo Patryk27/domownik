@@ -2,71 +2,169 @@
 
 namespace App\Services\Module;
 
-use App\Exceptions\BootException;
+
 use App\Models\Module;
 use App\Models\ModuleSetting;
-use App\Modules\ScaffoldingContract\Module\Director;
-use App\Modules\ScaffoldingContract\Module\ServiceProvider;
-use App\Support\Facades\Log;
 
+use App\Repositories\Contracts\ModuleRepositoryContract;
+use App\Repositories\Contracts\ModuleSettingRepositoryContract;
+use App\Support\Classes\MyLog;
+use Illuminate\Foundation\Application;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\View;
 
 class Manager {
 
 	/**
-	 * @var \Illuminate\Foundation\Application
+	 * @var Application
 	 */
 	protected $app;
 
 	/**
-	 * Contains all modules (except Scaffolding*) loaded from the \app\Modules directory.
-	 * Maps module name to module director instance.
-	 * @var Director[]
+	 * @var MyLog
 	 */
-	protected $presentModules;
+	protected $myLog;
 
 	/**
-	 * Contains only loaded modules, based on $allModules.
-	 * Maps module name to module directory instance.
-	 * @var Director[]
+	 * @var ModuleRepositoryContract
 	 */
-	protected $enabledModules;
+	protected $moduleRepository;
+
+	/**
+	 * @var ModuleSettingRepositoryContract
+	 */
+	protected $moduleSettingRepository;
+
+	/**
+	 * @var string[]
+	 */
+	protected $foundModuleNames;
+
+	/**
+	 * List of modules which should not be loaded.
+	 * @var string[]
+	 */
+	protected $modulesToSkip = [
+		'Installer',
+		'Scaffolding',
+		'ScaffoldingContract',
+	];
 
 	/**
 	 * Manager constructor.
-	 * @param \Illuminate\Foundation\Application $app
+	 * @param Application $app
+	 * @param MyLog $myLog
+	 * @param ModuleRepositoryContract $moduleRepository
+	 * @param ModuleSettingRepositoryContract $moduleSettingRepository
 	 */
-	public function __construct(\Illuminate\Foundation\Application $app) {
+	public function __construct(
+		Application $app,
+		MyLog $myLog,
+		ModuleRepositoryContract $moduleRepository,
+		ModuleSettingRepositoryContract $moduleSettingRepository
+	) {
 		$this->app = $app;
+		$this->myLog = $myLog;
+		$this->moduleRepository = $moduleRepository;
+		$this->moduleSettingRepository = $moduleSettingRepository;
 	}
 
 	/**
 	 * @return $this
-	 * @throws \App\Exceptions\BootException
 	 */
-	public function preloadModules() {
-		$this
-			->loadModules()
-			->enableModules();
+	public function scanModules(): self {
+		// @todo cache
+
+		$modulesDir = self::getModulesDirectory() . DIRECTORY_SEPARATOR;
+		$modulePaths = glob($modulesDir . '*');
+
+		foreach ($modulePaths as $modulePath) {
+			$moduleName =
+				Collection::make(explode(DIRECTORY_SEPARATOR, $modulePath))
+						  ->last();
+
+			$this->checkModule($moduleName);
+		}
 
 		return $this;
 	}
 
 	/**
-	 * Returns all modules that are present in the modules directory.
-	 * @return Director[]
+	 * @param string $moduleName
+	 * @return $this
 	 */
-	public function getPresentModules() {
-		return $this->presentModules;
+	protected function checkModule(string $moduleName): self {
+		if (in_array($moduleName, $this->modulesToSkip, true)) {
+			return $this;
+		}
+
+		$moduleId = $this->getModuleId($moduleName);
+
+		$isModuleEnabled = $this->getModuleSetting($moduleId, 'is-enabled', true);
+
+		if ($isModuleEnabled) {
+			$this->foundModuleNames[] = $moduleName;
+		}
+
+		return $this;
 	}
 
 	/**
-	 * Returns all modules that were enabled in the configuration.
-	 * @return Director[]
+	 * Returns id of given module.
+	 * If given module does not exist in the database, creates it.
+	 * @param string $moduleName
+	 * @return int
 	 */
-	public function getEnabledModules() {
-		return $this->enabledModules;
+	protected function getModuleId(string $moduleName) {
+		$module = $this->moduleRepository->getByName($moduleName);
+
+		if (empty($module)) {
+			$this->myLog->notice('Module with name=\'%s\' has not been found in the database - creating one.', $moduleName);
+
+			$module = new Module();
+			$module->name = $moduleName;
+			$module->save();
+
+			$this->moduleRepository->persist($module);
+
+			$this->myLog->notice('... created module id=%d.', $module->id);
+		}
+
+		return $module->id;
+	}
+
+	/**
+	 * Returns value of given module's configuration key.
+	 * Creates a default value if no value is set.
+	 * @param int $moduleId
+	 * @param string $settingKey
+	 * @param mixed $settingDefaultValue
+	 * @return mixed
+	 * @todo This method is reusable, which makes ModuleManager a rather weird place to place it into.
+	 */
+	protected function getModuleSetting(int $moduleId, string $settingKey, $settingDefaultValue) {
+		$settingValue = $this->moduleSettingRepository->getValueByKey($moduleId, $settingKey);
+
+		if (is_null($settingValue)) {
+			$this->myLog->notice('Module with id=%d does not have any value for setting=\'%s\', setting default one: \'%s\'.', $moduleId, $settingKey, json_encode($settingDefaultValue));
+
+			$moduleSetting = new ModuleSetting();
+			$moduleSetting->module_id = $moduleId;
+			$moduleSetting->key = $settingKey;
+			$moduleSetting->value = $settingDefaultValue;
+
+			$this->moduleSettingRepository->persist($moduleSetting);
+
+			$settingValue = $settingDefaultValue;
+		}
+
+		return $settingValue;
+	}
+
+	/**
+	 * @return string[]
+	 */
+	public function getFoundModuleNames() {
+		return $this->foundModuleNames;
 	}
 
 	/**
@@ -91,80 +189,6 @@ class Manager {
 		}
 
 		return $result;
-	}
-
-	/**
-	 * Loads every module present in the Modules directory.
-	 * @return $this
-	 */
-	protected function loadModules() {
-		// @todo cache
-
-		$this->presentModules = [];
-		$this->enabledModules = [];
-
-		$modulesDir = self::getModulesDirectory() . DIRECTORY_SEPARATOR;
-		$modulePaths = glob($modulesDir . '*');
-
-		foreach ($modulePaths as $modulePath) {
-			$moduleName = Collection::make(explode(DIRECTORY_SEPARATOR, $modulePath))
-									->last();
-
-			$moduleDirectorClassName = sprintf('\App\Modules\%s\Module\Director', $moduleName);
-			$moduleServiceProviderClassName = sprintf('\App\Modules\%s\Module\ServiceProvider', $moduleName);
-
-			// do not load the dummy base modules
-			if (in_array($moduleName, ['Scaffolding', 'ScaffoldingContract'], true)) {
-				continue;
-			}
-
-			/**
-			 * @var ServiceProvider $serviceProvider
-			 */
-			$serviceProvider = $this->app->make($moduleServiceProviderClassName);
-			$serviceProvider
-				->setModuleName($moduleName)
-				->boot();
-
-			$this->presentModules[$moduleName] = $this->app->make($moduleDirectorClassName);
-		}
-
-		return $this;
-	}
-
-	/**
-	 * @return $this
-	 * @throws BootException
-	 */
-	protected function enableModules() {
-		$enabledModules = Module::all()
-								->keyBy('name');
-
-		$this->enabledModules = [];
-
-		foreach ($this->presentModules as $moduleDirector) {
-			// if module is present in the database, check its configuration
-			if ($enabledModules->has($moduleDirector->getName())) {
-				$moduleId = $enabledModules->get($moduleDirector->getName())->id;
-
-				$isModuleEnabled = ModuleSetting::getSettingValue($moduleId, 'is-enabled');
-
-				if ($isModuleEnabled) {
-					$this->enabledModules[] = $moduleDirector;
-				}
-			} else {
-				$moduleModel = new Module();
-				$moduleModel->name = $moduleDirector->getName();
-				$moduleModel->saveOrFail();
-			}
-		}
-
-		if (empty($this->enabledModules)) {
-			throw new BootException('No modules are enabled.');
-		}
-
-		View::share('enabledModules', $this->enabledModules);
-		return $this;
 	}
 
 }

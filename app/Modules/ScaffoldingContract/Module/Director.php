@@ -9,11 +9,11 @@ interface Director {
 	 * This method is called for each enabled module.
 	 * @return $this
 	 */
-	public function boot(): Director;
+	public function boot(ServiceProvider $serviceProvider): Director;
 
 	/**
 	 * Initializes the module.
-	 * This method is called only for currently active module.
+	 * This method is called solely for currently active module.
 	 * @return $this
 	 */
 	public function initialize(): Director;

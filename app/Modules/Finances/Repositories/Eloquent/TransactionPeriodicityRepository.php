@@ -30,8 +30,6 @@ class TransactionPeriodicityRepository
 					return TransactionPeriodicityOneShot::find($periodicityId);
 			}
 		});
-
-		return $result;
 	}
 
 	/**

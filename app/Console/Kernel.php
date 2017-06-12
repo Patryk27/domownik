@@ -3,6 +3,7 @@
 namespace App\Console;
 
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use App\Services\Install\Manager as InstallManager;
 
 class Kernel
 	extends ConsoleKernel {
@@ -10,16 +11,28 @@ class Kernel
 	/**
 	 * @var array
 	 */
-	protected $commands = [
+	protected $commandsApplication = [
 		Commands\Finances\ProcessTransactionSchedule::class,
 		Commands\Localization\Update::class,
 	];
 
 	/**
-	 * @return void
+	 * @var array
 	 */
-	protected function commands() {
-		require base_path('routes/console.php');
+	protected $commandsInstaller = [
+	];
+
+	/**
+	 * @inheritdoc
+	 */
+	public function commands() {
+		$installManager = $this->app->make(InstallManager::class);
+
+		if ($installManager->isApplicationInstalled()) {
+			$this->commands = $this->commandsApplication;
+		} else {
+			$this->command = $this->commandsInstaller;
+		}
 	}
 
 }

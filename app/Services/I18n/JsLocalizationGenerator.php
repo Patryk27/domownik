@@ -77,11 +77,11 @@ class JsLocalizationGenerator {
 	protected function getModuleMessages() {
 		$result = [];
 
-		$moduleDirectors = $this->moduleManager->getPresentModules();
+		$this->moduleManager->scanModules();
 
-		foreach ($moduleDirectors as $moduleDirector) {
-			$moduleName = $moduleDirector->getName();
+		$moduleNames = $this->moduleManager->getFoundModuleNames();
 
+		foreach ($moduleNames as $moduleName) {
 			$rawModuleMessages = $this->localizationParser->parseModule($moduleName);
 			$result[$moduleName] = [];
 

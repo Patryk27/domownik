@@ -2,12 +2,10 @@
 
 namespace App\Providers;
 
-use App\Modules\ScaffoldingContract\Module\Director;
-use App\Support\Facades\Module;
+use App\Services\Install\Manager as InstallManager;
 
-use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
-use App\Services\Module\Manager as ModuleManager;
+use App\Services\Module\Initializer as ModuleInitializer;
 
 class ModuleServiceProvider
 	extends ServiceProvider {
@@ -16,34 +14,22 @@ class ModuleServiceProvider
 	 * @return void
 	 */
 	public function register() {
-		$this->app->singleton(ModuleManager::class, function($app) {
-			return new ModuleManager($app);
-		});
+
 	}
 
 	/**
-	 * @param ModuleManager $moduleManager
+	 * @param InstallManager $installManager
 	 * @return void
-	 * @throws \App\Exceptions\BootException
 	 */
-	public function boot(ModuleManager $moduleManager) {
-		$moduleManager->preloadModules();
-
-		// boot all the modules
-		foreach ($moduleManager->getEnabledModules() as $module) {
-			$module->boot();
+	public function boot(
+		InstallManager $installManager,
+		ModuleInitializer $moduleInitializer
+	) {
+		if ($installManager->isApplicationInstalled()) {
+			$moduleInitializer->initializeApplication();
+		} else {
+			$moduleInitializer->initializeInstaller();
 		}
-
-		// find and initialize active module
-		// @todo initialize actually active module (by path/middleware maybe?)
-		$activeModule = $moduleManager->getEnabledModules()[1];
-
-		$this->app->singleton(Director::class, $activeModule);
-
-		Module::setActiveModule($activeModule);
-		View::share('activeModule', $activeModule);
-
-		$activeModule->initialize();
 	}
 
 }
