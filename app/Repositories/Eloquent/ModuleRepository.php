@@ -3,23 +3,30 @@
 namespace App\Repositories\Eloquent;
 
 use App\Models\Module;
+use App\Repositories\Contracts\ModuleRepositoryContract;
+use App\Support\UsesCache;
 
 /**
  * @var Module $model
  */
 class ModuleRepository
 	extends AbstractCrudRepository
-	implements \App\Repositories\Contracts\ModuleRepositoryContract {
+	implements ModuleRepositoryContract {
+
+	use UsesCache;
 
 	/**
 	 * @inheritDoc
 	 */
 	public function getByName(string $moduleName) {
-		// @todo cache
+		$cacheKey = $this->getCacheKey(__FUNCTION__, func_get_args());
+		$cache = $this->getCache();
 
-		return
-			Module::where('name', $moduleName)
-				  ->first();
+		return $cache->rememberForever($cacheKey, function() use ($moduleName) {
+			return
+				Module::where('name', $moduleName)
+					  ->first();
+		});
 	}
 
 	/**

@@ -9,13 +9,13 @@ trait UsesCache {
 	/**
 	 * Returns cache key name of given function call.
 	 * Accepts any $methodArgs.
-	 * @param string $methodName
+	 * @param string $functionName
 	 * @param array $methodArgs
 	 * @return string
 	 */
-	protected function getCacheKey($methodName, array $methodArgs = []): string {
+	protected function getCacheKey($functionName, array $methodArgs = []): string {
 		$className = str_replace('\\', '.', get_class($this));
-		$cacheKey = sprintf('%s:%s', $className, $methodName);
+		$cacheKey = sprintf('%s:%s', $className, $functionName);
 
 		if (!empty($methodArgs)) {
 			$methodArgsString = implode(',', array_map(function($methodArg) {

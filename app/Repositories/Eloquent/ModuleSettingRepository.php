@@ -16,19 +16,22 @@ class ModuleSettingRepository
 	 * @inheritDoc
 	 */
 	public function getValueByKey(int $moduleId, string $key) {
-		// @todo cache
+		$cacheKey = $this->getCacheKey(__FUNCTION__, func_get_args());
+		$cache = $this->getCache();
 
-		$row =
-			ModuleSetting
-				::where('module_id', $moduleId)
-				->where('key', $key)
-				->first();
+		return $cache->rememberForever($cacheKey, function() use ($moduleId, $key) {
+			$row =
+				ModuleSetting
+					::where('module_id', $moduleId)
+					->where('key', $key)
+					->first();
 
-		if (empty($row)) {
-			return null;
-		}
+			if (empty($row)) {
+				return null;
+			}
 
-		return $row->value;
+			return $row->value;
+		});
 	}
 
 	/**

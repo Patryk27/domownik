@@ -2,17 +2,20 @@
 
 namespace App\Services\Module;
 
-
 use App\Models\Module;
 use App\Models\ModuleSetting;
 
 use App\Repositories\Contracts\ModuleRepositoryContract;
 use App\Repositories\Contracts\ModuleSettingRepositoryContract;
 use App\Support\Classes\MyLog;
+use App\Support\UsesCache;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Collection;
+use Illuminate\Cache\Repository as CacheRepository;
 
 class Manager {
+
+	use UsesCache;
 
 	/**
 	 * @var Application
@@ -23,6 +26,11 @@ class Manager {
 	 * @var MyLog
 	 */
 	protected $myLog;
+
+	/**
+	 * @var CacheRepository
+	 */
+	protected $cacheRepository;
 
 	/**
 	 * @var ModuleRepositoryContract
@@ -53,17 +61,20 @@ class Manager {
 	 * Manager constructor.
 	 * @param Application $app
 	 * @param MyLog $myLog
+	 * @param CacheRepository $cacheRepository
 	 * @param ModuleRepositoryContract $moduleRepository
 	 * @param ModuleSettingRepositoryContract $moduleSettingRepository
 	 */
 	public function __construct(
 		Application $app,
 		MyLog $myLog,
+		CacheRepository $cacheRepository,
 		ModuleRepositoryContract $moduleRepository,
 		ModuleSettingRepositoryContract $moduleSettingRepository
 	) {
 		$this->app = $app;
 		$this->myLog = $myLog;
+		$this->cacheRepository = $cacheRepository;
 		$this->moduleRepository = $moduleRepository;
 		$this->moduleSettingRepository = $moduleSettingRepository;
 	}
@@ -72,10 +83,7 @@ class Manager {
 	 * @return $this
 	 */
 	public function scanModules(): self {
-		// @todo cache
-
-		$modulesDir = self::getModulesDirectory() . DIRECTORY_SEPARATOR;
-		$modulePaths = glob($modulesDir . '*');
+		$modulePaths = $this->getModulePaths();
 
 		foreach ($modulePaths as $modulePath) {
 			$moduleName =
@@ -86,6 +94,18 @@ class Manager {
 		}
 
 		return $this;
+	}
+
+	/**
+	 * @return string[]
+	 */
+	protected function getModulePaths() {
+		$cacheKey = $this->getCacheKey(__FUNCTION__, func_get_args());
+
+		return $this->cacheRepository->rememberForever($cacheKey, function() {
+			$modulesDir = self::getModulesDirectory() . DIRECTORY_SEPARATOR;
+			return glob($modulesDir . '*');
+		});
 	}
 
 	/**
