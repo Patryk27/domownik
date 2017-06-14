@@ -1,13 +1,13 @@
 <?php
 
 return [
-    'default' => env('CACHE_DRIVER', 'redis'),
+	'default' => 'redis',
 
-    'stores' => [
+	'stores' => [
 		'redis' => [
 			'driver' => 'redis',
 		],
-    ],
+	],
 
-    'prefix' => 'dk',
+	'prefix' => 'dk',
 ];
