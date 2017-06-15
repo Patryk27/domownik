@@ -35,7 +35,10 @@ class Handler
 	 * @return \Illuminate\Http\Response
 	 */
 	public function render($request, Exception $exception) {
-		if (config('app.debug')) {
+		$exceptionClass = get_class($exception);
+		$canReport = !in_array($exceptionClass, $this->dontReport, true);
+
+		if (config('app.debug') && $canReport) {
 			return $this->renderExceptionWithWhoops($exception);
 		}
 
