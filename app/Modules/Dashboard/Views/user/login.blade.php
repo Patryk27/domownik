@@ -29,17 +29,13 @@
                 ->setAutofocus($isLoginSet)
          !!}
 
-        <div class="checkbox">
-            <label for="remember-me">
-                <input
-                        type="checkbox"
-                        id="remember-me"
-                        name="remember-me"
-                        value="1"
-                        placeholder=""/>
-                {{ __('Dashboard::views/user/login.remember-me.label') }}
-            </label>
-        </div>
+        {{-- Remember me --}}
+        {!!
+            Form::checkbox()
+                ->setIdAndName('remember-me')
+                ->setLabel(__('Dashboard::views/user/login.remember-me.label'))
+                ->setValue(1)
+         !!}
 
         <div>
             <button type="submit" class="btn btn-info">
