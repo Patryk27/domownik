@@ -26,7 +26,6 @@
                 ->setIdAndName('password')
                 ->setPlaceholder(__('Dashboard::views/user/login.password.placeholder'))
                 ->setLeftAddonIcon('fa fa-key')
-                ->setAutoValue(true)
                 ->setAutofocus($isLoginSet)
          !!}
 
