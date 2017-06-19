@@ -29,7 +29,6 @@ class TransactionPeriodicityMonthly
 	 * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
 	 */
 	public function transaction() {
-		// @todo cache
 		return $this->morphToMany(Transaction::class, 'transaction_periodicity');
 	}
 
