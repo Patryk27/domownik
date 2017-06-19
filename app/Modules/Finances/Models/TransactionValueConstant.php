@@ -28,7 +28,6 @@ class TransactionValueConstant
 	 * @return \Illuminate\Database\Eloquent\Relations\MorphOne
 	 */
 	public function transaction() {
-		// @todo cache
 		return $this->morphOne(Transaction::class, 'value');
 	}
 
