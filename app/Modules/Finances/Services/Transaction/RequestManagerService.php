@@ -159,7 +159,6 @@ class RequestManagerService
 		 */
 		$periodicityModels = [];
 
-		// @todo add missing transaction periodicities
 		switch ($this->transaction->periodicity_type) {
 			case Transaction::PERIODICITY_TYPE_ONE_SHOT:
 				$periodicityModels = $this->transaction->periodicityOneShots;
