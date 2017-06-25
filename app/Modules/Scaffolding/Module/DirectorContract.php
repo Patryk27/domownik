@@ -1,27 +1,27 @@
 <?php
 
-namespace App\Modules\ScaffoldingContract\Module;
+namespace App\Modules\Scaffolding\Module;
 
-interface Director {
+interface DirectorContract {
 
 	/**
 	 * Boots the module - all views, translations etc. are available here.
 	 * This method is called for each enabled module.
 	 * @return $this
 	 */
-	public function boot(ServiceProvider $serviceProvider): Director;
+	public function boot(ServiceProviderContract $serviceProvider): DirectorContract;
 
 	/**
 	 * Initializes the module.
 	 * This method is called solely for currently active module.
 	 * @return $this
 	 */
-	public function initialize(): Director;
+	public function initialize(): DirectorContract;
 
 	/**
 	 * Returns true if given director is current director.
 	 * Can be used for example to compare if looped director is the active director.
-	 * @param Director $moduleDirector
+	 * @param DirectorContract $moduleDirector
 	 * @return bool
 	 */
 	public function is($moduleDirector): bool;
@@ -41,8 +41,8 @@ interface Director {
 	public function getDirectory(string $path = ''): string;
 
 	/**
-	 * @return Sidebar
+	 * @return SidebarContract
 	 */
-	public function getSidebar(): Sidebar;
+	public function getSidebar(): SidebarContract;
 
 }

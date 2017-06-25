@@ -5,7 +5,7 @@ namespace App\Support\Classes;
 class Module {
 
 	/**
-	 * @var \App\Modules\ScaffoldingContract\Module\Director
+	 * @var \App\Modules\Scaffolding\Module\DirectorContract
 	 */
 	protected $activeModule;
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * @var \App\Modules\ScaffoldingContract\Module\Sidebar\Item $sidebarItem
+ * @var \App\ValueObjects\Sidebar\Item $sidebarItem
  */
 ?>
 @php ($panelId = 'sidebar-panel-' . str_replace('.', '-', $sidebarItem->getName()))

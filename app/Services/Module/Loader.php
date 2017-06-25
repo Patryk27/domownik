@@ -3,8 +3,8 @@
 namespace App\Services\Module;
 
 use App\Exceptions\ModuleLoaderException;
-use App\Modules\ScaffoldingContract\Module\Director as DirectorContract;
-use App\Modules\ScaffoldingContract\Module\ServiceProvider as ServiceProviderContract;
+use App\Modules\Scaffolding\Module\DirectorContract;
+use App\Modules\Scaffolding\Module\ServiceProviderContract;
 use Illuminate\Foundation\Application;
 
 class Loader {

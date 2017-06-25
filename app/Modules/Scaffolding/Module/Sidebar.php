@@ -3,7 +3,6 @@
 namespace App\Modules\Scaffolding\Module;
 
 use App\Exceptions\Exception;
-use App\Modules\ScaffoldingContract\Module\Sidebar as SidebarContract;
 use App\Services\Sidebar\Parser as SidebarParser;
 use App\ValueObjects\Sidebar\Item as SidebarItem;
 

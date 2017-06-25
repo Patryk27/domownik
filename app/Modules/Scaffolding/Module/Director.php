@@ -2,9 +2,6 @@
 
 namespace App\Modules\Scaffolding\Module;
 
-use App\Modules\ScaffoldingContract\Module\Director as DirectorContract;
-use App\Modules\ScaffoldingContract\Module\ServiceProvider as ServiceProviderContract;
-use App\Modules\ScaffoldingContract\Module\Sidebar as SidebarContract;
 use App\Services\Module\Manager as ModuleManager;
 
 abstract class Director

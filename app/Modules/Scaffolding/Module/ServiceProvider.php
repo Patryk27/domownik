@@ -2,8 +2,6 @@
 
 namespace App\Modules\Scaffolding\Module;
 
-use App\Modules\ScaffoldingContract\Module\ServiceProvider as ServiceProviderContract;
-use App\Modules\ScaffoldingContract\Module\Sidebar as SidebarContract;
 use App\Services\Module\Manager;
 use Illuminate\Contracts\Foundation\Application;
 

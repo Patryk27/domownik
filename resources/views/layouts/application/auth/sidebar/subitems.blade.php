@@ -1,6 +1,6 @@
 <?php
 /**
- * @var \App\Modules\ScaffoldingContract\Module\Sidebar\Item[] $sidebarItems
+ * @var \App\ValueObjects\Sidebar\Item[] $sidebarItems
  */
 ?>
 @if (!empty($sidebarItems))

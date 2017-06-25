@@ -4,7 +4,7 @@ namespace App\Modules\Dashboard\Module;
 
 use App\Models\User;
 use App\Modules\Scaffolding\Module\ServiceProvider as AbstractServiceProvider;
-use App\Modules\ScaffoldingContract\Module\ServiceProvider as ServiceProviderContract;
+use App\Modules\Scaffolding\Module\ServiceProviderContract;
 use App\Services\Breadcrumb\CustomPushHandlerContract;
 use App\ValueObjects\Breadcrumb;
 

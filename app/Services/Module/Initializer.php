@@ -3,7 +3,7 @@
 namespace App\Services\Module;
 
 use App\Exceptions\BootException;
-use App\Modules\ScaffoldingContract\Module\Director;
+use App\Modules\Scaffolding\Module\DirectorContract;
 use App\Services\Module\Loader as ModuleLoader;
 use App\Services\Module\Manager as ModuleManager;
 use App\Support\Facades\Module;
@@ -61,7 +61,7 @@ class Initializer {
 
 		$activeModule = $modules['Finances']; // @todo this index should not be hardcoded
 
-		$this->app->singleton(Director::class, $activeModule);
+		$this->app->singleton(DirectorContract::class, $activeModule);
 
 		Module::setActiveModule($activeModule); // @todo get rid of this facade
 		View::share('activeModule', $activeModule); // @todo change this variable's name

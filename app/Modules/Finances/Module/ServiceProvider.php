@@ -12,11 +12,10 @@ use App\Modules\Finances\Models\TransactionPeriodicityYearly;
 use App\Modules\Finances\Models\TransactionValueConstant;
 use App\Modules\Finances\Models\TransactionValueRange;
 use App\Modules\Scaffolding\Module\ServiceProvider as AbstractServiceProvider;
-use App\Modules\ScaffoldingContract\Module\ServiceProvider as ServiceProviderContract;
+use App\Modules\Scaffolding\Module\ServiceProviderContract;
 use App\Services\Breadcrumb\CustomPushHandlerContract;
 use App\ValueObjects\Breadcrumb;
 use Illuminate\Database\Eloquent\Relations\Relation;
-use Illuminate\Foundation\Application;
 
 class ServiceProvider
 	extends AbstractServiceProvider {

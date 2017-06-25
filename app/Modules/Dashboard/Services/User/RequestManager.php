@@ -2,7 +2,6 @@
 
 namespace App\Modules\Dashboard\Services\User;
 
-use App\Exceptions\UnimplementedException;
 use App\Models\User;
 use App\Modules\Dashboard\Http\Requests\User\StoreRequest as UserStoreRequest;
 use App\Repositories\Contracts\UserRepositoryContract;

@@ -54,7 +54,6 @@ class Manager {
 	protected $modulesToSkip = [
 		'Installer',
 		'Scaffolding',
-		'ScaffoldingContract',
 	];
 
 	/**

@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Modules\ScaffoldingContract\Module;
+namespace App\Modules\Scaffolding\Module;
 
 use App\Exceptions\Exception;
 use App\ValueObjects\Sidebar\Item as SidebarItem;
 
-interface Sidebar {
+interface SidebarContract {
 
 	/**
 	 * Returns all sidebar items.
