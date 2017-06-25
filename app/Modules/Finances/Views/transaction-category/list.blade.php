@@ -25,9 +25,6 @@
     <hr>
 
     <div>
-        <button id="saveTransactionCategoryTree" class="btn btn-success">
-            <i class="fa fa-save"></i>&nbsp;
-            {{ __('Finances::views/transaction-category/list.save') }}
-        </button>
+        @include('common.form.save-button')
     </div>
 @endsection

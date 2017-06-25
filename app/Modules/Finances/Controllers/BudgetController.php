@@ -69,6 +69,8 @@ class BudgetController
 	 * @return \Illuminate\Http\Response
 	 */
 	public function actionCreate() {
+		$this->breadcrumbManager->push(route('finances.budget.create'), __('Finances::breadcrumb.budget.create'));
+
 		return view('Finances::budget/create', [
 			'budgetTypes' => Budget::getTypes(),
 			'activeBudgets' => $this->budgetRepository->getActiveBudgets(),
@@ -81,7 +83,7 @@ class BudgetController
 	 */
 	public function actionStore(StoreRequest $request) {
 		return DB::transaction(function() use ($request) {
-			// @todo extract this to a Request class
+			// @todo extract this to a RequestManager class
 
 			// create budget
 			$budget = new Budget();

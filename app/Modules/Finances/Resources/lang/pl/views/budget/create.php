@@ -1,7 +1,7 @@
 <?php
 
 return [
-	'page.title' => 'Tworzenie budżetu',
+	'page.title' => 'Tworzenie nowego budżetu',
 
 	'budget-name' => [
 		'label' => 'Nazwa budżetu',
@@ -20,6 +20,4 @@ return [
 	'consolidated-budgets' => [
 		'label' => 'Budżety do wliczenia',
 	],
-
-	'save' => 'Zapisz',
 ];

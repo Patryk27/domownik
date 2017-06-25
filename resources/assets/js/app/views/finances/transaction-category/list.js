@@ -48,7 +48,7 @@ module.exports = (function() {
       },
     });
 
-    $('#saveTransactionCategoryTree').on('click', function() {
+    $('.form-save-button').on('click', function() {
       onSubmit();
     });
   }

@@ -10,5 +10,4 @@ return [
 	],
 
 	'waiting' => 'Proszę czekać...',
-	'save' => 'Zapisz',
 ];
