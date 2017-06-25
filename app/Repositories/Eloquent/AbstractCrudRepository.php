@@ -130,7 +130,7 @@ abstract class AbstractCrudRepository
 	 */
 	public function persist(Model $model): CrudRepositoryContract {
 		if (get_class($model) !== get_class($this->model)) {
-			throw new RepositoryException('Repository was given a model of class \'%s\' which does not match its base model class \'%s\'.', get_class($model), get_class($this->model));
+			throw new RepositoryException('persist() was given a model of class \'%s\' which does not match repository model class \'%s\'.', get_class($model), get_class($this->model));
 		}
 
 		$model->save();
