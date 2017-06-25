@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands\Finances;
 
-use App\Modules\Finances\Services\TransactionSchedule\ProcessorServiceContract;
+use App\Modules\Finances\Services\TransactionSchedule\ScheduleProcessorContract;
 use Illuminate\Console\Command;
 
 class ProcessTransactionSchedule
@@ -19,16 +19,15 @@ class ProcessTransactionSchedule
 	protected $description = 'Processes the transaction schedule, booking appropriate transactions (if any).';
 
 	/**
-	 * @var ProcessorServiceContract
+	 * @var ScheduleProcessorContract
 	 */
 	protected $transactionScheduleProcessorService;
 
 	/**
-	 * ProcessTransactionSchedule constructor.
-	 * @param ProcessorServiceContract $transactionScheduleProcessorService
+	 * @param ScheduleProcessorContract $transactionScheduleProcessorService
 	 */
 	public function __construct(
-		ProcessorServiceContract $transactionScheduleProcessorService
+		ScheduleProcessorContract $transactionScheduleProcessorService
 	) {
 		parent::__construct();
 		$this->transactionScheduleProcessorService = $transactionScheduleProcessorService;

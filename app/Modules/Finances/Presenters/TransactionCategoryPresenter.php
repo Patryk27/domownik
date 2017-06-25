@@ -15,7 +15,11 @@ class TransactionCategoryPresenter
 	protected $transactionCategoryRepository;
 
 	/**
-	 * TransactionCategoryPresenter constructor.
+	 * @var TransactionCategory
+	 */
+	protected $model;
+
+	/**
 	 * @param TransactionCategoryRepositoryContract $transactionCategoryRepository
 	 */
 	public function __construct(
@@ -23,11 +27,6 @@ class TransactionCategoryPresenter
 	) {
 		$this->transactionCategoryRepository = $transactionCategoryRepository;
 	}
-
-	/**
-	 * @var TransactionCategory
-	 */
-	protected $model;
 
 	/**
 	 * Returns category name with its path.

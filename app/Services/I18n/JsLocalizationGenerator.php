@@ -28,7 +28,6 @@ class JsLocalizationGenerator {
 	protected $localizationFileName;
 
 	/**
-	 * JsMessageGenerator constructor.
 	 * @param Filesystem $filesystem
 	 * @param ModuleManager $moduleManager
 	 * @param LocalizationParser $localizationParser

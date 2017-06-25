@@ -14,7 +14,6 @@ class Manager {
 	protected $settingsRepository;
 
 	/**
-	 * Manager constructor.
 	 * @param SettingRepositoryContract $settingsRepository
 	 */
 	public function __construct(SettingRepositoryContract $settingsRepository) {

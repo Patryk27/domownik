@@ -7,7 +7,7 @@ use App\ServiceContracts\BasicSearchContract;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 
-interface HistoryCollectorServiceContract
+interface HistoryCollectorContract
 	extends BasicSearchContract {
 
 	const
@@ -39,9 +39,9 @@ interface HistoryCollectorServiceContract
 
 	/**
 	 * @param string $parentType
-	 * @return HistoryCollectorServiceContract
+	 * @return HistoryCollectorContract
 	 */
-	public function setParentType(string $parentType): HistoryCollectorServiceContract;
+	public function setParentType(string $parentType): HistoryCollectorContract;
 
 	/**
 	 * @return int
@@ -50,9 +50,9 @@ interface HistoryCollectorServiceContract
 
 	/**
 	 * @param int $parentId
-	 * @return HistoryCollectorServiceContract
+	 * @return HistoryCollectorContract
 	 */
-	public function setParentId(int $parentId): HistoryCollectorServiceContract;
+	public function setParentId(int $parentId): HistoryCollectorContract;
 
 	/**
 	 * @return Carbon|null
@@ -61,9 +61,9 @@ interface HistoryCollectorServiceContract
 
 	/**
 	 * @param Carbon|null $dateBegin
-	 * @return HistoryCollectorServiceContract
+	 * @return HistoryCollectorContract
 	 */
-	public function setBeginDate($beginDate): HistoryCollectorServiceContract;
+	public function setBeginDate($beginDate): HistoryCollectorContract;
 
 	/**
 	 * @return Carbon|null
@@ -72,9 +72,9 @@ interface HistoryCollectorServiceContract
 
 	/**
 	 * @param Carbon|null $dateBegin
-	 * @return HistoryCollectorServiceContract
+	 * @return HistoryCollectorContract
 	 */
-	public function setEndDate($endDate): HistoryCollectorServiceContract;
+	public function setEndDate($endDate): HistoryCollectorContract;
 
 	/**
 	 * @return string
@@ -83,8 +83,8 @@ interface HistoryCollectorServiceContract
 
 	/**
 	 * @param string $sortDirection
-	 * @return HistoryCollectorServiceContract
+	 * @return HistoryCollectorContract
 	 */
-	public function setSortDirection(string $sortDirection): HistoryCollectorServiceContract;
+	public function setSortDirection(string $sortDirection): HistoryCollectorContract;
 
 }

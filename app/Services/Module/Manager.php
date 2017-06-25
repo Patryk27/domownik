@@ -58,7 +58,6 @@ class Manager {
 	];
 
 	/**
-	 * Manager constructor.
 	 * @param Application $app
 	 * @param MyLog $myLog
 	 * @param CacheRepository $cacheRepository

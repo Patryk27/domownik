@@ -2,13 +2,13 @@
 
 namespace App\Modules\Finances\Services\TransactionSchedule;
 
-interface UpdaterServiceContract {
+interface UpdaterContract {
 
 	/**
 	 * Rebuilds yearly schedule of given transaction.
 	 * @param int $transactionId
-	 * @return UpdaterServiceContract
+	 * @return UpdaterContract
 	 */
-	public function updateScheduleByTransactionId(int $transactionId): UpdaterServiceContract;
+	public function updateScheduleByTransactionId(int $transactionId): UpdaterContract;
 
 }

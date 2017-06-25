@@ -6,7 +6,6 @@ class Exception
 	extends \Exception {
 
 	/**
-	 * Exception constructor.
 	 * @param string $msg
 	 */
 	public function __construct($msg) {

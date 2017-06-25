@@ -15,8 +15,8 @@ use App\Support\Facades\MyLog;
 use Carbon\Carbon;
 use Illuminate\Database\Connection;
 
-class ProcessorService
-	implements ProcessorServiceContract {
+class ScheduleProcessor
+	implements ScheduleProcessorContract {
 
 	/**
 	 * @var Connection
@@ -39,7 +39,6 @@ class ProcessorService
 	protected $transactionPeriodicityRepository;
 
 	/**
-	 * ProcessorService constructor.
 	 * @param TransactionScheduleRepositoryContract $transactionScheduleRepository
 	 */
 	public function __construct(
@@ -57,7 +56,7 @@ class ProcessorService
 	/**
 	 * @inheritDoc
 	 */
-	public function processTransactionsSchedule(): ProcessorServiceContract {
+	public function processTransactionsSchedule(): ScheduleProcessorContract {
 		try {
 			// process transaction schedule
 			MyLog::info('Processing transaction schedule...');
@@ -88,7 +87,7 @@ class ProcessorService
 	/**
 	 * Processes a single scheduled transaction.
 	 * @param ScheduledTransaction $scheduledTransaction
-	 * @return $this|ProcessorService
+	 * @return $this|ScheduleProcessor
 	 */
 	protected function processScheduledTransaction(ScheduledTransaction $scheduledTransaction): self {
 		$stId = $scheduledTransaction->getId();

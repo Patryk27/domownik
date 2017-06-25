@@ -12,7 +12,6 @@ class Manager {
 	protected $databaseConnection;
 
 	/**
-	 * Manager constructor.
 	 * @param DatabaseConnection $databaseConnection
 	 */
 	public function __construct(

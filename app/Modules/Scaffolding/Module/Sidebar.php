@@ -21,7 +21,6 @@ class Sidebar
 	protected $mainItem;
 
 	/**
-	 * Sidebar constructor.
 	 * @param SidebarParser $sidebarParser
 	 */
 	public function __construct(

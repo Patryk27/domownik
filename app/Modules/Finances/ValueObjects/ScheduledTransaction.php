@@ -28,7 +28,6 @@ class ScheduledTransaction {
 	protected $date;
 
 	/**
-	 * ResultItem constructor.
 	 * @param int|null $id
 	 * @param Transaction $transaction
 	 * @param Carbon $date

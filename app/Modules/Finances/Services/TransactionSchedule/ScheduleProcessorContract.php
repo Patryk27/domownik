@@ -2,12 +2,12 @@
 
 namespace App\Modules\Finances\Services\TransactionSchedule;
 
-interface ProcessorServiceContract {
+interface ScheduleProcessorContract {
 
 	/**
 	 * Processes the transactions' schedules, booking appropriate transactions etc.
-	 * @return ProcessorServiceContract
+	 * @return ScheduleProcessorContract
 	 */
-	public function processTransactionsSchedule(): ProcessorServiceContract;
+	public function processTransactionsSchedule(): ScheduleProcessorContract;
 
 }

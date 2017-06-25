@@ -19,7 +19,7 @@ class Manager
 	protected $customPushHandlers;
 
 	/**
-	 * Manager constructor.
+	 * Constructor.
 	 */
 	public function __construct() {
 		$this->breadcrumbs = [];

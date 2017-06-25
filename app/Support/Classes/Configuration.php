@@ -12,7 +12,6 @@ class Configuration {
 	protected $configurationManager;
 
 	/**
-	 * Configuration constructor.
 	 * @param ConfigurationManager $configurationManager
 	 */
 	public function __construct(ConfigurationManager $configurationManager) {

@@ -72,12 +72,12 @@ class ServiceProvider
 	 * @return $this
 	 */
 	protected function bindServices(): self {
-		$this->app->bind(\App\Modules\Finances\Services\Transaction\HistoryCollectorServiceContract::class, \App\Modules\Finances\Services\Transaction\HistoryCollectorService::class);
-		$this->app->bind(\App\Modules\Finances\Services\Transaction\PeriodicityParserServiceContract::class, \App\Modules\Finances\Services\Transaction\PeriodicityParserService::class);
-		$this->app->bind(\App\Modules\Finances\Services\Transaction\RequestManagerServiceContract::class, \App\Modules\Finances\Services\Transaction\RequestManagerService::class);
-		$this->app->bind(\App\Modules\Finances\Services\TransactionCategory\RequestManagerServiceContract::class, \App\Modules\Finances\Services\TransactionCategory\RequestManagerService::class);
-		$this->app->bind(\App\Modules\Finances\Services\TransactionSchedule\ProcessorServiceContract::class, \App\Modules\Finances\Services\TransactionSchedule\ProcessorService::class);
-		$this->app->bind(\App\Modules\Finances\Services\TransactionSchedule\UpdaterServiceContract::class, \App\Modules\Finances\Services\TransactionSchedule\UpdaterService::class);
+		$this->app->bind(\App\Modules\Finances\Services\Transaction\HistoryCollectorContract::class, \App\Modules\Finances\Services\Transaction\HistoryCollector::class);
+		$this->app->bind(\App\Modules\Finances\Services\Transaction\PeriodicityParserContract::class, \App\Modules\Finances\Services\Transaction\PeriodicityParser::class);
+		$this->app->bind(\App\Modules\Finances\Services\Transaction\RequestManagerContract::class, \App\Modules\Finances\Services\Transaction\RequestManager::class);
+		$this->app->bind(\App\Modules\Finances\Services\TransactionCategory\RequestManagerContract::class, \App\Modules\Finances\Services\TransactionCategory\RequestManager::class);
+		$this->app->bind(\App\Modules\Finances\Services\TransactionSchedule\ScheduleProcessorContract::class, \App\Modules\Finances\Services\TransactionSchedule\ScheduleProcessor::class);
+		$this->app->bind(\App\Modules\Finances\Services\TransactionSchedule\UpdaterContract::class, \App\Modules\Finances\Services\TransactionSchedule\Updater::class);
 
 		return $this;
 	}

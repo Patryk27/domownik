@@ -33,7 +33,6 @@ class Parser {
 	protected $mainItem;
 
 	/**
-	 * Parser constructor.
 	 * @param Filesystem $filesystem
 	 */
 	public function __construct(

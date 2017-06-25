@@ -22,7 +22,6 @@ abstract class ServiceProvider
 	protected $sidebar;
 
 	/**
-	 * ServiceProvider constructor.
 	 * @param Application $app
 	 */
 	public function __construct(Application $app) {

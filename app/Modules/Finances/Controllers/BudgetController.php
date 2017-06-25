@@ -9,7 +9,7 @@ use App\Modules\Finances\Models\Budget;
 use App\Modules\Finances\Models\BudgetConsolidation;
 use App\Modules\Finances\Repositories\Contracts\BudgetRepositoryContract;
 use App\Modules\Finances\Repositories\Contracts\TransactionRepositoryContract;
-use App\Modules\Finances\Services\Transaction\HistoryCollectorServiceContract;
+use App\Modules\Finances\Services\Transaction\HistoryCollectorContract;
 use App\Services\Breadcrumb\Manager as BreadcrumbManager;
 use App\Support\Facades\Date;
 use Carbon\Carbon;
@@ -39,24 +39,23 @@ class BudgetController
 	protected $transactionScheduleRepository;
 
 	/**
-	 * @var HistoryCollectorServiceContract
+	 * @var HistoryCollectorContract
 	 */
 	protected $transactionHistoryCollectorService;
 
 	/**
-	 * BudgetController constructor.
 	 * @param BreadcrumbManager $breadcrumbManager
 	 * @param BudgetRepositoryContract $budgetRepository
 	 * @param TransactionRepositoryContract $budgetTransactionRepository
 	 * @param TransactionScheduleRepositoryContract $transactionScheduleRepository
-	 * @param HistoryCollectorServiceContract $historyCollectorService
+	 * @param HistoryCollectorContract $historyCollectorService
 	 */
 	public function __construct(
 		BreadcrumbManager $breadcrumbManager,
 		BudgetRepositoryContract $budgetRepository,
 		TransactionRepositoryContract $budgetTransactionRepository,
 		TransactionScheduleRepositoryContract $transactionScheduleRepository,
-		HistoryCollectorServiceContract $transactionHistoryCollectorService
+		HistoryCollectorContract $transactionHistoryCollectorService
 	) {
 		$this->breadcrumbManager = $breadcrumbManager;
 		$this->budgetRepository = $budgetRepository;

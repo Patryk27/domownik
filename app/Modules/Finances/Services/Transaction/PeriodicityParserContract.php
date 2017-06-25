@@ -13,12 +13,12 @@ use Illuminate\Support\Collection;
  * It requires setting the transaction's id and date range and returns a list of dates when selected transaction will be
  * accounted/booked/whatever.
  */
-interface PeriodicityParserServiceContract
+interface PeriodicityParserContract
 	extends BasicSearchContract {
 
 	/**
 	 * @param int $transactionId
-	 * @return PeriodicityParserServiceContract
+	 * @return PeriodicityParserContract
 	 */
 	public function setTransactionId(int $transactionId): self;
 
@@ -26,7 +26,7 @@ interface PeriodicityParserServiceContract
 	 * Sets the beginning date from which dates should be calculated.
 	 * @param Carbon $dateFrom
 	 * @param Carbon $dateTo
-	 * @return PeriodicityParserServiceContract
+	 * @return PeriodicityParserContract
 	 */
 	public function setDateRange(Carbon $dateFrom, Carbon $dateTo): self;
 

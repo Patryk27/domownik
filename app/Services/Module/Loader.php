@@ -15,7 +15,6 @@ class Loader {
 	protected $app;
 
 	/**
-	 * Loader constructor.
 	 * @param Application $app
 	 */
 	public function __construct(

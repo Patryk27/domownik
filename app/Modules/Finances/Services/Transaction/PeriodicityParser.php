@@ -18,8 +18,8 @@ use Carbon\Carbon;
 use Dotenv\Exception\ValidationException;
 use Illuminate\Support\Collection;
 
-class PeriodicityParserService
-	implements PeriodicityParserServiceContract {
+class PeriodicityParser
+	implements PeriodicityParserContract {
 
 	/**
 	 * @var Carbon
@@ -52,7 +52,6 @@ class PeriodicityParserService
 	protected $dateTo;
 
 	/**
-	 * PeriodicityParserService constructor.
 	 * @param Carbon $carbon
 	 * @param TransactionRepositoryContract $transactionRepository
 	 * @param TransactionPeriodicityRepositoryContract $transactionPeriodicityRepository
@@ -125,7 +124,7 @@ class PeriodicityParserService
 	/**
 	 * @inheritDoc
 	 */
-	public function setTransactionId(int $transactionId): PeriodicityParserServiceContract {
+	public function setTransactionId(int $transactionId): PeriodicityParserContract {
 		$this->transactionId = $transactionId;
 		return $this;
 	}
@@ -133,7 +132,7 @@ class PeriodicityParserService
 	/**
 	 * @inheritDoc
 	 */
-	public function setDateRange(Carbon $dateFrom, Carbon $dateTo): PeriodicityParserServiceContract {
+	public function setDateRange(Carbon $dateFrom, Carbon $dateTo): PeriodicityParserContract {
 		$this->dateFrom = $dateFrom;
 		$this->dateTo = $dateTo;
 		return $this;
@@ -143,7 +142,7 @@ class PeriodicityParserService
 	 * @return $this
 	 * @throws ValidateException
 	 */
-	protected function validate(): PeriodicityParserService {
+	protected function validate(): PeriodicityParser {
 		if (empty($this->transactionId)) {
 			throw new ValidateException('Transaction id has not been set.');
 		}

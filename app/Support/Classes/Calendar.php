@@ -25,7 +25,7 @@ class Calendar {
 	protected $weekdays;
 
 	/**
-	 * Calendar constructor.
+	 * Constructor.
 	 */
 	public function __construct() {
 		// @todo week days order should depend on selected user's calendar

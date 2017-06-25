@@ -10,8 +10,8 @@ use App\Modules\Finances\Repositories\Contracts\BudgetRepositoryContract;
 use App\Modules\Finances\Repositories\Contracts\TransactionCategoryRepositoryContract;
 use App\Modules\Finances\Repositories\Contracts\TransactionPeriodicityRepositoryContract;
 use App\Modules\Finances\Repositories\Contracts\TransactionRepositoryContract;
-use App\Modules\Finances\Services\Transaction\RequestManagerServiceContract;
-use App\Modules\Finances\Services\TransactionSchedule\UpdaterServiceContract;
+use App\Modules\Finances\Services\Transaction\RequestManagerContract;
+use App\Modules\Finances\Services\TransactionSchedule\UpdaterContract;
 use App\Services\Breadcrumb\Manager as BreadcrumbManager;
 use App\ServiceContracts\RequestManagerContract as BaseRequestManagerContract;
 
@@ -39,12 +39,12 @@ class TransactionController
 	protected $transactionCategoryRepository;
 
 	/**
-	 * @var RequestManagerServiceContract
+	 * @var RequestManagerContract
 	 */
 	protected $transactionRequestManagerService;
 
 	/**
-	 * @var UpdaterServiceContract
+	 * @var UpdaterContract
 	 */
 	protected $transactionScheduleUpdaterService;
 
@@ -54,13 +54,12 @@ class TransactionController
 	protected $budgetRepository;
 
 	/**
-	 * TransactionController constructor.
 	 * @param BreadcrumbManager $breadcrumbManager
 	 * @param TransactionRepositoryContract $transactionRepository
 	 * @param TransactionPeriodicityRepositoryContract $transactionPeriodicityRepository
 	 * @param TransactionCategoryRepositoryContract $transactionCategoryRepository
-	 * @param RequestManagerServiceContract $transactionRequestManagerService
-	 * @param UpdaterServiceContract $transactionScheduleUpdaterService
+	 * @param RequestManagerContract $transactionRequestManagerService
+	 * @param UpdaterContract $transactionScheduleUpdaterService
 	 * @param BudgetRepositoryContract $budgetRepository
 	 */
 	public function __construct(
@@ -68,8 +67,8 @@ class TransactionController
 		TransactionRepositoryContract $transactionRepository,
 		TransactionPeriodicityRepositoryContract $transactionPeriodicityRepository,
 		TransactionCategoryRepositoryContract $transactionCategoryRepository,
-		RequestManagerServiceContract $transactionRequestManagerService,
-		UpdaterServiceContract $transactionScheduleUpdaterService,
+		RequestManagerContract $transactionRequestManagerService,
+		UpdaterContract $transactionScheduleUpdaterService,
 		BudgetRepositoryContract $budgetRepository
 	) {
 		$this->breadcrumbManager = $breadcrumbManager;

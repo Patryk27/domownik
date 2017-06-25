@@ -36,7 +36,6 @@ abstract class AbstractCrudRepository
 	abstract protected function getModelName();
 
 	/**
-	 * AbstractCrudRepository constructor.
 	 * @param Application $application
 	 */
 	public function __construct(Application $application) {

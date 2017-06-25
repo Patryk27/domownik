@@ -95,10 +95,10 @@
                         ->setIdAndName('budget-history-group-mode')
                         ->setItems(function() {
                             $items = [
-                                \App\Modules\Finances\Services\Transaction\HistoryCollectorServiceContract::GROUP_MODE_DAILY,
-                                \App\Modules\Finances\Services\Transaction\HistoryCollectorServiceContract::GROUP_MODE_WEEKLY,
-                                \App\Modules\Finances\Services\Transaction\HistoryCollectorServiceContract::GROUP_MODE_MONTHLY,
-                                \App\Modules\Finances\Services\Transaction\HistoryCollectorServiceContract::GROUP_MODE_YEARLY,
+                                \App\Modules\Finances\Services\Transaction\HistoryCollectorContract::GROUP_MODE_DAILY,
+                                \App\Modules\Finances\Services\Transaction\HistoryCollectorContract::GROUP_MODE_WEEKLY,
+                                \App\Modules\Finances\Services\Transaction\HistoryCollectorContract::GROUP_MODE_MONTHLY,
+                                \App\Modules\Finances\Services\Transaction\HistoryCollectorContract::GROUP_MODE_YEARLY,
                             ];
 
                             $result = [];

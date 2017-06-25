@@ -12,7 +12,6 @@ class Controller {
 	protected $currentRoute;
 
 	/**
-	 * Controller constructor.
 	 * The route parameter is nullable because it is null when the application is called from Artisan.
 	 * Not-nulling it does not make errors but raises warnings and in order to avoid them, this parameter is nulled.
 	 * @param Route|null $currentRoute

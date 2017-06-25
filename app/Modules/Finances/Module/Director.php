@@ -15,7 +15,6 @@ class Director
 	protected $budgetRepository;
 
 	/**
-	 * Director constructor.
 	 * @param BudgetRepositoryContract $budgetRepository
 	 */
 	public function __construct(

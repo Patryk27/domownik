@@ -4,14 +4,14 @@ namespace App\Modules\Finances\Services\TransactionSchedule;
 
 use App\Modules\Finances\Models\TransactionSchedule;
 use App\Modules\Finances\Repositories\Contracts\TransactionScheduleRepositoryContract;
-use App\Modules\Finances\Services\Transaction\PeriodicityParserServiceContract;
+use App\Modules\Finances\Services\Transaction\PeriodicityParserContract;
 use App\Support\Facades\Date;
 use App\Support\Facades\MyLog;
 use Carbon\Carbon;
 use Illuminate\Database\Connection;
 
-class UpdaterService
-	implements UpdaterServiceContract {
+class Updater
+	implements UpdaterContract {
 
 	/**
 	 * @var Connection
@@ -24,20 +24,19 @@ class UpdaterService
 	protected $transactionScheduleRepository;
 
 	/**
-	 * @var PeriodicityParserServiceContract
+	 * @var PeriodicityParserContract
 	 */
 	protected $transactionPeriodicityParserService;
 
 	/**
-	 * UpdaterService constructor.
 	 * @param Connection $databaseConnection
 	 * @param TransactionScheduleRepositoryContract $transactionScheduleRepository
-	 * @param PeriodicityParserServiceContract $transactionPeriodicityParserService
+	 * @param PeriodicityParserContract $transactionPeriodicityParserService
 	 */
 	public function __construct(
 		Connection $databaseConnection,
 		TransactionScheduleRepositoryContract $transactionScheduleRepository,
-		PeriodicityParserServiceContract $transactionPeriodicityParserService
+		PeriodicityParserContract $transactionPeriodicityParserService
 	) {
 		$this->databaseConnection = $databaseConnection;
 		$this->transactionScheduleRepository = $transactionScheduleRepository;
@@ -47,7 +46,7 @@ class UpdaterService
 	/**
 	 * @inheritDoc
 	 */
-	public function updateScheduleByTransactionId(int $transactionId): UpdaterServiceContract {
+	public function updateScheduleByTransactionId(int $transactionId): UpdaterContract {
 		MyLog::info('Updating schedule for transaction with id=%d.', $transactionId);
 
 		$today = Carbon::today();

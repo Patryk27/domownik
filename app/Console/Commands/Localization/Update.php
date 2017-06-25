@@ -24,7 +24,6 @@ class Update
 	protected $jsMessageGenerator;
 
 	/**
-	 * Update constructor.
 	 * @param JsLocalizationGenerator $jsMessageGenerator
 	 */
 	public function __construct(

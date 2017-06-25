@@ -34,7 +34,6 @@ class RequestManager
 	protected $model;
 
 	/**
-	 * RequestManager constructor.
 	 * @param DatabaseConnection $databaseConnection
 	 * @param UserRepositoryContract $userRepository
 	 */

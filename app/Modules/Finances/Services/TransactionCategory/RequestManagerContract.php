@@ -4,12 +4,11 @@ namespace App\Modules\Finances\Services\TransactionCategory;
 
 use App\Modules\Finances\Http\Requests\TransactionCategory\StoreRequest;
 
-// @todo remove the 'service' from the interface name
-interface RequestManagerServiceContract {
+interface RequestManagerContract {
 
 	/**
 	 * @param StoreRequest $request
-	 * @return RequestManagerServiceContract
+	 * @return RequestManagerContract
 	 */
 	public function store(StoreRequest $request): self;
 

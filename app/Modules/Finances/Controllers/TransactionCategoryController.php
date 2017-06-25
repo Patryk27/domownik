@@ -8,7 +8,7 @@ use App\Modules\Finances\Http\Requests\TransactionCategory\StoreRequest;
 use App\Modules\Finances\Models\TransactionCategory;
 use App\Modules\Finances\Repositories\Contracts\TransactionCategoryRepositoryContract;
 use App\Modules\Finances\Repositories\Contracts\TransactionRepositoryContract;
-use App\Modules\Finances\Services\TransactionCategory\RequestManagerServiceContract;
+use App\Modules\Finances\Services\TransactionCategory\RequestManagerContract;
 use App\Services\Breadcrumb\Manager as BreadcrumbManager;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
@@ -32,19 +32,18 @@ class TransactionCategoryController
 	protected $transactionCategoryRepository;
 
 	/**
-	 * @var RequestManagerServiceContract
+	 * @var RequestManagerContract
 	 */
 	protected $transactionCategoryRequestManagerService;
 
 	/**
-	 * TransactionCategoryController constructor.
 	 * @param BreadcrumbManager $breadcrumbManager
 	 */
 	public function __construct(
 		BreadcrumbManager $breadcrumbManager,
 		TransactionRepositoryContract $transactionRepository,
 		TransactionCategoryRepositoryContract $transactionCategoryRepository,
-		RequestManagerServiceContract $requestManagerService
+		RequestManagerContract $requestManagerService
 	) {
 		$this->breadcrumbManager = $breadcrumbManager;
 		$this->transactionRepository = $transactionRepository;

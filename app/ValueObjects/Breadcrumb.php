@@ -15,7 +15,6 @@ class Breadcrumb {
 	protected $name;
 
 	/**
-	 * Breadcrumb constructor.
 	 * @param string $url
 	 * @param string $name
 	 */

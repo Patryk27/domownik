@@ -16,8 +16,8 @@ use Illuminate\Database\Connection as DatabaseConnection;
 use Illuminate\Support\Collection;
 use Illuminate\Cache\Repository as CacheRepository;
 
-class HistoryCollectorService
-	implements HistoryCollectorServiceContract {
+class HistoryCollector
+	implements HistoryCollectorContract {
 
 	use UsesCache;
 
@@ -67,7 +67,6 @@ class HistoryCollectorService
 	protected $rows;
 
 	/**
-	 * HistoryCollectorService constructor.
 	 * @param CacheRepository $cacheRepository
 	 * @param DatabaseConnection $databaseConnection
 	 * @param TransactionPeriodicityRepositoryContract $transactionPeriodicityRepository
@@ -189,7 +188,7 @@ class HistoryCollectorService
 	/**
 	 * @inheritDoc
 	 */
-	public function setParentType(string $parentType): HistoryCollectorServiceContract {
+	public function setParentType(string $parentType): HistoryCollectorContract {
 		$this->parentType = $parentType;
 		return $this;
 	}
@@ -204,7 +203,7 @@ class HistoryCollectorService
 	/**
 	 * @inheritDoc
 	 */
-	public function setParentId(int $parentId): HistoryCollectorServiceContract {
+	public function setParentId(int $parentId): HistoryCollectorContract {
 		$this->parentId = $parentId;
 		return $this;
 	}
@@ -219,7 +218,7 @@ class HistoryCollectorService
 	/**
 	 * @inheritDoc
 	 */
-	public function setBeginDate($beginDate): HistoryCollectorServiceContract {
+	public function setBeginDate($beginDate): HistoryCollectorContract {
 		$this->beginDate = Date::stripTime($beginDate);
 		return $this;
 	}
@@ -234,7 +233,7 @@ class HistoryCollectorService
 	/**
 	 * @inheritDoc
 	 */
-	public function setEndDate($endDate): HistoryCollectorServiceContract {
+	public function setEndDate($endDate): HistoryCollectorContract {
 		$this->endDate = Date::stripTime($endDate);
 		return $this;
 	}
@@ -249,7 +248,7 @@ class HistoryCollectorService
 	/**
 	 * @inheritDoc
 	 */
-	public function setSortDirection(string $sortDirection): HistoryCollectorServiceContract {
+	public function setSortDirection(string $sortDirection): HistoryCollectorContract {
 		$this->sortDirection = $sortDirection;
 		return $this;
 	}

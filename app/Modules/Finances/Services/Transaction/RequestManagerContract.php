@@ -7,7 +7,7 @@ use App\Modules\Finances\Http\Requests\Transaction\StoreRequest;
 use App\Modules\Finances\Models\Transaction;
 use App\ServiceContracts\RequestManagerContract as BaseRequestManagerContract;
 
-interface RequestManagerServiceContract
+interface RequestManagerContract
 	extends BaseRequestManagerContract {
 
 	/**
@@ -18,9 +18,9 @@ interface RequestManagerServiceContract
 
 	/**
 	 * @param int $transactionId
-	 * @return RequestManagerServiceContract
+	 * @return RequestManagerContract
 	 */
-	public function delete(int $transactionId): RequestManagerServiceContract;
+	public function delete(int $transactionId): RequestManagerContract;
 
 	/**
 	 * @return Transaction

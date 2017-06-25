@@ -12,7 +12,6 @@ class Breadcrumb {
 	protected $breadcrumbManager;
 
 	/**
-	 * Breadcrumb constructor.
 	 * @param BreadcrumbManager $breadcrumbManager
 	 */
 	public function __construct(

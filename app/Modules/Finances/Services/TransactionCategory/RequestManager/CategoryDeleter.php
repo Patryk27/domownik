@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Modules\Finances\Services\TransactionCategory\RequestManagerService;
+namespace App\Modules\Finances\Services\TransactionCategory\RequestManager;
 
 use App\Exceptions\Exception;
 use App\Modules\Finances\Models\TransactionCategory;
@@ -20,7 +20,6 @@ class CategoryDeleter {
 	protected $categories;
 
 	/**
-	 * RequestManagerService constructor.
 	 * @param TransactionCategoryRepositoryContract $transactionCategoryRepository
 	 */
 	public function __construct(

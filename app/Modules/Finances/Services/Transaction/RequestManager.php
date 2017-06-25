@@ -15,8 +15,8 @@ use Carbon\Carbon;
 use Illuminate\Database\Connection;
 use Illuminate\Database\Eloquent\Model;
 
-class RequestManagerService
-	implements RequestManagerServiceContract {
+class RequestManager
+	implements RequestManagerContract {
 
 	/**
 	 * @var Connection
@@ -44,7 +44,6 @@ class RequestManagerService
 	protected $beingCreated;
 
 	/**
-	 * CreateEditService constructor.
 	 * @param Connection $databaseConnection
 	 * @param TransactionRepositoryContract $transactionRepository
 	 */
@@ -94,7 +93,7 @@ class RequestManagerService
 	/**
 	 * @inheritDoc
 	 */
-	public function delete(int $transactionId): RequestManagerServiceContract {
+	public function delete(int $transactionId): RequestManagerContract {
 		MyLog::info('Deleting transaction: id=%d', $transactionId);
 
 		$this->transactionRepository->delete($transactionId);

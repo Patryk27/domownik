@@ -28,7 +28,6 @@ class Initializer {
 	protected $moduleManager;
 
 	/**
-	 * Initializer constructor.
 	 * @param ModuleLoader $moduleLoader
 	 * @param ModuleManager $moduleManager
 	 */

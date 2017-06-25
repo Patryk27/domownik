@@ -18,7 +18,6 @@ class LocalizationParser {
 	protected $messages;
 
 	/**
-	 * ModuleMessageParser constructor.
 	 * @param Filesystem $filesystem
 	 */
 	public function __construct(

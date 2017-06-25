@@ -31,7 +31,6 @@ class UserController
 	protected $userRequestManager;
 
 	/**
-	 * UserController constructor.
 	 * @param BreadcrumbManager $breadcrumbManager
 	 * @param UserRepositoryContract $userRepository
 	 * @param UserRequestManagerContract $userRequestManager
