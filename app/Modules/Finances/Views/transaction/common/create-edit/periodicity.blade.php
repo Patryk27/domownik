@@ -12,7 +12,7 @@
 {!!
     Form::select()
         ->setIdAndName('transactionPeriodicityType')
-        ->setLabel(__('Finances::views/transaction/create-edit.transaction-periodicity-type.label'))
+        ->setLabel(__('Finances::views/transaction/common/create-edit.transaction-periodicity-type.label'))
         ->setValueFromModel($transaction, 'periodicity_type')
         ->setRequired(true)
         ->setItems(function() use ($transactionPeriodicityTypes) {
@@ -33,7 +33,7 @@
     <hr>
 
     <h5>
-        {{ __('Finances::views/transaction/create-edit.transaction-periodicity.one-shot.title') }}
+        {{ __('Finances::views/transaction/common/create-edit.transaction-periodicity.one-shot.title') }}
     </h5>
 
     <div class="periodicity-wrapper">
@@ -48,7 +48,7 @@
     <hr>
 
     <h5>
-        {{ __('Finances::views/transaction/create-edit.transaction-periodicity.daily.title') }}
+        {{ __('Finances::views/transaction/common/create-edit.transaction-periodicity.daily.title') }}
     </h5>
 </div>
 
@@ -59,7 +59,7 @@
     <hr>
 
     <h5>
-        {{ __('Finances::views/transaction/create-edit.transaction-periodicity.weekly.title') }}
+        {{ __('Finances::views/transaction/common/create-edit.transaction-periodicity.weekly.title') }}
     </h5>
 
     <div class="form-group" data-control-name="transactionPeriodicityWeeklyDays">
@@ -85,7 +85,7 @@
     <hr>
 
     <h5>
-        {{ __('Finances::views/transaction/create-edit.transaction-periodicity.monthly.title') }}
+        {{ __('Finances::views/transaction/common/create-edit.transaction-periodicity.monthly.title') }}
     </h5>
 
     <div class="form-group" data-control-name="transactionPeriodicityMonthlyDays">
@@ -113,7 +113,7 @@
     </div>
 
     <h5 class="text-muted">
-        {{ __('Finances::views/transaction/create-edit.transaction-periodicity.monthly.warning') }}
+        {{ __('Finances::views/transaction/common/create-edit.transaction-periodicity.monthly.warning') }}
     </h5>
 </div>
 
@@ -124,7 +124,7 @@
     <hr>
 
     <h5>
-        {{ __('Finances::views/transaction/create-edit.transaction-periodicity.yearly.title') }}
+        {{ __('Finances::views/transaction/common/create-edit.transaction-periodicity.yearly.title') }}
     </h5>
 
     <div class="periodicity-wrapper">

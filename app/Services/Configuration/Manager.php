@@ -77,6 +77,11 @@ class Manager {
 	 */
 	public function getDefaultValue($key) {
 		// @todo
+
+		if ($key === 'language') {
+			return 'pl';
+		}
+
 		return 'asdf';
 	}
 

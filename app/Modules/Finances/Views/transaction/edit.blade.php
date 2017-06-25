@@ -4,7 +4,7 @@
      */
 @endphp
 
-@extends('Finances::transaction.create-edit.page')
+@extends('layouts.application.auth')
 
 @section('title')
     {{ __('Finances::views/transaction/edit.page.title', [
@@ -12,10 +12,9 @@
     ]) }}
 @endsection
 
-@section('transaction-create-edit-form-partial')
-    {!!
-        Form::hiddenInput()
-            ->setIdAndName('transactionId')
-            ->setValue($transaction->id)
-     !!}
+@section('content')
+    @include('Finances::transaction.common.create-edit', [
+        'budget' => null,
+        'transaction' => $transaction,
+    ])
 @endsection

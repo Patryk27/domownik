@@ -30,7 +30,7 @@
 {!!
     Form::select()
         ->setIdAndName('transactionValueType')
-        ->setLabel(__('Finances::views/transaction/create-edit.transaction-value-type.label'))
+        ->setLabel(__('Finances::views/transaction/common/create-edit.transaction-value-type.label'))
         ->setValueFromModel($transaction, 'value_type')
         ->setRequired(true)
         ->setItems(function() use ($transactionValueTypes) {
@@ -50,8 +50,8 @@
     {!!
         Form::textInput()
             ->setIdAndName('transactionValueConstantValue')
-            ->setLabel(__('Finances::views/transaction/create-edit.transaction-value-constant.label'))
-            ->setPlaceholder(__('Finances::views/transaction/create-edit.transaction-value-constant.placeholder'))
+            ->setLabel(__('Finances::views/transaction/common/create-edit.transaction-value-constant.label'))
+            ->setPlaceholder(__('Finances::views/transaction/common/create-edit.transaction-value-constant.placeholder'))
             ->setLeftAddonIcon('fa fa-money')
             ->setValue($transactionValueConstantValue)
      !!}
@@ -65,8 +65,8 @@
             {!!
                 Form::textInput()
                     ->setIdAndName('transactionValueRangeFrom')
-                    ->setLabel(__('Finances::views/transaction/create-edit.transaction-value-range-from.label'))
-                    ->setPlaceholder(__('Finances::views/transaction/create-edit.transaction-value-range-from.placeholder'))
+                    ->setLabel(__('Finances::views/transaction/common/create-edit.transaction-value-range-from.label'))
+                    ->setPlaceholder(__('Finances::views/transaction/common/create-edit.transaction-value-range-from.placeholder'))
                     ->setLeftAddonIcon('fa fa-money')
                     ->setValue($transactionValueRangeFrom)
              !!}
@@ -76,8 +76,8 @@
             {!!
                 Form::textInput()
                     ->setIdAndName('transactionValueRangeTo')
-                    ->setLabel(__('Finances::views/transaction/create-edit.transaction-value-range-to.label'))
-                    ->setPlaceholder(__('Finances::views/transaction/create-edit.transaction-value-range-to.placeholder'))
+                    ->setLabel(__('Finances::views/transaction/common/create-edit.transaction-value-range-to.label'))
+                    ->setPlaceholder(__('Finances::views/transaction/common/create-edit.transaction-value-range-to.placeholder'))
                     ->setLeftAddonIcon('fa fa-money')
                     ->setValue($transactionValueRangeTo)
              !!}

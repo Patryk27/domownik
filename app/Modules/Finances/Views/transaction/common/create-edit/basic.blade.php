@@ -9,8 +9,8 @@
 {!!
     Form::textInput()
         ->setIdAndName('transactionName')
-        ->setLabel(__('Finances::views/transaction/create-edit.transaction-name.label'))
-        ->setPlaceholder( __('Finances::views/transaction/create-edit.transaction-name.placeholder'))
+        ->setLabel(__('Finances::views/transaction/common/create-edit.transaction-name.label'))
+        ->setPlaceholder( __('Finances::views/transaction/common/create-edit.transaction-name.placeholder'))
         ->setValueFromModel($transaction, 'name')
         ->setRequired(true)
         ->setAutofocus(true)
@@ -20,11 +20,11 @@
 {!!
     Form::select()
         ->setIdAndName('transactionCategoryId')
-        ->setLabel(__('Finances::views/transaction/create-edit.transaction-category.label'))
+        ->setLabel(__('Finances::views/transaction/common/create-edit.transaction-category.label'))
         ->setValueFromModel($transaction, 'category_id')
         ->setItems(function() use ($categories) {
             $result = [
-                null => __('Finances::views/transaction/create-edit.transaction-category.empty-option'),
+                null => __('Finances::views/transaction/common/create-edit.transaction-category.empty-option'),
             ];
 
             foreach ($categories as $category) {
@@ -45,8 +45,8 @@
 {!!
     Form::textarea()
         ->setIdAndName('transactionDescription')
-        ->setLabel(__('Finances::views/transaction/create-edit.transaction-description.label'))
-        ->setPlaceholder(__('Finances::views/transaction/create-edit.transaction-description.placeholder'))
+        ->setLabel(__('Finances::views/transaction/common/create-edit.transaction-description.label'))
+        ->setPlaceholder(__('Finances::views/transaction/common/create-edit.transaction-description.placeholder'))
         ->setValueFromModel($transaction, 'description')
 !!}
 
@@ -54,7 +54,7 @@
 {!!
     Form::select()
         ->setIdAndName('transactionType')
-        ->setLabel(__('Finances::views/transaction/create-edit.transaction-type.label'))
+        ->setLabel(__('Finances::views/transaction/common/create-edit.transaction-type.label'))
         ->setValueFromModel($transaction, 'type')
         ->setRequired(true)
         ->setItems(function() {
