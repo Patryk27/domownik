@@ -36,7 +36,7 @@ class RequestManagerService
 	/**
 	 * @var Transaction
 	 */
-	protected $transaction;
+	protected $model;
 
 	/**
 	 * @var bool
@@ -59,14 +59,14 @@ class RequestManagerService
 	/**
 	 * @inheritDoc
 	 */
-	public function store(StoreRequest $request): RequestManagerServiceContract {
+	public function store($request): string {
 		$this->request = $request;
 		$this->beingCreated = !$request->has('transactionId');
 
 		if ($this->beingCreated) {
-			MyLog::info('Storing new transaction: %s', $request);
+			MyLog::info('Creating new transaction: %s', $request);
 		} else {
-			MyLog::info('Updating existing transaction #%d: %s', $this->request->get('transactionId'), $request);
+			MyLog::info('Updating transaction with id=%d: %s', $this->request->get('transactionId'), $request);
 		}
 
 		$this->databaseConnection->transaction(function() {
@@ -81,14 +81,14 @@ class RequestManagerService
 				->persistTransactionValue()
 				->persistTransactionPeriodicity();
 
-			$this->transaction->saveOrFail();
+			$this->model->saveOrFail();
 
 			$this->transactionRepository
 				->getFlushCache()
 				->flush();
 		});
 
-		return $this;
+		return $this->beingCreated ? self::STORE_RESULT_CREATED : self::STORE_RESULT_UPDATED;
 	}
 
 	/**
@@ -113,24 +113,17 @@ class RequestManagerService
 	/**
 	 * @inheritDoc
 	 */
-	public function getTransaction(): Transaction {
-		return $this->transaction;
-	}
-
-	/**
-	 * @inheritDoc
-	 */
-	public function isNew(): bool {
-		return $this->beingCreated;
+	public function getModel(): Transaction {
+		return $this->model;
 	}
 
 	/**
 	 * @return $this
 	 */
 	protected function createTransaction() {
-		$this->transaction = new Transaction();
-		$this->transaction->parent_id = $this->request->get('transactionParentId');
-		$this->transaction->parent_type = $this->request->get('transactionParentType');
+		$this->model = new Transaction();
+		$this->model->parent_id = $this->request->get('transactionParentId');
+		$this->model->parent_type = $this->request->get('transactionParentType');
 
 		return $this;
 	}
@@ -141,7 +134,7 @@ class RequestManagerService
 	 */
 	protected function loadTransaction() {
 		$transactionId = $this->request->get('transactionId');
-		$this->transaction = $this->transactionRepository->getOrFail($transactionId);
+		$this->model = $this->transactionRepository->getOrFail($transactionId);
 
 		/**
 		 * Right below we're basically pruning the transaction of all its data,
@@ -152,32 +145,32 @@ class RequestManagerService
 		 * not matter anywhere.
 		 */
 
-		$this->transaction->value->delete();
+		$this->model->value->delete();
 
 		/**
 		 * @var Model[] $periodicityModels
 		 */
 		$periodicityModels = [];
 
-		switch ($this->transaction->periodicity_type) {
+		switch ($this->model->periodicity_type) {
 			case Transaction::PERIODICITY_TYPE_ONE_SHOT:
-				$periodicityModels = $this->transaction->periodicityOneShots;
+				$periodicityModels = $this->model->periodicityOneShots;
 				break;
 
 			case Transaction::PERIODICITY_TYPE_DAILY:
-				$periodicityModels = $this->transaction->periodicityDailes;
+				$periodicityModels = $this->model->periodicityDailes;
 				break;
 
 			case Transaction::PERIODICITY_TYPE_WEEKLY:
-				$periodicityModels = $this->transaction->periodicityWeeklies;
+				$periodicityModels = $this->model->periodicityWeeklies;
 				break;
 
 			case Transaction::PERIODICITY_TYPE_MONTHLY:
-				$periodicityModels = $this->transaction->periodicityMonthlies;
+				$periodicityModels = $this->model->periodicityMonthlies;
 				break;
 
 			case Transaction::PERIODICITY_TYPE_YEARLY:
-				$periodicityModels = $this->transaction->periodicityYearlies;
+				$periodicityModels = $this->model->periodicityYearlies;
 				break;
 		}
 
@@ -186,7 +179,6 @@ class RequestManagerService
 			 * This is possibly the slowest but also the most readable solution.
 			 * Thank god I'm not writing an RTOS.
 			 */
-
 			foreach ($periodicityModels as $periodicityModel) {
 				$periodicityModel->delete();
 			}
@@ -199,12 +191,12 @@ class RequestManagerService
 	 * @return $this
 	 */
 	protected function persistTransactionMeta() {
-		$this->transaction->type = $this->request->get('transactionType');
-		$this->transaction->name = $this->request->get('transactionName');
-		$this->transaction->category_id = $this->request->get('transactionCategoryId');
-		$this->transaction->description = $this->request->get('transactionDescription');
-		$this->transaction->value_type = $this->request->get('transactionValueType');
-		$this->transaction->periodicity_type = $this->request->get('transactionPeriodicityType');
+		$this->model->type = $this->request->get('transactionType');
+		$this->model->name = $this->request->get('transactionName');
+		$this->model->category_id = $this->request->get('transactionCategoryId');
+		$this->model->description = $this->request->get('transactionDescription');
+		$this->model->value_type = $this->request->get('transactionValueType');
+		$this->model->periodicity_type = $this->request->get('transactionPeriodicityType');
 
 		return $this;
 	}
@@ -222,7 +214,7 @@ class RequestManagerService
 
 				$transactionValue
 					->transaction()
-					->save($this->transaction);
+					->save($this->model);
 
 				break;
 
@@ -234,7 +226,7 @@ class RequestManagerService
 
 				$transactionValue
 					->transaction()
-					->save($this->transaction);
+					->save($this->model);
 
 				break;
 
@@ -250,12 +242,12 @@ class RequestManagerService
 	 * @throws InvalidRequestException
 	 */
 	protected function persistTransactionPeriodicity() {
-		$this->transaction->periodicity_type = $this->request->get('transactionPeriodicityType');
+		$this->model->periodicity_type = $this->request->get('transactionPeriodicityType');
 
-		switch ($this->transaction->periodicity_type) {
+		switch ($this->model->periodicity_type) {
 			case Transaction::PERIODICITY_TYPE_ONE_SHOT:
 				foreach ($this->request->get('calendarDates') as $calendarDate) {
-					$this->transaction
+					$this->model
 						->periodicityOneShots()
 						->create([
 							'date' => $calendarDate,
@@ -270,7 +262,7 @@ class RequestManagerService
 
 			case Transaction::PERIODICITY_TYPE_WEEKLY:
 				foreach ($this->request->get('transactionPeriodicityWeeklyDays') as $weekDayNumber) {
-					$this->transaction
+					$this->model
 						->periodicityWeeklies()
 						->create([
 							'weekday_number' => $weekDayNumber,
@@ -281,7 +273,7 @@ class RequestManagerService
 
 			case Transaction::PERIODICITY_TYPE_MONTHLY:
 				foreach ($this->request->get('transactionPeriodicityMonthlyDays') as $dayNumber) {
-					$this->transaction
+					$this->model
 						->periodicityMonthlies()
 						->create([
 							'day_number' => $dayNumber,
@@ -294,7 +286,7 @@ class RequestManagerService
 				foreach ($this->request->get('calendarDates') as $calendarDate) {
 					$date = new Carbon($calendarDate);
 
-					$this->transaction
+					$this->model
 						->periodicityYearlies()
 						->create([
 							'month' => $date->month,
@@ -305,7 +297,7 @@ class RequestManagerService
 				break;
 
 			default:
-				throw new InvalidRequestException('Unexpected transaction periodicity type: %s.', $this->transaction->periodicity_type);
+				throw new InvalidRequestException('Unexpected transaction periodicity type: %s.', $this->model->periodicity_type);
 		}
 
 		return $this;

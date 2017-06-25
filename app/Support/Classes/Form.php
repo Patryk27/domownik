@@ -26,13 +26,6 @@ class Form {
 	}
 
 	/**
-	 * @return Form\Controls\RequiredFields
-	 */
-	public function requiredFields() {
-		return new Form\Controls\RequiredFields();
-	}
-
-	/**
 	 * @return Form\Controls\Select
 	 */
 	public function select() {

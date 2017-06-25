@@ -5,34 +5,26 @@ namespace App\Modules\Finances\Services\Transaction;
 use App\Modules\Finances\Http\Requests\Transaction\StoreRequest;
 
 use App\Modules\Finances\Models\Transaction;
+use App\ServiceContracts\RequestManagerContract as BaseRequestManagerContract;
 
-interface RequestManagerServiceContract {
+interface RequestManagerServiceContract
+	extends BaseRequestManagerContract {
 
 	/**
-	 * Stores given transaction.
-	 * @param StoreRequest $createEditRequest
-	 * @return RequestManagerServiceContract
+	 * @param StoreRequest $request
+	 * @return string
 	 */
-	public function store(StoreRequest $request): RequestManagerServiceContract;
+	public function store($request): string;
 
 	/**
-	 * Deletes given transaction.
 	 * @param int $transactionId
 	 * @return RequestManagerServiceContract
-	 * @todo DeleteRequest $request
 	 */
 	public function delete(int $transactionId): RequestManagerServiceContract;
 
 	/**
-	 * Returns created/modified transaction model.
 	 * @return Transaction
 	 */
-	public function getTransaction(): Transaction;
-
-	/**
-	 * Returns `true` if transaction is being created and `false` if it's updated.
-	 * @return bool
-	 */
-	public function isNew(): bool;
+	public function getModel(): Transaction;
 
 }

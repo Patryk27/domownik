@@ -110,7 +110,7 @@ class RequestManager
 	 * @return RequestManager
 	 */
 	protected function insert(): self {
-		MyLog::info('Storing new user: %s', $this->request);
+		MyLog::info('Creating new user: %s', $this->request);
 
 		$user = new User();
 		$user->login = $this->request->get('userLogin');

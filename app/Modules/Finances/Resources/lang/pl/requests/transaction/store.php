@@ -10,7 +10,7 @@ return [
 	],
 
 	'messages' => [
-		'create-success' => 'Transakcja została pomyślnie utworzona.',
-		'edit-success' => 'Transakcja została pomyślnie uaktualniona.',
+		'create-success' => 'Transakcja została utworzona.',
+		'update-success' => 'Transakcja została zaktualizowana.',
 	],
 ];

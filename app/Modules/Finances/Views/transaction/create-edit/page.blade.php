@@ -66,24 +66,16 @@
         <hr>
 
         <div>
-            <button type="submit" class="btn btn-success">
-                <i class="fa fa-save"></i>&nbsp;
-                {{ __('Finances::views/transaction/create-edit.save') }}
-            </button>
+            @include('common.form.save-button')
 
             @isset($transaction)
-                <div class="pull-right">
-                    <button id="btnDeleteTransaction"
-                            type="button"
-                            class="btn btn-warning"
-                            data-transaction-id="{{ $transaction->id }}">
-                        <i class="fa fa-trash-o"></i>&nbsp;
-                        {{ __('Finances::views/transaction/create-edit.delete') }}
-                    </button>
-                </div>
+                @include('common.form.delete-button', [
+                    'route' => route('finances.transaction.delete', $transaction->id),
+                    'confirmationMessage' => __('Finances::views/transaction/common/create-edit.delete-confirmation-message'),
+                ])
             @endisset
 
-            {!! Form::requiredFields() !!}
+            @include('common.form.required-fields')
         </div>
 
     </form>

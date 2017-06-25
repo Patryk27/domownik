@@ -59,25 +59,11 @@ class ServiceProvider
 	 * @return $this
 	 */
 	protected function bindRepositories(): self {
-		$this->app->bind(\App\Modules\Finances\Repositories\Contracts\BudgetRepositoryContract::class, function(Application $app) {
-			return $app->make(\App\Modules\Finances\Repositories\Eloquent\BudgetRepository::class);
-		});
-
-		$this->app->bind(\App\Modules\Finances\Repositories\Contracts\TransactionCategoryRepositoryContract::class, function(Application $app) {
-			return $app->make(\App\Modules\Finances\Repositories\Eloquent\TransactionCategoryRepository::class);
-		});
-
-		$this->app->bind(\App\Modules\Finances\Repositories\Contracts\TransactionRepositoryContract::class, function(Application $app) {
-			return $app->make(\App\Modules\Finances\Repositories\Eloquent\TransactionRepository::class);
-		});
-
-		$this->app->bind(\App\Modules\Finances\Repositories\Contracts\TransactionPeriodicityRepositoryContract::class, function(Application $app) {
-			return $app->make(\App\Modules\Finances\Repositories\Eloquent\TransactionPeriodicityRepository::class);
-		});
-
-		$this->app->bind(\App\Modules\Finances\Repositories\Contracts\TransactionScheduleRepositoryContract::class, function(Application $app) {
-			return $app->make(\App\Modules\Finances\Repositories\Eloquent\TransactionScheduleRepository::class);
-		});
+		$this->app->bind(\App\Modules\Finances\Repositories\Contracts\BudgetRepositoryContract::class, \App\Modules\Finances\Repositories\Eloquent\BudgetRepository::class);
+		$this->app->bind(\App\Modules\Finances\Repositories\Contracts\TransactionCategoryRepositoryContract::class, \App\Modules\Finances\Repositories\Eloquent\TransactionCategoryRepository::class);
+		$this->app->bind(\App\Modules\Finances\Repositories\Contracts\TransactionRepositoryContract::class, \App\Modules\Finances\Repositories\Eloquent\TransactionRepository::class);
+		$this->app->bind(\App\Modules\Finances\Repositories\Contracts\TransactionPeriodicityRepositoryContract::class, \App\Modules\Finances\Repositories\Eloquent\TransactionPeriodicityRepository::class);
+		$this->app->bind(\App\Modules\Finances\Repositories\Contracts\TransactionScheduleRepositoryContract::class, \App\Modules\Finances\Repositories\Eloquent\TransactionScheduleRepository::class);
 
 		return $this;
 	}
@@ -86,38 +72,12 @@ class ServiceProvider
 	 * @return $this
 	 */
 	protected function bindServices(): self {
-		/**
-		 * Services/Transaction/
-		 */
-		$this->app->bind(\App\Modules\Finances\Services\Transaction\HistoryCollectorServiceContract::class, function(Application $app) {
-			return $app->make(\App\Modules\Finances\Services\Transaction\HistoryCollectorService::class);
-		});
-
-		$this->app->bind(\App\Modules\Finances\Services\Transaction\PeriodicityParserServiceContract::class, function(Application $app) {
-			return $app->make(\App\Modules\Finances\Services\Transaction\PeriodicityParserService::class);
-		});
-
-		$this->app->bind(\App\Modules\Finances\Services\Transaction\RequestManagerServiceContract::class, function(Application $app) {
-			return $app->make(\App\Modules\Finances\Services\Transaction\RequestManagerService::class);
-		});
-
-		/**
-		 * Services/TransactionCategory/
-		 */
-		$this->app->bind(\App\Modules\Finances\Services\TransactionCategory\RequestManagerServiceContract::class, function(Application $app) {
-			return $app->make(\App\Modules\Finances\Services\TransactionCategory\RequestManagerService::class);
-		});
-
-		/**
-		 * Services/TransactionSchedule/
-		 */
-		$this->app->bind(\App\Modules\Finances\Services\TransactionSchedule\ProcessorServiceContract::class, function(Application $app) {
-			return $app->make(\App\Modules\Finances\Services\TransactionSchedule\ProcessorService::class);
-		});
-
-		$this->app->bind(\App\Modules\Finances\Services\TransactionSchedule\UpdaterServiceContract::class, function(Application $app) {
-			return $app->make(\App\Modules\Finances\Services\TransactionSchedule\UpdaterService::class);
-		});
+		$this->app->bind(\App\Modules\Finances\Services\Transaction\HistoryCollectorServiceContract::class, \App\Modules\Finances\Services\Transaction\HistoryCollectorService::class);
+		$this->app->bind(\App\Modules\Finances\Services\Transaction\PeriodicityParserServiceContract::class, \App\Modules\Finances\Services\Transaction\PeriodicityParserService::class);
+		$this->app->bind(\App\Modules\Finances\Services\Transaction\RequestManagerServiceContract::class, \App\Modules\Finances\Services\Transaction\RequestManagerService::class);
+		$this->app->bind(\App\Modules\Finances\Services\TransactionCategory\RequestManagerServiceContract::class, \App\Modules\Finances\Services\TransactionCategory\RequestManagerService::class);
+		$this->app->bind(\App\Modules\Finances\Services\TransactionSchedule\ProcessorServiceContract::class, \App\Modules\Finances\Services\TransactionSchedule\ProcessorService::class);
+		$this->app->bind(\App\Modules\Finances\Services\TransactionSchedule\UpdaterServiceContract::class, \App\Modules\Finances\Services\TransactionSchedule\UpdaterService::class);
 
 		return $this;
 	}

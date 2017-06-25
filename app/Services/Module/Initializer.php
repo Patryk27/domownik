@@ -60,8 +60,7 @@ class Initializer {
 
 		View::share('enabledModules', $modules);
 
-		// @todo the index should not be hardcoded
-		$activeModule = $modules['Dashboard'];
+		$activeModule = $modules['Finances']; // @todo this index should not be hardcoded
 
 		$this->app->singleton(Director::class, $activeModule);
 

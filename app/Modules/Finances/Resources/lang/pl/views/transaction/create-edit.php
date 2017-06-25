@@ -79,7 +79,4 @@ return [
 			'title' => 'Wybierz dni roku, w których transakcja ma być zliczana:',
 		],
 	],
-
-	'save' => 'Zapisz',
-	'delete' => 'Usuń',
 ];

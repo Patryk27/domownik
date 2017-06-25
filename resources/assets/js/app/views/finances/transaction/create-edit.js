@@ -35,24 +35,6 @@ module.exports = (function() {
    * Initializes the view.
    */
   function initialize() {
-    $('#btnDeleteTransaction').click(function() {
-      bootbox.confirm(__('Finances:transaction.prompt.transaction-delete'), function(confirmed) {
-        if (!confirmed) {
-          return;
-        }
-
-        $.ajax({
-          url: '/finances/transaction/delete',
-          method: 'post',
-          data: {
-            transactionId: $('#transactionId').val(),
-          },
-        }).done(function(msg) {
-          window.location.href = msg.redirectUrl;
-        });
-      });
-    });
-
     $('#transactionValueType').change(function() {
       var activeTransactionValueType = $(this).val();
 

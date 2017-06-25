@@ -4,7 +4,6 @@ namespace App\Modules\Finances\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Modules\Finances\Http\Requests\Transaction\StoreRequest;
-use App\Modules\Finances\Http\Requests\Transaction\DeleteRequest;
 use App\Modules\Finances\Models\Budget;
 use App\Modules\Finances\Models\Transaction;
 use App\Modules\Finances\Repositories\Contracts\BudgetRepositoryContract;
@@ -14,6 +13,7 @@ use App\Modules\Finances\Repositories\Contracts\TransactionRepositoryContract;
 use App\Modules\Finances\Services\Transaction\RequestManagerServiceContract;
 use App\Modules\Finances\Services\TransactionSchedule\UpdaterServiceContract;
 use App\Services\Breadcrumb\Manager as BreadcrumbManager;
+use App\ServiceContracts\RequestManagerContract as BaseRequestManagerContract;
 
 class TransactionController
 	extends Controller {
@@ -122,18 +122,25 @@ class TransactionController
 	 * @return \Illuminate\Http\Response
 	 */
 	public function actionStore(StoreRequest $request) {
-		$this->transactionRequestManagerService->store($request);
-		$transaction = $this->transactionRequestManagerService->getTransaction();
-
-		if ($this->transactionRequestManagerService->isNew()) {
-			flash()->success(__('Finances::requests/transaction/store.messages.create-success'));
-			$redirectUrl = $this->getTransactionParentUrl($transaction);
-		} else {
-			flash()->success(__('Finances::requests/transaction/store.messages.edit-success'));
-			$redirectUrl = route('finances.transaction.edit', $transaction->id);
-		}
+		$storeResult = $this->transactionRequestManagerService->store($request);
+		$transaction = $this->transactionRequestManagerService->getModel();
 
 		$this->transactionScheduleUpdaterService->updateScheduleByTransactionId($transaction->id);
+
+		switch ($storeResult) {
+			case BaseRequestManagerContract::STORE_RESULT_CREATED:
+				flash()->success(__('Finances::requests/transaction/store.messages.create-success'));
+				$redirectUrl = $this->getTransactionParentUrl($transaction);
+				break;
+
+			case BaseRequestManagerContract::STORE_RESULT_UPDATED:
+				flash()->success(__('Finances::requests/transaction/store.messages.update-success'));
+				$redirectUrl = route('finances.transaction.edit', $transaction->id);
+				break;
+
+			default:
+				$redirectUrl = '/';
+		}
 
 		return response()->json([
 			'redirectUrl' => $redirectUrl,
@@ -141,14 +148,11 @@ class TransactionController
 	}
 
 	/**
-	 * @param DeleteRequest $request
+	 * @param Transaction $transaction
 	 * @return \Illuminate\Http\JsonResponse
 	 */
-	public function actionDelete(DeleteRequest $request) {
-		$transactionId = $request->get('transactionId');
-
-		$transaction = $this->transactionRepository->getOrFail($transactionId);
-		$this->transactionRequestManagerService->delete($transactionId);
+	public function actionDelete(Transaction $transaction) {
+		$this->transactionRequestManagerService->delete($transaction->id);
 
 		flash()->success(__('Finances::requests/transaction/delete.messages.delete-success'));
 

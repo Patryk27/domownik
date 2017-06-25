@@ -32,7 +32,7 @@ Route::group(['prefix' => 'finances', 'middleware' => 'auth'], function() {
 			 ->name('finances.transaction.store');
 
 		// /finances/transaction/delete
-		Route::post('delete', '\\' . TransactionController::class . '@actionDelete')
+		Route::get('delete/{transaction}', '\\' . TransactionController::class . '@actionDelete')
 			->name('finances.transaction.delete');
 
 		// /finances/transaction/list/from-budget
