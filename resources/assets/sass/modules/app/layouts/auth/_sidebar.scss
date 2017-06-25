@@ -46,4 +46,8 @@
   .badge-label {
     float: right;
   }
+
+  .panel-heading {
+    background-color: darken($panel-default-heading-bg, 5%);
+  }
 }

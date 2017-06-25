@@ -55,13 +55,13 @@ class Initializer {
 		}
 
 		if (empty($modules)) {
-			throw new BootException('Found no modules to initialize.');
+			throw new BootException('Found no active modules.');
 		}
 
 		View::share('enabledModules', $modules);
 
 		// @todo the index should not be hardcoded
-		$activeModule = $modules['Finances'];
+		$activeModule = $modules['Dashboard'];
 
 		$this->app->singleton(Director::class, $activeModule);
 

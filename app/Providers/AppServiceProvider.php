@@ -2,7 +2,6 @@
 
 namespace App\Providers;
 
-use App\Services\Install\Manager as InstallManager;
 use Carbon\Carbon;
 use Illuminate\Support\ServiceProvider;
 
@@ -14,7 +13,7 @@ class AppServiceProvider
 	 */
 	public function register() {
 		$this->app->singleton(\App\Services\Breadcrumb\Manager::class);
-		$this->app->singleton(InstallManager::class);
+		$this->app->singleton(\App\Services\Install\Manager::class);
 
 		if ($this->app->environment() !== 'production') {
 			$this->app->register(\Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class);

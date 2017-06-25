@@ -9,13 +9,13 @@ interface SettingRepositoryContract
 	 * @param string $key
 	 * @return mixed|null
 	 */
-	public function getValueByKey($key);
+	public function getValueByKey(string $key);
 
 	/**
 	 * @param int|null $userId
 	 * @param string $key
 	 * @return mixed|null
 	 */
-	public function getUserValueByKey($userId, $key);
+	public function getUserValueByKey($userId, string $key);
 
 }

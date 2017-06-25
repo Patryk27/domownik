@@ -17,7 +17,7 @@ trait HasPresenter {
 		 */
 
 		if (!isset($this->presenterClass)) {
-			throw new InternalException('Model does not have a \'presenterClass\' property.');
+			throw new InternalException('Model \'%s\' does not have a \'presenterClass\' property.', get_class($this));
 		}
 
 		/**

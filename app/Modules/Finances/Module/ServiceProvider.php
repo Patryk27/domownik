@@ -39,7 +39,7 @@ class ServiceProvider
 	/**
 	 * @return $this
 	 */
-	protected function prepareDatabase() {
+	protected function prepareDatabase(): self {
 		Relation::morphMap([
 			'budget' => Budget::class,
 			'transaction' => Transaction::class,
@@ -58,7 +58,7 @@ class ServiceProvider
 	/**
 	 * @return $this
 	 */
-	protected function bindRepositories() {
+	protected function bindRepositories(): self {
 		$this->app->bind(\App\Modules\Finances\Repositories\Contracts\BudgetRepositoryContract::class, function(Application $app) {
 			return $app->make(\App\Modules\Finances\Repositories\Eloquent\BudgetRepository::class);
 		});
@@ -85,7 +85,7 @@ class ServiceProvider
 	/**
 	 * @return $this
 	 */
-	protected function bindServices() {
+	protected function bindServices(): self {
 		/**
 		 * Services/Transaction/
 		 */
@@ -125,7 +125,7 @@ class ServiceProvider
 	/**
 	 * @return $this
 	 */
-	protected function prepareBreadcrumbs() {
+	protected function prepareBreadcrumbs(): self {
 		$breadcrumbManager = $this->app->make(\App\Services\Breadcrumb\Manager::class);
 
 		/**

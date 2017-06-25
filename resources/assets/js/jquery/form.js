@@ -52,11 +52,18 @@
 
     /**
      * Removes every error from the form.
-     * @returns {jQuery}
      */
     function clearErrors() {
       form.find('.form-group').removeClass('has-error');
       form.find('.help-block').html('');
+    }
+
+    function enable() {
+      form.find('*').prop('disabled', false);
+    }
+
+    function disable() {
+      form.find('*').prop('disabled', true);
     }
 
     // ----------------------- //
@@ -67,6 +74,14 @@
 
     this.clearErrors = function() {
       clearErrors();
+    };
+
+    this.enable = function() {
+      enable();
+    };
+
+    this.disable = function() {
+      disable();
     };
 
     if (typeof(this[options]) === 'function') {

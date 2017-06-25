@@ -1,6 +1,7 @@
 (function($) {
+
   /**
-   * Enables dynamic form validation, submitting etc. of given form.
+   * Enables dynamic validation, submitting etc. on given form.
    * @param {array} options
    * @return {jQuery}
    */
@@ -8,6 +9,7 @@
     var form = $(this);
 
     options = $.extend({
+
       /**
        * Passes objectified form data and returns form data which should be sent to the server.
        * @param {Object} data
@@ -42,6 +44,8 @@
       success: function(msg) {
         if (msg.hasOwnProperty('redirectUrl')) {
           window.location.href = msg.redirectUrl;
+        } else {
+          enableForm(true);
         }
       },
 
@@ -55,6 +59,7 @@
       error: function(xhr, textStatus, errorThrown) {
         // dummy function
       },
+
     }, options);
 
     /**
@@ -77,6 +82,27 @@
       }
     };
 
+    function enableForm(enable) {
+      var submitBtn = $(form.find('button[type="submit"]'));
+
+      if (enable) {
+        form.form('enable');
+
+        if (submitBtn) {
+          var oldHtml = $(submitBtn).data('old-html');
+          submitBtn.html(oldHtml);
+        }
+      } else {
+        form.form('disable');
+
+        if (submitBtn) {
+          submitBtn.
+              data('old-html', submitBtn.html()).
+              html('<i class="fa fa-circle-o-notch fa-spin"></i>');
+        }
+      }
+    }
+
     function submitForm() {
       var formId = $(form).prop('id');
 
@@ -86,6 +112,8 @@
 
       // send the request
       console.log('Submitting form with id=\'{0}\'...'.format(formId));
+
+      enableForm(false);
 
       $.ajax({
         url: form.attr('action'),
@@ -111,6 +139,7 @@
         }
 
         options.error(xhr, textStatus, errorThrown);
+        enableForm(true);
       }).always(function() {
         options.afterSubmit();
       });

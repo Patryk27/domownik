@@ -3,19 +3,20 @@
 namespace App\Repositories\Eloquent;
 
 use App\Models\Setting;
+use App\Repositories\Contracts\SettingRepositoryContract;
 
 /**
  * @var Setting $model
  */
 class SettingRepository
 	extends AbstractCrudRepository
-	implements \App\Repositories\Contracts\SettingRepositoryContract {
+	implements SettingRepositoryContract {
 
 	/**
 	 * @param string $key
 	 * @return mixed
 	 */
-	public function getValueByKey($key) {
+	public function getValueByKey(string $key) {
 		return $this->getUserValueByKey(null, $key);
 	}
 
@@ -24,7 +25,7 @@ class SettingRepository
 	 * @param string $key
 	 * @return mixed
 	 */
-	public function getUserValueByKey($userId, $key) {
+	public function getUserValueByKey($userId, string $key) {
 		$cacheKey = $this->getCacheKey(__FUNCTION__, func_get_args());
 		$cache = $this->getCache();
 

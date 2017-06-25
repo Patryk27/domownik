@@ -5,10 +5,6 @@
      */
 @endphp
 
-@php
-    $transactionTypes = \App\Modules\Finances\Models\Transaction::getTypes();
-@endphp
-
 {{-- Transaction name --}}
 {!!
     Form::textInput()
@@ -61,8 +57,10 @@
         ->setLabel(__('Finances::views/transaction/create-edit.transaction-type.label'))
         ->setValueFromModel($transaction, 'type')
         ->setRequired(true)
-        ->setItems(function() use ($transactionTypes) {
+        ->setItems(function() {
             $items = [];
+
+            $transactionTypes = \App\Modules\Finances\Models\Transaction::getTypes();
 
             foreach ($transactionTypes as $transactionType) {
                 $items[$transactionType] =  __('Finances::common/transaction.type.' . $transactionType);

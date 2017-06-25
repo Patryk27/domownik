@@ -1,14 +1,13 @@
 module.exports = (function() {
+
   function initialize() {
     function showConsolidatedBudgetsWrapper() {
       $('#consolidatedBudgetsWrapper').show().addClass('required');
-
       $('#consolidatedBudgets').prop('required', true);
     }
 
     function hideConsolidatedBudgetsWrapper() {
       $('#consolidatedBudgetsWrapper').hide().removeClass('required');
-
       $('#consolidatedBudgets').prop('required', false);
     }
 
@@ -28,9 +27,11 @@ module.exports = (function() {
   }
 
   return {
+
     initializeView: function() {
-      $(initialize());
+      $(initialize);
       return this;
     },
+
   }
 })();

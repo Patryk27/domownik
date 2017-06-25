@@ -6,14 +6,27 @@
   #flash-message-container,
   #session-message-container {
     max-width: 450px;
-    margin: 25px auto 25px auto;
+    margin: 0 auto;
+    
+    .alert {
+      margin: 25px auto;
+    }
   }
 
   #content {
     margin-left: $app-sidebar-width;
   }
 
+  #breadcrumbs {
+    margin: 60px 0 5px 0;
+    padding: 7px 0;
+
+    ol.breadcrumb {
+      padding: 12px;
+    }
+  }
+
   #content-panel {
-    margin-top: 55px;
+
   }
 }

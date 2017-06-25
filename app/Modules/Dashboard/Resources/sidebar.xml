@@ -3,14 +3,14 @@
           icon="fa fa-cube">
         <item name="users"
               icon="fa fa-user"
-              url="/dashboard/users/"/>
+              url="/dashboard/user/list"/>
 
         <item name="permissions"
               icon="fa fa-chain"
-              url="/dashboard/permissions"/>
+              url="/dashboard/permission/list"/>
 
         <item name="modules"
               icon="fa fa-cubes"
-              url="/dashboard/modules"/>
+              url="/dashboard/module/list"/>
     </item>
 </sidebar>

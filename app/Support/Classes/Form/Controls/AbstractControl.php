@@ -46,7 +46,7 @@ abstract class AbstractControl
 			}
 
 			if (!$objectReflector->hasMethod($getterName)) {
-				$message = sprintf('Cannot prepare view of form control \'%s\' because it does not have any getter for field \'%s\'!', $objectReflector->getName(), $propertyName);
+				$message = sprintf('Cannot prepare view of form control \'%s\' because it does not have any getter for field \'%s\'.', $objectReflector->getName(), $propertyName);
 
 				MyLog::emergency($message);
 

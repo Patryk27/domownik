@@ -1,8 +1,10 @@
 <?php
 
+use App\Modules\Finances\Models\Budget;
+
 return [
 	'type' => [
-		'regular' => 'Zwyczajny',
-		'consolidated' => 'Skonsolidowany',
-	]
+		Budget::TYPE_REGULAR => 'Zwyczajny',
+		Budget::TYPE_CONSOLIDATED => 'Skonsolidowany',
+	],
 ];

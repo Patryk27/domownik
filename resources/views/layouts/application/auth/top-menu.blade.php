@@ -22,14 +22,18 @@
                 </li>
             </ul>
 
-            <form action="{{ route('dashboard.search.search') }}" method="post"
+            <form action="{{ route('dashboard.search.find') }}"
+                  method="post"
                   class="navbar-form navbar-right">
-                <input
-                        type="text"
-                        class="form-control"
-                        id="global-search"
-                        name="global-search"
-                        placeholder="{{ __('layout.navbar.search_with_dots') }}">
+                {!!
+                   Form::textInput()
+                        ->setIdAndName('top-search')
+                        ->setPlaceholder(__('layout.navbar.search_with_dots'))
+                 !!}
+
+                <button type="submit" class="btn btn-default">
+                    <i class="fa fa-search"></i>
+                </button>
             </form>
         </div>
     </div>

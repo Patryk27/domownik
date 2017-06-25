@@ -23,10 +23,15 @@ trait HasValue {
 	protected $required = false;
 
 	/**
+	 * @var bool
+	 */
+	private $gotValueFromModel = false;
+
+	/**
 	 * @return mixed
 	 */
 	public function getValue() {
-		if ($this->autoValue) {
+		if ($this->autoValue && !$this->gotValueFromModel) {
 			/**
 			 * For radio group, name can contain '[]' at the end, which should not be included when reading that field's
 			 * value.
@@ -56,13 +61,14 @@ trait HasValue {
 
 	/**
 	 * Sets the control value if a model is given.
-	 * @param \stdClass|null $model
+	 * @param mixed $model
 	 * @param string $key
 	 * @return $this
 	 */
 	public function setValueFromModel($model, $key) {
 		if (!is_null($model)) {
 			$this->value = $model->$key;
+			$this->gotValueFromModel = true;
 		}
 
 		return $this;

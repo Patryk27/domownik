@@ -35,9 +35,10 @@ abstract class ServiceProvider
 	public function boot(string $moduleName): ServiceProviderContract {
 		$this->moduleName = $moduleName;
 
-		$this->loadViews()
-			 ->loadResources()
-			 ->loadSidebar();
+		$this
+			->loadViews()
+			->loadResources()
+			->loadSidebar();
 
 		return $this;
 	}

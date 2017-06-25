@@ -13,7 +13,7 @@ return [
 
 	'connection' => null,
 
-	'table' => 'sessions',
+	'State' => 'sessions',
 
 	'store' => null,
 

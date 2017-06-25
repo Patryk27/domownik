@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Presenters\UserPresenter;
 use Carbon\Carbon;
 use Illuminate\Auth\Authenticatable as AuthenticableTrait;
 use Illuminate\Contracts\Auth\Authenticatable;
@@ -12,15 +13,20 @@ use Illuminate\Contracts\Auth\Authenticatable;
  * @property string $password
  * @property string $full_name
  * @property string $remember_token
- * @property bool $is_active
+ * @property string $status
  * @property Carbon $created_at
  * @property Carbon $updated_at
+ * @method UserPresenter getPresenter()
  */
 class User
 	extends Model
 	implements Authenticatable {
 
-	use AuthenticableTrait;
+	use AuthenticableTrait, HasPresenter;
+
+	const
+		STATUS_ACTIVE = 'active',
+		STATUS_INACTIVE = 'inactive';
 
 	/**
 	 * @var string[]
@@ -29,7 +35,7 @@ class User
 		'login',
 		'password',
 		'full_name',
-		'is_active',
+		'status',
 	];
 
 	/**
@@ -46,6 +52,21 @@ class User
 	protected $hidden = [
 		'password',
 	];
+
+	/**
+	 * @var string
+	 */
+	protected $presenterClass = UserPresenter::class;
+
+	/**
+	 * @return array
+	 */
+	public static function getStatuses(): array {
+		return [
+			self::STATUS_ACTIVE,
+			self::STATUS_INACTIVE,
+		];
+	}
 
 	/**
 	 * @inheritDoc
