@@ -5,6 +5,8 @@ return [
 		'title' => 'Lista użytkowników',
 	],
 
+	'create-new-user' => 'Dodaj nowego użytkownika',
+
 	'found-user-count' => '[1]Odnaleziono <b>1</b> użytkownika.|[2,Inf]Odnaleziono <b>:userCount</b> użytkowników.',
 
 	'users-table' => [

@@ -150,6 +150,21 @@
       return false;
     });
 
+    /**
+     * Handle the 'delete' button, if present.
+     */
+    form.on('click', '.form-delete-button', function() {
+      var href = $(this).attr('href');
+
+      bootbox.confirm($(this).data('confirmation-message'), function(confirmed) {
+        if (confirmed) {
+          window.location.href = href;
+        }
+      });
+
+      return false;
+    });
+
     return this;
   };
 })(jQuery);

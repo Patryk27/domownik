@@ -19,11 +19,18 @@ class StoreRequest
 	 * @return array
 	 */
 	public function rules() {
-		return [
+		$result = [
 			'userLogin' => 'required',
 			'userFullName' => 'required',
 			'userStatus' => 'required',
 		];
+
+		if (!$this->has('userId')) {
+			$result['userLogin'] .= '|unique:users,login';
+			$result['userPassword'] = 'required';
+		}
+
+		return $result;
 	}
 
 	/**

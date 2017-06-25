@@ -65,6 +65,20 @@ class RequestManager
 	}
 
 	/**
+	 * @inheritDoc
+	 */
+	public function delete(int $userId): RequestManagerContract {
+		$this->model = $this->userRepository->getOrFail($userId);
+		$this->userRepository->delete($this->model->id);
+
+		/**
+		 * @todo What if user is logged during the deletion?
+		 */
+
+		return $this;
+	}
+
+	/**
 	 * @return User|null
 	 */
 	public function getModel() {
@@ -86,9 +100,8 @@ class RequestManager
 			$user->password = bcrypt($this->request->get('userPassword'));
 		}
 
-		$this->userRepository->persist($user);
-
 		$this->model = $user;
+		$this->userRepository->persist($user);
 
 		return $this;
 	}
@@ -97,9 +110,16 @@ class RequestManager
 	 * @return RequestManager
 	 */
 	protected function insert(): self {
-		throw new UnimplementedException('UserRequestManager.insert');
-
 		MyLog::info('Storing new user: %s', $this->request);
+
+		$user = new User();
+		$user->login = $this->request->get('userLogin');
+		$user->full_name = $this->request->get('userFullName');
+		$user->password = bcrypt($this->request->get('userPassword'));
+		$user->status = $this->request->get('userStatus');
+
+		$this->model = $user;
+		$this->userRepository->persist($user);
 
 		return $this;
 	}

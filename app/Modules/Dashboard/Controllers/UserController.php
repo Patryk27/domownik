@@ -108,6 +108,17 @@ class UserController
 	}
 
 	/**
+	 * @return \Illuminate\Http\Response
+	 */
+	public function actionCreate() {
+		$this->breadcrumbManager
+			->push(route('dashboard.user.list'), __('Dashboard::breadcrumb.user.list'))
+			->push(route('dashboard.user.create'), __('Dashboard::breadcrumb.user.create'));
+
+		return view('Dashboard::user/create');
+	}
+
+	/**
 	 * @param User $user
 	 * @return \Illuminate\Http\Response
 	 */
@@ -143,6 +154,18 @@ class UserController
 		return response()->json([
 			'redirectUrl' => route('dashboard.user.edit', $user->id)
 		]);
+	}
+
+	/**
+	 * @param User $user
+	 * @return \Illuminate\Http\Response
+	 */
+	public function actionDelete(User $user) {
+		$this->userRequestManager->delete($user->id);
+
+		flash(__('Dashboard::requests/user/store.messages.delete-success'), 'success');
+
+		return response()->redirectTo(route('dashboard.user.list'));
 	}
 
 }

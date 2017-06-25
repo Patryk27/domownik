@@ -49,6 +49,7 @@
             ->setIdAndName('userPassword')
             ->setLabel(__('Dashboard::views/user/common/create-edit.user-password.label'))
             ->setAutoValue(true)
+            ->setRequired(!isset($user)) // We require setting the password when user is being created but not edited
      !!}
 
     {{-- User status --}}
@@ -73,9 +74,14 @@
      !!}
 
     <div>
-        <button type="submit" class="btn btn-success">
-            {{ __('common/form.buttons.save') }}
-        </button>
+        @include('common.form.save-button')
+
+        @isset($user)
+            @include('common.form.delete-button', [
+                'route' => route('dashboard.user.delete', $user->id),
+                'confirmationMessage' => __('Dashboard::views/user/common/create-edit.delete-confirmation-message'),
+            ])
+        @endisset
 
         @include('common.form.required-fields')
     </div>

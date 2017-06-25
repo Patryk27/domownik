@@ -11,6 +11,14 @@
 @endsection
 
 @section('content')
+    <a href="{{ route('dashboard.user.create') }}"
+       class="btn btn-success">
+        <i class="fa fa-plus"></i>&nbsp;
+        {{ __('Dashboard::views/user/list.create-new-user') }}
+    </a>
+
+    <hr>
+
     <p>
         @php($userCount = count($users))
 
@@ -36,13 +44,19 @@
                  */
 
                 $userPresenter = $user->getPresenter();
+
+                $trClass = '';
+
+                if ($user->status === \App\Models\User::STATUS_INACTIVE) {
+                    $trClass = 'warning';
+                }
             @endphp
-            <tr>
+            <tr class="{{ $trClass }}">
                 <td>{{ $user->id }}</td>
                 <td>{{ $user->login }}</td>
                 <td>{{ $user->full_name }}</td>
                 <td>
-                    <a class="btn btn-xs btn-default"
+                    <a class="btn btn-xs btn-primary"
                        href="{{ $userPresenter->getEditUrl() }}">
                         <i class="fa fa-gear"></i>&nbsp;
                         {{ __('Dashboard::views/user/list.users-table.body.btn-edit') }}

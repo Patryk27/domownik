@@ -16,6 +16,12 @@ interface RequestManagerContract
 	public function store($request): string;
 
 	/**
+	 * @param int $userId
+	 * @return RequestManagerContract
+	 */
+	public function delete(int $userId): RequestManagerContract;
+
+	/**
 	 * @return User|null
 	 */
 	public function getModel();

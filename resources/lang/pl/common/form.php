@@ -3,5 +3,6 @@
 return [
 	'buttons' => [
 		'save' => 'Zapisz',
+		'delete' => 'Usuń',
 	],
 ];

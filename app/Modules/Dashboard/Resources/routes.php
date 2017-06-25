@@ -50,6 +50,10 @@ Route::group(['prefix' => 'dashboard'], function() {
 			Route::get('list', '\\' . UserController::class . '@actionList')
 				 ->name('dashboard.user.list');
 
+			// /dashboard/user/create
+			Route::get('create', '\\' . UserController::class . '@actionCreate')
+				 ->name('dashboard.user.create');
+
 			// /dashboard/user/edit
 			Route::get('edit/{user}', '\\' . UserController::class . '@actionEdit')
 				 ->name('dashboard.user.edit');
@@ -57,6 +61,10 @@ Route::group(['prefix' => 'dashboard'], function() {
 			// /dashboard/user/store
 			Route::post('store', '\\' . UserController::class . '@actionStore')
 				 ->name('dashboard.user.store');
+
+			// /dashboard/user/delete
+			Route::get('delete/{user}', '\\' . UserController::class . '@actionDelete')
+				 ->name('dashboard.user.delete');
 		});
 	});
 });

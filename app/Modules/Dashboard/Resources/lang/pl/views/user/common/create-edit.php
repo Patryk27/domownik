@@ -18,4 +18,6 @@ return [
 	'user-status' => [
 		'label' => 'Status',
 	],
+
+	'delete-confirmation-message' => 'Czy na pewno chcesz usunąć tego użytkownika?',
 ];
