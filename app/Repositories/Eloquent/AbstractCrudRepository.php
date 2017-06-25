@@ -117,10 +117,10 @@ abstract class AbstractCrudRepository
 
 		if (!empty($model)) {
 			$model->delete();
-		}
 
-		$this->getFlushCache()
-			 ->flush();
+			$this->getFlushCache()
+				 ->flush();
+		}
 
 		return $this;
 	}
