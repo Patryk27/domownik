@@ -1,7 +1,8 @@
 <div class="form-group {{ $required ? 'required' : ''}}"
      data-control-id="{{ $id or '' }}"
      data-control-name="{{ $name or '' }}">
-    @include('common/form/helper/label')
+
+    @include('common.form.helper.label')
 
     <select class="form-control"
             @if ($multiple)
