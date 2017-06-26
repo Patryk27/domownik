@@ -50,4 +50,8 @@
   .panel-heading {
     background-color: darken($panel-default-heading-bg, 5%);
   }
+
+  .panel + .panel {
+    margin-top: 32px;
+  }
 }
