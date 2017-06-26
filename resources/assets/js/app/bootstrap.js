@@ -46,7 +46,10 @@ module.exports = (function() {
       console.log('-> settings:');
       console.log(settings);
 
-      bootbox.alert(__(':ajax.alerts.error'));
+      // do not show error on '422 Unprocessable Entity' because $.ajaxForm() already handles it
+      if (request.status !== 422) {
+        bootbox.alert(__(':ajax.alerts.error'));
+      }
     });
   }
 
