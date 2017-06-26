@@ -172,7 +172,7 @@ module.exports = function() {
 
       $(function() {
         registerBinds();
-        prepareChart(options.budgetHistoryRows);
+        prepareChart(options.recentTransactionsChart);
       });
     },
 

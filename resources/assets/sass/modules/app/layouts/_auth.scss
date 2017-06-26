@@ -1,7 +1,8 @@
 .app-auth {
+  @import "auth/breadcrumbs";
   @import "auth/navbar";
   @import "auth/sidebar";
-  @import "auth/breadcrumbs";
+  @import "auth/transaction-table";
 
   #flash-message-container,
   #session-message-container {

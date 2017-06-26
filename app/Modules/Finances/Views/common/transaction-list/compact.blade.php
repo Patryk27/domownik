@@ -1,19 +1,16 @@
 @php
     /**
-      * @var \App\Modules\Finances\Models\Transaction[]|\App\Modules\Finances\ValueObjects\ScheduledTransaction[] $transactions
+      * @var \App\Modules\Finances\ValueObjects\ScheduledTransaction[] $transactions
       * @var string[] $transactionButtons
       */
 @endphp
 
-<table class="table table-hover table-striped">
+<table class="table table-hover table-striped transaction-list compact">
     <thead>
     <tr>
-        @php
-            // @todo refactor translation of these three strings to an other file
-        @endphp
-        <th>Data</th>
-        <th>Nazwa</th>
-        <th>Kwota</th>
+        <th>{{ __('Finances::common/transaction-list.table.transaction-date') }}</th>
+        <th>{{ __('Finances::common/transaction-list.table.transaction-name') }}</th>
+        <th>{{ __('Finances::common/transaction-list.table.transaction-amount') }}</th>
 
         @if(isset($transactionButtons))
             <th></th>
@@ -46,25 +43,16 @@
                 ])
             </td>
             @if(isset($transactionButtons))
-                <td>
-                    @if (in_array('edit', $transactionButtons))
-                        <a class="btn btn-xs btn-info" href="{{ $transactionPresenter->getEditUrl() }}">
-                            <i class="fa fa-cog"></i>
-                        </a>
-                    @endif
-
+                <td class="transaction-list-buttons">
                     @if (in_array('edit-parent', $transactionButtons) && isset($transaction->parent_transaction_id))
-                        <a class="btn btn-xs btn-info" href="{{ $transactionPresenter->getParentEditUrl() }}">
+                        <a class="btn btn-xs btn-default" href="{{ $transactionPresenter->getParentEditUrl() }}">
                             <i class="fa fa-level-up"></i>
                         </a>
                     @endif
 
-                    @if (in_array('view', $transactionButtons) && 0)
-                        @php
-                        // @todo
-                        @endphp
-                        <a class="btn btn-xs btn-info" href="{{ $transactionPresenter->getParentEditUrl() }}">
-                            <i class="fa fa-caret-right"></i>
+                    @if (in_array('edit', $transactionButtons))
+                        <a class="btn btn-xs btn-info" href="{{ $transactionPresenter->getEditUrl() }}">
+                            <i class="fa fa-cog"></i>
                         </a>
                     @endif
                 </td>

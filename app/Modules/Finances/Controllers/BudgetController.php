@@ -127,9 +127,9 @@ class BudgetController
 			->setEndDate(new Carbon('now'))
 			->setSortDirection('asc');
 
-		$budgetHistoryRows = $this->transactionHistoryCollectorService->getRowsForChart();
+		$recentTransactionsChart = $this->transactionHistoryCollectorService->getRowsForChart();
 
-		$recentlyBookedTransactions =
+		$recentTransactions =
 			$this->transactionHistoryCollectorService
 				->getRows()
 				->reverse()
@@ -148,9 +148,37 @@ class BudgetController
 
 		return view('Finances::budget/show', [
 			'budget' => $budget,
-			'recentlyBookedTransactions' => $recentlyBookedTransactions,
+			'recentTransactions' => $recentTransactions,
+			'recentTransactionsChart' => json_encode($recentTransactionsChart),
 			'incomingTransactions' => $incomingTransactions,
-			'budgetHistoryRows' => json_encode($budgetHistoryRows),
+		]);
+	}
+
+	/**
+	 * @param Budget $budget
+	 * @return \Illuminate\Http\Response
+	 */
+	public function actionShowRecentTransactions(Budget $budget) {
+		$this->breadcrumbManager
+			->pushCustom($budget)
+			->push(route('finances.budget.show-recent-transactions', $budget->id), __('Finances::breadcrumb.budget.show-recent-transactions'));
+
+		$this->transactionHistoryCollectorService
+			->reset()
+			->setParentType(Transaction::PARENT_TYPE_BUDGET)
+			->setParentId($budget->id)
+			->setEndDate(new Carbon('now'))
+			->setSortDirection('asc');
+
+		$transactions =
+			$this->transactionHistoryCollectorService
+				->getRows()
+				->reverse()
+				->take(50);
+
+		return view('Finances::budget/show-recent-transactions', [
+			'budget' => $budget,
+			'transactions' => $transactions,
 		]);
 	}
 

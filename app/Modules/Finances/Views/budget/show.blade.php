@@ -1,9 +1,9 @@
 @php
     /**
      * @var \App\Modules\Finances\Models\Budget $budget
-     * @var \App\Modules\Finances\Models\Transaction[] $recentlyBookedTransactions
+     * @var \App\Modules\Finances\Models\Transaction[] $recentTransactions
      * @var \App\Modules\Finances\ValueObjects\ScheduledTransaction[] $incomingTransactions
-     * @var array $budgetHistory
+     * @var array $recentTransactionsChart
      */
 @endphp
 
@@ -13,7 +13,7 @@
 <script>
   var AppView = App.Views.Finances.Budget.Show.initializeView({
     budgetId: {{ $budget->id }},
-    budgetHistoryRows: {{ $budgetHistoryRows }}
+    recentTransactionsChart: {{ $recentTransactionsChart }}
   });
 </script>
 @endpush
@@ -31,12 +31,14 @@
                 {{ __('Finances::views/budget/show.budget-management.header') }}
             </h4>
 
-            <a href="{{ route('finances.transaction.createToBudget', $budget->id) }}" class="btn btn-sm btn-success">
+            <a href="{{ route('finances.transaction.createToBudget', $budget->id) }}"
+               class="btn btn-sm btn-success">
                 <i class="fa fa-plus"></i>&nbsp;
                 {{ __('Finances::views/budget/show.budget-management.create-transaction') }}
             </a>
 
-            <a href="{{ route('finances.transaction.listFromBudget', $budget->id) }}" class="btn btn-sm btn-info">
+            <a href="{{ route('finances.transaction.listFromBudget', $budget->id) }}"
+               class="btn btn-sm btn-info">
                 <i class="fa fa-list"></i>&nbsp;
                 {{ __('Finances::views/budget/show.budget-management.list-transactions') }}
             </a>
@@ -51,13 +53,14 @@
             <h4>
                 {{ __('Finances::views/budget/show.recently-booked-transactions.header') }}
 
-                <a class="btn btn-xs btn-default pull-right">
+                <a class="btn btn-xs btn-default pull-right"
+                   href="{{ route('finances.budget.show-recent-transactions', $budget->id) }}">
                     {{ __('Finances::views/budget/show.recently-booked-transactions.show-more') }}
                 </a>
             </h4>
 
             @include('Finances::common.transaction-list.compact', [
-                'transactions' => $recentlyBookedTransactions,
+                'transactions' => $recentTransactions,
                 'transactionButtons' => ['edit', 'edit-parent'],
             ])
         </div>
