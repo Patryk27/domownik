@@ -20,8 +20,6 @@
           action="{{ route('finances.transaction.store') }}"
           method="post">
 
-        {{ csrf_field() }}
-
         @isset($budget)
             {!!
                 Form::hiddenInput()

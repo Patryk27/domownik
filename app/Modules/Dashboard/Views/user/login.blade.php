@@ -5,6 +5,7 @@
         <form action="{{ route('dashboard.user.login') }}"
               id="loginForm"
               method="post">
+
             {{ csrf_field() }}
 
             <div>

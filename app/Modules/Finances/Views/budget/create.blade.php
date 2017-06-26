@@ -17,8 +17,6 @@
           action="{{ route('finances.budget.store') }}"
           method="post">
 
-        {{ csrf_field() }}
-
         {{-- Budget name --}}
         {!!
             Form::textInput()

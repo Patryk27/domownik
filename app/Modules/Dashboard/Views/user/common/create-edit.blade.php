@@ -10,8 +10,6 @@
       action="{{ route('dashboard.user.store') }}"
       method="post">
 
-    {{ csrf_field() }}
-
     @isset($user)
         {!!
             Form::hiddenInput()
