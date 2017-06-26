@@ -27,6 +27,7 @@
                 ->setPlaceholder(__('Finances::views/budget/create.budget-name.placeholder'))
                 ->setAutoValue(true)
                 ->setRequired(true)
+                ->setAutofocus(true)
          !!}
 
         {{-- Budget description --}}
