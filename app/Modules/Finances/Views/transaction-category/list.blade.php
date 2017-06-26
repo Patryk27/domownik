@@ -11,20 +11,26 @@
 @endsection
 
 @section('content')
-    <div id="transactionCategoryTree">
-        {{ __('Finances::views/transaction-category/list.waiting') }}
-    </div>
+    <form id="editTransactionCategoriesForm"
+          action="{{ route('finances.transaction-category.store') }}"
+          method="post">
+        <a id="btnCreateNewRootCategory"
+           href="#"
+           class="btn btn-xs btn-primary">
+            <i class="fa fa-plus"></i>&nbsp;
+            {{ __('Finances::views/transaction-category/list.create-new-root-category') }}
+        </a>
 
-    <hr>
+        <hr>
 
-    <div class="alert alert-info">
-        <i class="fa fa-info-circle"></i><br>
-        {!! __('Finances::views/transaction-category/list.help-text.1') !!}
-    </div>
+        <div id="transactionCategoryTree">
+            {{ __('Finances::views/transaction-category/list.waiting') }}
+        </div>
 
-    <hr>
+        <hr>
 
-    <div>
-        @include('common.form.save-button')
-    </div>
+        <div>
+            @include('common.form.save-button')
+        </div>
+    </form>
 @endsection

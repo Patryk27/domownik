@@ -3,6 +3,9 @@
 return [
 	'alerts' => [
 		'save-success' => 'Kategorie transakcji zostały zapisane.',
-		'save-error' => 'Wystąpił błąd podczas zapisywania kategorii transakcji.',
+	],
+
+	'prompts' => [
+		'new-root-category-name' => 'Podaj nazwę nowej głównej kategorii:',
 	],
 ];

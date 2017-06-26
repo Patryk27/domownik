@@ -42,44 +42,48 @@ module.exports = (function() {
           deletedNodeIds.push(deletedNode.id);
         }
       },
+    });
 
-      'select_node.jstree': function(e, data) {
-        data.node.text = 'asdf'; // @todo
+    $('#btnCreateNewRootCategory').on('click', function() {
+      bootbox.prompt(__('Finances:views.transaction-category.list.prompts.new-root-category-name'), function(categoryName) {
+        if (typeof categoryName === 'string') {
+          var jsTree = $('#transactionCategoryTree').jstree(true);
+
+          jsTree.create_node('#', {
+            'text': categoryName,
+          }, 'last');
+        }
+      });
+    });
+
+    $('#editTransactionCategoriesForm').ajaxForm({
+      prepareData: function() {
+        var jsTree = $('#transactionCategoryTree').jstree(true);
+        var tree = jsTree.get_json(null, {
+          no_state: true,
+          no_data: true,
+          no_li_attr: true,
+          no_a_attr: true,
+          flat: true,
+        });
+
+        return {
+          newTree: tree,
+          deletedNodeIds: deletedNodeIds,
+        };
       },
-    });
 
-    $('.form-save-button').on('click', function() {
-      onSubmit();
-    });
-  }
+      success: function(msg) {
+        this.getDefaultOptions().success(msg);
 
-  /**
-   * Form submit handler.
-   */
-  function onSubmit() {
-    var jsTree = $('#transactionCategoryTree').jstree(true);
-    var tree = jsTree.get_json(null, {
-      no_state: true,
-      no_data: true,
-      no_li_attr: true,
-      no_a_attr: true,
-      flat: true,
-    });
-
-    $.ajax({
-      url: '/finances/transaction-category/store',
-      method: 'post',
-      data: {
-        newTree: tree,
-        deletedNodeIds: deletedNodeIds,
+        if (msg.success) {
+          bootbox.alert(__('Finances:views.transaction-category.list.alerts.save-success'));
+        }
       },
-    }).done(function(msg) {
-      if (msg.success) {
+
+      always: function() {
         deletedNodeIds = [];
-        bootbox.alert(__('Finances:views.transaction-category.list.alerts.save-success'));
-      } else {
-        bootbox.alert(__('Finances:views.transaction-category.list.alerts.save-error'));
-      }
+      },
     });
   }
 
