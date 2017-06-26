@@ -37,7 +37,7 @@ class ModuleSettingRepository
 	/**
 	 * @inheritdoc
 	 */
-	protected function getModelName() {
+	protected function getModelName(): string {
 		return ModuleSetting::class;
 	}
 

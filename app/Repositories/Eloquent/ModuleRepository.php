@@ -32,7 +32,7 @@ class ModuleRepository
 	/**
 	 * @inheritdoc
 	 */
-	protected function getModelName() {
+	protected function getModelName(): string {
 		return Module::class;
 	}
 

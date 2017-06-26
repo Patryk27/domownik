@@ -14,14 +14,17 @@ class BudgetRepository
 	 * @inheritdoc
 	 */
 	public function getActiveBudgets() {
-		return Budget::where('status', Budget::STATUS_ACTIVE)
-					 ->get();
+		// @todo cache
+
+		return
+			Budget::where('status', Budget::STATUS_ACTIVE)
+				  ->get();
 	}
 
 	/**
 	 * @inheritdoc
 	 */
-	protected function getModelName() {
+	protected function getModelName(): string {
 		return Budget::class;
 	}
 

@@ -45,7 +45,7 @@ class Calendar {
 	 * Returns week days, in correct (depending on the calendar) order.
 	 * @return string[]
 	 */
-	public function getWeekdaysCapitalized() {
+	public function getWeekdaysCapitalized(): array {
 		return $this->weekdays;
 	}
 
@@ -54,7 +54,7 @@ class Calendar {
 	 * @return string[]
 	 * @see getWeekdaysCapitalized()
 	 */
-	public function getWeekdays() {
+	public function getWeekdays(): array {
 		return array_map('strtolower', self::getWeekdaysCapitalized());
 	}
 
@@ -64,7 +64,7 @@ class Calendar {
 	 * ISO 8601-compatible when processing weekdays and our application has to be.
 	 * @return array
 	 */
-	public function getCarbonWeekdaysMapping() {
+	public function getCarbonWeekdaysMapping(): array {
 		return [
 			Carbon::MONDAY => self::MONDAY,
 			Carbon::TUESDAY => self::TUESDAY,

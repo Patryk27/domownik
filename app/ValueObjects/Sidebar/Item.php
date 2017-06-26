@@ -47,22 +47,22 @@ class Item {
 	/**
 	 * @return bool
 	 */
-	public function hasParent() {
+	public function hasParent(): bool {
 		return !is_null($this->parent);
 	}
 
 	/**
-	 * @return Item
+	 * @return Item|null
 	 */
 	public function getParent() {
 		return $this->parent;
 	}
 
 	/**
-	 * @param Item $parent
+	 * @param Item|null $parent
 	 * @return $this
 	 */
-	public function setParent($parent) {
+	public function setParent($parent): self {
 		$this->parent = $parent;
 		return $this;
 	}
@@ -70,14 +70,14 @@ class Item {
 	/**
 	 * @return bool
 	 */
-	public function hasName() {
+	public function hasName(): bool {
 		return !empty($this->name);
 	}
 
 	/**
 	 * @return string
 	 */
-	public function getName() {
+	public function getName(): string {
 		return $this->name;
 	}
 
@@ -85,7 +85,7 @@ class Item {
 	 * @param string $name
 	 * @return $this
 	 */
-	public function setName($name) {
+	public function setName(string $name): self {
 		$this->name = $name;
 		return $this;
 	}
@@ -93,7 +93,7 @@ class Item {
 	/**
 	 * @return string
 	 */
-	public function getFullName() {
+	public function getFullName(): string {
 		$result = '';
 
 		if ($this->hasParent() && $this->parent->hasName()) {
@@ -108,14 +108,14 @@ class Item {
 	/**
 	 * @return bool
 	 */
-	public function hasUrl() {
+	public function hasUrl(): bool {
 		return !empty($this->url);
 	}
 
 	/**
 	 * @return string
 	 */
-	public function getUrl() {
+	public function getUrl(): string {
 		return $this->url;
 	}
 
@@ -123,7 +123,7 @@ class Item {
 	 * @param string $url
 	 * @return $this
 	 */
-	public function setUrl($url) {
+	public function setUrl(string $url): self {
 		$this->url = $url;
 		return $this;
 	}
@@ -131,14 +131,14 @@ class Item {
 	/**
 	 * @return bool
 	 */
-	public function hasCaption() {
+	public function hasCaption(): bool {
 		return !empty($this->caption);
 	}
 
 	/**
 	 * @return string
 	 */
-	public function getCaption() {
+	public function getCaption(): string {
 		return $this->caption;
 	}
 
@@ -146,7 +146,7 @@ class Item {
 	 * @param string $caption
 	 * @return $this
 	 */
-	public function setCaption($caption) {
+	public function setCaption(string $caption): self {
 		$this->caption = $caption;
 		return $this;
 	}
@@ -154,14 +154,14 @@ class Item {
 	/**
 	 * @return bool
 	 */
-	public function hasIcon() {
+	public function hasIcon(): bool {
 		return !empty($this->icon);
 	}
 
 	/**
 	 * @return string
 	 */
-	public function getIcon() {
+	public function getIcon(): string {
 		return $this->icon;
 	}
 
@@ -169,7 +169,7 @@ class Item {
 	 * @param string $icon
 	 * @return $this
 	 */
-	public function setIcon($icon) {
+	public function setIcon(string $icon): self {
 		$this->icon = $icon;
 		return $this;
 	}
@@ -177,14 +177,14 @@ class Item {
 	/**
 	 * @return bool
 	 */
-	public function hasBadge() {
+	public function hasBadge(): bool {
 		return !empty($this->badge);
 	}
 
 	/**
 	 * @return string
 	 */
-	public function getBadge() {
+	public function getBadge(): string {
 		return $this->badge;
 	}
 
@@ -192,7 +192,7 @@ class Item {
 	 * @param string $badge
 	 * @return $this
 	 */
-	public function setBadge($badge) {
+	public function setBadge(string $badge): self {
 		$this->badge = $badge;
 		return $this;
 	}
@@ -201,7 +201,7 @@ class Item {
 	 * @param bool $isTemplate
 	 * @return $this
 	 */
-	public function setIsTemplate($isTemplate) {
+	public function setIsTemplate(bool $isTemplate): self {
 		$this->isTemplate = $isTemplate;
 		return $this;
 	}
@@ -209,7 +209,7 @@ class Item {
 	/**
 	 * @return bool
 	 */
-	public function isTemplate() {
+	public function isTemplate(): bool {
 		return (bool)$this->isTemplate;
 	}
 
@@ -223,14 +223,14 @@ class Item {
 	/**
 	 * @return bool
 	 */
-	public function hasSubitems() {
+	public function hasSubitems(): bool {
 		return !empty($this->subitems);
 	}
 
 	/**
 	 * @inheritDoc
 	 */
-	public function getSubitems() {
+	public function getSubitems(): array {
 		return $this->subitems;
 	}
 
@@ -238,7 +238,7 @@ class Item {
 	 * @param Item[] $subitems
 	 * @return $this
 	 */
-	public function setSubitems($subitems) {
+	public function setSubitems(array $subitems): self {
 		$this->subitems = $subitems;
 		return $this;
 	}
@@ -247,7 +247,7 @@ class Item {
 	 * @param Item $item
 	 * @return $this
 	 */
-	public function addSubitem($item) {
+	public function addSubitem(Item $item): self {
 		$this->subitems[$item->getName()] = $item;
 		return $this;
 	}
@@ -256,7 +256,7 @@ class Item {
 	 * @param string $itemName
 	 * @return Item|null
 	 */
-	public function findSubitemByName($itemName) {
+	public function findSubitemByName(string $itemName) {
 		$splitItemNames = explode('.', $itemName);
 
 		$currentItem = $this;
@@ -283,10 +283,9 @@ class Item {
 	}
 
 	/**
-	 * @param Item []
-	 * @return Item[]|array
+	 * @return Item[]
 	 */
-	public function getVisibleSubitems() {
+	public function getVisibleSubitems(): array {
 		return array_filter($this->subitems, function($subitem) {
 			/**
 			 * @var Item $subitem
@@ -299,15 +298,13 @@ class Item {
 	/**
 	 * @return Item
 	 */
-	public function getClone() {
-		// clone subitems
+	public function getClone(): Item {
 		$subitems = [];
 
 		foreach ($this->subitems as $subitem) {
 			$subitems[] = $subitem->getClone();
 		}
 
-		// prepare the model
 		$item = new Item();
 		$item
 			->setParent($this->parent)

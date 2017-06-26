@@ -47,7 +47,7 @@ class SettingRepository
 	/**
 	 * @inheritdoc
 	 */
-	protected function getModelName() {
+	protected function getModelName(): string {
 		return Setting::class;
 	}
 

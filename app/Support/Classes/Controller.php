@@ -25,14 +25,14 @@ class Controller {
 	 * For example view 'dashboard/user/login' has CSS class 'view-dashboard-user-login'.
 	 * @return string
 	 */
-	public function getViewCssClass() {
+	public function getViewCssClass(): string {
 		return sprintf('view-%s-%s-%s', $this->getRouteModuleName(), $this->getRouteControllerName(), $this->getRouteActionName());
 	}
 
 	/**
 	 * @return string
 	 */
-	protected function getRouteModuleName() {
+	protected function getRouteModuleName(): string {
 		$controllerNameParts = $this->getControllerNameParts();
 
 		if ($controllerNameParts[1] === 'Modules') {
@@ -45,7 +45,7 @@ class Controller {
 	/**
 	 * @return string
 	 */
-	protected function getRouteControllerName() {
+	protected function getRouteControllerName(): string {
 		$controllerNameParts = $this->getControllerNameParts();
 		$controllerName = end($controllerNameParts);
 
@@ -60,7 +60,7 @@ class Controller {
 	/**
 	 * @return string
 	 */
-	protected function getRouteActionName() {
+	protected function getRouteActionName(): string {
 		$actionMethod = $this->currentRoute->getActionMethod();
 
 		if (!starts_with($actionMethod, 'action')) {
@@ -73,7 +73,7 @@ class Controller {
 	/**
 	 * @return string[]
 	 */
-	protected function getControllerNameParts() {
+	protected function getControllerNameParts(): array {
 		return explode('\\', get_class($this->currentRoute->getController()));
 	}
 

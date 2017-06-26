@@ -89,7 +89,7 @@ class TransactionScheduleRepository
 	 * @param Collection $rows
 	 * @return Collection|ScheduledTransaction[]
 	 */
-	protected function convertToScheduledTransactionCollection($rows) {
+	protected function convertToScheduledTransactionCollection($rows): Collection {
 		$transactionRepository = $this->getTransactionRepository();
 
 		$result = new Collection();
@@ -110,7 +110,7 @@ class TransactionScheduleRepository
 	/**
 	 * @inheritDoc
 	 */
-	protected function getModelName() {
+	protected function getModelName(): string {
 		return TransactionSchedule::class;
 	}
 

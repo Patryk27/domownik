@@ -67,7 +67,7 @@ class TransactionRepository
 	/**
 	 * @inheritdoc
 	 */
-	protected function getModelName() {
+	protected function getModelName(): string {
 		return Transaction::class;
 	}
 

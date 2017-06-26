@@ -124,7 +124,7 @@ class TransactionCategoryRepository
 	/**
 	 * @inheritdoc
 	 */
-	protected function getModelName() {
+	protected function getModelName(): string {
 		return TransactionCategory::class;
 	}
 

@@ -11,7 +11,7 @@ trait HasPresenter {
 	 * @return PresenterContract
 	 * @throws InternalException
 	 */
-	public function getPresenter() {
+	public function getPresenter(): PresenterContract {
 		/**
 		 * @var Model $this
 		 */

@@ -72,7 +72,7 @@ abstract class ServiceProvider
 	/**
 	 * @return $this
 	 */
-	protected function loadSidebar() {
+	protected function loadSidebar(): self {
 		$resourcesDir = $this->getModuleDirectory('Resources') . DIRECTORY_SEPARATOR;
 		$sidebarFileName = $resourcesDir . 'sidebar.xml';
 

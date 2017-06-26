@@ -15,7 +15,7 @@ class UserRepository
 	/**
 	 * @inheritdoc
 	 */
-	protected function getModelName() {
+	protected function getModelName(): string {
 		return User::class;
 	}
 

@@ -23,7 +23,7 @@ class Manager {
 	/**
 	 * @return bool
 	 */
-	public function isApplicationInstalled() {
+	public function isApplicationInstalled(): bool {
 		// @todo cache
 		$schemaBuilder = $this->databaseConnection->getSchemaBuilder();
 		return $schemaBuilder->hasTable('users');

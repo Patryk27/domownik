@@ -33,7 +33,7 @@ abstract class AbstractCrudRepository
 	 * Returns model name representing the repository.
 	 * @return string
 	 */
-	abstract protected function getModelName();
+	abstract protected function getModelName(): string;
 
 	/**
 	 * @param Application $application
@@ -94,18 +94,6 @@ abstract class AbstractCrudRepository
 
 		return $cache->rememberForever($cacheKey, function() use ($columns) {
 			return $this->model->get($columns);
-		});
-	}
-
-	/**
-	 * @inheritDoc
-	 */
-	public function getPaginated($perPage = 15, $columns = ['*']) {
-		$cacheKey = $this->getCacheKey(__FUNCTION__, func_get_args());
-		$cache = $this->getCache();
-
-		return $cache->rememberForever($cacheKey, function() use ($perPage, $columns) {
-			return $this->model->paginate($perPage, $columns);
 		});
 	}
 
