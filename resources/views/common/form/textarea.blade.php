@@ -16,5 +16,7 @@
             @endif
     >{{ $value }}</textarea>
 
-    <div class="help-block with-errors"></div>
+    @include('common.form.helper.help-block', [
+        'helpBlockEnabled' => $helpBlockEnabled,
+    ])
 </div>

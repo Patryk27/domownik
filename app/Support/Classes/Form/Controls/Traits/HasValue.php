@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Support\Classes\Form\Controls;
+namespace App\Support\Classes\Form\Controls\Traits;
 
 /**
- * Note: assumes HasName trait, as it's used to determine the field's value.
+ * @note Assumes @see HasName trait.
  */
 trait HasValue {
 

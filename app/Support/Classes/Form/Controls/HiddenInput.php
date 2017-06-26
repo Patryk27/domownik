@@ -5,7 +5,7 @@ namespace App\Support\Classes\Form\Controls;
 class HiddenInput
 	extends AbstractControl {
 
-	use HasIdAndName, HasValue;
+	use Traits\HasIdAndName, Traits\HasValue;
 
 	/**
 	 * @inheritdoc

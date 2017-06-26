@@ -1,8 +1,8 @@
 .app-auth {
   @import "auth/breadcrumbs";
+  @import "auth/form";
   @import "auth/navbar";
   @import "auth/sidebar";
-  @import "auth/transaction-table";
 
   #flash-message-container,
   #session-message-container {
@@ -25,9 +25,5 @@
     ol.breadcrumb {
       padding: 12px;
     }
-  }
-
-  #content-panel {
-
   }
 }

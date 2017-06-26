@@ -59,7 +59,7 @@ return [
 
 	'transaction-periodicity' => [
 		'one-shot' => [
-			'title' => 'Wybierz dni roku, w których transakcja ma zostać zliczona:',
+			'title' => 'Wybierz dni roku, w których transakcja ma być zliczona:',
 		],
 
 		'daily' => [

@@ -5,7 +5,7 @@ namespace App\Support\Classes\Form\Controls;
 class Checkbox
 	extends AbstractControl {
 
-	use HasIdAndName, HasValue, HasLabel, HasAutofocus;
+	use Traits\HasAutofocus, Traits\HasHelpBlock, Traits\HasIdAndName, Traits\HasLabel, Traits\HasValue;
 
 	/**
 	 * @inheritdoc

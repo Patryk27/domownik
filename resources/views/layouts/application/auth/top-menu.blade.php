@@ -29,6 +29,7 @@
                    Form::textInput()
                         ->setIdAndName('top-search')
                         ->setPlaceholder(__('layout.navbar.search_with_dots'))
+                        ->setHelpBlockEnabled(false)
                  !!}
 
                 <button type="submit" class="btn btn-default">

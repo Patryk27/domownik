@@ -2,6 +2,9 @@
 
 return [
 	'page' => [
-		'title' => 'Spis ostatnich transakcji budżetu: :budgetName.',
+		'title' => 'Spis ostatnio zaksięgowanych transakcji budżetu: :budgetName.',
 	],
+
+	'show-recent-nth-pre' => 'Pokaż ostatnich',
+	'show-recent-nth-post' => 'transakcji.',
 ];

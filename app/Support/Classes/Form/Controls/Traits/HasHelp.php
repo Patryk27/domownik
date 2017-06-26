@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Support\Classes\Form\Controls;
+namespace App\Support\Classes\Form\Controls\Traits;
 
 /**
  * Shows a question mark after the label with link redirecting to given URL.

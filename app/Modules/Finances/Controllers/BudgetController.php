@@ -13,6 +13,7 @@ use App\Modules\Finances\Services\Transaction\HistoryCollectorContract;
 use App\Services\Breadcrumb\Manager as BreadcrumbManager;
 use App\Support\Facades\Date;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class BudgetController
@@ -156,9 +157,12 @@ class BudgetController
 
 	/**
 	 * @param Budget $budget
+	 * @param Request $request
 	 * @return \Illuminate\Http\Response
 	 */
-	public function actionShowRecentTransactions(Budget $budget) {
+	public function actionShowRecentTransactions(Budget $budget, Request $request) {
+		$filterCount = $request->get('count', 50);
+
 		$this->breadcrumbManager
 			->pushCustom($budget)
 			->push(route('finances.budget.show-recent-transactions', $budget->id), __('Finances::breadcrumb.budget.show-recent-transactions'));
@@ -174,11 +178,12 @@ class BudgetController
 			$this->transactionHistoryCollectorService
 				->getRows()
 				->reverse()
-				->take(50);
+				->take($filterCount);
 
 		return view('Finances::budget/show-recent-transactions', [
 			'budget' => $budget,
 			'transactions' => $transactions,
+			'filterCount' => $filterCount,
 		]);
 	}
 

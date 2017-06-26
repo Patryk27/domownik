@@ -5,7 +5,7 @@ namespace App\Support\Classes\Form\Controls;
 class TextInput
 	extends AbstractControl {
 
-	use HasIdAndName, HasValue, HasPlaceholder, HasAddon, HasLabel, HasHelp, HasAutofocus;
+	use Traits\HasAddon, Traits\HasAutofocus, Traits\HasHelp, Traits\HasHelpBlock, Traits\HasIdAndName, Traits\HasLabel, Traits\HasPlaceholder, Traits\HasValue;
 
 	/**
 	 * @inheritdoc
