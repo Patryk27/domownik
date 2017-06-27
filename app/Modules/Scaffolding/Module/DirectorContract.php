@@ -7,6 +7,7 @@ interface DirectorContract {
 	/**
 	 * Boots the module - all views, translations etc. are available here.
 	 * This method is called for each enabled module.
+	 * @param ServiceProviderContract $serviceProvider
 	 * @return $this
 	 */
 	public function boot(ServiceProviderContract $serviceProvider): DirectorContract;

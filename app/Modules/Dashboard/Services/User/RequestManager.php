@@ -47,7 +47,7 @@ class RequestManager
 	/**
 	 * @inheritdoc
 	 */
-	public function store($request): string {
+	public function store(UserStoreRequest $request): string {
 		$this->request = $request;
 		$this->model = null;
 
@@ -66,6 +66,8 @@ class RequestManager
 	 * @inheritDoc
 	 */
 	public function delete(int $userId): RequestManagerContract {
+		MyLog::info('Deleting user with id=%d.', $userId);
+
 		$this->model = $this->userRepository->getOrFail($userId);
 		$this->userRepository->delete($this->model->id);
 
@@ -77,9 +79,9 @@ class RequestManager
 	}
 
 	/**
-	 * @return User|null
+	 * @return User
 	 */
-	public function getModel() {
+	public function getModel(): User {
 		return $this->model;
 	}
 

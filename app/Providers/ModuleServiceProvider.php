@@ -19,6 +19,7 @@ class ModuleServiceProvider
 
 	/**
 	 * @param InstallManager $installManager
+	 * @param ModuleInitializer $moduleInitializer
 	 * @return void
 	 */
 	public function boot(

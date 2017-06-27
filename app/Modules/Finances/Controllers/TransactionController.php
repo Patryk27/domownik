@@ -169,6 +169,7 @@ class TransactionController
 	}
 
 	/**
+	 * @param string $viewName
 	 * @return \Illuminate\View\View
 	 */
 	protected function getCreateEditView($viewName) {

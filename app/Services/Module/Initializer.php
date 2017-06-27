@@ -28,6 +28,7 @@ class Initializer {
 	protected $moduleManager;
 
 	/**
+	 * @param Application $app
 	 * @param ModuleLoader $moduleLoader
 	 * @param ModuleManager $moduleManager
 	 */

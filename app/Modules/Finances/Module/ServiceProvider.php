@@ -58,6 +58,7 @@ class ServiceProvider
 	 * @return $this
 	 */
 	protected function bindRepositories(): self {
+		$this->app->bind(\App\Modules\Finances\Repositories\Contracts\BudgetConsolidationRepositoryContract::class, \App\Modules\Finances\Repositories\Eloquent\BudgetConsolidationRepository::class);
 		$this->app->bind(\App\Modules\Finances\Repositories\Contracts\BudgetRepositoryContract::class, \App\Modules\Finances\Repositories\Eloquent\BudgetRepository::class);
 		$this->app->bind(\App\Modules\Finances\Repositories\Contracts\TransactionCategoryRepositoryContract::class, \App\Modules\Finances\Repositories\Eloquent\TransactionCategoryRepository::class);
 		$this->app->bind(\App\Modules\Finances\Repositories\Contracts\TransactionRepositoryContract::class, \App\Modules\Finances\Repositories\Eloquent\TransactionRepository::class);
@@ -71,6 +72,7 @@ class ServiceProvider
 	 * @return $this
 	 */
 	protected function bindServices(): self {
+		$this->app->bind(\App\Modules\Finances\Services\Budget\RequestManagerContract::class, \App\Modules\Finances\Services\Budget\RequestManager::class);
 		$this->app->bind(\App\Modules\Finances\Services\Transaction\HistoryCollectorContract::class, \App\Modules\Finances\Services\Transaction\HistoryCollector::class);
 		$this->app->bind(\App\Modules\Finances\Services\Transaction\PeriodicityParserContract::class, \App\Modules\Finances\Services\Transaction\PeriodicityParser::class);
 		$this->app->bind(\App\Modules\Finances\Services\Transaction\RequestManagerContract::class, \App\Modules\Finances\Services\Transaction\RequestManager::class);

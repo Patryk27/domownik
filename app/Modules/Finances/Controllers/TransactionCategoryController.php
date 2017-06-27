@@ -70,7 +70,7 @@ class TransactionCategoryController
 	}
 
 	/**
-	 * @param Request $request
+	 * @param StoreRequest $request
 	 * @return \Illuminate\Http\Response
 	 */
 	public function actionStore(StoreRequest $request) {

@@ -3,7 +3,7 @@
 namespace App\Modules\Finances\Services\Transaction;
 
 use App\Exceptions\InvalidRequestException;
-use App\Modules\Finances\Http\Requests\Transaction\StoreRequest;
+use App\Modules\Finances\Http\Requests\Transaction\StoreRequest as TransactionStoreRequest;
 
 use App\Modules\Finances\Models\Transaction;
 use App\Modules\Finances\Models\TransactionSchedule;
@@ -29,7 +29,7 @@ class RequestManager
 	protected $transactionRepository;
 
 	/**
-	 * @var StoreRequest
+	 * @var TransactionStoreRequest
 	 */
 	protected $request;
 
@@ -58,7 +58,7 @@ class RequestManager
 	/**
 	 * @inheritDoc
 	 */
-	public function store($request): string {
+	public function store(TransactionStoreRequest $request): string {
 		$this->request = $request;
 		$this->beingCreated = !$request->has('transactionId');
 

@@ -5,7 +5,7 @@ return [
 
 	'budget-name' => [
 		'label' => 'Nazwa budżetu',
-		'placeholder' => 'Wpisz nazwę, która najlepiej będzie odzwierciedlała ten budżet, np. \'Patryk\' lub \'Domowy\'.',
+		'placeholder' => 'Wpisz nazwę, która najlepiej będzie odzwierciedlała ten budżet; np. \'Patryk\' lub \'Domowy\'.',
 	],
 
 	'budget-description' => [

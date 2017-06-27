@@ -6,6 +6,6 @@
 
 return [
 	'messages' => [
-		'success' => 'Budżet :budgetName został utworzony.',
+		'success' => 'Budżet \':budgetName\' został utworzony.',
 	],
 ];

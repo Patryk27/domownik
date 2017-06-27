@@ -2,7 +2,7 @@
 
 namespace App\Modules\Finances\Services\Transaction;
 
-use App\Modules\Finances\Http\Requests\Transaction\StoreRequest;
+use App\Modules\Finances\Http\Requests\Transaction\StoreRequest as TransactionStoreRequest;
 
 use App\Modules\Finances\Models\Transaction;
 use App\ServiceContracts\RequestManagerContract as BaseRequestManagerContract;
@@ -11,10 +11,10 @@ interface RequestManagerContract
 	extends BaseRequestManagerContract {
 
 	/**
-	 * @param StoreRequest $request
+	 * @param TransactionStoreRequest $request
 	 * @return string
 	 */
-	public function store($request): string;
+	public function store(TransactionStoreRequest $request): string;
 
 	/**
 	 * @param int $transactionId

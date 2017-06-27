@@ -39,7 +39,10 @@ class ScheduleProcessor
 	protected $transactionPeriodicityRepository;
 
 	/**
+	 * @param Connection $databaseConnection
 	 * @param TransactionScheduleRepositoryContract $transactionScheduleRepository
+	 * @param TransactionRepositoryContract $transactionRepository
+	 * @param TransactionPeriodicityRepositoryContract $transactionPeriodicityRepository
 	 */
 	public function __construct(
 		Connection $databaseConnection,

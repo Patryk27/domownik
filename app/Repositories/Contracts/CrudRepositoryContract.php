@@ -12,7 +12,6 @@ interface CrudRepositoryContract {
 	 * Returns given model or 'null' if model could not have been found.
 	 * @param int $id
 	 * @param string[] $columns
-	 * @param bool $required
 	 * @return Model|null
 	 */
 	public function get(int $id, array $columns = ['*']);
@@ -50,7 +49,7 @@ interface CrudRepositoryContract {
 	 * @param BaseModel $model
 	 * @return CrudRepositoryContract
 	 */
-	public function persist(BaseModel $model): CrudRepositoryContract;
+	public function persist(BaseModel &$model): CrudRepositoryContract;
 
 	/**
 	 * @return \Illuminate\Cache\TaggedCache

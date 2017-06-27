@@ -60,7 +60,7 @@ interface HistoryCollectorContract
 	public function getBeginDate();
 
 	/**
-	 * @param Carbon|null $dateBegin
+	 * @param $beginDate
 	 * @return HistoryCollectorContract
 	 */
 	public function setBeginDate($beginDate): HistoryCollectorContract;
@@ -71,7 +71,7 @@ interface HistoryCollectorContract
 	public function getEndDate();
 
 	/**
-	 * @param Carbon|null $dateBegin
+	 * @param $endDate
 	 * @return HistoryCollectorContract
 	 */
 	public function setEndDate($endDate): HistoryCollectorContract;

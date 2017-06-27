@@ -2,7 +2,7 @@
 
 namespace App\Modules\Finances\Services\TransactionCategory;
 
-use App\Modules\Finances\Http\Requests\TransactionCategory\StoreRequest;
+use App\Modules\Finances\Http\Requests\TransactionCategory\StoreRequest as TransactionCategoryStoreRequest;
 use App\Modules\Finances\Models\Transaction;
 use App\Modules\Finances\Models\TransactionCategory;
 use App\Modules\Finances\Repositories\Contracts\TransactionCategoryRepositoryContract;
@@ -39,7 +39,7 @@ class RequestManager
 	/**
 	 * @inheritDoc
 	 */
-	public function store(StoreRequest $request): RequestManagerContract {
+	public function store(TransactionCategoryStoreRequest $request): RequestManagerContract {
 		MyLog::info('Updating transaction category list: %s.', $request);
 
 		$this->databaseConnection->transaction(function() use ($request) {

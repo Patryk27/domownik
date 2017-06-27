@@ -17,7 +17,7 @@ return [
 
 	'transaction-name' => [
 		'label' => 'Nazwa transakcji:',
-		'placeholder' => 'Wpisz nazwę, która pozwoli Ci jak najdokładniej określić tę transakcję, np. \'wypłata\'.',
+		'placeholder' => 'Wpisz nazwę, która pozwoli Ci jak najdokładniej określić tę transakcję; np. \'wypłata\'.',
 	],
 
 	'transaction-category' => [
@@ -27,7 +27,7 @@ return [
 
 	'transaction-description' => [
 		'label' => 'Opis transakcji:',
-		'placeholder' => 'Opcjonalny opis transakcji, np. \'Wypłata z firmy Xyz.\'.',
+		'placeholder' => 'Opcjonalny opis transakcji; np. \'Wypłata z firmy Xyz.\'.',
 	],
 
 	'transaction-type' => [

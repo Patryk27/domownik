@@ -11,7 +11,7 @@ class StoreRequest
 	 * @return bool
 	 */
 	public function authorize() {
-		// @todo autoryzacja (prawa dostępu)
+		// @todo ACL
 		return true;
 	}
 

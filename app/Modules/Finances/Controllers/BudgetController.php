@@ -2,19 +2,18 @@
 
 namespace App\Modules\Finances\Controllers;
 
-use App\Modules\Finances\Models\Transaction;
-use App\Modules\Finances\Repositories\Contracts\TransactionScheduleRepositoryContract;
-use App\Modules\Finances\Http\Requests\Budget\StoreRequest;
+use App\Modules\Finances\Http\Requests\Budget\StoreRequest as BudgetStoreRequest;
 use App\Modules\Finances\Models\Budget;
-use App\Modules\Finances\Models\BudgetConsolidation;
+use App\Modules\Finances\Models\Transaction;
 use App\Modules\Finances\Repositories\Contracts\BudgetRepositoryContract;
 use App\Modules\Finances\Repositories\Contracts\TransactionRepositoryContract;
+use App\Modules\Finances\Repositories\Contracts\TransactionScheduleRepositoryContract;
+use App\Modules\Finances\Services\Budget\RequestManagerContract as BudgetRequestManagerContract;
 use App\Modules\Finances\Services\Transaction\HistoryCollectorContract;
 use App\Services\Breadcrumb\Manager as BreadcrumbManager;
 use App\Support\Facades\Date;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class BudgetController
 	extends \App\Http\Controllers\Controller {
@@ -23,6 +22,11 @@ class BudgetController
 	 * @var BreadcrumbManager
 	 */
 	protected $breadcrumbManager;
+
+	/**
+	 * @var BudgetRequestManagerContract
+	 */
+	protected $budgetRequestManager;
 
 	/**
 	 * @var BudgetRepositoryContract
@@ -46,19 +50,23 @@ class BudgetController
 
 	/**
 	 * @param BreadcrumbManager $breadcrumbManager
+	 * @param BudgetRequestManagerContract $budgetRequestManager
 	 * @param BudgetRepositoryContract $budgetRepository
 	 * @param TransactionRepositoryContract $budgetTransactionRepository
 	 * @param TransactionScheduleRepositoryContract $transactionScheduleRepository
-	 * @param HistoryCollectorContract $historyCollectorService
+	 * @param HistoryCollectorContract $transactionHistoryCollectorService
+	 * @internal param HistoryCollectorContract $historyCollectorService
 	 */
 	public function __construct(
 		BreadcrumbManager $breadcrumbManager,
+		BudgetRequestManagerContract $budgetRequestManager,
 		BudgetRepositoryContract $budgetRepository,
 		TransactionRepositoryContract $budgetTransactionRepository,
 		TransactionScheduleRepositoryContract $transactionScheduleRepository,
 		HistoryCollectorContract $transactionHistoryCollectorService
 	) {
 		$this->breadcrumbManager = $breadcrumbManager;
+		$this->budgetRequestManager = $budgetRequestManager;
 		$this->budgetRepository = $budgetRepository;
 		$this->budgetTransactionRepository = $budgetTransactionRepository;
 		$this->transactionScheduleRepository = $transactionScheduleRepository;
@@ -78,39 +86,21 @@ class BudgetController
 	}
 
 	/**
-	 * @param StoreRequest $request
+	 * @param BudgetStoreRequest $request
 	 * @return \Illuminate\Http\Response
 	 */
-	public function actionStore(StoreRequest $request) {
-		return DB::transaction(function() use ($request) {
-			// @todo extract this to a RequestManager class
+	public function actionStore(BudgetStoreRequest $request) {
+		$this->budgetRequestManager->store($request);
 
-			// create budget
-			$budget = new Budget();
-			$budget->type = $request->get('budgetType');
-			$budget->name = $request->get('budgetName');
-			$budget->description = $request->get('budgetDescription');
-			$budget->status = Budget::STATUS_ACTIVE;
-			$budget->saveOrFail();
+		$budget = $this->budgetRequestManager->getBudget();
 
-			// create budget consolidations
-			if ($budget->type === Budget::TYPE_CONSOLIDATED) {
-				foreach ($request->get('consolidatedBudgets') as $budgetId) {
-					$budgetConsolidation = new BudgetConsolidation();
-					$budgetConsolidation->base_budget_id = $budget->id;
-					$budgetConsolidation->subject_budget_id = $budgetId;
-					$budgetConsolidation->saveOrFail();
-				}
-			}
+		flash(__('Finances::requests/budget/store.messages.success', [
+			'budgetName' => $budget->name,
+		]), 'success');
 
-			flash(__('Finances::requests/budget/store.messages.success', [
-				'budgetName' => $budget->name,
-			]), 'success');
-
-			return response()->json([
-				'redirectUrl' => route('finances.budget.show', $budget->id)
-			]);
-		});
+		return response()->json([
+			'redirectUrl' => route('finances.budget.show', $budget->id)
+		]);
 	}
 
 	/**

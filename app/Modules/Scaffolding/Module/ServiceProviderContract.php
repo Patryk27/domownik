@@ -5,6 +5,7 @@ namespace App\Modules\Scaffolding\Module;
 interface ServiceProviderContract {
 
 	/**
+	 * @param string $moduleName
 	 * @return $this
 	 */
 	public function boot(string $moduleName): ServiceProviderContract;
