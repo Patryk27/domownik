@@ -49,6 +49,7 @@ class TransactionScheduleRepository
 				->table('transaction_schedules AS ts')
 				->join('transactions AS t', 't.id', '=', 'ts.transaction_id')
 				->where('t.parent_type', 'budget')
+				->where('t.parent_id', $budgetId)
 				->whereBetween('ts.date', [$dateFrom, $dateTo])
 				->orderBy('ts.date')
 				->orderBy('t.id');
