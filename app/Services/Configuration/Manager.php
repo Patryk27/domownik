@@ -4,9 +4,14 @@ namespace App\Services\Configuration;
 
 use App\Exceptions\ConfigurationException;
 use App\Repositories\Contracts\SettingRepositoryContract;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Auth\AuthManager;
 
 class Manager {
+
+	/**
+	 * @var AuthManager
+	 */
+	protected $authManager;
 
 	/**
 	 * @var SettingRepositoryContract
@@ -14,9 +19,14 @@ class Manager {
 	protected $settingsRepository;
 
 	/**
+	 * @param AuthManager $authManager
 	 * @param SettingRepositoryContract $settingsRepository
 	 */
-	public function __construct(SettingRepositoryContract $settingsRepository) {
+	public function __construct(
+		AuthManager $authManager,
+		SettingRepositoryContract $settingsRepository
+	) {
+		$this->authManager = $authManager;
 		$this->settingsRepository = $settingsRepository;
 	}
 
@@ -26,9 +36,11 @@ class Manager {
 	 * @return mixed|null
 	 */
 	public function getValueOrNull($key) {
+		$guard = $this->authManager->guard();
+
 		// check user preferences
-		if (Auth::check()) {
-			$value = $this->settingsRepository->getUserValueByKey(Auth::id(), $key);
+		if ($guard->check()) {
+			$value = $this->settingsRepository->getUserValueByKey($guard->id(), $key);
 
 			if (!is_null($value)) {
 				return $value;
