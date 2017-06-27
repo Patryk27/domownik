@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Backend;
+namespace Tests\Backend\Services;
 
 use App\Services\Breadcrumb\CustomPushHandlerContract;
 use App\Services\Breadcrumb\Manager as BreadcrumbManager;
