@@ -35,7 +35,7 @@ class Manager {
 	 * @param string $key
 	 * @return mixed|null
 	 */
-	public function getValueOrNull($key) {
+	public function getValueOrNull(string $key) {
 		$guard = $this->authManager->guard();
 
 		// check user preferences
@@ -57,7 +57,7 @@ class Manager {
 	 * @return mixed
 	 * @throws ConfigurationException
 	 */
-	public function getValueOrFail($key) {
+	public function getValueOrFail(string $key) {
 		$value = $this->getValueOrNull($key);
 
 		if (is_null($value)) {
@@ -72,7 +72,7 @@ class Manager {
 	 * @param string $key
 	 * @return mixed
 	 */
-	public function getValueOrDefault($key) {
+	public function getValueOrDefault(string $key) {
 		$value = $this->getValueOrNull($key);
 
 		if (is_null($value)) {
@@ -87,7 +87,7 @@ class Manager {
 	 * @param string $key
 	 * @return mixed
 	 */
-	public function getDefaultValue($key) {
+	public function getDefaultValue(string $key) {
 		// @todo
 
 		if ($key === 'language') {
