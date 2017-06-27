@@ -31,7 +31,7 @@ class Manager
 	 * @param string $title
 	 * @return $this
 	 */
-	public function push($url, $title) {
+	public function push(string $url, string $title): self {
 		$this->breadcrumbs[] = new Breadcrumb($url, $title);
 		return $this;
 	}
@@ -41,7 +41,7 @@ class Manager
 	 * @return $this
 	 * @throws InternalException
 	 */
-	public function pushCustom($custom) {
+	public function pushCustom($custom): self {
 		foreach ($this->customPushHandlers as $customPushHandler) {
 			$result = $customPushHandler->getBreadcrumb($custom);
 
@@ -58,7 +58,7 @@ class Manager
 	 * @param CustomPushHandlerContract $customPushHandler
 	 * @return $this
 	 */
-	public function registerCustomPushHandler($customPushHandler) {
+	public function registerCustomPushHandler(CustomPushHandlerContract $customPushHandler): self {
 		$this->customPushHandlers[] = $customPushHandler;
 		return $this;
 	}
