@@ -45,9 +45,13 @@ class Manager
 		foreach ($this->customPushHandlers as $customPushHandler) {
 			$result = $customPushHandler->getBreadcrumb($custom);
 
-			if (!empty($result)) {
-				$this->breadcrumbs[] = $result;
-				return $this;
+			if (isset($result)) {
+				if (is_object($result) && $result instanceof Breadcrumb) {
+					$this->breadcrumbs[] = $result;
+					return $this;
+				} else {
+					throw new InternalException('Custom push handler did not return a valid breadcrumb.');
+				}
 			}
 		}
 
@@ -66,14 +70,14 @@ class Manager
 	/**
 	 * @return Breadcrumb[]
 	 */
-	public function get() {
+	public function get(): array {
 		return $this->breadcrumbs;
 	}
 
 	/**
 	 * @inheritDoc
 	 */
-	public function count() {
+	public function count(): int {
 		return count($this->breadcrumbs);
 	}
 
