@@ -22,11 +22,6 @@ class PeriodicityParser
 	implements PeriodicityParserContract {
 
 	/**
-	 * @var Carbon
-	 */
-	protected $carbon;
-
-	/**
 	 * @var TransactionRepositoryContract
 	 */
 	protected $transactionRepository;
@@ -52,16 +47,13 @@ class PeriodicityParser
 	protected $dateTo;
 
 	/**
-	 * @param Carbon $carbon
 	 * @param TransactionRepositoryContract $transactionRepository
 	 * @param TransactionPeriodicityRepositoryContract $transactionPeriodicityRepository
 	 */
 	public function __construct(
-		Carbon $carbon,
 		TransactionRepositoryContract $transactionRepository,
 		TransactionPeriodicityRepositoryContract $transactionPeriodicityRepository
 	) {
-		$this->carbon = $carbon;
 		$this->transactionRepository = $transactionRepository;
 		$this->transactionPeriodicityRepository = $transactionPeriodicityRepository;
 	}
