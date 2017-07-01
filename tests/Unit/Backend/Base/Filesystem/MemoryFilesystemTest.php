@@ -61,6 +61,23 @@ class MemoryFilesystemTest
 	}
 
 	/**
+	 * Checks if put() throws an exception when trying to create a file in a non-existing directory.
+	 */
+	public function testPutOnNonExistingDirectory() {
+		$this->expectExceptionMessage('File not found at path: a/b/c');
+		$this->memoryFs->put('a/b/c/d', 'test');
+	}
+
+	/**
+	 * Checks if makeDirectory() throws an exception when trying to create a directory in a non-existing parent
+	 * directory.
+	 */
+	public function testMakeDirectoryOnNonExistingDirectory() {
+		$this->expectExceptionMessage('File not found at path: a/b/c');
+		$this->memoryFs->makeDirectory('a/b/c/d');
+	}
+
+	/**
 	 * Checks if get() throws an exception when trying to read an non-existing file.
 	 */
 	public function testGetOnNonExistingFile() {

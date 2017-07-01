@@ -6,7 +6,7 @@ use League\Flysystem\FileExistsException;
 use League\Flysystem\FileNotFoundException;
 
 /**
- * A filesystem entity - represents a file or directory.
+ * A filesystem entity - represents a file or a directory.
  */
 class Entity {
 
@@ -39,7 +39,6 @@ class Entity {
 	/**
 	 * @param string $type
 	 * @param string $name
-	 * @param array $children
 	 */
 	public function __construct(string $type, string $name) {
 		$this->type = $type;
@@ -50,6 +49,7 @@ class Entity {
 	}
 
 	/**
+	 * Returns a File entity with given name and contents.
 	 * @param string $name
 	 * @param mixed $contents
 	 * @return Entity
@@ -62,6 +62,7 @@ class Entity {
 	}
 
 	/**
+	 * Returns a Directory entity with given name and children.
 	 * @param string $name
 	 * @param Entity[] $children
 	 * @return Entity
@@ -86,14 +87,6 @@ class Entity {
 
 		if (empty($pathItems)) {
 			return $this;
-		}
-
-		if ($pathItems[0] === '.') {
-			array_shift($pathItems);
-
-			if (empty($pathItems)) {
-				return $this;
-			}
 		}
 
 		$pathItemCount = count($pathItems);
