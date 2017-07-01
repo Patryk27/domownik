@@ -89,7 +89,6 @@ return [
 		'Log' => Illuminate\Support\Facades\Log::class,
 		'Mail' => Illuminate\Support\Facades\Mail::class,
 		'Module' => App\Support\Facades\Module::class,
-		'MyLog' => App\Support\Facades\MyLog::class,
 		'Notification' => Illuminate\Support\Facades\Notification::class,
 		'Password' => Illuminate\Support\Facades\Password::class,
 		'Queue' => Illuminate\Support\Facades\Queue::class,

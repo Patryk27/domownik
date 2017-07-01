@@ -1,32 +1,31 @@
 <?php
 
 use App\Modules\Finances\Models\Budget;
-use App\Support\Classes\MyLog;
+use App\Services\Logger\Contract as LoggerContract;
 use Illuminate\Database\Seeder;
 
 class BudgetSeeder
 	extends Seeder {
 
 	/**
-	 * @var MyLog
+	 * @var LoggerContract
 	 */
-	protected $myLog;
+	protected $logger;
 
 	/**
-	 * BudgetSeeder constructor.
-	 * @param MyLog $myLog
+	 * @param LoggerContract $logger
 	 */
 	public function __construct(
-		MyLog $myLog
+		LoggerContract $logger
 	) {
-		$this->myLog = $myLog;
+		$this->logger = $logger;
 	}
 
 	/**
 	 * @return void
 	 */
 	public function run() {
-		$this->myLog->info('Creating first budget...');
+		$this->logger->info('Creating first budget...');
 
 		$budget = new Budget();
 		$budget->type = Budget::TYPE_REGULAR;
@@ -35,7 +34,7 @@ class BudgetSeeder
 		$budget->status = Budget::STATUS_ACTIVE;
 		$budget->save();
 
-		$this->myLog->debug('Flushing cache...');
+		$this->logger->debug('Flushing cache...');
 		Cache::flush();
 	}
 

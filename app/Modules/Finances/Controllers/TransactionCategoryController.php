@@ -63,8 +63,7 @@ class TransactionCategoryController
 			return response()->json($tree);
 		}
 
-		$this->breadcrumbManager
-			->push(null, __('Finances::breadcrumb.transaction-category.list'));
+		$this->breadcrumbManager->push(route('finances.transaction-category.list'), __('Finances::breadcrumb.transaction-category.list'));
 
 		return view('Finances::transaction-category.list');
 	}

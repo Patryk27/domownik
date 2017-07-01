@@ -3,8 +3,9 @@
 namespace App\Support\Classes\Form\Controls;
 
 use App\Exceptions\Exception;
-use App\Support\Facades\MyLog;
+use App\Services\Logger\Contract as LoggerContract;
 use Illuminate\Contracts\Support\Htmlable;
+use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\View;
 
 /**
@@ -18,10 +19,32 @@ abstract class AbstractControl
 	implements ControlContract, Htmlable {
 
 	/**
+	 * @var Application
+	 */
+	private $app;
+
+	/**
+	 * @var LoggerContract
+	 */
+	private $logger;
+
+	/**
 	 * Returns control's view name.
 	 * @return string
 	 */
 	abstract protected function getViewName();
+
+	/**
+	 * @param Application $app
+	 * @param LoggerContract $logger
+	 */
+	public function __construct(
+		Application $app,
+		LoggerContract $logger
+	) {
+		$this->app = $app;
+		$this->logger = $logger;
+	}
 
 	/**
 	 * @return string
@@ -48,7 +71,7 @@ abstract class AbstractControl
 			if (!$objectReflector->hasMethod($getterName)) {
 				$message = sprintf('Cannot prepare view of form control \'%s\' because it does not have any getter for field \'%s\'.', $objectReflector->getName(), $propertyName);
 
-				MyLog::emergency($message);
+				$this->logger->emergency($message);
 
 				/**
 				 * Yeah, yeah, __toString() cannot throw exceptions - but is there any other thing we can do?

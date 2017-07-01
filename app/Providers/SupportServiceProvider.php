@@ -40,10 +40,6 @@ class SupportServiceProvider
 			return $app->make(\App\Support\Classes\Form::class);
 		});
 
-		$this->app->bind('mylog', function(Application $app) {
-			return $app->make(\App\Support\Classes\MyLog::class);
-		});
-
 		$this->app->bind('translation', function(Application $app) {
 			return $app->make(\App\Support\Classes\Translation::class);
 		});

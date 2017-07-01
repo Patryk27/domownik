@@ -8,11 +8,16 @@ use App\Modules\Finances\Models\TransactionCategory;
 use App\Modules\Finances\Repositories\Contracts\TransactionCategoryRepositoryContract;
 use App\Modules\Finances\Services\TransactionCategory\RequestManager\CategoryDeleter;
 use App\Modules\Finances\Services\TransactionCategory\RequestManager\CategoryUpdater;
-use App\Support\Facades\MyLog;
+use App\Services\Logger\Contract as LoggerContract;
 use Illuminate\Database\Connection;
 
 class RequestManager
 	implements RequestManagerContract {
+
+	/**
+	 * @var LoggerContract
+	 */
+	protected $logger;
 
 	/**
 	 * @var Connection
@@ -25,13 +30,16 @@ class RequestManager
 	protected $transactionCategoryRepository;
 
 	/**
+	 * @param LoggerContract $logger
 	 * @param Connection $databaseConnection
 	 * @param TransactionCategoryRepositoryContract $transactionCategoryRepository
 	 */
 	public function __construct(
+		LoggerContract $logger,
 		Connection $databaseConnection,
 		TransactionCategoryRepositoryContract $transactionCategoryRepository
 	) {
+		$this->logger = $logger;
 		$this->databaseConnection = $databaseConnection;
 		$this->transactionCategoryRepository = $transactionCategoryRepository;
 	}
@@ -40,7 +48,7 @@ class RequestManager
 	 * @inheritDoc
 	 */
 	public function store(TransactionCategoryStoreRequest $request): RequestManagerContract {
-		MyLog::info('Updating transaction category list: %s.', $request);
+		$this->logger->info('Updating transaction category list: %s.', $request);
 
 		$this->databaseConnection->transaction(function() use ($request) {
 			$categoryUpdater = new CategoryUpdater();

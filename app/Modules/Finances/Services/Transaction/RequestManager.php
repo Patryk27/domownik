@@ -10,13 +10,18 @@ use App\Modules\Finances\Models\TransactionSchedule;
 use App\Modules\Finances\Models\TransactionValueConstant;
 use App\Modules\Finances\Models\TransactionValueRange;
 use App\Modules\Finances\Repositories\Contracts\TransactionRepositoryContract;
-use App\Support\Facades\MyLog;
+use App\Services\Logger\Contract as LoggerContract;
 use Carbon\Carbon;
 use Illuminate\Database\Connection;
 use Illuminate\Database\Eloquent\Model;
 
 class RequestManager
 	implements RequestManagerContract {
+
+	/**
+	 * @var LoggerContract
+	 */
+	protected $logger;
 
 	/**
 	 * @var Connection
@@ -44,13 +49,16 @@ class RequestManager
 	protected $beingCreated;
 
 	/**
+	 * @param LoggerContract $logger
 	 * @param Connection $databaseConnection
 	 * @param TransactionRepositoryContract $transactionRepository
 	 */
 	public function __construct(
+		LoggerContract $logger,
 		Connection $databaseConnection,
 		TransactionRepositoryContract $transactionRepository
 	) {
+		$this->logger = $logger;
 		$this->databaseConnection = $databaseConnection;
 		$this->transactionRepository = $transactionRepository;
 	}
@@ -63,9 +71,9 @@ class RequestManager
 		$this->beingCreated = !$request->has('transactionId');
 
 		if ($this->beingCreated) {
-			MyLog::info('Creating new transaction: %s', $request);
+			$this->logger->info('Creating new transaction: %s', $request);
 		} else {
-			MyLog::info('Updating transaction with id=%d: %s', $this->request->get('transactionId'), $request);
+			$this->logger->info('Updating transaction with id=%d: %s', $this->request->get('transactionId'), $request);
 		}
 
 		$this->databaseConnection->transaction(function() {
@@ -94,7 +102,7 @@ class RequestManager
 	 * @inheritDoc
 	 */
 	public function delete(int $transactionId): RequestManagerContract {
-		MyLog::info('Deleting transaction: id=%d', $transactionId);
+		$this->logger->info('Deleting transaction: id=%d', $transactionId);
 
 		$this->transactionRepository->delete($transactionId);
 

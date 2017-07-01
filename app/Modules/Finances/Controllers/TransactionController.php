@@ -87,7 +87,7 @@ class TransactionController
 	public function actionCreateToBudget(Budget $budget) {
 		$this->breadcrumbManager
 			->pushCustom($budget)
-			->push(null, __('Finances::breadcrumb.transaction.create'));
+			->push(route('finances.transaction.create-to-budget', $budget->id), __('Finances::breadcrumb.transaction.create'));
 
 		$view = $this->getCreateEditView('create-to-budget');
 		$view->with([
@@ -104,7 +104,7 @@ class TransactionController
 	public function actionEdit(Transaction $transaction) {
 		$this->pushTransactionParentBreadcrumb($transaction);
 
-		$this->breadcrumbManager->push(null, __('Finances::breadcrumb.transaction.edit', [
+		$this->breadcrumbManager->push(route('finances.transaction.edit', $transaction->id), __('Finances::breadcrumb.transaction.edit', [
 			'transactionName' => $transaction->name
 		]));
 
@@ -200,6 +200,7 @@ class TransactionController
 	}
 
 	/**
+	 * Creates and pushes a breadcrumb of given transaction's parent (a budget or a saving).
 	 * @param Transaction $transaction
 	 * @return $this
 	 */

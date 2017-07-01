@@ -24,10 +24,11 @@ class LogServiceProvider
 			$monolog->pushProcessor(new \Monolog\Processor\IntrospectionProcessor(\Monolog\Logger::DEBUG, [
 				'Illuminate\\',
 				'Laravel\\',
-				'App\\Support\\Classes\\MyLog',
-				'App\\Support\\Facades\\MyLog'
+				'App\\Classes\\Logger\\Standard',
 			]));
 		}
+
+		$this->app->bind(\App\Services\Logger\Contract::class, \App\Services\Logger\Standard::class);
 	}
 
 }

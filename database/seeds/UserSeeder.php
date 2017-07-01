@@ -1,25 +1,24 @@
 <?php
 
 use App\Models\User;
-use App\Support\Classes\MyLog;
+use App\Services\Logger\Contract as LoggerContract;
 use Illuminate\Database\Seeder;
 
 class UserSeeder
 	extends Seeder {
 
 	/**
-	 * @var MyLog
+	 * @var LoggerContract
 	 */
-	protected $myLog;
+	protected $logger;
 
 	/**
-	 * BudgetSeeder constructor.
-	 * @param MyLog $myLog
+	 * @param LoggerContract $logger
 	 */
 	public function __construct(
-		MyLog $myLog
+		LoggerContract $logger
 	) {
-		$this->myLog = $myLog;
+		$this->logger = $logger;
 	}
 
 	/**
@@ -31,11 +30,11 @@ class UserSeeder
 				->first();
 
 		if (!empty($user)) {
-			$this->myLog->warning('Not creating \'admin\' user, because one already exists.');
+			$this->logger->warning('Not creating \'admin\' user because one already exists.');
 			return;
 		}
 
-		$this->myLog->info('Creating \'admin\' user...');
+		$this->logger->info('Creating \'admin\' user...');
 
 		$user = new User();
 		$user->login = 'admin';
@@ -44,7 +43,7 @@ class UserSeeder
 		$user->is_active = 1;
 		$user->save();
 
-		$this->myLog->info('Flushing cache...');
+		$this->logger->info('Flushing cache...');
 		Cache::flush();
 	}
 

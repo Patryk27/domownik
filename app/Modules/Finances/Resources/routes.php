@@ -29,7 +29,7 @@ Route::group(['prefix' => 'finances', 'middleware' => 'auth'], function() {
 	Route::group(['prefix' => 'transaction'], function() {
 		// /finances/transaction/create/to-budget
 		Route::get('create/to-budget/{budget}', '\\' . TransactionController::class . '@actionCreateToBudget')
-			 ->name('finances.transaction.createToBudget');
+			 ->name('finances.transaction.create-to-budget');
 
 		// /finances/transaction/store
 		Route::post('store', '\\' . TransactionController::class . '@actionStore')
@@ -41,7 +41,7 @@ Route::group(['prefix' => 'finances', 'middleware' => 'auth'], function() {
 
 		// /finances/transaction/list/from-budget
 		Route::get('list/from-budget/{budget}', '\\' . TransactionController::class . '@actionListFromBudget')
-			 ->name('finances.transaction.listFromBudget');
+			 ->name('finances.transaction.list-from-budget');
 
 		// /finances/transaction/edit
 		Route::get('edit/{transaction}', '\\' . TransactionController::class . '@actionEdit')

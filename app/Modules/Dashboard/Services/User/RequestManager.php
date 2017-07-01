@@ -5,12 +5,17 @@ namespace App\Modules\Dashboard\Services\User;
 use App\Models\User;
 use App\Modules\Dashboard\Http\Requests\User\StoreRequest as UserStoreRequest;
 use App\Repositories\Contracts\UserRepositoryContract;
+use App\Services\Logger\Contract as LoggerContract;
 use Illuminate\Database\Connection as DatabaseConnection;
 use App\ServiceContracts\RequestManagerContract as BaseRequestManagerContract;
-use MyLog;
 
 class RequestManager
 	implements RequestManagerContract {
+
+	/**
+	 * @var LoggerContract
+	 */
+	protected $logger;
 
 	/**
 	 * @var DatabaseConnection
@@ -33,13 +38,16 @@ class RequestManager
 	protected $model;
 
 	/**
+	 * @param LoggerContract $logger
 	 * @param DatabaseConnection $databaseConnection
 	 * @param UserRepositoryContract $userRepository
 	 */
 	public function __construct(
+		LoggerContract $logger,
 		DatabaseConnection $databaseConnection,
 		UserRepositoryContract $userRepository
 	) {
+		$this->logger = $logger;
 		$this->databaseConnection = $databaseConnection;
 		$this->userRepository = $userRepository;
 	}
@@ -66,7 +74,7 @@ class RequestManager
 	 * @inheritDoc
 	 */
 	public function delete(int $userId): RequestManagerContract {
-		MyLog::info('Deleting user with id=%d.', $userId);
+		$this->logger->info('Deleting user with id=%d.', $userId);
 
 		$this->model = $this->userRepository->getOrFail($userId);
 		$this->userRepository->delete($this->model->id);
@@ -89,7 +97,7 @@ class RequestManager
 	 * @return RequestManager
 	 */
 	protected function update(): self {
-		MyLog::info('Updating user with id=%d: %s', $this->request->get('userId'), $this->request);
+		$this->logger->info('Updating user with id=%d: %s', $this->request->get('userId'), $this->request);
 
 		$user = $this->userRepository->getOrFail($this->request->get('userId'));
 		$user->login = $this->request->get('userLogin');
@@ -110,7 +118,7 @@ class RequestManager
 	 * @return RequestManager
 	 */
 	protected function insert(): self {
-		MyLog::info('Creating new user: %s', $this->request);
+		$this->logger->info('Creating new user: %s', $this->request);
 
 		$user = new User();
 		$user->login = $this->request->get('userLogin');

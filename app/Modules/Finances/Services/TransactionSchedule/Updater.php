@@ -5,13 +5,18 @@ namespace App\Modules\Finances\Services\TransactionSchedule;
 use App\Modules\Finances\Models\TransactionSchedule;
 use App\Modules\Finances\Repositories\Contracts\TransactionScheduleRepositoryContract;
 use App\Modules\Finances\Services\Transaction\PeriodicityParserContract;
+use App\Services\Logger\Contract as LoggerContract;
 use App\Support\Facades\Date;
-use App\Support\Facades\MyLog;
 use Carbon\Carbon;
 use Illuminate\Database\Connection;
 
 class Updater
 	implements UpdaterContract {
+
+	/**
+	 * @var LoggerContract
+	 */
+	protected $logger;
 
 	/**
 	 * @var Connection
@@ -29,15 +34,18 @@ class Updater
 	protected $transactionPeriodicityParserService;
 
 	/**
+	 * @param LoggerContract $logger
 	 * @param Connection $databaseConnection
 	 * @param TransactionScheduleRepositoryContract $transactionScheduleRepository
 	 * @param PeriodicityParserContract $transactionPeriodicityParserService
 	 */
 	public function __construct(
+		LoggerContract $logger,
 		Connection $databaseConnection,
 		TransactionScheduleRepositoryContract $transactionScheduleRepository,
 		PeriodicityParserContract $transactionPeriodicityParserService
 	) {
+		$this->logger = $logger;
 		$this->databaseConnection = $databaseConnection;
 		$this->transactionScheduleRepository = $transactionScheduleRepository;
 		$this->transactionPeriodicityParserService = $transactionPeriodicityParserService;
@@ -47,7 +55,7 @@ class Updater
 	 * @inheritDoc
 	 */
 	public function updateScheduleByTransactionId(int $transactionId): UpdaterContract {
-		MyLog::info('Updating schedule for transaction with id=%d.', $transactionId);
+		$this->logger->info('Updating schedule for transaction with id=%d.', $transactionId);
 
 		$today = Carbon::today();
 
@@ -65,11 +73,11 @@ class Updater
 
 			foreach ($dates as $date) {
 				if ($date->lt($today)) {
-					MyLog::info('-> NOT adding to schedule date \'%s\', because it\'s in the past.', $date->format('Y-m-d'));
+					$this->logger->info('-> NOT adding to schedule date \'%s\', because it\'s in the past.', $date->format('Y-m-d'));
 					continue;
 				}
 
-				MyLog::info('-> adding date to schedule: %s.', $date->format('Y-m-d'));
+				$this->logger->info('-> adding date to schedule: %s.', $date->format('Y-m-d'));
 
 				$transactionSchedule = new TransactionSchedule();
 				$transactionSchedule->transaction_id = $transactionId;
@@ -82,9 +90,8 @@ class Updater
 			$this->databaseConnection->rollBack();
 			throw $ex;
 		} finally {
-			MyLog::info('Cleaning up...');
+			$this->logger->info('Cleaning up...');
 
-			// flush caches
 			$this->transactionScheduleRepository
 				->getFlushCache()
 				->flush();

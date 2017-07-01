@@ -4,14 +4,15 @@ namespace App\Services\Module;
 
 use App\Models\Module;
 use App\Models\ModuleSetting;
-
 use App\Repositories\Contracts\ModuleRepositoryContract;
 use App\Repositories\Contracts\ModuleSettingRepositoryContract;
-use App\Support\Classes\MyLog;
+use App\Services\Logger\Contract as LoggerContract;
 use App\Support\UsesCache;
+use Illuminate\Cache\Repository as CacheRepository;
+use Illuminate\Contracts\Filesystem\Factory as FilesystemFactoryContract;
+use Illuminate\Contracts\Filesystem\Filesystem as FilesystemContract;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Collection;
-use Illuminate\Cache\Repository as CacheRepository;
 
 class Manager {
 
@@ -23,9 +24,14 @@ class Manager {
 	protected $app;
 
 	/**
-	 * @var MyLog
+	 * @var LoggerContract
 	 */
-	protected $myLog;
+	protected $logger;
+
+	/**
+	 * @var FilesystemContract
+	 */
+	protected $storage;
 
 	/**
 	 * @var CacheRepository
@@ -45,7 +51,7 @@ class Manager {
 	/**
 	 * @var string[]
 	 */
-	protected $foundModuleNames;
+	protected $foundModuleNames = [];
 
 	/**
 	 * List of modules which should not be loaded.
@@ -58,20 +64,23 @@ class Manager {
 
 	/**
 	 * @param Application $app
-	 * @param MyLog $myLog
+	 * @param LoggerContract $logger
+	 * @param FilesystemFactoryContract $storage
 	 * @param CacheRepository $cacheRepository
 	 * @param ModuleRepositoryContract $moduleRepository
 	 * @param ModuleSettingRepositoryContract $moduleSettingRepository
 	 */
 	public function __construct(
 		Application $app,
-		MyLog $myLog,
+		LoggerContract $logger,
+		FilesystemFactoryContract $fsFactory,
 		CacheRepository $cacheRepository,
 		ModuleRepositoryContract $moduleRepository,
 		ModuleSettingRepositoryContract $moduleSettingRepository
 	) {
 		$this->app = $app;
-		$this->myLog = $myLog;
+		$this->logger = $logger;
+		$this->storage = $fsFactory->disk('app');
 		$this->cacheRepository = $cacheRepository;
 		$this->moduleRepository = $moduleRepository;
 		$this->moduleSettingRepository = $moduleSettingRepository;
@@ -101,8 +110,10 @@ class Manager {
 		$cacheKey = $this->getCacheKey(__FUNCTION__, func_get_args());
 
 		return $this->cacheRepository->rememberForever($cacheKey, function() {
-			$modulesDir = 'Modules' . DIRECTORY_SEPARATOR;
-			return glob($modulesDir . '*');
+			return array_map(function($modulePath) {
+				$modulePath = explode('/', $modulePath);
+				return $modulePath[1];
+			}, $this->storage->directories('Modules'));
 		});
 	}
 
@@ -136,7 +147,7 @@ class Manager {
 		$module = $this->moduleRepository->getByName($moduleName);
 
 		if (empty($module)) {
-			$this->myLog->notice('Module with name=\'%s\' has not been found in the database - creating one.', $moduleName);
+			$this->logger->notice('Module with name=\'%s\' has not been found in the database - creating one.', $moduleName);
 
 			$module = new Module();
 			$module->name = $moduleName;
@@ -144,7 +155,7 @@ class Manager {
 
 			$this->moduleRepository->persist($module);
 
-			$this->myLog->notice('... created module id=%d.', $module->id);
+			$this->logger->notice('... created module id=%d.', $module->id);
 		}
 
 		return $module->id;
@@ -163,7 +174,7 @@ class Manager {
 		$settingValue = $this->moduleSettingRepository->getValueByKey($moduleId, $settingKey);
 
 		if (is_null($settingValue)) {
-			$this->myLog->notice('Module with id=%d does not have any value for setting=\'%s\', setting default one: \'%s\'.', $moduleId, $settingKey, json_encode($settingDefaultValue));
+			$this->logger->notice('Module with id=%d does not have any value for setting=\'%s\', setting default one: \'%s\'.', $moduleId, $settingKey, json_encode($settingDefaultValue));
 
 			$moduleSetting = new ModuleSetting();
 			$moduleSetting->module_id = $moduleId;
@@ -181,7 +192,7 @@ class Manager {
 	/**
 	 * @return string[]
 	 */
-	public function getFoundModuleNames() {
+	public function getFoundModuleNames(): array {
 		return $this->foundModuleNames;
 	}
 

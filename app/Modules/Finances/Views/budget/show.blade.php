@@ -31,13 +31,13 @@
                 {{ __('Finances::views/budget/show.budget-management.header') }}
             </h4>
 
-            <a href="{{ route('finances.transaction.createToBudget', $budget->id) }}"
+            <a href="{{ route('finances.transaction.create-to-budget', $budget->id) }}"
                class="btn btn-sm btn-success">
                 <i class="fa fa-plus"></i>&nbsp;
                 {{ __('Finances::views/budget/show.budget-management.create-transaction') }}
             </a>
 
-            <a href="{{ route('finances.transaction.listFromBudget', $budget->id) }}"
+            <a href="{{ route('finances.transaction.list-from-budget', $budget->id) }}"
                class="btn btn-sm btn-info">
                 <i class="fa fa-list"></i>&nbsp;
                 {{ __('Finances::views/budget/show.budget-management.list-transactions') }}

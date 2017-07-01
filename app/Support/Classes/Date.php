@@ -11,7 +11,7 @@ class Date {
 	 * @param string|Carbon $date
 	 * @return string
 	 */
-	public function format($format, $date) {
+	public function format(string $format, $date): string {
 		if (is_string($date)) {
 			$date = new Carbon($date);
 		}
@@ -39,8 +39,8 @@ class Date {
 	/**
 	 * Strips (sets to zero) time of given Carbon date.
 	 * Does not modify given parameter - returns a new, modified date instead.
-	 * @param Carbon|null $date
-	 * @return Carbon|null
+	 * @param \Carbon\Carbon|null $date
+	 * @return \Carbon\Carbon|null
 	 */
 	public function stripTime($date) {
 		if (isset($date) && $date instanceof Carbon) {
