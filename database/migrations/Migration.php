@@ -24,6 +24,12 @@ abstract class Migration
 	protected $schemaBuilder;
 
 	/**
+	 * Equal to 'true' if migration is begin run on a testing database.
+	 * @var bool
+	 */
+	protected $testing;
+
+	/**
 	 * Migration constructor.
 	 */
 	public function __construct() {
@@ -31,6 +37,8 @@ abstract class Migration
 
 		$this->databaseConnection = app()->make(DatabaseConnection::class);
 		$this->schemaBuilder = $this->databaseConnection->getSchemaBuilder();
+
+		$this->testing = true; // @todo
 	}
 
 	/**

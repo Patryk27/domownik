@@ -1,9 +1,7 @@
 <?php
 
-namespace Tests\Unit\Backend\Filesystem;
-
 use App\Filesystem\Memory as MemoryFilesystem;
-use Tests\TestCase;
+use Tests\Unit\TestCase;
 
 class MemoryFilesystemTest
 	extends TestCase {

@@ -127,6 +127,7 @@ class PeriodicityParser
 	public function setDateRange(Carbon $dateFrom, Carbon $dateTo): PeriodicityParserContract {
 		$this->dateFrom = $dateFrom;
 		$this->dateTo = $dateTo;
+
 		return $this;
 	}
 

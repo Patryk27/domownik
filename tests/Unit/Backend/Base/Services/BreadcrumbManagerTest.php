@@ -1,11 +1,9 @@
 <?php
 
-namespace Tests\Unit\Backend\Services;
-
 use App\Services\Breadcrumb\CustomPushHandlerContract;
 use App\Services\Breadcrumb\Manager as BreadcrumbManager;
 use App\ValueObjects\Breadcrumb as BreadcrumbVO;
-use Tests\TestCase;
+use Tests\Unit\TestCase;
 
 class BreadcrumbManagerTest
 	extends TestCase {

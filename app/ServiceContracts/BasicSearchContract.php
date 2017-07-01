@@ -4,6 +4,10 @@ namespace App\ServiceContracts;
 
 use Illuminate\Support\Collection;
 
+/**
+ * @todo delete this interface
+ * @deprecated
+ */
 interface BasicSearchContract {
 
 	/**

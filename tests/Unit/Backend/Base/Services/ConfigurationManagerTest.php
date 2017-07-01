@@ -1,12 +1,9 @@
 <?php
 
-namespace Test\Unit\Backend\Base\Services;
-
 use App\Repositories\Contracts\SettingRepositoryContract;
 use App\Repositories\Eloquent\SettingRepository;
 use App\Services\Configuration\Manager as ConfigurationManager;
-use PHPUnit_Framework_MockObject_MockObject;
-use Tests\TestCase;
+use Tests\Unit\TestCase;
 
 class ConfigurationManagerTest
 	extends TestCase {

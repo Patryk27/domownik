@@ -11,6 +11,10 @@ class CreateFinances
 	public function up() {
 		$this->logCreateTable('budgets');
 		$this->schemaBuilder->create('budgets', function(Blueprint $table) {
+			if ($this->testing) {
+				$table->engine = 'MyISAM';
+			}
+
 			$table->increments('id');
 			$table->char('type', 32); // Laravel has some weird issues with enums and thus we use varchar
 			$table->char('name', 64);
@@ -28,6 +32,10 @@ class CreateFinances
 
 		$this->logCreateTable('budget_consolidations');
 		$this->schemaBuilder->create('budget_consolidations', function(Blueprint $table) {
+			if ($this->testing) {
+				$table->engine = 'MyISAM';
+			}
+
 			$table->increments('id');
 			$table->unsignedInteger('base_budget_id');
 			$table->unsignedInteger('subject_budget_id');
@@ -43,6 +51,10 @@ class CreateFinances
 
 		$this->logCreateTable('transaction_categories');
 		$this->schemaBuilder->create('transaction_categories', function(Blueprint $table) {
+			if ($this->testing) {
+				$table->engine = 'MyISAM';
+			}
+
 			$table->increments('id');
 			$table->unsignedInteger('parent_category_id');
 			$table->char('name', 128);
@@ -51,6 +63,10 @@ class CreateFinances
 
 		$this->logCreateTable('transactions');
 		$this->schemaBuilder->create('transactions', function(Blueprint $table) {
+			if ($this->testing) {
+				$table->engine = 'MyISAM';
+			}
+
 			$table->increments('id');
 			$table->unsignedInteger('parent_transaction_id')
 				  ->nullable();
@@ -70,30 +86,46 @@ class CreateFinances
 			$table->index('type');
 			$table->index('name');
 
-			$table->foreign('category_id')
-				  ->references('id')
-				  ->on('transaction_categories');
+			if (!$this->testing) {
+				$table->foreign('category_id')
+					  ->references('id')
+					  ->on('transaction_categories');
+			}
 		});
 
 		$this->logCreateTable('transaction_periodicities');
 		$this->schemaBuilder->create('transaction_periodicities', function(Blueprint $table) {
+			if ($this->testing) {
+				$table->engine = 'MyISAM';
+			}
+
 			$table->increments('id');
 			$table->unsignedInteger('transaction_id');
 			$table->morphs('transaction_periodicity', 'fk_transaction_periodicities_1');
 
-			$table->foreign('transaction_id')
-				  ->references('id')
-				  ->on('transactions');
+			if (!$this->testing) {
+				$table->foreign('transaction_id')
+					  ->references('id')
+					  ->on('transactions');
+			}
 		});
 
 		$this->logCreateTable('transaction_periodicity_dailies');
 		$this->schemaBuilder->create('transaction_periodicity_dailies', function(Blueprint $table) {
+			if ($this->testing) {
+				$table->engine = 'MyISAM';
+			}
+
 			$table->increments('id');
 			$table->timestamps();
 		});
 
 		$this->logCreateTable('transaction_periodicity_monthlies');
 		$this->schemaBuilder->create('transaction_periodicity_monthlies', function(Blueprint $table) {
+			if ($this->testing) {
+				$table->engine = 'MyISAM';
+			}
+
 			$table->increments('id');
 			$table->tinyInteger('day_number');
 			$table->timestamps();
@@ -101,6 +133,10 @@ class CreateFinances
 
 		$this->logCreateTable('transaction_periodicity_one_shots');
 		$this->schemaBuilder->create('transaction_periodicity_one_shots', function(Blueprint $table) {
+			if ($this->testing) {
+				$table->engine = 'MyISAM';
+			}
+
 			$table->increments('id');
 			$table->dateTime('date');
 			$table->timestamps();
@@ -108,6 +144,10 @@ class CreateFinances
 
 		$this->logCreateTable('transaction_periodicity_weeklies');
 		$this->schemaBuilder->create('transaction_periodicity_weeklies', function(Blueprint $table) {
+			if ($this->testing) {
+				$table->engine = 'MyISAM';
+			}
+
 			$table->increments('id');
 			$table->tinyInteger('weekday_number');
 			$table->timestamps();
@@ -115,6 +155,10 @@ class CreateFinances
 
 		$this->logCreateTable('transaction_periodicity_yearlies');
 		$this->schemaBuilder->create('transaction_periodicity_yearlies', function(Blueprint $table) {
+			if ($this->testing) {
+				$table->engine = 'MyISAM';
+			}
+
 			$table->increments('id');
 			$table->tinyInteger('month');
 			$table->tinyInteger('day');
@@ -123,6 +167,10 @@ class CreateFinances
 
 		$this->logCreateTable('transaction_value_constants');
 		$this->schemaBuilder->create('transaction_value_constants', function(Blueprint $table) {
+			if ($this->testing) {
+				$table->engine = 'MyISAM';
+			}
+
 			$table->increments('id');
 			$table->decimal('value');
 			$table->timestamps();
@@ -130,6 +178,10 @@ class CreateFinances
 
 		$this->logCreateTable('transaction_value_ranges');
 		$this->schemaBuilder->create('transaction_value_ranges', function(Blueprint $table) {
+			if ($this->testing) {
+				$table->engine = 'MyISAM';
+			}
+
 			$table->increments('id');
 			$table->decimal('value_from');
 			$table->decimal('value_to');
@@ -138,6 +190,10 @@ class CreateFinances
 
 		$this->logCreateTable('transaction_schedules');
 		$this->schemaBuilder->create('transaction_schedules', function(Blueprint $table) {
+			if ($this->testing) {
+				$table->engine = 'MyISAM';
+			}
+
 			$table->increments('id');
 			$table->unsignedInteger('transaction_id');
 			$table->dateTime('date');
@@ -145,9 +201,11 @@ class CreateFinances
 
 			$table->index('date');
 
-			$table->foreign('transaction_id')
-				  ->references('id')
-				  ->on('transactions');
+			if (!$this->testing) {
+				$table->foreign('transaction_id')
+					  ->references('id')
+					  ->on('transactions');
+			}
 		});
 	}
 

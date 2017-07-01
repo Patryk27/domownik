@@ -1,13 +1,11 @@
 <?php
 
-namespace Tests\Unit\Backend\Services;
-
 use App\Filesystem\Memory as MemoryFilesystem;
 use App\Services\Sidebar\Parser as SidebarParser;
 use App\ValueObjects\Sidebar\Item as SidebarItem;
 use Illuminate\Contracts\Filesystem\Factory as FilesystemFactoryContract;
 use Illuminate\Filesystem\FilesystemManager;
-use Tests\TestCase;
+use Tests\Unit\TestCase;
 
 class SidebarParserTest
 	extends TestCase {

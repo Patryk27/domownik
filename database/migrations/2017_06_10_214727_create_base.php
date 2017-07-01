@@ -11,6 +11,10 @@ class CreateBase
 	public function up() {
 		$this->logCreateTable('modules');
 		$this->schemaBuilder->create('modules', function(Blueprint $table) {
+			if ($this->testing) {
+				$table->engine = 'MyISAM';
+			}
+
 			$table->increments('id');
 			$table->char('name', 32);
 
@@ -19,6 +23,10 @@ class CreateBase
 
 		$this->logCreateTable('module_settings');
 		$this->schemaBuilder->create('module_settings', function(Blueprint $table) {
+			if ($this->testing) {
+				$table->engine = 'MyISAM';
+			}
+
 			$table->increments('id');
 			$table->unsignedInteger('module_id');
 			$table->char('key', 128);
@@ -35,6 +43,10 @@ class CreateBase
 
 		$this->logCreateTable('users');
 		$this->schemaBuilder->create('users', function(Blueprint $table) {
+			if ($this->testing) {
+				$table->engine = 'MyISAM';
+			}
+
 			$table->increments('id');
 			$table->char('login', 64);
 			$table->char('password', 128);
@@ -50,6 +62,10 @@ class CreateBase
 
 		$this->logCreateTable('settings');
 		$this->schemaBuilder->create('settings', function(Blueprint $table) {
+			if ($this->testing) {
+				$table->engine = 'MyISAM';
+			}
+
 			$table->increments('id');
 			$table->unsignedInteger('user_id')
 				  ->nullable();
