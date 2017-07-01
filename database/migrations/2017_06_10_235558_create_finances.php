@@ -86,11 +86,9 @@ class CreateFinances
 			$table->index('type');
 			$table->index('name');
 
-			if (!$this->testing) {
-				$table->foreign('category_id')
-					  ->references('id')
-					  ->on('transaction_categories');
-			}
+			$table->foreign('category_id')
+				  ->references('id')
+				  ->on('transaction_categories');
 		});
 
 		$this->logCreateTable('transaction_periodicities');
@@ -103,11 +101,9 @@ class CreateFinances
 			$table->unsignedInteger('transaction_id');
 			$table->morphs('transaction_periodicity', 'fk_transaction_periodicities_1');
 
-			if (!$this->testing) {
-				$table->foreign('transaction_id')
-					  ->references('id')
-					  ->on('transactions');
-			}
+			$table->foreign('transaction_id')
+				  ->references('id')
+				  ->on('transactions');
 		});
 
 		$this->logCreateTable('transaction_periodicity_dailies');
@@ -201,11 +197,9 @@ class CreateFinances
 
 			$table->index('date');
 
-			if (!$this->testing) {
-				$table->foreign('transaction_id')
-					  ->references('id')
-					  ->on('transactions');
-			}
+			$table->foreign('transaction_id')
+				  ->references('id')
+				  ->on('transactions');
 		});
 	}
 
