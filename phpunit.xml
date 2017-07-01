@@ -9,12 +9,8 @@
          processIsolation="false"
          stopOnFailure="false">
     <testsuites>
-        <testsuite name="Backend Tests">
-            <directory suffix="Test.php">./tests/Backend/*</directory>
-        </testsuite>
-
-        <testsuite name="Frontend Tests">
-            <directory suffix="Test.php">./tests/Frontend/*</directory>
+        <testsuite name="Backend Unit Tests">
+            <directory suffix="Test.php">./tests/unit/Backend/*</directory>
         </testsuite>
     </testsuites>
 

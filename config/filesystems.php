@@ -1,22 +1,12 @@
 <?php
 
 return [
-    'default' => 'local',
+	'default' => 'app',
 
-    'cloud' => '',
-
-    'disks' => [
-        'local' => [
-            'driver' => 'local',
-            'root' => storage_path('app'),
-        ],
-
-        'public' => [
-            'driver' => 'local',
-            'root' => storage_path('app/public'),
-            'url' => env('APP_URL').'/storage',
-            'visibility' => 'public',
-        ],
-    ],
-
+	'disks' => [
+		'app' => [
+			'driver' => 'local',
+			'root' => app_path(),
+		],
+	],
 ];

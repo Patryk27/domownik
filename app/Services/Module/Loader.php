@@ -7,6 +7,8 @@ use App\Modules\Scaffolding\Module\DirectorContract;
 use App\Modules\Scaffolding\Module\ServiceProviderContract;
 use Illuminate\Foundation\Application;
 
+use Illuminate\Contracts\Filesystem\Filesystem as FilesystemContract;
+
 class Loader {
 
 	/**
@@ -15,12 +17,18 @@ class Loader {
 	protected $app;
 
 	/**
+	 * @var FilesystemContract
+	 */
+	protected $fs;
+
+	/**
 	 * @param Application $app
 	 */
 	public function __construct(
 		Application $app
 	) {
 		$this->app = $app;
+		$this->fs = $app->make(FilesystemContract::class);
 	}
 
 	/**
@@ -29,9 +37,9 @@ class Loader {
 	 * @return DirectorContract
 	 */
 	public function loadModuleByName(string $moduleName): DirectorContract {
-		$moduleDirectoryName = app_path('Modules' . DIRECTORY_SEPARATOR . $moduleName);
+		$moduleDirectoryName = 'Modules' . DIRECTORY_SEPARATOR . $moduleName;
 
-		if (!is_dir($moduleDirectoryName)) {
+		if (!$this->fs->exists($moduleDirectoryName)) {
 			throw new ModuleLoaderException('Could not find directory of module \'%s\' (tried path: \'%s\').', $moduleName, $moduleDirectoryName);
 		}
 

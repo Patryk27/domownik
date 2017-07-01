@@ -1,6 +1,6 @@
 <?php
 
-namespace Test\Backend\Base\Services;
+namespace Test\Unit\Backend\Base\Services;
 
 use App\Repositories\Contracts\SettingRepositoryContract;
 use App\Repositories\Eloquent\SettingRepository;

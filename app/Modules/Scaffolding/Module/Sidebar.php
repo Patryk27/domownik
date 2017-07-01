@@ -32,7 +32,7 @@ class Sidebar
 	 * @inheritdoc
 	 */
 	public function getItems(): array {
-		return $this->mainItem->getSubitems();
+		return $this->mainItem->getChildren();
 	}
 
 	/**
@@ -52,9 +52,9 @@ class Sidebar
 	 * @param string $sidebarFileName
 	 * @return $this
 	 */
-	public function loadFromFile($sidebarFileName) {
+	public function loadFromFile(string $sidebarFileName): self {
 		$this->sidebarParser->parseFile($sidebarFileName);
-		$this->mainItem = $this->sidebarParser->getMainItem();
+		$this->mainItem = $this->sidebarParser->getRootItem();
 
 		return $this;
 	}

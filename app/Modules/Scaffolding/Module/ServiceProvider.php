@@ -51,7 +51,7 @@ abstract class ServiceProvider
 	 * @return ServiceProvider
 	 */
 	protected function loadViews(): self {
-		$viewsDir = $this->getModuleDirectory('Views') . DIRECTORY_SEPARATOR;
+		$viewsDir = app_path($this->getModuleDirectory('Views') . DIRECTORY_SEPARATOR);
 		$this->loadViewsFrom($viewsDir, $this->moduleName);
 
 		return $this;
@@ -61,7 +61,7 @@ abstract class ServiceProvider
 	 * @return $this
 	 */
 	protected function loadResources(): self {
-		$resourcesDir = $this->getModuleDirectory('Resources') . DIRECTORY_SEPARATOR;
+		$resourcesDir = app_path($this->getModuleDirectory('Resources') . DIRECTORY_SEPARATOR);
 		$this->loadTranslationsFrom($resourcesDir . 'lang', $this->moduleName);
 
 		require_once $resourcesDir . 'routes.php';

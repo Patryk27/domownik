@@ -101,7 +101,7 @@ class Manager {
 		$cacheKey = $this->getCacheKey(__FUNCTION__, func_get_args());
 
 		return $this->cacheRepository->rememberForever($cacheKey, function() {
-			$modulesDir = self::getModulesDirectory() . DIRECTORY_SEPARATOR;
+			$modulesDir = 'Modules' . DIRECTORY_SEPARATOR;
 			return glob($modulesDir . '*');
 		});
 	}
@@ -186,21 +186,13 @@ class Manager {
 	}
 
 	/**
-	 * Returns modules' directory path.
-	 * @return string
-	 */
-	public static function getModulesDirectory(): string {
-		return app_path('Modules');
-	}
-
-	/**
 	 * Returns specific module's directory.
 	 * @param string $moduleName
 	 * @param string $path
 	 * @return string
 	 */
 	public static function getModuleDirectory(string $moduleName, string $path): string {
-		$result = self::getModulesDirectory() . DIRECTORY_SEPARATOR . $moduleName;
+		$result = 'Modules' . DIRECTORY_SEPARATOR . $moduleName;
 
 		if (!empty($path)) {
 			$result .= DIRECTORY_SEPARATOR . $path;

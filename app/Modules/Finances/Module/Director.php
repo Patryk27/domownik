@@ -60,7 +60,7 @@ class Director
 				->setUrl(sprintf('/finances/budget/show/%d', $budget->id))
 				->setCaption($budget->name);
 
-			$item->addSubitem($subitem);
+			$item->addChild($subitem);
 		}
 
 		return $this;

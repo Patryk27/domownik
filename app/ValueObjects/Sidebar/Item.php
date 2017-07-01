@@ -42,7 +42,7 @@ class Item {
 	/**
 	 * @var Item[]
 	 */
-	protected $subitems = [];
+	protected $children = [];
 
 	/**
 	 * @return bool
@@ -224,22 +224,22 @@ class Item {
 	 * @return bool
 	 */
 	public function hasSubitems(): bool {
-		return !empty($this->subitems);
+		return !empty($this->children);
 	}
 
 	/**
 	 * @inheritDoc
 	 */
-	public function getSubitems(): array {
-		return $this->subitems;
+	public function getChildren(): array {
+		return $this->children;
 	}
 
 	/**
-	 * @param Item[] $subitems
+	 * @param Item[] $children
 	 * @return $this
 	 */
-	public function setSubitems(array $subitems): self {
-		$this->subitems = $subitems;
+	public function setChildren(array $children): self {
+		$this->children = $children;
 		return $this;
 	}
 
@@ -247,8 +247,8 @@ class Item {
 	 * @param Item $item
 	 * @return $this
 	 */
-	public function addSubitem(Item $item): self {
-		$this->subitems[$item->getName()] = $item;
+	public function addChild(Item $item): self {
+		$this->children[$item->getName()] = $item;
 		return $this;
 	}
 
@@ -264,7 +264,7 @@ class Item {
 		while (!empty($splitItemNames)) {
 			$itemName = $splitItemNames[0];
 
-			$currentSubitems = $currentItem->getSubitems();
+			$currentSubitems = $currentItem->getChildren();
 
 			if (isset($currentSubitems[$itemName])) {
 				array_shift($splitItemNames);
@@ -286,7 +286,7 @@ class Item {
 	 * @return Item[]
 	 */
 	public function getVisibleSubitems(): array {
-		return array_filter($this->subitems, function($subitem) {
+		return array_filter($this->children, function($subitem) {
 			/**
 			 * @var Item $subitem
 			 */
@@ -301,7 +301,7 @@ class Item {
 	public function getClone(): Item {
 		$subitems = [];
 
-		foreach ($this->subitems as $subitem) {
+		foreach ($this->children as $subitem) {
 			$subitems[] = $subitem->getClone();
 		}
 
@@ -314,7 +314,7 @@ class Item {
 			->setIcon($this->icon)
 			->setBadge($this->badge)
 			->setIsTemplate(false)
-			->setSubitems($subitems);
+			->setChildren($subitems);
 
 		return $item;
 	}
