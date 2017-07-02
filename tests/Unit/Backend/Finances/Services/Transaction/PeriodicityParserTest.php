@@ -116,9 +116,9 @@ class PeriodicityParserTest
 		$transaction->periodicity_type = Transaction::PERIODICITY_TYPE_WEEKLY;
 
 		$transactionPeriodicities = new Collection([
-			new TransactionPeriodicityWeekly(['weekday_number' => 1]),
-			new TransactionPeriodicityWeekly(['weekday_number' => 4]),
-			new TransactionPeriodicityWeekly(['weekday_number' => 7]),
+			new TransactionPeriodicityWeekly(['weekday' => 1]),
+			new TransactionPeriodicityWeekly(['weekday' => 4]),
+			new TransactionPeriodicityWeekly(['weekday' => 7]),
 		]);
 
 		$this->transactionRepositoryMock
@@ -168,9 +168,9 @@ class PeriodicityParserTest
 		$transaction->periodicity_type = Transaction::PERIODICITY_TYPE_MONTHLY;
 
 		$transactionPeriodicities = new Collection([
-			new TransactionPeriodicityMonthly(['day_number' => 1]),
-			new TransactionPeriodicityMonthly(['day_number' => 7]),
-			new TransactionPeriodicityMonthly(['day_number' => 20]),
+			new TransactionPeriodicityMonthly(['day' => 1]),
+			new TransactionPeriodicityMonthly(['day' => 7]),
+			new TransactionPeriodicityMonthly(['day' => 20]),
 		]);
 
 		$this->transactionRepositoryMock

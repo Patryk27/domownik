@@ -42,7 +42,7 @@ class MonthlyMatcher
 		$rows = $this->transactionPeriodicityRepository->getMonthliesByTransactionId($transaction->id);
 
 		$this->dayNumbers = $rows->map(function(TransactionPeriodicityMonthly $row) {
-			return $row->day_number;
+			return $row->day;
 		});
 
 		return $this;

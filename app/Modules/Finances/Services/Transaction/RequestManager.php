@@ -268,22 +268,22 @@ class RequestManager
 				break;
 
 			case Transaction::PERIODICITY_TYPE_WEEKLY:
-				foreach ($this->request->get('transactionPeriodicityWeeklyDays') as $weekDayNumber) {
+				foreach ($this->request->get('transactionPeriodicityWeeklyDays') as $weekday) {
 					$this->model
 						->periodicityWeeklies()
 						->create([
-							'weekday_number' => $weekDayNumber,
+							'weekday' => $weekday,
 						]);
 				}
 
 				break;
 
 			case Transaction::PERIODICITY_TYPE_MONTHLY:
-				foreach ($this->request->get('transactionPeriodicityMonthlyDays') as $dayNumber) {
+				foreach ($this->request->get('transactionPeriodicityMonthlyDays') as $day) {
 					$this->model
 						->periodicityMonthlies()
 						->create([
-							'day_number' => $dayNumber,
+							'day' => $day,
 						]);
 				}
 

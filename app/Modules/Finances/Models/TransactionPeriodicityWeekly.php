@@ -6,10 +6,10 @@ use App\Models\Model;
 use Carbon\Carbon;
 
 /**
- * @property int id
- * @property int weekday_number
- * @property Carbon created_at
- * @property Carbon updated_at
+ * @property int $id
+ * @property int $weekday
+ * @property Carbon $created_at
+ * @property Carbon $updated_at
  */
 class TransactionPeriodicityWeekly
 	extends Model {
@@ -17,7 +17,7 @@ class TransactionPeriodicityWeekly
 	/**
 	 * @var array
 	 */
-	protected $fillable = ['weekday_number'];
+	protected $fillable = ['weekday'];
 
 	/**
 	 * @var array

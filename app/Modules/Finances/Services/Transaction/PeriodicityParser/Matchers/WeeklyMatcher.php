@@ -43,7 +43,7 @@ class WeeklyMatcher
 		$rows = $this->transactionPeriodicityRepository->getWeekliesByTransactionId($transaction->id);
 
 		$this->weekDayNumbers = $rows->map(function(TransactionPeriodicityWeekly $row) {
-			return $row->weekday_number;
+			return $row->weekday;
 		});
 
 		return $this;

@@ -139,11 +139,7 @@
           if (isset($transaction)) {
               switch ($transaction->periodicity_type) {
                   case \App\Modules\Finances\Models\Transaction::PERIODICITY_TYPE_ONE_SHOT:
-                      $rows = $transaction->periodicityOneShots->map(function($row) {
-                         /**
-                          * @var \App\Modules\Finances\Models\TransactionPeriodicityOneShot $row
-                          */
-
+                      $rows = $transaction->periodicityOneShots->map(function(\App\Modules\Finances\Models\TransactionPeriodicityOneShot $row) {
                           return sprintf('\'%s\'', $row->date->format('Y-m-d'));
                       });
 
@@ -151,35 +147,23 @@
                       break;
 
                   case \App\Modules\Finances\Models\Transaction::PERIODICITY_TYPE_WEEKLY:
-                      $rows = $transaction->periodicityWeeklies->map(function($row) {
-                         /**
-                           * @var \App\Modules\Finances\Models\TransactionPeriodicityWeekly $row
-                           */
-
-                          return $row->weekday_number;
+                      $rows = $transaction->periodicityWeeklies->map(function(\App\Modules\Finances\Models\TransactionPeriodicityWeekly $row) {
+                          return $row->weekday;
                       });
 
                       echo sprintf('AppView.Periodicity.Weekly.prepare([%s]);', $rows->implode(','));
                       break;
 
                   case \App\Modules\Finances\Models\Transaction::PERIODICITY_TYPE_MONTHLY:
-                      $rows = $transaction->periodicityMonthlies->map(function($row) {
-                         /**
-                           * @var \App\Modules\Finances\Models\TransactionPeriodicityMonthly $row
-                           */
-
-                          return $row->day_number;
+                      $rows = $transaction->periodicityMonthlies->map(function(\App\Modules\Finances\Models\TransactionPeriodicityMonthly $row) {
+                          return $row->day;
                       });
 
                       echo sprintf('AppView.Periodicity.Monthly.prepare([%s]);', $rows->implode(','));
                       break;
 
                   case \App\Modules\Finances\Models\Transaction::PERIODICITY_TYPE_YEARLY:
-                      $rows = $transaction->periodicityYearlies->map(function($row) {
-                         /**
-                          * @var \App\Modules\Finances\Models\TransactionPeriodicityYearly $row
-                          */
-
+                      $rows = $transaction->periodicityYearlies->map(function(\App\Modules\Finances\Models\TransactionPeriodicityYearly $row) {
                           return sprintf('[%d,%d]', $row->month, $row->day);
                       });
 
