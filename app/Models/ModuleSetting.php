@@ -32,28 +32,6 @@ class ModuleSetting
 	];
 
 	/**
-	 * @param int $moduleId
-	 * @param string $key
-	 * @return mixed|null
-	 */
-	public static function getSettingValue($moduleId, $key) {
-		// @todo cache
-
-		$query = ModuleSetting::where([
-			'module_id' => $moduleId,
-			'key' => $key,
-		]);
-
-		$moduleSetting = $query->first();
-
-		if (is_null($moduleSetting)) {
-			return null;
-		} else {
-			return $moduleSetting->value;
-		}
-	}
-
-	/**
 	 * @inheritDoc
 	 */
 	public static function getCacheConfiguration(): array {
