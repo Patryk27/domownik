@@ -7,7 +7,7 @@ use App\Repositories\Contracts\CrudRepositoryContract;
 use Illuminate\Support\Collection;
 
 /**
- * @method Transaction get(int $id, array $columns = ['*'])
+ * @method Transaction|null get(int $id, array $columns = ['*'])
  * @method Transaction getOrFail(int $id, array $columns = ['*'])
  * @method Collection|Transaction[] getBy(string $fieldName, $fieldValue, array $columns = ['*'])
  * @method Collection|Transaction[] getAll(array $columns = ['*'])

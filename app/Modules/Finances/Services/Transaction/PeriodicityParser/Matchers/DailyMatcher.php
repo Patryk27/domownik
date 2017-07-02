@@ -32,6 +32,7 @@ class DailyMatcher
 	public function filterRange(Carbon $dateFrom, Carbon $dateTo): MatcherContract {
 		$this->dateFrom = $dateFrom;
 		$this->dateTo = $dateTo;
+		
 		return $this;
 	}
 

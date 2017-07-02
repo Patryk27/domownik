@@ -3,6 +3,8 @@
 namespace App\Modules\Finances\Services\Transaction\PeriodicityParser\Matchers;
 
 use App\Modules\Finances\Models\Transaction;
+use App\Modules\Finances\Models\TransactionPeriodicityMonthly;
+use App\Modules\Finances\Repositories\Contracts\TransactionPeriodicityRepositoryContract;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 
@@ -10,7 +12,12 @@ class MonthlyMatcher
 	implements MatcherContract {
 
 	/**
-	 * @var int[]
+	 * @var TransactionPeriodicityRepositoryContract
+	 */
+	protected $transactionPeriodicityRepository;
+
+	/**
+	 * @var Collection|int[]
 	 */
 	protected $dayNumbers;
 
@@ -20,19 +27,27 @@ class MonthlyMatcher
 	protected $dates;
 
 	/**
+	 * @param TransactionPeriodicityRepositoryContract $transactionPeriodicityRepository
+	 */
+	public function __construct(
+		TransactionPeriodicityRepositoryContract $transactionPeriodicityRepository
+	) {
+		$this->transactionPeriodicityRepository = $transactionPeriodicityRepository;
+	}
+
+	/**
 	 * @inheritDoc
 	 */
 	public function loadTransaction(Transaction $transaction): MatcherContract {
-		$rows =
-			$transaction
-				->periodicityMonthlies()
-				->get(['day_number']);
+		$rows = $this->transactionPeriodicityRepository->getMonthliesByTransactionId($transaction->id);
 
-		$this->dayNumbers = [];
+		$this->dayNumbers = $rows->map(function($row) {
+			/**
+			 * @var TransactionPeriodicityMonthly $row
+			 */
 
-		foreach ($rows as $row) {
-			$this->dayNumbers[] = $row->day_number;
-		}
+			return $row->day_number;
+		});
 
 		return $this;
 	}
@@ -46,7 +61,7 @@ class MonthlyMatcher
 		$currentDay = $dateFrom->copy();
 
 		while ($currentDay <= $dateTo) {
-			if (in_array($currentDay->day, $this->dayNumbers, true)) {
+			if ($this->dayNumbers->contains($currentDay->day)) {
 				$this->dates[] = $currentDay->copy();
 			}
 

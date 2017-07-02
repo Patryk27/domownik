@@ -95,7 +95,7 @@ class PeriodicityParser
 				break;
 
 			case Transaction::PERIODICITY_TYPE_MONTHLY:
-				$matcher = new MonthlyMatcher();
+				$matcher = new MonthlyMatcher($this->transactionPeriodicityRepository);
 				break;
 
 			case Transaction::PERIODICITY_TYPE_YEARLY:

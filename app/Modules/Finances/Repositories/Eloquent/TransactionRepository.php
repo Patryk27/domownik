@@ -20,9 +20,9 @@ class TransactionRepository
 	/**
 	 * @param int $id
 	 * @param array $columns
-	 * @return Transaction
+	 * @return Transaction|null
 	 */
-	public function get(int $id, array $columns = ['*']): Transaction {
+	public function get(int $id, array $columns = ['*']) {
 		$cacheKey = $this->getCacheKey(__FUNCTION__, func_get_args());
 		$cache = $this->getCache();
 
