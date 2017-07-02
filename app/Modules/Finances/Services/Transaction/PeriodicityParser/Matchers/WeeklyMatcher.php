@@ -3,6 +3,8 @@
 namespace App\Modules\Finances\Services\Transaction\PeriodicityParser\Matchers;
 
 use App\Modules\Finances\Models\Transaction;
+use App\Modules\Finances\Models\TransactionPeriodicityWeekly;
+use App\Modules\Finances\Repositories\Contracts\TransactionPeriodicityRepositoryContract;
 use App\Support\Facades\Calendar;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
@@ -11,7 +13,12 @@ class WeeklyMatcher
 	implements MatcherContract {
 
 	/**
-	 * @var int[]
+	 * @var TransactionPeriodicityRepositoryContract
+	 */
+	protected $transactionPeriodicityRepository;
+
+	/**
+	 * @var Collection|int[]
 	 */
 	protected $weekDayNumbers;
 
@@ -21,19 +28,27 @@ class WeeklyMatcher
 	protected $dates;
 
 	/**
+	 * @param TransactionPeriodicityRepositoryContract $transactionPeriodicityRepository
+	 */
+	public function __construct(
+		TransactionPeriodicityRepositoryContract $transactionPeriodicityRepository
+	) {
+		$this->transactionPeriodicityRepository = $transactionPeriodicityRepository;
+	}
+
+	/**
 	 * @inheritDoc
 	 */
 	public function loadTransaction(Transaction $transaction): MatcherContract {
-		$rows =
-			$transaction
-				->periodicityWeeklies()
-				->get(['weekday_number']);
+		$rows = $this->transactionPeriodicityRepository->getWeekliesByTransactionId($transaction->id);
 
-		$this->weekDayNumbers = [];
+		$this->weekDayNumbers = $rows->map(function($row) {
+			/**
+			 * @var TransactionPeriodicityWeekly $row
+			 */
 
-		foreach ($rows as $row) {
-			$this->weekDayNumbers[] = $row->weekday_number;
-		}
+			return $row->weekday_number;
+		});
 
 		return $this;
 	}
@@ -47,9 +62,9 @@ class WeeklyMatcher
 		$currentDay = $dateFrom->copy();
 
 		while ($currentDay <= $dateTo) {
-			$isoDayOfWeek = Calendar::getCarbonWeekdaysMapping()[$currentDay->dayOfWeek];
+			$weekDayNumber = Calendar::getCarbonWeekdaysMapping()[$currentDay->dayOfWeek];
 
-			if (in_array($isoDayOfWeek, $this->weekDayNumbers, true)) {
+			if ($this->weekDayNumbers->contains($weekDayNumber)) {
 				$this->dates[] = $currentDay->copy();
 			}
 
