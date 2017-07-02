@@ -42,11 +42,7 @@ class WeeklyMatcher
 	public function loadTransaction(Transaction $transaction): MatcherContract {
 		$rows = $this->transactionPeriodicityRepository->getWeekliesByTransactionId($transaction->id);
 
-		$this->weekDayNumbers = $rows->map(function($row) {
-			/**
-			 * @var TransactionPeriodicityWeekly $row
-			 */
-
+		$this->weekDayNumbers = $rows->map(function(TransactionPeriodicityWeekly $row) {
 			return $row->weekday_number;
 		});
 

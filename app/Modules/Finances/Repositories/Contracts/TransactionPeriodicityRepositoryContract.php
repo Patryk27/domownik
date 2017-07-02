@@ -24,12 +24,21 @@ interface TransactionPeriodicityRepositoryContract {
 	public function getOneShotByIds(array $periodicityIds, bool $joinTransactions = false): Collection;
 
 	/**
+	 * Returns all one shot periodicities linked to given transaction.
+	 * @param int $transactionId
+	 * @return Collection
+	 */
+	public function getOneShotsByTransactionId(int $transactionId): Collection;
+
+	/**
+	 * Returns all weekly periodicities linked to given transaction.
 	 * @param int $transactionId
 	 * @return Collection|TransactionPeriodicityWeekly[]
 	 */
 	public function getWeekliesByTransactionId(int $transactionId): Collection;
 
 	/**
+	 * Returns all monthly periodicities linked to given transaction.
 	 * @param int $transactionId
 	 * @return Collection|TransactionPeriodicityMonthly[]
 	 */

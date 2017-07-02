@@ -76,6 +76,13 @@ class TransactionPeriodicityRepository
 	/**
 	 * @inheritdoc
 	 */
+	public function getOneShotsByTransactionId(int $transactionId): Collection {
+		return $this->getPeriodicities('transaction_periodicity_one_shots', TransactionPeriodicityOneShot::class, 'transaction-periodicity-one-shot', $transactionId);
+	}
+
+	/**
+	 * @inheritdoc
+	 */
 	public function getWeekliesByTransactionId(int $transactionId): Collection {
 		return $this->getPeriodicities('transaction_periodicity_weeklies', TransactionPeriodicityWeekly::class, 'transaction-periodicity-weekly', $transactionId);
 	}

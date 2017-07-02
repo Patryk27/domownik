@@ -83,7 +83,7 @@ class PeriodicityParser
 
 		switch ($transaction->periodicity_type) {
 			case Transaction::PERIODICITY_TYPE_ONE_SHOT:
-				$matcher = new OneShotMatcher();
+				$matcher = new OneShotMatcher($this->transactionPeriodicityRepository);
 				break;
 
 			case Transaction::PERIODICITY_TYPE_DAILY:

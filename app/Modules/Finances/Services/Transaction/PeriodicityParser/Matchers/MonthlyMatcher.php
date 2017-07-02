@@ -41,11 +41,7 @@ class MonthlyMatcher
 	public function loadTransaction(Transaction $transaction): MatcherContract {
 		$rows = $this->transactionPeriodicityRepository->getMonthliesByTransactionId($transaction->id);
 
-		$this->dayNumbers = $rows->map(function($row) {
-			/**
-			 * @var TransactionPeriodicityMonthly $row
-			 */
-
+		$this->dayNumbers = $rows->map(function(TransactionPeriodicityMonthly $row) {
 			return $row->day_number;
 		});
 
