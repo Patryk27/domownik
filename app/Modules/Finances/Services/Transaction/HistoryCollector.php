@@ -110,7 +110,7 @@ class HistoryCollector
 				->table('transactions AS t')
 				->select([
 					't.id AS transaction_id',
-					'tpos.id AS transaction_periodicity_id'
+					'tpos.id AS transaction_periodicity_id',
 				])
 				->leftJoin('transaction_periodicities AS tp', 'tp.transaction_id', '=', 't.id')
 				->leftJoin('transaction_periodicity_one_shots AS tpos', 'tpos.id', '=', 'tp.transaction_periodicity_id')

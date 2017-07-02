@@ -99,7 +99,7 @@ class BudgetController
 		]), 'success');
 
 		return response()->json([
-			'redirectUrl' => route('finances.budget.show', $budget->id)
+			'redirectUrl' => route('finances.budget.show', $budget->id),
 		]);
 	}
 

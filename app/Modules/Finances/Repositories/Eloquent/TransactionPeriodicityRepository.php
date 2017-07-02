@@ -117,7 +117,7 @@ class TransactionPeriodicityRepository
 		$periodicityModel = new $periodicityModelClass();
 
 		$cache = $periodicityModel::getCache();
-		$cacheKey = $this->getCacheKey( __METHOD__, [$transactionId]);
+		$cacheKey = $this->getCacheKey(__METHOD__, [$transactionId]);
 
 		return $cache->rememberForever($cacheKey, function() use ($periodicityTableName, $periodicityModelClass, $periodicityType, $transactionId) {
 			$stmt = $this->db

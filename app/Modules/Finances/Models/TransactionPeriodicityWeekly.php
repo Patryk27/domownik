@@ -17,12 +17,17 @@ class TransactionPeriodicityWeekly
 	/**
 	 * @var array
 	 */
-	protected $fillable = ['weekday'];
+	public $fillable = [
+		'weekday',
+	];
 
 	/**
 	 * @var array
 	 */
-	public $dates = ['created_at', 'updated_at'];
+	public $dates = [
+		'created_at',
+		'updated_at',
+	];
 
 	/**
 	 * @return \Illuminate\Database\Eloquent\Relations\MorphToMany

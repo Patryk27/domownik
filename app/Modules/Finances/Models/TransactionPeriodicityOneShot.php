@@ -18,12 +18,18 @@ class TransactionPeriodicityOneShot
 	/**
 	 * @var array
 	 */
-	protected $fillable = ['date'];
+	public $fillable = [
+		'date',
+	];
 
 	/**
 	 * @var array
 	 */
-	protected $dates = ['date', 'created_at', 'updated_at'];
+	public $dates = [
+		'date',
+		'created_at',
+		'updated_at',
+	];
 
 	/**
 	 * @return \Illuminate\Database\Eloquent\Relations\MorphToMany

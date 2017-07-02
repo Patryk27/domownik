@@ -6,7 +6,6 @@ class TransactionTest
 	extends TestCase {
 
 	public function testCreateTransactions() {
-
 	}
 
 }

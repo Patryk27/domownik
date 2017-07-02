@@ -2,11 +2,30 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
+
+/**
+ * @property int $id
+ * @property int $module_id
+ * @property string $key
+ * @property mixed $value
+ * @property Carbon $created_at
+ * @property Carbon $updated_at
+ */
 class ModuleSetting
 	extends Model {
 
 	/**
-	 * @var string[]
+	 * @var array
+	 */
+	public $fillable = [
+		'module_id',
+		'key',
+		'value',
+	];
+
+	/**
+	 * @var array
 	 */
 	protected $casts = [
 		'value' => 'json',
@@ -18,9 +37,11 @@ class ModuleSetting
 	 * @return mixed|null
 	 */
 	public static function getSettingValue($moduleId, $key) {
+		// @todo cache
+
 		$query = ModuleSetting::where([
 			'module_id' => $moduleId,
-			'key' => $key
+			'key' => $key,
 		]);
 
 		$moduleSetting = $query->first();

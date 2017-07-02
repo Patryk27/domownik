@@ -16,7 +16,10 @@ class TransactionPeriodicityDaily
 	/**
 	 * @var array
 	 */
-	protected $dates = ['created_at', 'updated_at'];
+	public $dates = [
+		'created_at',
+		'updated_at',
+	];
 
 	/**
 	 * @return \Illuminate\Database\Eloquent\Relations\MorphToMany

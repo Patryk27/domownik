@@ -55,7 +55,26 @@ class Transaction
 		PERIODICITY_TYPE_MONTHLY = 'transaction-periodicity-monthly',
 		PERIODICITY_TYPE_YEARLY = 'transaction-periodicity-yearly';
 
+	/**
+	 * @var string
+	 */
 	public $presenterClass = TransactionPresenter::class;
+
+	/**
+	 * @var array
+	 */
+	public $fillable = [
+		'parent_transaction_id',
+		'parent_id',
+		'parent_type',
+		'category_id',
+		'type',
+		'name',
+		'description',
+		'value_id',
+		'value_type',
+		'periodicity_type',
+	];
 
 	/**
 	 * @return \Illuminate\Database\Eloquent\Relations\MorphTo

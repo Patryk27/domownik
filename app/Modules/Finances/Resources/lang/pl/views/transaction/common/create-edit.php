@@ -79,6 +79,6 @@ return [
 			'title' => 'Wybierz dni roku, w których transakcja ma być zliczana:',
 		],
 	],
-	
+
 	'delete-confirmation-message' => 'Czy na pewno chcesz usunąć tę transakcję?',
 ];

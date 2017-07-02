@@ -151,7 +151,7 @@ class UserController
 		$user = $this->userRequestManager->getModel();
 
 		return response()->json([
-			'redirectUrl' => route('dashboard.user.edit', $user->id)
+			'redirectUrl' => route('dashboard.user.edit', $user->id),
 		]);
 	}
 

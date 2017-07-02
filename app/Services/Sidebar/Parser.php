@@ -119,6 +119,7 @@ class Parser {
 				throw new Exception('Unexpected node: %s.', $xmlNode->getName());
 		}
 	}
+
 	/**
 	 * @param SidebarItem $parentItem
 	 * @param SimpleXMLElement $xmlNode

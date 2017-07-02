@@ -2,8 +2,6 @@
 
 namespace App\Modules\Dashboard\Controllers;
 
-
-
 class SearchController
 	extends \App\Http\Controllers\Controller {
 

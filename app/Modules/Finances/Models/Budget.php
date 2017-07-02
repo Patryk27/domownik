@@ -11,8 +11,8 @@ use Carbon\Carbon;
  * @property string $name
  * @property string $description
  * @property string $status
- * @property Carbon $createdAt
- * @property Carbon $updatedAt
+ * @property Carbon $created_at
+ * @property Carbon $updated_at
  */
 class Budget
 	extends Model {
@@ -28,7 +28,20 @@ class Budget
 	/**
 	 * @var array
 	 */
-	public $dates = ['created_at', 'updated_at'];
+	public $fillable = [
+		'type',
+		'name',
+		'description',
+		'status',
+	];
+
+	/**
+	 * @var array
+	 */
+	public $dates = [
+		'created_at',
+		'updated_at',
+	];
 
 	/**
 	 * @return \Illuminate\Database\Eloquent\Relations\MorphMany
@@ -43,7 +56,7 @@ class Budget
 	public static function getTypes() {
 		return [
 			self::TYPE_REGULAR,
-			self::TYPE_CONSOLIDATED
+			self::TYPE_CONSOLIDATED,
 		];
 	}
 

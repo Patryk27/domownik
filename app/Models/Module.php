@@ -10,6 +10,13 @@ class Module
 	extends Model {
 
 	/**
+	 * @var array
+	 */
+	public $fillable = [
+		'name',
+	];
+
+	/**
 	 * @var bool
 	 */
 	public $timestamps = false;

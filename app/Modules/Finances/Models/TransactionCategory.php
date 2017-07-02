@@ -26,12 +26,18 @@ class TransactionCategory
 	/**
 	 * @var array
 	 */
-	public $fillable = ['parent_category_id', 'name'];
+	public $fillable = [
+		'parent_category_id',
+		'name',
+	];
 
 	/**
 	 * @var array
 	 */
-	public $dates = ['created_at', 'updated_at'];
+	public $dates = [
+		'created_at',
+		'updated_at',
+	];
 
 	/**
 	 * @var string

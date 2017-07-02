@@ -13,6 +13,14 @@ class BudgetConsolidation
 	extends Model {
 
 	/**
+	 * @var array
+	 */
+	public $fillable = [
+		'base_budget_id',
+		'subject_budget_id',
+	];
+
+	/**
 	 * @var bool
 	 */
 	public $timestamps = false;

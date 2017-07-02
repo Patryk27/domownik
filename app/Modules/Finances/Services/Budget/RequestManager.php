@@ -76,7 +76,7 @@ class RequestManager
 			}
 
 			$this->budget = $budget;
-			
+
 			return self::STORE_RESULT_CREATED;
 		});
 	}

@@ -18,12 +18,18 @@ class TransactionValueRange
 	/**
 	 * @var array
 	 */
-	public $fillable = ['value_from', 'value_to'];
+	public $fillable = [
+		'value_from',
+		'value_to',
+	];
 
 	/**
 	 * @var array
 	 */
-	public $dates = ['created_at', 'updated_at'];
+	public $dates = [
+		'created_at',
+		'updated_at',
+	];
 
 	/**
 	 * @return \Illuminate\Database\Eloquent\Relations\MorphOne

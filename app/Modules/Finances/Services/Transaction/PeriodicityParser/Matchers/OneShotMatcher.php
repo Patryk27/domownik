@@ -19,7 +19,7 @@ class OneShotMatcher
 	/**
 	 * @var Carbon[]
 	 */
-	protected $dates;
+	public $dates;
 
 	/**
 	 * @param TransactionPeriodicityRepositoryContract $transactionPeriodicityRepository

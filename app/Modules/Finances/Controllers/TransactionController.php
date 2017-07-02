@@ -105,12 +105,12 @@ class TransactionController
 		$this->pushTransactionParentBreadcrumb($transaction);
 
 		$this->breadcrumbManager->push(route('finances.transaction.edit', $transaction->id), __('Finances::breadcrumb.transaction.edit', [
-			'transactionName' => $transaction->name
+			'transactionName' => $transaction->name,
 		]));
 
 		$view = $this->getCreateEditView('edit');
 		$view->with([
-			'transaction' => $transaction
+			'transaction' => $transaction,
 		]);
 
 		return $view;

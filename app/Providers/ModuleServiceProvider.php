@@ -14,7 +14,6 @@ class ModuleServiceProvider
 	 * @return void
 	 */
 	public function register() {
-
 	}
 
 	/**

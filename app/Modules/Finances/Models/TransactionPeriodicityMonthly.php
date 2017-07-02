@@ -18,12 +18,17 @@ class TransactionPeriodicityMonthly
 	/**
 	 * @var array
 	 */
-	protected $fillable = ['day'];
+	public $fillable = [
+		'day',
+	];
 
 	/**
 	 * @var array
 	 */
-	public $dates = ['created_at', 'updated_at'];
+	public $dates = [
+		'created_at',
+		'updated_at',
+	];
 
 	/**
 	 * @return \Illuminate\Database\Eloquent\Relations\MorphToMany

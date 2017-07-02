@@ -2,7 +2,6 @@
 
 namespace App\Modules\Finances\Repositories\Contracts;
 
-
 use App\Modules\Finances\ValueObjects\ScheduledTransaction;
 use App\Repositories\Contracts\CrudRepositoryContract;
 use Carbon\Carbon;

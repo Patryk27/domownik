@@ -21,27 +21,27 @@
 
 <div class="{{ $divClass }}">
     @php
-    $sign = $transaction->type === \App\Modules\Finances\Models\Transaction::TYPE_EXPENSE ? '-' : '';
+        $sign = $transaction->type === \App\Modules\Finances\Models\Transaction::TYPE_EXPENSE ? '-' : '';
 
-    switch ($transaction->value_type) {
-        case \App\Modules\Finances\Models\Transaction::VALUE_TYPE_CONSTANT:
-            /**
-             * @var \App\Modules\Finances\Models\TransactionValueConstant $transactionValue
-             */
-            echo $sign . Currency::formatWithUnit($transactionValue->value);
-            break;
+        switch ($transaction->value_type) {
+            case \App\Modules\Finances\Models\Transaction::VALUE_TYPE_CONSTANT:
+                /**
+                 * @var \App\Modules\Finances\Models\TransactionValueConstant $transactionValue
+                 */
+                echo $sign . Currency::formatWithUnit($transactionValue->value);
+                break;
 
-        case \App\Modules\Finances\Models\Transaction::VALUE_TYPE_RANGE:
-            /**
-             * @var \App\Modules\Finances\Models\TransactionValueRange $transactionValue
-             */
-            echo $sign . Currency::formatWithUnit($transactionValue->value_from);
-            echo ' &mdash; ';
-            echo $sign . Currency::formatWithUnit($transactionValue->value_to);
-            break;
+            case \App\Modules\Finances\Models\Transaction::VALUE_TYPE_RANGE:
+                /**
+                 * @var \App\Modules\Finances\Models\TransactionValueRange $transactionValue
+                 */
+                echo $sign . Currency::formatWithUnit($transactionValue->value_from);
+                echo ' &mdash; ';
+                echo $sign . Currency::formatWithUnit($transactionValue->value_to);
+                break;
 
-        default:
-            echo '??';
-    }
+            default:
+                echo '??';
+        }
     @endphp
 </div>

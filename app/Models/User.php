@@ -29,9 +29,9 @@ class User
 		STATUS_INACTIVE = 'inactive';
 
 	/**
-	 * @var string[]
+	 * @var array
 	 */
-	protected $fillable = [
+	public $fillable = [
 		'login',
 		'password',
 		'full_name',
@@ -43,20 +43,20 @@ class User
 	 */
 	public $dates = [
 		'created_at',
-		'updated_at'
+		'updated_at',
 	];
 
 	/**
-	 * @var string[]
+	 * @var array
 	 */
-	protected $hidden = [
+	public $hidden = [
 		'password',
 	];
 
 	/**
 	 * @var string
 	 */
-	protected $presenterClass = UserPresenter::class;
+	public $presenterClass = UserPresenter::class;
 
 	/**
 	 * @return array

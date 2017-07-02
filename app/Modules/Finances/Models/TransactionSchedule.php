@@ -22,12 +22,19 @@ class TransactionSchedule
 	/**
 	 * @var array
 	 */
-	public $fillable = ['transaction_id', 'date'];
+	public $fillable = [
+		'transaction_id',
+		'date',
+	];
 
 	/**
 	 * @var array
 	 */
-	public $dates = ['date', 'created_at', 'updated_at'];
+	public $dates = [
+		'date',
+		'created_at',
+		'updated_at',
+	];
 
 	/**
 	 * @return \Illuminate\Database\Eloquent\Relations\HasOne

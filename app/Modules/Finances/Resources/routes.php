@@ -37,7 +37,7 @@ Route::group(['prefix' => 'finances', 'middleware' => 'auth'], function() {
 
 		// /finances/transaction/delete
 		Route::get('delete/{transaction}', '\\' . TransactionController::class . '@actionDelete')
-			->name('finances.transaction.delete');
+			 ->name('finances.transaction.delete');
 
 		// /finances/transaction/list/from-budget
 		Route::get('list/from-budget/{budget}', '\\' . TransactionController::class . '@actionListFromBudget')
@@ -45,7 +45,7 @@ Route::group(['prefix' => 'finances', 'middleware' => 'auth'], function() {
 
 		// /finances/transaction/edit
 		Route::get('edit/{transaction}', '\\' . TransactionController::class . '@actionEdit')
-			->name('finances.transaction.edit');
+			 ->name('finances.transaction.edit');
 
 		// /finances/transaction/view
 		Route::get('view/{transaction}', '\\' . TransactionController::class . '@actionView')
@@ -56,7 +56,7 @@ Route::group(['prefix' => 'finances', 'middleware' => 'auth'], function() {
 	Route::group(['prefix' => 'transaction-category'], function() {
 		// /finances/transaction-category/list
 		Route::get('list', '\\' . TransactionCategoryController::class . '@actionList')
-			->name('finances.transaction-category.list');
+			 ->name('finances.transaction-category.list');
 
 		// /finances/transaction-category/store
 		Route::post('store', '\\' . TransactionCategoryController::class . '@actionStore')
