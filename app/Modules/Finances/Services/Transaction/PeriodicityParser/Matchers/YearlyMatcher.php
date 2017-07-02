@@ -3,6 +3,8 @@
 namespace App\Modules\Finances\Services\Transaction\PeriodicityParser\Matchers;
 
 use App\Modules\Finances\Models\Transaction;
+use App\Modules\Finances\Models\TransactionPeriodicityYearly;
+use App\Modules\Finances\Repositories\Contracts\TransactionPeriodicityRepositoryContract;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 
@@ -10,7 +12,12 @@ class YearlyMatcher
 	implements MatcherContract {
 
 	/**
-	 * @var array
+	 * @var TransactionPeriodicityRepositoryContract
+	 */
+	protected $transactionPeriodicityRepository;
+
+	/**
+	 * @var Collection|string[]
 	 */
 	protected $yearDays;
 
@@ -20,19 +27,23 @@ class YearlyMatcher
 	protected $dates;
 
 	/**
+	 * @param TransactionPeriodicityRepositoryContract $transactionPeriodicityRepository
+	 */
+	public function __construct(
+		TransactionPeriodicityRepositoryContract $transactionPeriodicityRepository
+	) {
+		$this->transactionPeriodicityRepository = $transactionPeriodicityRepository;
+	}
+
+	/**
 	 * @inheritDoc
 	 */
 	public function loadTransaction(Transaction $transaction): MatcherContract {
-		$rows =
-			$transaction
-				->periodicityYearlies()
-				->get(['month', 'day']);
+		$rows = $this->transactionPeriodicityRepository->getYearliesByTransactionId($transaction->id);
 
-		$this->yearDays = [];
-
-		foreach ($rows as $row) {
-			$this->yearDays[] = sprintf('%02d-%02d', $row->month, $row->day);
-		}
+		$this->yearDays = $rows->map(function(TransactionPeriodicityYearly $row) {
+			return sprintf('%02d-%02d', $row->month, $row->day);
+		});
 
 		return $this;
 	}
@@ -46,9 +57,9 @@ class YearlyMatcher
 		$currentDay = $dateFrom->copy();
 
 		while ($currentDay <= $dateTo) {
-			$currentDayString = sprintf('%02d-%02d', $currentDay->month, $currentDay->day);
+			$yearDay = sprintf('%02d-%02d', $currentDay->month, $currentDay->day);
 
-			if (in_array($currentDayString, $this->yearDays, true)) {
+			if ($this->yearDays->contains($yearDay)) {
 				$this->dates[] = $currentDay->copy();
 			}
 

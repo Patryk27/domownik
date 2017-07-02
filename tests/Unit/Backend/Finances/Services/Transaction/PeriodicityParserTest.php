@@ -4,6 +4,7 @@ use App\Modules\Finances\Models\Transaction;
 use App\Modules\Finances\Models\TransactionPeriodicityMonthly;
 use App\Modules\Finances\Models\TransactionPeriodicityOneShot;
 use App\Modules\Finances\Models\TransactionPeriodicityWeekly;
+use App\Modules\Finances\Models\TransactionPeriodicityYearly;
 use App\Modules\Finances\Repositories\Contracts\TransactionPeriodicityRepositoryContract;
 use App\Modules\Finances\Repositories\Contracts\TransactionRepositoryContract;
 use App\Modules\Finances\Services\Transaction\PeriodicityParser;
@@ -196,6 +197,47 @@ class PeriodicityParserTest
 		$this->assertRow($rows[2], 2009, 12, 20);
 		$this->assertRow($rows[3], 2010, 1, 1);
 		$this->assertRow($rows[4], 2010, 1, 7);
+	}
+
+	/**
+	 * Checks if YearlyMatcher works correctly.
+	 */
+	public function testYearlyPeriodicity() {
+		$transaction = new Transaction();
+		$transaction->id = 1;
+		$transaction->periodicity_type = Transaction::PERIODICITY_TYPE_YEARLY;
+
+		$transactionPeriodicities = new Collection([
+			new TransactionPeriodicityYearly(['month' => 1, 'day' => 1]),
+			new TransactionPeriodicityYearly(['month' => 2, 'day' => 4]),
+			new TransactionPeriodicityYearly(['month' => 3, 'day' => 6]),
+			new TransactionPeriodicityYearly(['month' => 4, 'day' => 8]),
+			new TransactionPeriodicityYearly(['month' => 5, 'day' => 10]),
+			new TransactionPeriodicityYearly(['month' => 6, 'day' => 12]),
+		]);
+
+		$this->transactionRepositoryMock
+			->method('getOrFail')
+			->with(1)
+			->willReturn($transaction);
+
+		$this->transactionPeriodicityRepositoryMock
+			->method('getYearliesByTransactionId')
+			->with(1)
+			->willReturn($transactionPeriodicities);
+
+		$periodicityParser = new PeriodicityParser($this->transactionRepositoryMock, $this->transactionPeriodicityRepositoryMock);
+		$periodicityParser
+			->setTransactionId(1)
+			->setDateRange(new Carbon('2009-12-01'), new Carbon('2010-03-06'));
+
+		$rows = $periodicityParser->getRows();
+
+		$this->assertCount(3, $rows);
+
+		$this->assertRow($rows[0], 2010, 1, 1);
+		$this->assertRow($rows[1], 2010, 2, 4);
+		$this->assertRow($rows[2], 2010, 3, 6);
 	}
 
 	/**

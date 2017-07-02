@@ -99,7 +99,7 @@ class PeriodicityParser
 				break;
 
 			case Transaction::PERIODICITY_TYPE_YEARLY:
-				$matcher = new YearlyMatcher();
+				$matcher = new YearlyMatcher($this->transactionPeriodicityRepository);
 				break;
 
 			default:

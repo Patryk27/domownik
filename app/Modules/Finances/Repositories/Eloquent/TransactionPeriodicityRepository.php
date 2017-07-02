@@ -6,6 +6,7 @@ use App\Models\Model;
 use App\Modules\Finances\Models\TransactionPeriodicityMonthly;
 use App\Modules\Finances\Models\TransactionPeriodicityOneShot;
 use App\Modules\Finances\Models\TransactionPeriodicityWeekly;
+use App\Modules\Finances\Models\TransactionPeriodicityYearly;
 use App\Modules\Finances\Repositories\Contracts\TransactionPeriodicityRepositoryContract;
 use App\Support\UsesCache;
 use Illuminate\Database\Connection as DatabaseConnection;
@@ -92,6 +93,13 @@ class TransactionPeriodicityRepository
 	 */
 	public function getMonthliesByTransactionId(int $transactionId): Collection {
 		return $this->getPeriodicities('transaction_periodicity_monthlies', TransactionPeriodicityMonthly::class, 'transaction-periodicity-monthly', $transactionId);
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public function getYearliesByTransactionId(int $transactionId): Collection {
+		return $this->getPeriodicities('transaction_periodicity_yearlies', TransactionPeriodicityYearly::class, 'transaction-periodicity-yearly', $transactionId);
 	}
 
 	/**

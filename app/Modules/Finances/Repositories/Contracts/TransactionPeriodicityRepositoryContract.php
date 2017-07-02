@@ -5,6 +5,7 @@ namespace App\Modules\Finances\Repositories\Contracts;
 use App\Modules\Finances\Models\TransactionPeriodicityMonthly;
 use App\Modules\Finances\Models\TransactionPeriodicityOneShot;
 use App\Modules\Finances\Models\TransactionPeriodicityWeekly;
+use App\Modules\Finances\Models\TransactionPeriodicityYearly;
 use Illuminate\Support\Collection;
 
 interface TransactionPeriodicityRepositoryContract {
@@ -26,7 +27,7 @@ interface TransactionPeriodicityRepositoryContract {
 	/**
 	 * Returns all one shot periodicities linked to given transaction.
 	 * @param int $transactionId
-	 * @return Collection
+	 * @return Collection|TransactionPeriodicityOneShot[]
 	 */
 	public function getOneShotsByTransactionId(int $transactionId): Collection;
 
@@ -43,5 +44,12 @@ interface TransactionPeriodicityRepositoryContract {
 	 * @return Collection|TransactionPeriodicityMonthly[]
 	 */
 	public function getMonthliesByTransactionId(int $transactionId): Collection;
+
+	/**
+	 * Returns all yearly periodicities linked to given transaction.
+	 * @param int $transactionId
+	 * @return Collection|TransactionPeriodicityYearly[]
+	 */
+	public function getYearliesByTransactionId(int $transactionId): Collection;
 
 }
