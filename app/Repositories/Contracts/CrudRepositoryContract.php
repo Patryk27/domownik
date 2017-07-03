@@ -29,15 +29,17 @@ interface CrudRepositoryContract {
 	 * @param string $fieldName
 	 * @param mixed $fieldValue
 	 * @param string[] $columns
+	 * @param string|null $orderBy
 	 * @return Collection
 	 */
-	public function getBy(string $fieldName, $fieldValue, array $columns = ['*']);
+	public function getBy(string $fieldName, $fieldValue, array $columns = ['*'], $orderBy = null): Collection;
 
 	/**
 	 * @param string[] $columns
+	 * @param string|null $orderBy
 	 * @return Collection
 	 */
-	public function getAll(array $columns = ['*']);
+	public function getAll(array $columns = ['*'], $orderBy = null): Collection;
 
 	/**
 	 * @param int $id

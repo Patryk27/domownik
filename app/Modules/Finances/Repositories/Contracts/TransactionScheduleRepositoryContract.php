@@ -2,6 +2,7 @@
 
 namespace App\Modules\Finances\Repositories\Contracts;
 
+use App\Modules\Finances\Models\TransactionSchedule;
 use App\Modules\Finances\ValueObjects\ScheduledTransaction;
 use App\Repositories\Contracts\CrudRepositoryContract;
 use Carbon\Carbon;
@@ -33,5 +34,33 @@ interface TransactionScheduleRepositoryContract
 	 * @return TransactionScheduleRepositoryContract
 	 */
 	public function deleteByTransactionId(int $transactionId): TransactionScheduleRepositoryContract;
+
+	#region Inherited from CrudRepositoryContract
+
+	/**
+	 * @inheritdoc
+	 * @return TransactionSchedule|null
+	 */
+	public function get(int $id, array $columns = ['*']);
+
+	/**
+	 * @inheritdoc
+	 * @return TransactionSchedule
+	 */
+	public function getOrFail(int $id, array $columns = ['*']);
+
+	/**
+	 * @inheritdoc
+	 * @return Collection|TransactionSchedule[]
+	 */
+	public function getBy(string $fieldName, $fieldValue, array $columns = ['*'], $orderBy = null): Collection;
+
+	/**
+	 * @inheritdoc
+	 * @return Collection|TransactionSchedule[]
+	 */
+	public function getAll(array $columns = ['*'], $orderBy = null): Collection;
+
+	#endregion
 
 }

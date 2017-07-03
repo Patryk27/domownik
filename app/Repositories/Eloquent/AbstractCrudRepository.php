@@ -7,7 +7,9 @@ use App\Models\Model;
 use App\Repositories\Contracts\CrudRepositoryContract;
 use App\Support\UsesCache;
 use Illuminate\Database\Connection;
+use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Foundation\Application;
+use Illuminate\Support\Collection;
 
 abstract class AbstractCrudRepository
 	implements CrudRepositoryContract {
@@ -72,28 +74,42 @@ abstract class AbstractCrudRepository
 	/**
 	 * @inheritDoc
 	 */
-	public function getBy(string $fieldName, $fieldValue, array $columns = ['*']) {
+	public function getBy(string $fieldName, $fieldValue, array $columns = ['*'], $orderBy = null): Collection {
 		$cacheKey = $this->getCacheKey(__FUNCTION__, func_get_args());
 		$cache = $this->getCache();
 
-		return $cache->rememberForever($cacheKey, function() use ($fieldName, $fieldValue, $columns) {
-			return
-				$this->model
-					->where($fieldName, $fieldValue)
-					->get($columns)
-					->first();
+		return $cache->rememberForever($cacheKey, function() use ($fieldName, $fieldValue, $columns, $orderBy) {
+			/**
+			 * @var QueryBuilder $stmt
+			 */
+			$stmt = $this->model->where($fieldName, $fieldValue);
+
+			if (!empty($orderBy)) {
+				$stmt->orderBy($orderBy);
+			}
+
+			return $stmt->get($columns);
 		});
 	}
 
 	/**
 	 * @inheritDoc
 	 */
-	public function getAll(array $columns = ['*']) {
+	public function getAll(array $columns = ['*'], $orderBy = null): Collection {
 		$cacheKey = $this->getCacheKey(__FUNCTION__, func_get_args());
 		$cache = $this->getCache();
 
-		return $cache->rememberForever($cacheKey, function() use ($columns) {
-			return $this->model->get($columns);
+		return $cache->rememberForever($cacheKey, function() use ($columns, $orderBy) {
+			if (empty($orderBy)) {
+				return
+					$this->model
+						->get($columns);
+			} else {
+				return
+					$this->model
+						->orderBy($orderBy)
+						->get($columns);
+			}
 		});
 	}
 

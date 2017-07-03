@@ -4,7 +4,6 @@ namespace App\Modules\Finances\Repositories\Eloquent;
 
 use App\Modules\Finances\Models\Transaction;
 use App\Modules\Finances\Repositories\Contracts\TransactionRepositoryContract;
-
 use App\Repositories\Eloquent\AbstractCrudRepository;
 use Illuminate\Support\Collection;
 

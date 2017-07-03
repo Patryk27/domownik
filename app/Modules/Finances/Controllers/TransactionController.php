@@ -12,8 +12,8 @@ use App\Modules\Finances\Repositories\Contracts\TransactionPeriodicityRepository
 use App\Modules\Finances\Repositories\Contracts\TransactionRepositoryContract;
 use App\Modules\Finances\Services\Transaction\RequestManagerContract;
 use App\Modules\Finances\Services\TransactionSchedule\UpdaterContract;
-use App\Services\Breadcrumb\Manager as BreadcrumbManager;
 use App\ServiceContracts\RequestManagerContract as BaseRequestManagerContract;
+use App\Services\Breadcrumb\Manager as BreadcrumbManager;
 
 class TransactionController
 	extends Controller {
@@ -174,7 +174,8 @@ class TransactionController
 	 */
 	protected function getCreateEditView($viewName) {
 		$categories = $this->transactionCategoryRepository->getAll();
-		$this->transactionCategoryRepository->resolveFullNames($categories);
+		$categories = $this->transactionCategoryRepository->resolveFullNames($categories);
+		$categories = $categories->sortBy('full_name');
 
 		return View('Finances::transaction.' . $viewName, [
 			'categories' => $categories,

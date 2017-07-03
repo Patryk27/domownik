@@ -3,7 +3,6 @@
 namespace App\Modules\Finances\Services\Transaction;
 
 use App\Modules\Finances\Http\Requests\Transaction\StoreRequest as TransactionStoreRequest;
-
 use App\Modules\Finances\Models\Transaction;
 use App\ServiceContracts\RequestManagerContract as BaseRequestManagerContract;
 

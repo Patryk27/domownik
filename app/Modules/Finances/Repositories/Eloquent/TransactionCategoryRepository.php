@@ -79,7 +79,7 @@ class TransactionCategoryRepository
 	/**
 	 * @inheritDoc
 	 */
-	public function resolveFullNames(Collection $categories): TransactionCategoryRepositoryContract {
+	public function resolveFullNames(Collection $categories): Collection {
 		/**
 		 * @var Collection|TransactionCategory[] $categories
 		 * @var Collection|TransactionCategory[] $categoryMap
@@ -90,35 +90,37 @@ class TransactionCategoryRepository
 		$cache = $this->getCache();
 
 		/**
-		 * @var Callable $getFullPath
+		 * @var Callable $getFullName
 		 */
-		$getFullPath = null;
-		$getFullPath = function($categoryId) use (&$getFullPath, &$categoryMap, &$cache) {
+		$getFullName = null;
+		$getFullName = function($categoryId) use (&$getFullName, &$categoryMap, &$cache) {
 			if (is_null($categoryId)) {
 				return [];
 			}
 
-			$cacheKey = $this->getCacheKey(__FUNCTION__ . ':getFullPath', func_get_args());
+			$cacheKey = $this->getCacheKey(__FUNCTION__ . ':getFullName', func_get_args());
 
-			return $cache->rememberForever($cacheKey, function() use (&$getFullPath, &$categoryMap, $categoryId) {
+			return $cache->rememberForever($cacheKey, function() use (&$getFullName, &$categoryMap, $categoryId) {
 				if (!$categoryMap->has($categoryId)) {
 					$categoryMap[$categoryId] = $this->getOrFail($categoryId);
 				}
 
 				$category = $categoryMap[$categoryId];
 
-				return array_merge($getFullPath($category->parent_category_id), [$category->name]);
+				return array_merge($getFullName($category->parent_category_id), [$category->name]);
 			});
 		};
 
+		$result = new Collection();
+
 		foreach ($categories as $category) {
-			/**
-			 * @var TransactionCategory $category
-			 */
-			$category->fullName = implode(self::CATEGORY_NAME_SEPARATOR, $getFullPath($category->id));
+			$category = clone $category;
+			$category->full_name = implode(self::CATEGORY_NAME_SEPARATOR, $getFullName($category->id));
+
+			$result->push($category);
 		}
 
-		return $this;
+		return $result;
 	}
 
 	/**

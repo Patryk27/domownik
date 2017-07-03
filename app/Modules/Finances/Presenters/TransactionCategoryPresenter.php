@@ -34,12 +34,12 @@ class TransactionCategoryPresenter
 	 * @return string
 	 */
 	public function getFullName() {
-		if ($this->model->offsetExists('fullName')) {
-			return $this->model->fullName;
+		if ($this->model->offsetExists('full_name')) {
+			return $this->model->full_name;
 		}
 
 		$fullName = $this->transactionCategoryRepository->getFullName($this->model->id);
-		$this->model->fullName = $fullName;
+		$this->model->full_name = $fullName;
 
 		return $fullName;
 	}

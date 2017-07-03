@@ -3,13 +3,11 @@
 namespace App\Modules\Finances\Services\TransactionSchedule;
 
 use App\Modules\Finances\Models\Transaction;
-
 use App\Modules\Finances\Models\TransactionValueConstant;
 use App\Modules\Finances\Models\TransactionValueRange;
 use App\Modules\Finances\Repositories\Contracts\TransactionPeriodicityRepositoryContract;
 use App\Modules\Finances\Repositories\Contracts\TransactionRepositoryContract;
 use App\Modules\Finances\Repositories\Contracts\TransactionScheduleRepositoryContract;
-
 use App\Modules\Finances\ValueObjects\ScheduledTransaction;
 use App\Services\Logger\Contract as LoggerContract;
 use Carbon\Carbon;

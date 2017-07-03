@@ -2,9 +2,9 @@
 
 namespace App\Modules\Finances\Module;
 
+use App\Modules\Finances\Repositories\Contracts\BudgetRepositoryContract;
 use App\Modules\Scaffolding\Module\Director as AbstractDirector;
 use App\Modules\Scaffolding\Module\DirectorContract;
-use App\Modules\Finances\Repositories\Contracts\BudgetRepositoryContract;
 
 class Director
 	extends AbstractDirector {

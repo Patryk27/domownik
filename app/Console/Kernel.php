@@ -2,8 +2,8 @@
 
 namespace App\Console;
 
-use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use App\Services\Install\Manager as InstallManager;
+use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
 class Kernel
 	extends ConsoleKernel {

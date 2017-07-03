@@ -12,9 +12,9 @@ use App\ServiceContracts\BasicSearchContract;
 use App\Support\Facades\Date;
 use App\Support\UsesCache;
 use Carbon\Carbon;
+use Illuminate\Cache\Repository as CacheRepository;
 use Illuminate\Database\Connection as DatabaseConnection;
 use Illuminate\Support\Collection;
-use Illuminate\Cache\Repository as CacheRepository;
 
 class HistoryCollector
 	implements HistoryCollectorContract {

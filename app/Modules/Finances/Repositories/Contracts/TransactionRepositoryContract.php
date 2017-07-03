@@ -6,12 +6,6 @@ use App\Modules\Finances\Models\Transaction;
 use App\Repositories\Contracts\CrudRepositoryContract;
 use Illuminate\Support\Collection;
 
-/**
- * @method Transaction|null get(int $id, array $columns = ['*'])
- * @method Transaction getOrFail(int $id, array $columns = ['*'])
- * @method Collection|Transaction[] getBy(string $fieldName, $fieldValue, array $columns = ['*'])
- * @method Collection|Transaction[] getAll(array $columns = ['*'])
- */
 interface TransactionRepositoryContract
 	extends CrudRepositoryContract {
 
@@ -28,5 +22,33 @@ interface TransactionRepositoryContract
 	 * @return Collection|Transaction[]
 	 */
 	public function getByCategoryId(int $transactionCategoryId): Collection;
+
+	#region Inherited from CrudRepositoryContract
+
+	/**
+	 * @inheritdoc
+	 * @return Transaction|null
+	 */
+	public function get(int $id, array $columns = ['*']);
+
+	/**
+	 * @inheritdoc
+	 * @return Transaction
+	 */
+	public function getOrFail(int $id, array $columns = ['*']);
+
+	/**
+	 * @inheritdoc
+	 * @return Collection|Transaction[]
+	 */
+	public function getBy(string $fieldName, $fieldValue, array $columns = ['*'], $orderBy = null): Collection;
+
+	/**
+	 * @inheritdoc
+	 * @return Collection|Transaction[]
+	 */
+	public function getAll(array $columns = ['*'], $orderBy = null): Collection;
+
+	#endregion
 
 }

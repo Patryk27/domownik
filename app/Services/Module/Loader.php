@@ -5,9 +5,8 @@ namespace App\Services\Module;
 use App\Exceptions\ModuleLoaderException;
 use App\Modules\Scaffolding\Module\DirectorContract;
 use App\Modules\Scaffolding\Module\ServiceProviderContract;
-use Illuminate\Foundation\Application;
-
 use Illuminate\Contracts\Filesystem\Filesystem as FilesystemContract;
+use Illuminate\Foundation\Application;
 
 class Loader {
 

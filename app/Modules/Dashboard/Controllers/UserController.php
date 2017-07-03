@@ -8,9 +8,9 @@ use App\Modules\Dashboard\Http\Requests\User\LoginRequest as UserLoginRequest;
 use App\Modules\Dashboard\Http\Requests\User\StoreRequest as UserStoreRequest;
 use App\Modules\Dashboard\Services\User\RequestManagerContract as UserRequestManagerContract;
 use App\Repositories\Contracts\UserRepositoryContract;
+use App\ServiceContracts\RequestManagerContract as BaseRequestManagerContract;
 use App\Services\Breadcrumb\Manager as BreadcrumbManager;
 use Auth;
-use App\ServiceContracts\RequestManagerContract as BaseRequestManagerContract;
 
 class UserController
 	extends Controller {

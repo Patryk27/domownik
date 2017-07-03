@@ -3,9 +3,8 @@
 namespace App\Providers;
 
 use App\Services\Install\Manager as InstallManager;
-
-use Illuminate\Support\ServiceProvider;
 use App\Services\Module\Initializer as ModuleInitializer;
+use Illuminate\Support\ServiceProvider;
 
 class ModuleServiceProvider
 	extends ServiceProvider {
