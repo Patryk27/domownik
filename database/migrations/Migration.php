@@ -37,7 +37,7 @@ abstract class Migration
 		$this->db = app()->make(DatabaseConnection::class);
 		$this->schemaBuilder = $this->db->getSchemaBuilder();
 
-		$this->testing = true; // @todo
+		$this->testing = defined('PHPUNIT_RUNNING');
 	}
 
 	/**
