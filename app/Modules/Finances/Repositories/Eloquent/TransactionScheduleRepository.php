@@ -22,7 +22,7 @@ class TransactionScheduleRepository
 		$cache = $this->getCache();
 
 		return $cache->rememberForever($cacheKey, function() use ($date) {
-			$stmt = $this->databaseConnection
+			$stmt = $this->db
 				->table('transaction_schedules AS ts')
 				->where('ts.date', '<=', $date->format('Y-m-d'))
 				->orderBy('ts.id');
@@ -45,7 +45,7 @@ class TransactionScheduleRepository
 		$cache = $this->getCache();
 
 		return $cache->rememberForever($cacheKey, function() use ($budgetId, $dateFrom, $dateTo) {
-			$stmt = $this->databaseConnection
+			$stmt = $this->db
 				->table('transaction_schedules AS ts')
 				->join('transactions AS t', 't.id', '=', 'ts.transaction_id')
 				->where('t.parent_type', 'budget')
@@ -83,7 +83,7 @@ class TransactionScheduleRepository
 	 * @return TransactionRepositoryContract
 	 */
 	protected function getTransactionRepository(): TransactionRepositoryContract {
-		return $this->application->make(TransactionRepositoryContract::class);
+		return $this->app->make(TransactionRepositoryContract::class);
 	}
 
 	/**

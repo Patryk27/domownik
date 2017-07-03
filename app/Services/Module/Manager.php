@@ -26,7 +26,7 @@ class Manager {
 	/**
 	 * @var LoggerContract
 	 */
-	protected $logger;
+	protected $log;
 
 	/**
 	 * @var FilesystemContract
@@ -36,7 +36,7 @@ class Manager {
 	/**
 	 * @var CacheRepository
 	 */
-	protected $cacheRepository;
+	protected $cache;
 
 	/**
 	 * @var ModuleRepositoryContract
@@ -64,24 +64,24 @@ class Manager {
 
 	/**
 	 * @param Application $app
-	 * @param LoggerContract $logger
+	 * @param LoggerContract $log
 	 * @param FilesystemFactoryContract $storage
-	 * @param CacheRepository $cacheRepository
+	 * @param CacheRepository $cache
 	 * @param ModuleRepositoryContract $moduleRepository
 	 * @param ModuleSettingRepositoryContract $moduleSettingRepository
 	 */
 	public function __construct(
 		Application $app,
-		LoggerContract $logger,
+		LoggerContract $log,
 		FilesystemFactoryContract $fsFactory,
-		CacheRepository $cacheRepository,
+		CacheRepository $cache,
 		ModuleRepositoryContract $moduleRepository,
 		ModuleSettingRepositoryContract $moduleSettingRepository
 	) {
 		$this->app = $app;
-		$this->logger = $logger;
+		$this->log = $log;
 		$this->storage = $fsFactory->disk('app');
-		$this->cacheRepository = $cacheRepository;
+		$this->cache = $cache;
 		$this->moduleRepository = $moduleRepository;
 		$this->moduleSettingRepository = $moduleSettingRepository;
 	}
@@ -93,9 +93,8 @@ class Manager {
 		$modulePaths = $this->getModulePaths();
 
 		foreach ($modulePaths as $modulePath) {
-			$moduleName =
-				Collection::make(explode(DIRECTORY_SEPARATOR, $modulePath))
-						  ->last();
+			$modulePath = Collection::make(explode(DIRECTORY_SEPARATOR, $modulePath));
+			$moduleName = $modulePath->last();
 
 			$this->checkModule($moduleName);
 		}
@@ -109,7 +108,7 @@ class Manager {
 	protected function getModulePaths() {
 		$cacheKey = $this->getCacheKey(__FUNCTION__, func_get_args());
 
-		return $this->cacheRepository->rememberForever($cacheKey, function() {
+		return $this->cache->rememberForever($cacheKey, function() {
 			return array_map(function($modulePath) {
 				$modulePath = explode('/', $modulePath);
 				return $modulePath[1];
@@ -147,7 +146,7 @@ class Manager {
 		$module = $this->moduleRepository->getByName($moduleName);
 
 		if (empty($module)) {
-			$this->logger->notice('Module with name=\'%s\' has not been found in the database - creating one.', $moduleName);
+			$this->log->notice('Module with name=\'%s\' has not been found in the database - creating one.', $moduleName);
 
 			$module = new Module();
 			$module->name = $moduleName;
@@ -155,7 +154,7 @@ class Manager {
 
 			$this->moduleRepository->persist($module);
 
-			$this->logger->notice('... created module id=%d.', $module->id);
+			$this->log->notice('... created module id=%d.', $module->id);
 		}
 
 		return $module->id;
@@ -174,7 +173,7 @@ class Manager {
 		$settingValue = $this->moduleSettingRepository->getValueByKey($moduleId, $settingKey);
 
 		if (is_null($settingValue)) {
-			$this->logger->notice('Module with id=%d does not have any value for setting=\'%s\', setting default one: \'%s\'.', $moduleId, $settingKey, json_encode($settingDefaultValue));
+			$this->log->notice('Module with id=%d does not have any value for setting=\'%s\', setting default one: \'%s\'.', $moduleId, $settingKey, json_encode($settingDefaultValue));
 
 			$moduleSetting = new ModuleSetting();
 			$moduleSetting->module_id = $moduleId;

@@ -9,15 +9,15 @@ class Manager {
 	/**
 	 * @var DatabaseConnection
 	 */
-	protected $databaseConnection;
+	protected $db;
 
 	/**
-	 * @param DatabaseConnection $databaseConnection
+	 * @param DatabaseConnection $db
 	 */
 	public function __construct(
-		DatabaseConnection $databaseConnection
+		DatabaseConnection $db
 	) {
-		$this->databaseConnection = $databaseConnection;
+		$this->db = $db;
 	}
 
 	/**
@@ -25,7 +25,7 @@ class Manager {
 	 */
 	public function isApplicationInstalled(): bool {
 		// @todo cache
-		$schemaBuilder = $this->databaseConnection->getSchemaBuilder();
+		$schemaBuilder = $this->db->getSchemaBuilder();
 		return $schemaBuilder->hasTable('users');
 	}
 

@@ -26,7 +26,7 @@ abstract class AbstractControl
 	/**
 	 * @var LoggerContract
 	 */
-	private $logger;
+	private $log;
 
 	/**
 	 * Returns control's view name.
@@ -36,14 +36,14 @@ abstract class AbstractControl
 
 	/**
 	 * @param Application $app
-	 * @param LoggerContract $logger
+	 * @param LoggerContract $log
 	 */
 	public function __construct(
 		Application $app,
-		LoggerContract $logger
+		LoggerContract $log
 	) {
 		$this->app = $app;
-		$this->logger = $logger;
+		$this->log = $log;
 	}
 
 	/**
@@ -71,7 +71,7 @@ abstract class AbstractControl
 			if (!$objectReflector->hasMethod($getterName)) {
 				$message = sprintf('Cannot prepare view of form control \'%s\' because it does not have any getter for field \'%s\'.', $objectReflector->getName(), $propertyName);
 
-				$this->logger->emergency($message);
+				$this->log->emergency($message);
 
 				/**
 				 * Yeah, yeah, __toString() cannot throw exceptions - but is there any other thing we can do?

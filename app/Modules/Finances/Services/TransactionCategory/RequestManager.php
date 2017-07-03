@@ -9,7 +9,7 @@ use App\Modules\Finances\Repositories\Contracts\TransactionCategoryRepositoryCon
 use App\Modules\Finances\Services\TransactionCategory\RequestManager\CategoryDeleter;
 use App\Modules\Finances\Services\TransactionCategory\RequestManager\CategoryUpdater;
 use App\Services\Logger\Contract as LoggerContract;
-use Illuminate\Database\Connection;
+use Illuminate\Database\Connection as DatabaseConnection;
 
 class RequestManager
 	implements RequestManagerContract {
@@ -17,12 +17,12 @@ class RequestManager
 	/**
 	 * @var LoggerContract
 	 */
-	protected $logger;
+	protected $log;
 
 	/**
-	 * @var Connection
+	 * @var DatabaseConnection
 	 */
-	protected $databaseConnection;
+	protected $db;
 
 	/**
 	 * @var TransactionCategoryRepositoryContract
@@ -30,17 +30,17 @@ class RequestManager
 	protected $transactionCategoryRepository;
 
 	/**
-	 * @param LoggerContract $logger
-	 * @param Connection $databaseConnection
+	 * @param LoggerContract $log
+	 * @param DatabaseConnection $db
 	 * @param TransactionCategoryRepositoryContract $transactionCategoryRepository
 	 */
 	public function __construct(
-		LoggerContract $logger,
-		Connection $databaseConnection,
+		LoggerContract $log,
+		DatabaseConnection $db,
 		TransactionCategoryRepositoryContract $transactionCategoryRepository
 	) {
-		$this->logger = $logger;
-		$this->databaseConnection = $databaseConnection;
+		$this->log = $log;
+		$this->db = $db;
 		$this->transactionCategoryRepository = $transactionCategoryRepository;
 	}
 
@@ -48,9 +48,9 @@ class RequestManager
 	 * @inheritDoc
 	 */
 	public function store(TransactionCategoryStoreRequest $request): RequestManagerContract {
-		$this->logger->info('Updating transaction category list: %s.', $request);
+		$this->log->info('Updating transaction category list: %s.', $request);
 
-		$this->databaseConnection->transaction(function() use ($request) {
+		$this->db->transaction(function() use ($request) {
 			$categoryUpdater = new CategoryUpdater();
 			$categoryUpdater->updateCategories($request->get('newTree'));
 

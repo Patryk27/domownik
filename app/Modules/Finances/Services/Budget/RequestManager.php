@@ -16,7 +16,7 @@ class RequestManager
 	/**
 	 * @var DatabaseConnection
 	 */
-	protected $databaseConnection;
+	protected $db;
 
 	/**
 	 * @var BudgetRepositoryContract
@@ -34,16 +34,16 @@ class RequestManager
 	protected $budget;
 
 	/**
-	 * @param DatabaseConnection $databaseConnection
+	 * @param DatabaseConnection $db
 	 * @param BudgetRepositoryContract $budgetRepository
 	 * @param BudgetConsolidationRepositoryContract $budgetConsolidationRepository
 	 */
 	public function __construct(
-		DatabaseConnection $databaseConnection,
+		DatabaseConnection $db,
 		BudgetRepositoryContract $budgetRepository,
 		BudgetConsolidationRepositoryContract $budgetConsolidationRepository
 	) {
-		$this->databaseConnection = $databaseConnection;
+		$this->db = $db;
 		$this->budgetRepository = $budgetRepository;
 		$this->budgetConsolidationRepository = $budgetConsolidationRepository;
 	}
@@ -54,7 +54,7 @@ class RequestManager
 	public function store(BudgetStoreRequest $request): string {
 		$this->budget = null;
 
-		return $this->databaseConnection->transaction(function() use ($request) {
+		return $this->db->transaction(function() use ($request) {
 			// create budget
 			$budget = new Budget();
 			$budget->type = $request->get('budgetType');

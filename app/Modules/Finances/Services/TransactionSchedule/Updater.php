@@ -8,7 +8,7 @@ use App\Modules\Finances\Services\Transaction\PeriodicityParserContract;
 use App\Services\Logger\Contract as LoggerContract;
 use App\Support\Facades\Date;
 use Carbon\Carbon;
-use Illuminate\Database\Connection;
+use Illuminate\Database\Connection as DatabaseConnection;
 
 class Updater
 	implements UpdaterContract {
@@ -16,12 +16,12 @@ class Updater
 	/**
 	 * @var LoggerContract
 	 */
-	protected $logger;
+	protected $log;
 
 	/**
-	 * @var Connection
+	 * @var DatabaseConnection
 	 */
-	protected $databaseConnection;
+	protected $db;
 
 	/**
 	 * @var TransactionScheduleRepositoryContract
@@ -34,19 +34,19 @@ class Updater
 	protected $transactionPeriodicityParserService;
 
 	/**
-	 * @param LoggerContract $logger
-	 * @param Connection $databaseConnection
+	 * @param LoggerContract $log
+	 * @param DatabaseConnection $db
 	 * @param TransactionScheduleRepositoryContract $transactionScheduleRepository
 	 * @param PeriodicityParserContract $transactionPeriodicityParserService
 	 */
 	public function __construct(
-		LoggerContract $logger,
-		Connection $databaseConnection,
+		LoggerContract $log,
+		DatabaseConnection $db,
 		TransactionScheduleRepositoryContract $transactionScheduleRepository,
 		PeriodicityParserContract $transactionPeriodicityParserService
 	) {
-		$this->logger = $logger;
-		$this->databaseConnection = $databaseConnection;
+		$this->log = $log;
+		$this->db = $db;
 		$this->transactionScheduleRepository = $transactionScheduleRepository;
 		$this->transactionPeriodicityParserService = $transactionPeriodicityParserService;
 	}
@@ -55,11 +55,11 @@ class Updater
 	 * @inheritDoc
 	 */
 	public function updateScheduleByTransactionId(int $transactionId): UpdaterContract {
-		$this->logger->info('Updating schedule for transaction with id=%d.', $transactionId);
+		$this->log->info('Updating schedule for transaction with id=%d.', $transactionId);
 
 		$today = Carbon::today();
 
-		$this->databaseConnection->beginTransaction();
+		$this->db->beginTransaction();
 
 		try {
 			$this->transactionScheduleRepository->deleteByTransactionId($transactionId);
@@ -73,11 +73,11 @@ class Updater
 
 			foreach ($dates as $date) {
 				if ($date->lt($today)) {
-					$this->logger->info('-> NOT adding to schedule date \'%s\', because it\'s in the past.', $date->format('Y-m-d'));
+					$this->log->info('-> NOT adding to schedule date \'%s\', because it\'s in the past.', $date->format('Y-m-d'));
 					continue;
 				}
 
-				$this->logger->info('-> adding date to schedule: %s.', $date->format('Y-m-d'));
+				$this->log->info('-> adding date to schedule: %s.', $date->format('Y-m-d'));
 
 				$transactionSchedule = new TransactionSchedule();
 				$transactionSchedule->transaction_id = $transactionId;
@@ -85,12 +85,12 @@ class Updater
 				$transactionSchedule->save();
 			}
 
-			$this->databaseConnection->commit();
+			$this->db->commit();
 		} catch (\Throwable $ex) {
-			$this->databaseConnection->rollBack();
+			$this->db->rollBack();
 			throw $ex;
 		} finally {
-			$this->logger->info('Cleaning up...');
+			$this->log->info('Cleaning up...');
 
 			$this->transactionScheduleRepository
 				->getFlushCache()

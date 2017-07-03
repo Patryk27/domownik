@@ -24,12 +24,12 @@ class HistoryCollector
 	/**
 	 * @var CacheRepository
 	 */
-	protected $cacheRepository;
+	protected $cache;
 
 	/**
 	 * @var DatabaseConnection
 	 */
-	protected $databaseConnection;
+	protected $db;
 
 	/**
 	 * @var TransactionPeriodicityRepositoryContract
@@ -67,17 +67,17 @@ class HistoryCollector
 	protected $rows;
 
 	/**
-	 * @param CacheRepository $cacheRepository
-	 * @param DatabaseConnection $databaseConnection
+	 * @param CacheRepository $cache
+	 * @param DatabaseConnection $db
 	 * @param TransactionPeriodicityRepositoryContract $transactionPeriodicityRepository
 	 */
 	public function __construct(
-		CacheRepository $cacheRepository,
-		DatabaseConnection $databaseConnection,
+		CacheRepository $cache,
+		DatabaseConnection $db,
 		TransactionPeriodicityRepositoryContract $transactionPeriodicityRepository
 	) {
-		$this->cacheRepository = $cacheRepository;
-		$this->databaseConnection = $databaseConnection;
+		$this->cache = $cache;
+		$this->db = $db;
 		$this->transactionPeriodicityRepository = $transactionPeriodicityRepository;
 	}
 
@@ -105,8 +105,8 @@ class HistoryCollector
 			$this->sortDirection,
 		]);
 
-		$this->rows = $this->cacheRepository->rememberForever($cacheKey, function() {
-			$stmt = $this->databaseConnection
+		$this->rows = $this->cache->rememberForever($cacheKey, function() {
+			$stmt = $this->db
 				->table('transactions AS t')
 				->select([
 					't.id AS transaction_id',

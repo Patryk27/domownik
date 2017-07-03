@@ -15,12 +15,12 @@ class RequestManager
 	/**
 	 * @var LoggerContract
 	 */
-	protected $logger;
+	protected $log;
 
 	/**
 	 * @var DatabaseConnection
 	 */
-	protected $databaseConnection;
+	protected $db;
 
 	/**
 	 * @var UserRepositoryContract
@@ -38,17 +38,17 @@ class RequestManager
 	protected $model;
 
 	/**
-	 * @param LoggerContract $logger
-	 * @param DatabaseConnection $databaseConnection
+	 * @param LoggerContract $log
+	 * @param DatabaseConnection $db
 	 * @param UserRepositoryContract $userRepository
 	 */
 	public function __construct(
-		LoggerContract $logger,
-		DatabaseConnection $databaseConnection,
+		LoggerContract $log,
+		DatabaseConnection $db,
 		UserRepositoryContract $userRepository
 	) {
-		$this->logger = $logger;
-		$this->databaseConnection = $databaseConnection;
+		$this->log = $log;
+		$this->db = $db;
 		$this->userRepository = $userRepository;
 	}
 
@@ -59,7 +59,7 @@ class RequestManager
 		$this->request = $request;
 		$this->model = null;
 
-		return $this->databaseConnection->transaction(function() {
+		return $this->db->transaction(function() {
 			if ($this->request->has('userId')) {
 				$this->update();
 				return BaseRequestManagerContract::STORE_RESULT_UPDATED;
@@ -74,7 +74,7 @@ class RequestManager
 	 * @inheritDoc
 	 */
 	public function delete(int $userId): RequestManagerContract {
-		$this->logger->info('Deleting user with id=%d.', $userId);
+		$this->log->info('Deleting user with id=%d.', $userId);
 
 		$this->model = $this->userRepository->getOrFail($userId);
 		$this->userRepository->delete($this->model->id);
@@ -97,7 +97,7 @@ class RequestManager
 	 * @return RequestManager
 	 */
 	protected function update(): self {
-		$this->logger->info('Updating user with id=%d: %s', $this->request->get('userId'), $this->request);
+		$this->log->info('Updating user with id=%d: %s', $this->request->get('userId'), $this->request);
 
 		$user = $this->userRepository->getOrFail($this->request->get('userId'));
 		$user->login = $this->request->get('userLogin');
@@ -118,7 +118,7 @@ class RequestManager
 	 * @return RequestManager
 	 */
 	protected function insert(): self {
-		$this->logger->info('Creating new user: %s', $this->request);
+		$this->log->info('Creating new user: %s', $this->request);
 
 		$user = new User();
 		$user->login = $this->request->get('userLogin');

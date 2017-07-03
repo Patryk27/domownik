@@ -11,7 +11,7 @@ use App\Modules\Finances\Models\TransactionValueRange;
 use App\Modules\Finances\Repositories\Contracts\TransactionRepositoryContract;
 use App\Services\Logger\Contract as LoggerContract;
 use Carbon\Carbon;
-use Illuminate\Database\Connection;
+use Illuminate\Database\Connection as DatabaseConnection;
 use Illuminate\Database\Eloquent\Model;
 
 class RequestManager
@@ -20,12 +20,12 @@ class RequestManager
 	/**
 	 * @var LoggerContract
 	 */
-	protected $logger;
+	protected $log;
 
 	/**
-	 * @var Connection
+	 * @var DatabaseConnection
 	 */
-	protected $databaseConnection;
+	protected $db;
 
 	/**
 	 * @var TransactionRepositoryContract
@@ -48,17 +48,17 @@ class RequestManager
 	protected $beingCreated;
 
 	/**
-	 * @param LoggerContract $logger
-	 * @param Connection $databaseConnection
+	 * @param LoggerContract $log
+	 * @param DatabaseConnection $db
 	 * @param TransactionRepositoryContract $transactionRepository
 	 */
 	public function __construct(
-		LoggerContract $logger,
-		Connection $databaseConnection,
+		LoggerContract $log,
+		DatabaseConnection $db,
 		TransactionRepositoryContract $transactionRepository
 	) {
-		$this->logger = $logger;
-		$this->databaseConnection = $databaseConnection;
+		$this->log = $log;
+		$this->db = $db;
 		$this->transactionRepository = $transactionRepository;
 	}
 
@@ -70,12 +70,12 @@ class RequestManager
 		$this->beingCreated = !$request->has('transactionId');
 
 		if ($this->beingCreated) {
-			$this->logger->info('Creating new transaction: %s', $request);
+			$this->log->info('Creating new transaction: %s', $request);
 		} else {
-			$this->logger->info('Updating transaction with id=%d: %s', $this->request->get('transactionId'), $request);
+			$this->log->info('Updating transaction with id=%d: %s', $this->request->get('transactionId'), $request);
 		}
 
-		$this->databaseConnection->transaction(function() {
+		$this->db->transaction(function() {
 			if ($this->beingCreated) {
 				$this->createTransaction();
 			} else {
@@ -101,7 +101,7 @@ class RequestManager
 	 * @inheritDoc
 	 */
 	public function delete(int $transactionId): RequestManagerContract {
-		$this->logger->info('Deleting transaction: id=%d', $transactionId);
+		$this->log->info('Deleting transaction: id=%d', $transactionId);
 
 		$this->transactionRepository->delete($transactionId);
 

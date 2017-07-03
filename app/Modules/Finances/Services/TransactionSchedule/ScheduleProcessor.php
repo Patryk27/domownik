@@ -11,7 +11,7 @@ use App\Modules\Finances\Repositories\Contracts\TransactionScheduleRepositoryCon
 use App\Modules\Finances\ValueObjects\ScheduledTransaction;
 use App\Services\Logger\Contract as LoggerContract;
 use Carbon\Carbon;
-use Illuminate\Database\Connection;
+use Illuminate\Database\Connection as DatabaseConnection;
 
 class ScheduleProcessor
 	implements ScheduleProcessorContract {
@@ -19,12 +19,12 @@ class ScheduleProcessor
 	/**
 	 * @var LoggerContract
 	 */
-	protected $logger;
+	protected $log;
 
 	/**
-	 * @var Connection
+	 * @var DatabaseConnection
 	 */
-	protected $databaseConnection;
+	protected $db;
 
 	/**
 	 * @var TransactionScheduleRepositoryContract
@@ -42,21 +42,21 @@ class ScheduleProcessor
 	protected $transactionPeriodicityRepository;
 
 	/**
-	 * @param LoggerContract $logger
-	 * @param Connection $databaseConnection
+	 * @param LoggerContract $log
+	 * @param DatabaseConnection $db
 	 * @param TransactionScheduleRepositoryContract $transactionScheduleRepository
 	 * @param TransactionRepositoryContract $transactionRepository
 	 * @param TransactionPeriodicityRepositoryContract $transactionPeriodicityRepository
 	 */
 	public function __construct(
-		LoggerContract $logger,
-		Connection $databaseConnection,
+		LoggerContract $log,
+		DatabaseConnection $db,
 		TransactionScheduleRepositoryContract $transactionScheduleRepository,
 		TransactionRepositoryContract $transactionRepository,
 		TransactionPeriodicityRepositoryContract $transactionPeriodicityRepository
 	) {
-		$this->logger = $logger;
-		$this->databaseConnection = $databaseConnection;
+		$this->log = $log;
+		$this->db = $db;
 		$this->transactionScheduleRepository = $transactionScheduleRepository;
 		$this->transactionRepository = $transactionRepository;
 		$this->transactionPeriodicityRepository = $transactionPeriodicityRepository;
@@ -67,15 +67,15 @@ class ScheduleProcessor
 	 */
 	public function processTransactionsSchedule(): ScheduleProcessorContract {
 		try {
-			$this->logger->info('Processing transaction schedule...');
+			$this->log->info('Processing transaction schedule...');
 			$scheduledTransactions = $this->transactionScheduleRepository->getToDate(Carbon::yesterday());
-			$this->logger->info('Got %d scheduled transactions.', $scheduledTransactions->count());
+			$this->log->info('Got %d scheduled transactions.', $scheduledTransactions->count());
 
 			foreach ($scheduledTransactions as $scheduledTransaction) {
 				$this->processScheduledTransaction($scheduledTransaction);
 			}
 		} finally {
-			$this->logger->info('Cleaning up...');
+			$this->log->info('Cleaning up...');
 
 			$this->transactionRepository
 				->getFlushCache()
@@ -99,9 +99,9 @@ class ScheduleProcessor
 		$stDate = $scheduledTransaction->getDate();
 		$stTransaction = $scheduledTransaction->getTransaction();
 
-		$this->logger->info('Processing scheduled transaction: id=%d, date=%s, transaction-id=%d.', $stId, $stDate->format('Y-m-d'), $stTransaction->id);
+		$this->log->info('Processing scheduled transaction: id=%d, date=%s, transaction-id=%d.', $stId, $stDate->format('Y-m-d'), $stTransaction->id);
 
-		$this->databaseConnection->beginTransaction();
+		$this->db->beginTransaction();
 
 		try {
 			// @todo consider using $stTransaction->replace() (without children!)
@@ -136,12 +136,12 @@ class ScheduleProcessor
 			$targetTransaction->saveOrFail();
 			$this->transactionScheduleRepository->delete($stId);
 
-			$this->logger->info('-> created transaction: transaction-id=%d.', $targetTransaction->id);
+			$this->log->info('-> created transaction: transaction-id=%d.', $targetTransaction->id);
 
-			$this->databaseConnection->commit();
+			$this->db->commit();
 		} catch (\Throwable $ex) {
-			$this->logger->error('Got an exception, aborting...');
-			$this->databaseConnection->rollBack();
+			$this->log->error('Got an exception, aborting...');
+			$this->db->rollBack();
 
 			throw $ex;
 		}

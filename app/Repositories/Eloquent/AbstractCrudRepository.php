@@ -6,7 +6,7 @@ use App\Exceptions\RepositoryException;
 use App\Models\Model;
 use App\Repositories\Contracts\CrudRepositoryContract;
 use App\Support\UsesCache;
-use Illuminate\Database\Connection;
+use Illuminate\Database\Connection as DatabaseConnection;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Collection;
@@ -19,12 +19,12 @@ abstract class AbstractCrudRepository
 	/**
 	 * @var Application
 	 */
-	protected $application;
+	protected $app;
 
 	/**
-	 * @var Connection
+	 * @var DatabaseConnection
 	 */
-	protected $databaseConnection;
+	protected $db;
 
 	/**
 	 * @var Model
@@ -38,12 +38,14 @@ abstract class AbstractCrudRepository
 	abstract protected function getModelName(): string;
 
 	/**
-	 * @param Application $application
+	 * @param Application $app
 	 */
-	public function __construct(Application $application) {
-		$this->application = $application;
-		$this->databaseConnection = $this->application->make(Connection::class);
-		$this->model = $this->application->make($this->getModelName());
+	public function __construct(
+		Application $app
+	) {
+		$this->app = $app;
+		$this->db = $this->app->make(DatabaseConnection::class);
+		$this->model = $this->app->make($this->getModelName());
 	}
 
 	/**
