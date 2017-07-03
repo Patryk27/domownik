@@ -10,22 +10,22 @@ class BudgetSeeder
 	/**
 	 * @var LoggerContract
 	 */
-	protected $logger;
+	protected $log;
 
 	/**
-	 * @param LoggerContract $logger
+	 * @param LoggerContract $log
 	 */
 	public function __construct(
-		LoggerContract $logger
+		LoggerContract $log
 	) {
-		$this->logger = $logger;
+		$this->log = $log;
 	}
 
 	/**
 	 * @return void
 	 */
 	public function run() {
-		$this->logger->info('Creating first budget...');
+		$this->log->info('Creating first budget...');
 
 		$budget = new Budget();
 		$budget->type = Budget::TYPE_REGULAR;
@@ -34,7 +34,7 @@ class BudgetSeeder
 		$budget->status = Budget::STATUS_ACTIVE;
 		$budget->save();
 
-		$this->logger->debug('Flushing cache...');
+		$this->log->debug('Flushing cache...');
 		Cache::flush();
 	}
 

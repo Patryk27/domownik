@@ -10,15 +10,15 @@ class UserSeeder
 	/**
 	 * @var LoggerContract
 	 */
-	protected $logger;
+	protected $log;
 
 	/**
-	 * @param LoggerContract $logger
+	 * @param LoggerContract $log
 	 */
 	public function __construct(
-		LoggerContract $logger
+		LoggerContract $log
 	) {
-		$this->logger = $logger;
+		$this->log = $log;
 	}
 
 	/**
@@ -30,11 +30,11 @@ class UserSeeder
 				->first();
 
 		if (!empty($user)) {
-			$this->logger->warning('Not creating \'admin\' user because one already exists.');
+			$this->log->warning('Not creating \'admin\' user because one already exists.');
 			return;
 		}
 
-		$this->logger->info('Creating \'admin\' user...');
+		$this->log->info('Creating \'admin\' user...');
 
 		$user = new User();
 		$user->login = 'admin';
@@ -43,7 +43,7 @@ class UserSeeder
 		$user->is_active = 1;
 		$user->save();
 
-		$this->logger->info('Flushing cache...');
+		$this->log->info('Flushing cache...');
 		Cache::flush();
 	}
 

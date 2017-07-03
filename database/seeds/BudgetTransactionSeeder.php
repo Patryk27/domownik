@@ -17,7 +17,7 @@ class BudgetTransactionSeeder
 	/**
 	 * @var LoggerContract
 	 */
-	protected $logger;
+	protected $log;
 
 	/**
 	 * @var TransactionScheduleProcessorServiceContract
@@ -35,16 +35,16 @@ class BudgetTransactionSeeder
 	protected $firstBudget;
 
 	/**
-	 * @param LoggerContract $logger
+	 * @param LoggerContract $log
 	 * @param TransactionScheduleProcessorServiceContract $transactionScheduleProcessorService
 	 * @param TransactionScheduleUpdaterServiceContract $transactionScheduleUpdaterService
 	 */
 	public function __construct(
-		LoggerContract $logger,
+		LoggerContract $log,
 		TransactionScheduleProcessorServiceContract $transactionScheduleProcessorService,
 		TransactionScheduleUpdaterServiceContract $transactionScheduleUpdaterService
 	) {
-		$this->logger = $logger;
+		$this->log = $log;
 		$this->transactionScheduleProcessorService = $transactionScheduleProcessorService;
 		$this->transactionScheduleUpdaterService = $transactionScheduleUpdaterService;
 	}
@@ -58,14 +58,14 @@ class BudgetTransactionSeeder
 		$transactionCount = 500;
 
 		for ($i = 1; $i <= $transactionCount; ++$i) {
-			$this->logger->info('Creating transaction %d of %d...', $i, $transactionCount);
+			$this->log->info('Creating transaction %d of %d...', $i, $transactionCount);
 			$this->createNewTransaction($i, 'budget', $this->firstBudget->id);
 		}
 
-		$this->logger->info('Processing transaction schedule...');
+		$this->log->info('Processing transaction schedule...');
 		$this->transactionScheduleProcessorService->processTransactionsSchedule();
 
-		$this->logger->info('Flushing cache...');
+		$this->log->info('Flushing cache...');
 		Cache::flush();
 	}
 

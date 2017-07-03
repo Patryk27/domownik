@@ -15,7 +15,7 @@ abstract class TestCase
 	/**
 	 * @var LoggerContract
 	 */
-	protected $logger;
+	protected $log;
 
 	/**
 	 * @var DatabaseConnection
@@ -46,7 +46,7 @@ abstract class TestCase
 	public function setUp() {
 		parent::setUp();
 
-		$this->logger = $this->app->make(LoggerContract::class);
+		$this->log = $this->app->make(LoggerContract::class);
 		$this->db = $this->app->make(DatabaseConnection::class);
 
 		$this->dropTables();
@@ -66,7 +66,7 @@ abstract class TestCase
 	 * @return $this
 	 */
 	protected function dropTables(): self {
-		$this->logger->info('Dropping existing tables from the testing database: %s.', $this->db->getDatabaseName());
+		$this->log->info('Dropping existing tables from the testing database: %s.', $this->db->getDatabaseName());
 
 		$schemaBuilder = $this->db->getSchemaBuilder();
 

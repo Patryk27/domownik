@@ -11,12 +11,12 @@ abstract class Migration
 	/**
 	 * @var LoggerContract
 	 */
-	protected $logger;
+	protected $log;
 
 	/**
 	 * @var DatabaseConnection
 	 */
-	protected $databaseConnection;
+	protected $db;
 
 	/**
 	 * @var SchemaBuilder
@@ -33,10 +33,9 @@ abstract class Migration
 	 * Migration constructor.
 	 */
 	public function __construct() {
-		$this->logger = app()->make(LoggerContract::class);
-
-		$this->databaseConnection = app()->make(DatabaseConnection::class);
-		$this->schemaBuilder = $this->databaseConnection->getSchemaBuilder();
+		$this->log = app()->make(LoggerContract::class);
+		$this->db = app()->make(DatabaseConnection::class);
+		$this->schemaBuilder = $this->db->getSchemaBuilder();
 
 		$this->testing = true; // @todo
 	}
@@ -46,7 +45,7 @@ abstract class Migration
 	 * @return $this
 	 */
 	protected function logCreateTable(string $tableName): self {
-		$this->logger->info('Creating table: %s.', $tableName);
+		$this->log->info('Creating table: %s.', $tableName);
 		return $this;
 	}
 
@@ -55,7 +54,7 @@ abstract class Migration
 	 * @return $this
 	 */
 	protected function logAlterTable(string $tableName): self {
-		$this->logger->info('Altering table: %s.', $tableName);
+		$this->log->info('Altering table: %s.', $tableName);
 		return $this;
 	}
 

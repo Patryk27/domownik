@@ -20,7 +20,7 @@ class AddUserStatus
 			$table->dropColumn('is_active');
 		});
 
-		$this->databaseConnection->update('
+		$this->db->update('
 			UPDATE
 				`users` u
 				
@@ -44,7 +44,7 @@ class AddUserStatus
 			$table->dropColumn('status');
 		});
 
-		$this->databaseConnection->update('
+		$this->db->update('
 			UPDATE
 				`users` u
 				
