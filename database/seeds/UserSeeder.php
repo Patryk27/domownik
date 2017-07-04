@@ -40,7 +40,7 @@ class UserSeeder
 		$user->login = 'admin';
 		$user->password = bcrypt('admin');
 		$user->full_name = 'Admin Admin';
-		$user->is_active = 1;
+		$user->status = User::STATUS_ACTIVE;
 		$user->save();
 
 		$this->log->info('Flushing cache...');
