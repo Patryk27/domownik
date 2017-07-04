@@ -16,50 +16,50 @@ return [
 	],
 
 	'transaction-name' => [
-		'label' => 'Nazwa transakcji:',
+		'label' => 'Nazwa transakcji',
 		'placeholder' => 'Wpisz nazwę, która pozwoli Ci jak najdokładniej określić tę transakcję; np. \'wypłata\'.',
 	],
 
 	'transaction-category' => [
-		'label' => 'Kategoria transakcji:',
+		'label' => 'Kategoria transakcji',
 		'empty-option' => '------',
 	],
 
 	'transaction-description' => [
-		'label' => 'Opis transakcji:',
+		'label' => 'Opis transakcji',
 		'placeholder' => 'Opcjonalny opis transakcji; np. \'Wypłata z firmy Xyz.\'.',
 	],
 
 	'transaction-type' => [
-		'label' => 'Rodzaj transakcji:',
+		'label' => 'Rodzaj transakcji',
 	],
 
 	'transaction-value-type' => [
-		'label' => 'Rodzaj wartości:',
+		'label' => 'Rodzaj wartości',
 	],
 
 	'transaction-value-constant' => [
-		'label' => 'Wartość transakcji:',
+		'label' => 'Wartość transakcji',
 		'placeholder' => '',
 	],
 
 	'transaction-value-range-from' => [
-		'label' => 'Dolna widełka wartości transakcji:',
+		'label' => 'Dolna widełka wartości transakcji',
 		'placeholder' => '',
 	],
 
 	'transaction-value-range-to' => [
-		'label' => 'Górna widełka wartości transakcji:',
+		'label' => 'Górna widełka wartości transakcji',
 		'placeholder' => '',
 	],
 
 	'transaction-periodicity-type' => [
-		'label' => 'Okresowość transakcji:',
+		'label' => 'Okresowość transakcji',
 	],
 
 	'transaction-periodicity' => [
 		'one-shot' => [
-			'title' => 'Wybierz dni roku, w których transakcja ma być zliczona:',
+			'title' => 'Dni roku, w których transakcja ma być zliczona',
 		],
 
 		'daily' => [
@@ -67,16 +67,16 @@ return [
 		],
 
 		'weekly' => [
-			'title' => 'Wybierz dni tygodnia, w których transakcja ma być zliczana:',
+			'title' => 'Dni tygodnia, w których transakcja ma być zliczana',
 		],
 
 		'monthly' => [
-			'title' => 'Wybierz dni miesiąca, w których transakcja ma być zliczana:',
+			'title' => 'Dni miesiąca, w których transakcja ma być zliczana',
 			'warning' => '(transakcja nie zostanie zliczona w dniach niewystępujących w danym miesiącu, np. 30 lutego, 31 sierpnia itd.)',
 		],
 
 		'yearly' => [
-			'title' => 'Wybierz dni roku, w których transakcja ma być zliczana:',
+			'title' => 'Dni roku, w których transakcja ma być zliczana',
 		],
 	],
 

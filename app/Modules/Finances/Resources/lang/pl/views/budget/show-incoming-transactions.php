@@ -9,7 +9,8 @@ return [
 		'date-to-is-before-from' => 'Określona przez Ciebie \'data do\' znajduje się wcześniej niż \'data od\'.',
 	],
 
-	'date-from' => 'Data od:',
-	'date-to' => 'Data do:',
+	'date-from' => 'Data od',
+	'date-to' => 'Data do',
+
 	'submit' => 'Pokaż',
 ];
