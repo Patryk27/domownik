@@ -25,6 +25,15 @@ class BudgetSeeder
 	 * @return void
 	 */
 	public function run() {
+		$budget =
+			Budget::where('name', 'First budget')
+				->first();
+
+		if (!empty($budget)) {
+			$this->log->warning('Not creating \'First budget\' budget because one already exists.');
+			return;
+		}
+
 		$this->log->info('Creating first budget...');
 
 		$budget = new Budget();
