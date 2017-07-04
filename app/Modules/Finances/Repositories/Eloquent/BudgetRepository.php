@@ -14,11 +14,14 @@ class BudgetRepository
 	 * @inheritdoc
 	 */
 	public function getActiveBudgets() {
-		// @todo cache
+		$cacheKey = $this->getCacheKey(__FUNCTION__, func_get_args());
+		$cache = $this->getCache();
 
-		return
-			Budget::where('status', Budget::STATUS_ACTIVE)
-				  ->get();
+		return $cache->rememberForever($cacheKey, function() {
+			return
+				Budget::where('status', Budget::STATUS_ACTIVE)
+					  ->get();
+		});
 	}
 
 	/**
