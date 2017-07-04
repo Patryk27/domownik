@@ -4,14 +4,13 @@
      * @var \App\Modules\Finances\Models\Transaction[] $transactions
      * @var string $dateFrom
      * @var string $dateTo
-     * @var int $count
      */
 @endphp
 
 @extends('layouts.application.auth')
 
 @section('title')
-    {{ __('Finances::views/budget/show-recent-transactions.page.title', [
+    {{ __('Finances::views/budget/show-incoming-transactions.page.title', [
         'budgetName' => $budget->name,
     ]) }}
 @endsection
@@ -22,7 +21,7 @@
 
         <div class="form-inline">
             <label>
-                {{ __('Finances::views/budget/show-recent-transactions.date-from') }}
+                {{ __('Finances::views/budget/show-incoming-transactions.date-from') }}
             </label>
 
             <div class="horizontal-gutters">
@@ -37,7 +36,7 @@
 
         <div class="form-inline">
             <label>
-                {{ __('Finances::views/budget/show-recent-transactions.date-to') }}
+                {{ __('Finances::views/budget/show-incoming-transactions.date-to') }}
             </label>
 
             <div class="horizontal-gutters">
@@ -46,33 +45,6 @@
                         ->setIdAndName('dateTo')
                         ->setValue($dateTo)
                         ->setRightAddonIcon('glyphicon glyphicon-calendar')
-                 !!}
-            </div>
-        </div>
-
-        <div class="form-inline">
-            <label>
-                {{ __('Finances::views/budget/show-recent-transactions.count') }}
-            </label>
-
-            <div class="horizontal-gutters">
-                {!!
-                    Form::select()
-                        ->setIdAndName('count')
-                        ->setValue($count)
-                        ->setRequired(true)
-                        ->setHelpBlockEnabled(false)
-                        ->setItems(function() {
-                            return [
-                                null => '----',
-                                10 => '10',
-                                25 => '25',
-                                50 => '50',
-                                100 => '100',
-                                200 => '200',
-                                500 => '500',
-                            ];
-                        })
                  !!}
             </div>
         </div>
@@ -98,7 +70,7 @@
 <script>
   $(function() {
     $('#dateFrom, #dateTo').datepicker({
-      endDate: new Date(),
+      startDate: new Date(),
     });
   });
 </script>

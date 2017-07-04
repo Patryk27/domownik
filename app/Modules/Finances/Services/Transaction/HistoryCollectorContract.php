@@ -57,24 +57,24 @@ interface HistoryCollectorContract
 	/**
 	 * @return Carbon|null
 	 */
-	public function getBeginDate();
+	public function getDateFrom();
 
 	/**
-	 * @param $beginDate
+	 * @param Carbon|null $dateFrom
 	 * @return HistoryCollectorContract
 	 */
-	public function setBeginDate($beginDate): HistoryCollectorContract;
+	public function setDateFrom($dateFrom): HistoryCollectorContract;
 
 	/**
 	 * @return Carbon|null
 	 */
-	public function getEndDate();
+	public function getDateTo();
 
 	/**
-	 * @param $endDate
+	 * @param Carbon|null $dateTo
 	 * @return HistoryCollectorContract
 	 */
-	public function setEndDate($endDate): HistoryCollectorContract;
+	public function setDateTo($dateTo): HistoryCollectorContract;
 
 	/**
 	 * @return string

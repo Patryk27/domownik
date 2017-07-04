@@ -2,7 +2,7 @@
 
 return [
 	'page' => [
-		'title' => 'Spis ostatnio zaksięgowanych transakcji budżetu: :budgetName.',
+		'title' => 'Spis zbliżających się transakcji budżetu: :budgetName.',
 	],
 
 	'messages' => [
@@ -11,7 +11,5 @@ return [
 
 	'date-from' => 'Data od:',
 	'date-to' => 'Data do:',
-	'count' => 'Liczba transakcji:',
-	
 	'submit' => 'Pokaż',
 ];

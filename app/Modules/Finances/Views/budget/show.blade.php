@@ -70,7 +70,8 @@
             <h4>
                 {{ __('Finances::views/budget/show.incoming-transactions.header') }}
 
-                <a class="btn btn-xs btn-default pull-right">
+                <a class="btn btn-xs btn-default pull-right"
+                   href="{{ route('finances.budget.show-incoming-transactions', $budget->id) }}">
                     {{ __('Finances::views/budget/show.incoming-transactions.show-more') }}
                 </a>
             </h4>

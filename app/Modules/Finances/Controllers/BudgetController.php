@@ -2,6 +2,7 @@
 
 namespace App\Modules\Finances\Controllers;
 
+use App\Http\Controllers\Controller;
 use App\Modules\Finances\Http\Requests\Budget\StoreRequest as BudgetStoreRequest;
 use App\Modules\Finances\Models\Budget;
 use App\Modules\Finances\Models\Transaction;
@@ -14,9 +15,10 @@ use App\Services\Breadcrumb\Manager as BreadcrumbManager;
 use App\Support\Facades\Date;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 
 class BudgetController
-	extends \App\Http\Controllers\Controller {
+	extends Controller {
 
 	/**
 	 * @var BreadcrumbManager
@@ -115,7 +117,7 @@ class BudgetController
 			->reset()
 			->setParentType(Transaction::PARENT_TYPE_BUDGET)
 			->setParentId($budget->id)
-			->setEndDate(new Carbon('now'))
+			->setDateTo(new Carbon('now'))
 			->setSortDirection('asc');
 
 		$recentTransactionsChart = $this->transactionHistoryCollectorService->getRowsForChart();
@@ -151,29 +153,103 @@ class BudgetController
 	 * @return \Illuminate\Http\Response
 	 */
 	public function actionShowRecentTransactions(Budget $budget, Request $request) {
-		$filterCount = $request->get('count', 50);
-
 		$this->breadcrumbManager
 			->pushCustom($budget)
 			->push(route('finances.budget.show-recent-transactions', $budget->id), __('Finances::breadcrumb.budget.show-recent-transactions'));
 
-		$this->transactionHistoryCollectorService
-			->reset()
-			->setParentType(Transaction::PARENT_TYPE_BUDGET)
-			->setParentId($budget->id)
-			->setEndDate(new Carbon('now'))
-			->setSortDirection('asc');
+		// load request data
+		$dateFrom = $request->get('dateFrom');
+		$dateTo = $request->get('dateTo');
+		$count = $request->get('count');
 
-		$transactions =
+		// prepare date range
+		if (empty($dateFrom)) {
+			$dateFrom = null;
+		} else {
+			$dateFrom = new Carbon($dateFrom);
+		}
+
+		if (empty($dateTo)) {
+			$dateTo = new Carbon('now');
+		} else {
+			$dateTo = new Carbon($dateTo);
+		}
+
+		// check if date range is valid
+		if ($dateTo < $dateFrom) {
+			$transactions = new Collection();
+			flash()->warning(__('Finances::views/budget/show-recent-transactions.messages.date-to-is-before-from'));
+		} else {
 			$this->transactionHistoryCollectorService
-				->getRows()
-				->reverse()
-				->take($filterCount);
+				->reset()
+				->setParentType(Transaction::PARENT_TYPE_BUDGET)
+				->setParentId($budget->id)
+				->setDateFrom($dateFrom)
+				->setDateTo($dateTo)
+				->setSortDirection('asc');
+
+			$transactions =
+				$this->transactionHistoryCollectorService
+					->getRows()
+					->reverse();
+
+			if (isset($count)) {
+				$transactions = $transactions->take($count);
+			}
+		}
 
 		return view('Finances::budget/show-recent-transactions', [
 			'budget' => $budget,
 			'transactions' => $transactions,
-			'filterCount' => $filterCount,
+			'dateFrom' => isset($dateFrom) ? $dateFrom->format('Y-m-d') : '', // @todo format should not be hardcoded
+			'dateTo' => $dateTo->format('Y-m-d'), // @todo format should not be hardcoded
+			'count' => $count,
+		]);
+	}
+
+	/**
+	 * @param Budget $budget
+	 * @param Request $request
+	 * @return \Illuminate\Http\Response
+	 */
+	public function actionShowIncomingTransactions(Budget $budget, Request $request) {
+		$this->breadcrumbManager
+			->pushCustom($budget)
+			->push(route('finances.budget.show-incoming-transactions', $budget->id), __('Finances::breadcrumb.budget.show-incoming-transactions'));
+
+		// load request data
+		$dateFrom = $request->get('dateFrom');
+		$dateTo = $request->get('dateTo');
+
+		// prepare date range
+		if (empty($dateFrom)) {
+			$dateFrom = Date::stripTime(new Carbon('now'));
+		} else {
+			$dateFrom = new Carbon($dateFrom);
+		}
+
+		if (empty($dateTo)) {
+			$dateTo =
+				$dateFrom
+					->copy()
+					->addMonth();
+		} else {
+			$dateTo = new Carbon($dateTo);
+		}
+
+		// check if date range is valid
+		if ($dateTo < $dateFrom) {
+			$transactions = new Collection();
+			flash()->warning(__('Finances::views/budget/show-incoming-transactions.messages.date-to-is-before-from'));
+		} else {
+			$transactions = $this->transactionScheduleRepository->getByBudgetId($budget->id, $dateFrom, $dateTo);
+		}
+
+		return view('Finances::budget/show-incoming-transactions', [
+			'budget' => $budget,
+			'transactions' => $transactions,
+			'dateFrom' => $dateFrom->format('Y-m-d'), // @todo format should not be hardcoded
+			'dateTo' => $dateTo->format('Y-m-d'), // @todo format should not be hardcoded
 		]);
 	}
 

@@ -16,4 +16,5 @@
 @include('Finances::common.transaction-list.compact', [
     'transactions' => $transactions,
     'transactionButtons' => ['edit', 'edit-parent'],
+    'showCounter' => true,
 ])

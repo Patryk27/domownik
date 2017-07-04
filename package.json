@@ -11,15 +11,21 @@
     "axios": "^0.15.3",
     "bootstrap-sass": "^3.3.7",
     "del": "^2.2.2",
-    "jquery": "^3.1.1",
+    "jquery": "^3.2.1",
     "laravel-elixir-delete": "^1.0.1",
     "laravel-elixir-rollup-official": "^1.1.0",
     "laravel-elixir-webpack-official": "^1.0.10",
     "laravel-mix": "^0.8.1",
-    "lodash": "^4.17.4",
-    "vue": "^2.1.10"
+    "lodash": "^4.17.4"
   },
   "dependencies": {
-    "highcharts": "^5.0.12"
+    "@fengyuanchen/datepicker": "github:fengyuanchen/datepicker",
+    "bootbox": "^4.4.0",
+    "bootstrap-validator": "^0.11.9",
+    "bootstrap-year-calendar": "^1.1.1",
+    "highcharts": "^5.0.12",
+    "jstree": "^3.3.4",
+    "laravel-elixir": "^6.0.0-15",
+    "moment": "^2.18.1"
   }
 }

@@ -5,7 +5,7 @@
     @include('common.form.helper.label')
 
     @php
-        $useInputGroupClass = !empty($leftAddonIcon);
+        $useInputGroupClass = !empty($leftAddonIcon) || !empty($rightAddonIcon);
     @endphp
 
     <div class="{{ $useInputGroupClass ? 'input-group' : '' }}">
@@ -36,6 +36,12 @@
                autofocus
                 @endif
         />
+
+        @if ($rightAddonIcon)
+            <span class="input-group-addon">
+                <i class="{{ $rightAddonIcon }}"></i>
+            </span>
+        @endif
     </div>
 
     @include('common.form.helper.help-block', [

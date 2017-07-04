@@ -22,14 +22,14 @@ class HistoryCollector
 	use UsesCache;
 
 	/**
-	 * @var CacheRepository
-	 */
-	protected $cache;
-
-	/**
 	 * @var DatabaseConnection
 	 */
 	protected $db;
+
+	/**
+	 * @var CacheRepository
+	 */
+	protected $cache;
 
 	/**
 	 * @var TransactionPeriodicityRepositoryContract
@@ -49,12 +49,12 @@ class HistoryCollector
 	/**
 	 * @var Carbon|null
 	 */
-	protected $beginDate;
+	protected $dateFrom;
 
 	/**
 	 * @var Carbon|null
 	 */
-	protected $endDate;
+	protected $dateTo;
 
 	/**
 	 * @var string
@@ -67,17 +67,17 @@ class HistoryCollector
 	protected $rows;
 
 	/**
-	 * @param CacheRepository $cache
 	 * @param DatabaseConnection $db
+	 * @param CacheRepository $cache
 	 * @param TransactionPeriodicityRepositoryContract $transactionPeriodicityRepository
 	 */
 	public function __construct(
-		CacheRepository $cache,
 		DatabaseConnection $db,
+		CacheRepository $cache,
 		TransactionPeriodicityRepositoryContract $transactionPeriodicityRepository
 	) {
-		$this->cache = $cache;
 		$this->db = $db;
+		$this->cache = $cache;
 		$this->transactionPeriodicityRepository = $transactionPeriodicityRepository;
 	}
 
@@ -100,8 +100,8 @@ class HistoryCollector
 		$cacheKey = $this->getCacheKey(__FUNCTION__, [
 			$this->parentType,
 			$this->parentId,
-			$this->beginDate,
-			$this->endDate,
+			$this->dateFrom,
+			$this->dateTo,
 			$this->sortDirection,
 		]);
 
@@ -118,12 +118,12 @@ class HistoryCollector
 				->where('t.parent_id', $this->parentId)
 				->where('tp.transaction_periodicity_type', Transaction::PERIODICITY_TYPE_ONE_SHOT);
 
-			if (isset($this->beginDate)) {
-				$stmt->where('tpos.date', '>=', $this->beginDate);
+			if (isset($this->dateFrom)) {
+				$stmt->where('tpos.date', '>=', $this->dateFrom);
 			}
 
-			if (isset($this->endDate)) {
-				$stmt->where('tpos.date', '<=', $this->endDate);
+			if (isset($this->dateTo)) {
+				$stmt->where('tpos.date', '<=', $this->dateTo);
 			}
 
 			$rows = $stmt->get();
@@ -211,30 +211,30 @@ class HistoryCollector
 	/**
 	 * @inheritDoc
 	 */
-	public function getBeginDate() {
-		return $this->beginDate;
+	public function getDateFrom() {
+		return $this->dateFrom;
 	}
 
 	/**
 	 * @inheritDoc
 	 */
-	public function setBeginDate($beginDate): HistoryCollectorContract {
-		$this->beginDate = Date::stripTime($beginDate);
+	public function setDateFrom($dateFrom): HistoryCollectorContract {
+		$this->dateFrom = Date::stripTime($dateFrom);
 		return $this;
 	}
 
 	/**
 	 * @inheritDoc
 	 */
-	public function getEndDate() {
-		return $this->endDate;
+	public function getDateTo() {
+		return $this->dateTo;
 	}
 
 	/**
 	 * @inheritDoc
 	 */
-	public function setEndDate($endDate): HistoryCollectorContract {
-		$this->endDate = Date::stripTime($endDate);
+	public function setDateTo($dateTo): HistoryCollectorContract {
+		$this->dateTo = Date::stripTime($dateTo);
 		return $this;
 	}
 

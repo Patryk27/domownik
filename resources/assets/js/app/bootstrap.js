@@ -9,18 +9,26 @@ module.exports = (function() {
     console.log('-> application locale: ' + locale);
     App.Language.initialize(locale);
 
-    // momentjs
+    // Moment.js
     moment.locale(locale);
 
-    // bootbox
+    // Bootbox.js
     bootbox.setLocale(locale);
     bootbox.setDefaults({
-      backdrop: true
+      backdrop: true,
     });
 
-    // highcharts
+    // Highcharts
     Highcharts.setOptions({
       lang: __(':highcharts.language'),
+    });
+
+    // @fengyuanchen/datepicker
+    $.fn.datepicker.languages['pl-PL'] = __(':datepicker.language');
+
+    $.fn.datepicker.setDefaults({
+      autoHide: true,
+      language: 'pl-PL',
     });
   }
 

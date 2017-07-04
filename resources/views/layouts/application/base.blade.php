@@ -12,7 +12,8 @@
     </title>
 
     {{-- Stylesheets --}}
-    <link href="{{ asset('css/styles.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/third-party.css') }}" rel="stylesheet">
 
     {{-- Scripts --}}
     <script>
@@ -23,6 +24,7 @@
 
     <script src="{{ asset('js/localization.js') }}"></script>
     <script src="{{ asset('js/app.js') }}"></script>
+    <script src="{{ asset('js/third-party.js') }}"></script>
 
     <script>
       window.App.Configuration.setLocale('{{ Configuration::getLanguage() }}');

@@ -21,8 +21,12 @@ Route::group(['prefix' => 'finances', 'middleware' => 'auth'], function() {
 			 ->name('finances.budget.show');
 
 		// /finances/budget/show-recent-transactions
-		Route::get('show-recent-transactions/{budget}', '\\' . BudgetController::class . '@actionShowRecentTransactions')
+		Route::match(['GET', 'POST'], 'show-recent-transactions/{budget}', '\\' . BudgetController::class . '@actionShowRecentTransactions')
 			 ->name('finances.budget.show-recent-transactions');
+
+		// /finances/budget/show-incoming-transactions
+		Route::match(['GET', 'POST'], 'show-incoming-transactions/{budget}', '\\' . BudgetController::class . '@actionShowIncomingTransactions')
+			 ->name('finances.budget.show-incoming-transactions');
 	});
 
 	// /finances/transaction

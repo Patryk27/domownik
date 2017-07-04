@@ -5,9 +5,18 @@
       */
 @endphp
 
+@php
+    if (!isset($showCounter)) {
+        $showCounter = false;
+    }
+@endphp
+
 <table class="table table-hover table-striped transaction-list compact">
     <thead>
     <tr>
+        @if($showCounter)
+            <th>{{ __('common/table.head.row-counter') }}</th>
+        @endif
         <th>{{ __('Finances::common/transaction-list.table.transaction-date') }}</th>
         <th>{{ __('Finances::common/transaction-list.table.transaction-name') }}</th>
         <th>{{ __('Finances::common/transaction-list.table.transaction-amount') }}</th>
@@ -18,6 +27,7 @@
     </tr>
     </thead>
     <tbody>
+    @php($counter = 0)
     @foreach ($transactions as $item)
         @php
             /**
@@ -35,6 +45,9 @@
             $transactionPresenter = $transaction->getPresenter();
         @endphp
         <tr>
+            @if($showCounter)
+                <td>{{ ++$counter }}</td>
+            @endif
             <td>{{ Date::format('%Y-%m-%e %a', $date) }}</td>
             <td>{{ $transaction->name }}</td>
             <td>
@@ -58,6 +71,8 @@
                 </td>
             @endif
         </tr>
+
+        @php(++$counter)
     @endforeach
     </tbody>
 </table>
