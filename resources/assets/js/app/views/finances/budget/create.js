@@ -11,7 +11,7 @@ module.exports = (function() {
       $('#consolidatedBudgets').prop('required', false);
     }
 
-    $('#budgetKind').change(function() {
+    $('#budgetType').change(function() {
       switch ($(this).val()) {
         case 'regular':
           hideConsolidatedBudgetsWrapper();
