@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Modules\Finances\Services\TransactionSchedule;
+namespace App\Modules\Finances\Services\Transaction\Schedule;
 
 interface UpdaterContract {
 
@@ -9,6 +9,6 @@ interface UpdaterContract {
 	 * @param int $transactionId
 	 * @return UpdaterContract
 	 */
-	public function updateScheduleByTransactionId(int $transactionId): UpdaterContract;
+	public function updateTransactionSchedule(int $transactionId): UpdaterContract;
 
 }

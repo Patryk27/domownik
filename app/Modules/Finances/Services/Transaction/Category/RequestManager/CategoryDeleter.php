@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Modules\Finances\Services\TransactionCategory\RequestManager;
+namespace App\Modules\Finances\Services\Transaction\Category\RequestManager;
 
 use App\Exceptions\Exception;
 use App\Modules\Finances\Models\TransactionCategory;

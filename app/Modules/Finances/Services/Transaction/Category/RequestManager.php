@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Modules\Finances\Services\TransactionCategory;
+namespace App\Modules\Finances\Services\Transaction\Category;
 
 use App\Modules\Finances\Http\Requests\TransactionCategory\StoreRequest as TransactionCategoryStoreRequest;
 use App\Modules\Finances\Models\Transaction;
 use App\Modules\Finances\Models\TransactionCategory;
 use App\Modules\Finances\Repositories\Contracts\TransactionCategoryRepositoryContract;
-use App\Modules\Finances\Services\TransactionCategory\RequestManager\CategoryDeleter;
-use App\Modules\Finances\Services\TransactionCategory\RequestManager\CategoryUpdater;
+use App\Modules\Finances\Services\Transaction\Category\RequestManager\CategoryDeleter;
+use App\Modules\Finances\Services\Transaction\Category\RequestManager\CategoryUpdater;
 use App\Services\Logger\Contract as LoggerContract;
 use Illuminate\Database\Connection as DatabaseConnection;
 

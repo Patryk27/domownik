@@ -11,7 +11,7 @@ use App\Modules\Finances\Repositories\Contracts\TransactionCategoryRepositoryCon
 use App\Modules\Finances\Repositories\Contracts\TransactionPeriodicityRepositoryContract;
 use App\Modules\Finances\Repositories\Contracts\TransactionRepositoryContract;
 use App\Modules\Finances\Services\Transaction\RequestManagerContract;
-use App\Modules\Finances\Services\TransactionSchedule\UpdaterContract;
+use App\Modules\Finances\Services\Transaction\Schedule\UpdaterContract;
 use App\ServiceContracts\RequestManagerContract as BaseRequestManagerContract;
 use App\Services\Breadcrumb\Manager as BreadcrumbManager;
 
@@ -124,7 +124,7 @@ class TransactionController
 		$storeResult = $this->transactionRequestManagerService->store($request);
 		$transaction = $this->transactionRequestManagerService->getModel();
 
-		$this->transactionScheduleUpdaterService->updateScheduleByTransactionId($transaction->id);
+		$this->transactionScheduleUpdaterService->updateTransactionSchedule($transaction->id);
 
 		switch ($storeResult) {
 			case BaseRequestManagerContract::STORE_RESULT_CREATED:

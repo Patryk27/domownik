@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Cache\TaggedCache;
 use Illuminate\Database\Eloquent\Model as BaseModel;
 use Illuminate\Support\Facades\Cache;
 
@@ -14,7 +15,7 @@ abstract class Model
 	abstract public static function getCacheConfiguration(): array;
 
 	/**
-	 * @return \Illuminate\Cache\TaggedCache
+	 * @return TaggedCache
 	 */
 	public static function getCache() {
 		$cacheConfiguration = static::getCacheConfiguration();
@@ -22,7 +23,7 @@ abstract class Model
 	}
 
 	/**
-	 * @return \Illuminate\Cache\TaggedCache
+	 * @return TaggedCache
 	 */
 	public static function getFlushCache() {
 		$cacheConfiguration = static::getCacheConfiguration();

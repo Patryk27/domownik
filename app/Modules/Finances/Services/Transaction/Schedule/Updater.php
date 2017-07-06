@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Modules\Finances\Services\TransactionSchedule;
+namespace App\Modules\Finances\Services\Transaction\Schedule;
 
 use App\Modules\Finances\Models\TransactionSchedule;
 use App\Modules\Finances\Repositories\Contracts\TransactionScheduleRepositoryContract;
@@ -54,7 +54,7 @@ class Updater
 	/**
 	 * @inheritDoc
 	 */
-	public function updateScheduleByTransactionId(int $transactionId): UpdaterContract {
+	public function updateTransactionSchedule(int $transactionId): UpdaterContract {
 		$this->log->info('Updating schedule for transaction with id=%d.', $transactionId);
 
 		$today = Carbon::today();

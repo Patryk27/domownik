@@ -5,8 +5,8 @@ use App\Modules\Finances\Models\Budget;
 use App\Modules\Finances\Models\Transaction;
 use App\Modules\Finances\Models\TransactionValueConstant;
 use App\Modules\Finances\Models\TransactionValueRange;
-use App\Modules\Finances\Services\TransactionSchedule\ScheduleProcessorContract as TransactionScheduleProcessorServiceContract;
-use App\Modules\Finances\Services\TransactionSchedule\UpdaterContract as TransactionScheduleUpdaterServiceContract;
+use App\Modules\Finances\Services\Transaction\Schedule\ProcessorContract as TransactionScheduleProcessorServiceContract;
+use App\Modules\Finances\Services\Transaction\Schedule\UpdaterContract as TransactionScheduleUpdaterServiceContract;
 use App\Services\Logger\Contract as LoggerContract;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
@@ -139,7 +139,7 @@ class BudgetTransactionSeeder
 
 		$transaction->save();
 
-		$this->transactionScheduleUpdaterService->updateScheduleByTransactionId($transaction->id);
+		$this->transactionScheduleUpdaterService->updateTransactionSchedule($transaction->id);
 
 		return $this;
 	}

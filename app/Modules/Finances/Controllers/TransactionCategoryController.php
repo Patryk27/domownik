@@ -8,7 +8,7 @@ use App\Modules\Finances\Http\Requests\TransactionCategory\StoreRequest;
 use App\Modules\Finances\Models\TransactionCategory;
 use App\Modules\Finances\Repositories\Contracts\TransactionCategoryRepositoryContract;
 use App\Modules\Finances\Repositories\Contracts\TransactionRepositoryContract;
-use App\Modules\Finances\Services\TransactionCategory\RequestManagerContract;
+use App\Modules\Finances\Services\Transaction\Category\RequestManagerContract;
 use App\Services\Breadcrumb\Manager as BreadcrumbManager;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;

@@ -77,9 +77,9 @@ class ServiceProvider
 		$this->app->bind(\App\Modules\Finances\Services\Transaction\HistoryCollectorContract::class, \App\Modules\Finances\Services\Transaction\HistoryCollector::class);
 		$this->app->bind(\App\Modules\Finances\Services\Transaction\PeriodicityParserContract::class, \App\Modules\Finances\Services\Transaction\PeriodicityParser::class);
 		$this->app->bind(\App\Modules\Finances\Services\Transaction\RequestManagerContract::class, \App\Modules\Finances\Services\Transaction\RequestManager::class);
-		$this->app->bind(\App\Modules\Finances\Services\TransactionCategory\RequestManagerContract::class, \App\Modules\Finances\Services\TransactionCategory\RequestManager::class);
-		$this->app->bind(\App\Modules\Finances\Services\TransactionSchedule\ScheduleProcessorContract::class, \App\Modules\Finances\Services\TransactionSchedule\ScheduleProcessor::class);
-		$this->app->bind(\App\Modules\Finances\Services\TransactionSchedule\UpdaterContract::class, \App\Modules\Finances\Services\TransactionSchedule\Updater::class);
+		$this->app->bind(\App\Modules\Finances\Services\Transaction\Category\RequestManagerContract::class, \App\Modules\Finances\Services\Transaction\Category\RequestManager::class);
+		$this->app->bind(\App\Modules\Finances\Services\Transaction\Schedule\ProcessorContract::class, \App\Modules\Finances\Services\Transaction\Schedule\Processor::class);
+		$this->app->bind(\App\Modules\Finances\Services\Transaction\Schedule\UpdaterContract::class, \App\Modules\Finances\Services\Transaction\Schedule\Updater::class);
 
 		return $this;
 	}

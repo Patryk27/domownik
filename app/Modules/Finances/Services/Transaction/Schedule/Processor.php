@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Modules\Finances\Services\TransactionSchedule;
+namespace App\Modules\Finances\Services\Transaction\Schedule;
 
 use App\Modules\Finances\Models\Transaction;
 use App\Modules\Finances\Models\TransactionValueConstant;
@@ -13,8 +13,8 @@ use App\Services\Logger\Contract as LoggerContract;
 use Carbon\Carbon;
 use Illuminate\Database\Connection as DatabaseConnection;
 
-class ScheduleProcessor
-	implements ScheduleProcessorContract {
+class Processor
+	implements ProcessorContract {
 
 	/**
 	 * @var LoggerContract
@@ -65,7 +65,7 @@ class ScheduleProcessor
 	/**
 	 * @inheritDoc
 	 */
-	public function processTransactionsSchedule(): ScheduleProcessorContract {
+	public function processTransactionsSchedule(): ProcessorContract {
 		try {
 			$this->log->info('Processing transaction schedule...');
 			$scheduledTransactions = $this->transactionScheduleRepository->getToDate(Carbon::yesterday());
@@ -92,7 +92,7 @@ class ScheduleProcessor
 	/**
 	 * Processes a single scheduled transaction.
 	 * @param ScheduledTransaction $scheduledTransaction
-	 * @return $this|ScheduleProcessor
+	 * @return $this|Processor
 	 */
 	protected function processScheduledTransaction(ScheduledTransaction $scheduledTransaction): self {
 		$stId = $scheduledTransaction->getId();
