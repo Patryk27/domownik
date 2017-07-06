@@ -45,11 +45,12 @@ class TransactionPeriodicityOneShot
 		return [
 			'tags' => [
 				'Finances',
-				'Finances.TransactionPeriodicityOneShot',
+				'Finances.Transaction',
+				'Finances.TransactionPeriodicity',
 			],
 
 			'flush-tags' => [
-				'Finances.TransactionPeriodicityOneShot',
+				'Finances.TransactionPeriodicity',
 			],
 		];
 	}

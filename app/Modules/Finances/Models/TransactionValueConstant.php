@@ -43,6 +43,8 @@ class TransactionValueConstant
 		return [
 			'tags' => [
 				'Finances',
+				'Finances.Transaction',
+				'Finances.TransactionValue',
 				'Finances.TransactionValueConstant',
 			],
 

@@ -5,14 +5,15 @@ namespace App\Modules\Finances\Services\Transaction;
 use App\Exceptions\InvalidRequestException;
 use App\Modules\Finances\Http\Requests\Transaction\StoreRequest as TransactionStoreRequest;
 use App\Modules\Finances\Models\Transaction;
-use App\Modules\Finances\Models\TransactionSchedule;
 use App\Modules\Finances\Models\TransactionValueConstant;
 use App\Modules\Finances\Models\TransactionValueRange;
+use App\Modules\Finances\Repositories\Contracts\TransactionPeriodicityRepositoryContract;
 use App\Modules\Finances\Repositories\Contracts\TransactionRepositoryContract;
+use App\Modules\Finances\Repositories\Contracts\TransactionScheduleRepositoryContract;
+use App\Modules\Finances\Repositories\Contracts\TransactionValueRepositoryContract;
 use App\Services\Logger\Contract as LoggerContract;
 use Carbon\Carbon;
 use Illuminate\Database\Connection as DatabaseConnection;
-use Illuminate\Database\Eloquent\Model;
 
 class RequestManager
 	implements RequestManagerContract {
@@ -33,6 +34,21 @@ class RequestManager
 	protected $transactionRepository;
 
 	/**
+	 * @var TransactionValueRepositoryContract
+	 */
+	protected $transactionValueRepository;
+
+	/**
+	 * @var TransactionPeriodicityRepositoryContract
+	 */
+	protected $transactionPeriodicityRepository;
+
+	/**
+	 * @var TransactionScheduleRepositoryContract
+	 */
+	protected $transactionScheduleRepository;
+
+	/**
 	 * @var TransactionStoreRequest
 	 */
 	protected $request;
@@ -51,15 +67,24 @@ class RequestManager
 	 * @param LoggerContract $log
 	 * @param DatabaseConnection $db
 	 * @param TransactionRepositoryContract $transactionRepository
+	 * @param TransactionValueRepositoryContract $transactionValueRepository
+	 * @param TransactionPeriodicityRepositoryContract $transactionPeriodicityRepository
+	 * @param TransactionScheduleRepositoryContract $transactionScheduleRepository
 	 */
 	public function __construct(
 		LoggerContract $log,
 		DatabaseConnection $db,
-		TransactionRepositoryContract $transactionRepository
+		TransactionRepositoryContract $transactionRepository,
+		TransactionValueRepositoryContract $transactionValueRepository,
+		TransactionPeriodicityRepositoryContract $transactionPeriodicityRepository,
+		TransactionScheduleRepositoryContract $transactionScheduleRepository
 	) {
 		$this->log = $log;
 		$this->db = $db;
 		$this->transactionRepository = $transactionRepository;
+		$this->transactionValueRepository = $transactionValueRepository;
+		$this->transactionPeriodicityRepository = $transactionPeriodicityRepository;
+		$this->transactionScheduleRepository = $transactionScheduleRepository;
 	}
 
 	/**
@@ -103,15 +128,14 @@ class RequestManager
 	public function delete(int $transactionId): RequestManagerContract {
 		$this->log->info('Deleting transaction: id=%d', $transactionId);
 
-		$this->transactionRepository->delete($transactionId);
+		// checks if transaction exists
+		$transaction = $this->transactionRepository->getOrFail($transactionId);
 
-		Transaction
-			::getFlushCache()
-			->flush();
+		// delete transaction data
+		$this->transactionPeriodicityRepository->deleteByTransactionId($transaction->id);
+		$this->transactionScheduleRepository->deleteByTransactionId($transaction->id);
 
-		TransactionSchedule
-			::getFlushCache()
-			->flush();
+		$this->transactionRepository->delete($transaction->id);
 
 		return $this;
 	}
@@ -143,52 +167,12 @@ class RequestManager
 		$this->model = $this->transactionRepository->getOrFail($transactionId);
 
 		/**
-		 * Right below we're basically pruning the transaction of all its data,
-		 * just because it's easier for us to remove everything and insert
-		 * again* than compare what's to add and what's to update.
-		 * ----
-		 * * right here we can do it because value's and periodicities' ids does
-		 * not matter anywhere.
+		 * Instead of trying to find what has changed between currently saved transaction and the new version, it is
+		 * easier to just drop the whole transaction's value and periodicity/-ies and insert them again.
+		 * -----
+		 * One can rely on a transaction's id but not on eg. transaction value's id (and that is done by design) -
+		 * that's why it's safe to do this that way.
 		 */
-
-		$this->model->value->delete();
-
-		/**
-		 * @var Model[] $periodicityModels
-		 */
-		$periodicityModels = [];
-
-		switch ($this->model->periodicity_type) {
-			case Transaction::PERIODICITY_TYPE_ONE_SHOT:
-				$periodicityModels = $this->model->periodicityOneShots;
-				break;
-
-			case Transaction::PERIODICITY_TYPE_DAILY:
-				$periodicityModels = $this->model->periodicityDailes;
-				break;
-
-			case Transaction::PERIODICITY_TYPE_WEEKLY:
-				$periodicityModels = $this->model->periodicityWeeklies;
-				break;
-
-			case Transaction::PERIODICITY_TYPE_MONTHLY:
-				$periodicityModels = $this->model->periodicityMonthlies;
-				break;
-
-			case Transaction::PERIODICITY_TYPE_YEARLY:
-				$periodicityModels = $this->model->periodicityYearlies;
-				break;
-		}
-
-		if (!empty($periodicityModels)) {
-			/**
-			 * This is possibly the slowest but also the most readable solution.
-			 * Thank god I'm not writing an RTOS.
-			 */
-			foreach ($periodicityModels as $periodicityModel) {
-				$periodicityModel->delete();
-			}
-		}
 
 		return $this;
 	}
@@ -212,6 +196,10 @@ class RequestManager
 	 * @throws InvalidRequestException
 	 */
 	protected function persistTransactionValue() {
+		if ($this->model->exists) {
+			$this->transactionValueRepository->deleteByTransactionId($this->model->id);
+		}
+
 		switch ($this->request->get('transactionValueType')) {
 			case Transaction::VALUE_TYPE_CONSTANT:
 				$transactionValue = new TransactionValueConstant();
@@ -248,6 +236,10 @@ class RequestManager
 	 * @throws InvalidRequestException
 	 */
 	protected function persistTransactionPeriodicity() {
+		if ($this->model->exists) {
+			$this->transactionPeriodicityRepository->deleteByTransactionId($this->model->id);
+		}
+
 		$this->model->periodicity_type = $this->request->get('transactionPeriodicityType');
 
 		switch ($this->model->periodicity_type) {

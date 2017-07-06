@@ -35,11 +35,12 @@ class TransactionPeriodicityDaily
 		return [
 			'tags' => [
 				'Finances',
-				'Finances.TransactionPeriodicityDaily',
+				'Finances.Transaction',
+				'Finances.TransactionPeriodicity',
 			],
 
 			'flush-tags' => [
-				'Finances.TransactionPeriodicityDaily',
+				'Finances.TransactionPeriodicity',
 			],
 		];
 	}

@@ -65,6 +65,7 @@ class TransactionCategory
 		return [
 			'tags' => [
 				'Finances',
+				'Finances.Transaction',
 				'Finances.TransactionCategory',
 			],
 

@@ -2,8 +2,8 @@
 
 namespace App\Repositories\Contracts;
 
-use App\Models\Model as BaseModel;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\Model;
+use Illuminate\Cache\TaggedCache as TaggedCache;
 use Illuminate\Support\Collection;
 
 interface CrudRepositoryContract {
@@ -43,23 +43,23 @@ interface CrudRepositoryContract {
 
 	/**
 	 * @param int $id
-	 * @return mixed
+	 * @return CrudRepositoryContract
 	 */
 	public function delete(int $id): CrudRepositoryContract;
 
 	/**
-	 * @param BaseModel $model
+	 * @param Model $model
 	 * @return CrudRepositoryContract
 	 */
-	public function persist(BaseModel &$model): CrudRepositoryContract;
+	public function persist(Model $model): CrudRepositoryContract;
 
 	/**
-	 * @return \Illuminate\Cache\TaggedCache
+	 * @return TaggedCache
 	 */
 	public function getCache();
 
 	/**
-	 * @return \Illuminate\Cache\TaggedCache
+	 * @return TaggedCache
 	 */
 	public function getFlushCache();
 

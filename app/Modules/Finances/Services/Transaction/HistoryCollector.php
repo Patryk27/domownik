@@ -5,6 +5,7 @@ namespace App\Modules\Finances\Services\Transaction;
 use App\Exceptions\UnexpectedStateException;
 use App\Modules\Finances\Models\Transaction;
 use App\Modules\Finances\Models\TransactionPeriodicityOneShot;
+use App\Modules\Finances\Models\TransactionSchedule;
 use App\Modules\Finances\Models\TransactionValueConstant;
 use App\Modules\Finances\Models\TransactionValueRange;
 use App\Modules\Finances\Repositories\Contracts\TransactionPeriodicityRepositoryContract;
@@ -105,7 +106,9 @@ class HistoryCollector
 			$this->sortDirection,
 		]);
 
-		$this->rows = $this->cache->rememberForever($cacheKey, function() {
+		$cache = $this->cache->tags(TransactionSchedule::getCacheConfiguration()['tags']);
+
+		$this->rows = $cache->rememberForever($cacheKey, function() {
 			$stmt = $this->db
 				->table('transactions AS t')
 				->select([

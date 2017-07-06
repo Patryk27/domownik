@@ -45,11 +45,12 @@ class TransactionPeriodicityYearly
 		return [
 			'tags' => [
 				'Finances',
-				'Finances.TransactionPeriodicityYearly',
+				'Finances.Transaction',
+				'Finances.TransactionPeriodicity',
 			],
 
 			'flush-tags' => [
-				'Finances.TransactionPeriodicityYearly',
+				'Finances.TransactionPeriodicity',
 			],
 		];
 	}

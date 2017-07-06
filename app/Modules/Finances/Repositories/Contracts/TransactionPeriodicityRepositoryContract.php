@@ -52,4 +52,11 @@ interface TransactionPeriodicityRepositoryContract {
 	 */
 	public function getYearliesByTransactionId(int $transactionId): Collection;
 
+	/**
+	 * Deletes all the transaction's periodicities.
+	 * @param int $transactionId
+	 * @return TransactionPeriodicityRepositoryContract
+	 */
+	public function deleteByTransactionId(int $transactionId): TransactionPeriodicityRepositoryContract;
+
 }

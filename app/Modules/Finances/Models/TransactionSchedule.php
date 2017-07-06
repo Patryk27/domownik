@@ -50,6 +50,7 @@ class TransactionSchedule
 		return [
 			'tags' => [
 				'Finances',
+				'Finances.Transaction',
 				'Finances.TransactionSchedule',
 			],
 

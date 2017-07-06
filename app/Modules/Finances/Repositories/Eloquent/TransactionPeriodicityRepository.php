@@ -9,6 +9,7 @@ use App\Modules\Finances\Models\TransactionPeriodicityWeekly;
 use App\Modules\Finances\Models\TransactionPeriodicityYearly;
 use App\Modules\Finances\Repositories\Contracts\TransactionPeriodicityRepositoryContract;
 use App\Support\UsesCache;
+use Illuminate\Cache\Repository as CacheRepository;
 use Illuminate\Database\Connection as DatabaseConnection;
 use Illuminate\Database\Query\JoinClause;
 use Illuminate\Support\Collection;
@@ -24,12 +25,20 @@ class TransactionPeriodicityRepository
 	protected $db;
 
 	/**
+	 * @var CacheRepository
+	 */
+	protected $cache;
+
+	/**
 	 * @param DatabaseConnection $db
+	 * @param CacheRepository $cache
 	 */
 	public function __construct(
-		DatabaseConnection $db
+		DatabaseConnection $db,
+		CacheRepository $cache
 	) {
 		$this->db = $db;
+		$this->cache = $cache;
 	}
 
 	/**
@@ -100,6 +109,27 @@ class TransactionPeriodicityRepository
 	 */
 	public function getYearliesByTransactionId(int $transactionId): Collection {
 		return $this->getPeriodicities('transaction_periodicity_yearlies', TransactionPeriodicityYearly::class, 'transaction-periodicity-yearly', $transactionId);
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public function deleteByTransactionId(int $transactionId): TransactionPeriodicityRepositoryContract {
+		$this->db->delete('
+			DELETE FROM
+				transaction_periodicities
+				
+			WHERE
+				transaction_id = :transaction_id
+		', [
+			'transaction_id' => $transactionId,
+		]);
+
+		$this->cache
+			->tags('Finances.TransactionPeriodicity')
+			->flush();
+
+		return $this;
 	}
 
 	/**

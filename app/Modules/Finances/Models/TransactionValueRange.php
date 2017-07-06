@@ -45,6 +45,8 @@ class TransactionValueRange
 		return [
 			'tags' => [
 				'Finances',
+				'Finances.Transaction',
+				'Finances.TransactionValue',
 				'Finances.TransactionValueRange',
 			],
 

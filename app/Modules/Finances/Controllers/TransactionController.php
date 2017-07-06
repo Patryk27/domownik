@@ -152,12 +152,9 @@ class TransactionController
 	 */
 	public function actionDelete(Transaction $transaction) {
 		$this->transactionRequestManagerService->delete($transaction->id);
-
 		flash()->success(__('Finances::requests/transaction/delete.messages.delete-success'));
 
-		return response()->json([
-			'redirectUrl' => $this->getTransactionParentUrl($transaction),
-		]);
+		return redirect($this->getTransactionParentUrl($transaction));
 	}
 
 	/**
