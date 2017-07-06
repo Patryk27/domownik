@@ -15,7 +15,6 @@
     "laravel-elixir-delete": "^1.0.1",
     "laravel-elixir-rollup-official": "^1.1.0",
     "laravel-elixir-webpack-official": "^1.0.10",
-    "laravel-mix": "^0.8.1",
     "lodash": "^4.17.4"
   },
   "dependencies": {
