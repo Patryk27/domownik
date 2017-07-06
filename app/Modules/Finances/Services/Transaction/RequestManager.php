@@ -10,7 +10,6 @@ use App\Modules\Finances\Models\TransactionValueRange;
 use App\Modules\Finances\Repositories\Contracts\TransactionPeriodicityRepositoryContract;
 use App\Modules\Finances\Repositories\Contracts\TransactionRepositoryContract;
 use App\Modules\Finances\Repositories\Contracts\TransactionScheduleRepositoryContract;
-use App\Modules\Finances\Repositories\Contracts\TransactionValueRepositoryContract;
 use App\Services\Logger\Contract as LoggerContract;
 use Carbon\Carbon;
 use Illuminate\Database\Connection as DatabaseConnection;
@@ -32,11 +31,6 @@ class RequestManager
 	 * @var TransactionRepositoryContract
 	 */
 	protected $transactionRepository;
-
-	/**
-	 * @var TransactionValueRepositoryContract
-	 */
-	protected $transactionValueRepository;
 
 	/**
 	 * @var TransactionPeriodicityRepositoryContract
@@ -67,7 +61,6 @@ class RequestManager
 	 * @param LoggerContract $log
 	 * @param DatabaseConnection $db
 	 * @param TransactionRepositoryContract $transactionRepository
-	 * @param TransactionValueRepositoryContract $transactionValueRepository
 	 * @param TransactionPeriodicityRepositoryContract $transactionPeriodicityRepository
 	 * @param TransactionScheduleRepositoryContract $transactionScheduleRepository
 	 */
@@ -75,14 +68,12 @@ class RequestManager
 		LoggerContract $log,
 		DatabaseConnection $db,
 		TransactionRepositoryContract $transactionRepository,
-		TransactionValueRepositoryContract $transactionValueRepository,
 		TransactionPeriodicityRepositoryContract $transactionPeriodicityRepository,
 		TransactionScheduleRepositoryContract $transactionScheduleRepository
 	) {
 		$this->log = $log;
 		$this->db = $db;
 		$this->transactionRepository = $transactionRepository;
-		$this->transactionValueRepository = $transactionValueRepository;
 		$this->transactionPeriodicityRepository = $transactionPeriodicityRepository;
 		$this->transactionScheduleRepository = $transactionScheduleRepository;
 	}
@@ -196,10 +187,6 @@ class RequestManager
 	 * @throws InvalidRequestException
 	 */
 	protected function persistTransactionValue() {
-		if ($this->model->exists) {
-			$this->transactionValueRepository->deleteByTransactionId($this->model->id);
-		}
-
 		switch ($this->request->get('transactionValueType')) {
 			case Transaction::VALUE_TYPE_CONSTANT:
 				$transactionValue = new TransactionValueConstant();

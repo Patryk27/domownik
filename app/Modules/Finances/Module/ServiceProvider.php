@@ -64,7 +64,6 @@ class ServiceProvider
 		$this->app->bind(\App\Modules\Finances\Repositories\Contracts\TransactionPeriodicityRepositoryContract::class, \App\Modules\Finances\Repositories\Eloquent\TransactionPeriodicityRepository::class);
 		$this->app->bind(\App\Modules\Finances\Repositories\Contracts\TransactionRepositoryContract::class, \App\Modules\Finances\Repositories\Eloquent\TransactionRepository::class);
 		$this->app->bind(\App\Modules\Finances\Repositories\Contracts\TransactionScheduleRepositoryContract::class, \App\Modules\Finances\Repositories\Eloquent\TransactionScheduleRepository::class);
-		$this->app->bind(\App\Modules\Finances\Repositories\Contracts\TransactionValueRepositoryContract::class, \App\Modules\Finances\Repositories\Eloquent\TransactionValueRepository::class);
 
 		return $this;
 	}
