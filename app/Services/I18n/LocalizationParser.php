@@ -2,15 +2,21 @@
 
 namespace App\Services\I18n;
 
+use App\Services\Logger\Contract as LoggerContract;
 use App\Services\Module\Manager as ModuleManager;
 use Illuminate\Filesystem\Filesystem;
 
 class LocalizationParser {
 
 	/**
+	 * @var LoggerContract
+	 */
+	protected $log;
+
+	/**
 	 * @var Filesystem
 	 */
-	protected $filesystem;
+	protected $fs;
 
 	/**
 	 * @var string[]
@@ -18,12 +24,15 @@ class LocalizationParser {
 	protected $messages;
 
 	/**
-	 * @param Filesystem $filesystem
+	 * @param LoggerContract $log
+	 * @param Filesystem $fs
 	 */
 	public function __construct(
-		Filesystem $filesystem
+		LoggerContract $log,
+		Filesystem $fs
 	) {
-		$this->filesystem = $filesystem;
+		$this->log = $log;
+		$this->fs = $fs;
 	}
 
 	/**
@@ -31,7 +40,7 @@ class LocalizationParser {
 	 * @return string[]
 	 */
 	public function parseModule(string $moduleName): array {
-		return $this->parseDirectory(ModuleManager::getModuleDirectory($moduleName, 'Resources\\lang'));
+		return $this->parseDirectory(app_path(ModuleManager::getModuleDirectory($moduleName, 'Resources/lang')));
 	}
 
 	/**
@@ -41,12 +50,15 @@ class LocalizationParser {
 	public function parseDirectory(string $directoryPath): array {
 		$this->messages = [];
 
-		if ($this->filesystem->isDirectory($directoryPath)) {
-			$directories = $this->filesystem->directories($directoryPath);
+		if (!$this->fs->exists($directoryPath)) {
+			$this->log->warning('Directory could not have been found: %s.', $directoryPath);
+			return [];
+		}
 
-			foreach ($directories as $directory) {
-				$this->scanLanguageDirectory($directory);
-			}
+		$directories = $this->fs->directories($directoryPath);
+
+		foreach ($directories as $directory) {
+			$this->scanLanguageDirectory($directory);
 		}
 
 		return $this->messages;
@@ -77,18 +89,18 @@ class LocalizationParser {
 	 * @return string[]
 	 */
 	protected function scanDirectory(string $path): array {
-		$files = $this->filesystem->glob($path . '\\*', 0);
-
 		$result = [];
 
-		foreach ($files as $file) {
-			$fileInfo = pathinfo($file);
-			$fileName = $fileInfo['filename'];
+		$paths = $this->fs->glob($path . '/*');
 
-			if ($this->filesystem->isDirectory($file)) {
-				$result[$fileName] = $this->scanDirectory($file);
+		foreach ($paths as $path) {
+			$pathInfo = pathinfo($path);
+			$fileName = $pathInfo['filename'];
+
+			if ($this->fs->isFile($path)) {
+				$result[$fileName] = require $path;
 			} else {
-				$result[$fileName] = require $file;
+				$result[$fileName] = $this->scanDirectory($path);
 			}
 		}
 

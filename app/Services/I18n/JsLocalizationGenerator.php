@@ -3,14 +3,14 @@
 namespace App\Services\I18n;
 
 use App\Services\Module\Manager as ModuleManager;
-use Illuminate\Filesystem\Filesystem as Filesystem;
+use Illuminate\Filesystem\Filesystem;
 
 class JsLocalizationGenerator {
 
 	/**
 	 * @var Filesystem
 	 */
-	protected $filesystem;
+	protected $fs;
 
 	/**
 	 * @var ModuleManager
@@ -28,16 +28,16 @@ class JsLocalizationGenerator {
 	protected $localizationFileName;
 
 	/**
-	 * @param Filesystem $filesystem
+	 * @param Filesystem $fs
 	 * @param ModuleManager $moduleManager
 	 * @param LocalizationParser $localizationParser
 	 */
 	public function __construct(
-		Filesystem $filesystem,
+		Filesystem $fs,
 		ModuleManager $moduleManager,
 		LocalizationParser $localizationParser
 	) {
-		$this->filesystem = $filesystem;
+		$this->fs = $fs;
 		$this->moduleManager = $moduleManager;
 		$this->localizationParser = $localizationParser;
 	}
@@ -49,7 +49,7 @@ class JsLocalizationGenerator {
 		$messages = array_merge($this->getModuleMessages(), $this->getBaseMessages());
 
 		$fileContent = sprintf('window.AppLocalizationMessages = %s;', json_encode($messages));
-		$this->filesystem->put($this->localizationFileName, $fileContent);
+		$this->fs->put($this->localizationFileName, $fileContent);
 
 		return $this;
 	}

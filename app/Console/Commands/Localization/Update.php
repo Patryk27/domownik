@@ -21,7 +21,7 @@ class Update
 	/**
 	 * @var JsLocalizationGenerator
 	 */
-	protected $jsMessageGenerator;
+	protected $jsLocalizationGenerator;
 
 	/**
 	 * @param JsLocalizationGenerator $jsMessageGenerator
@@ -30,18 +30,19 @@ class Update
 		JsLocalizationGenerator $jsMessageGenerator
 	) {
 		parent::__construct();
-		$this->jsMessageGenerator = $jsMessageGenerator;
+
+		$this->jsLocalizationGenerator = $jsMessageGenerator;
 	}
 
 	/**
 	 * @return void
 	 */
 	public function handle() {
-		$outputFileName = public_path('js\\localization.js');
+		$outputFileName = public_path('js/localization.js');
 
 		$this->info('Creating the localization file...');
 
-		$this->jsMessageGenerator
+		$this->jsLocalizationGenerator
 			->setLocalizationFileName($outputFileName)
 			->generateLocalizationFile();
 
