@@ -3,7 +3,6 @@
 namespace App\Services\I18n;
 
 use App\Services\Logger\Contract as LoggerContract;
-use App\Services\Module\Manager as ModuleManager;
 use Illuminate\Filesystem\Filesystem;
 
 class LocalizationParser {
@@ -33,14 +32,6 @@ class LocalizationParser {
 	) {
 		$this->log = $log;
 		$this->fs = $fs;
-	}
-
-	/**
-	 * @param string $moduleName
-	 * @return string[]
-	 */
-	public function parseModule(string $moduleName): array {
-		return $this->parseDirectory(app_path(ModuleManager::getModuleDirectory($moduleName, 'Resources/lang')));
 	}
 
 	/**

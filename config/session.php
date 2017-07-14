@@ -3,20 +3,15 @@
 return [
 	'driver' => env('SESSION_DRIVER', 'file'),
 
-	'lifetime' => 120,
-
-	'expire_on_close' => false,
-
-	'encrypt' => false,
-
+	'connection' => null,
+	'store' => null,
 	'files' => storage_path('framework/sessions'),
 
-	'connection' => null,
+	'lifetime' => 120,
+	'encrypt' => false,
+	'expire_on_close' => false,
 
 	'State' => 'sessions',
-
-	'store' => null,
-
 	'lottery' => [2, 100],
 
 	'cookie' => 'laravel_session',

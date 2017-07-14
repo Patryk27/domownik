@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Carbon\Carbon;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider
@@ -14,6 +15,11 @@ class AppServiceProvider
 	public function register() {
 		$this->app->singleton(\App\Services\Breadcrumb\Manager::class);
 		$this->app->singleton(\App\Services\Install\Manager::class);
+		$this->app->singleton(\App\Services\Section\ManagerContract::class, \App\Services\Section\Manager::class);
+		$this->app->singleton(\App\Services\Sidebar\ManagerContract::class, \App\Services\Sidebar\Manager::class);
+		$this->app->singleton(\App\Services\Sidebar\ParserContract::class, \App\Services\Sidebar\Parser::class);
+
+		View::composer('*', \App\Http\ViewComposers\SectionComposer::class);
 
 		if ($this->app->environment() !== 'production') {
 			$this->app->register(\Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class);

@@ -2,7 +2,6 @@
 
 namespace App\Services\I18n;
 
-use App\Services\Module\Manager as ModuleManager;
 use Illuminate\Filesystem\Filesystem;
 
 class JsLocalizationGenerator {
@@ -11,11 +10,6 @@ class JsLocalizationGenerator {
 	 * @var Filesystem
 	 */
 	protected $fs;
-
-	/**
-	 * @var ModuleManager
-	 */
-	protected $moduleManager;
 
 	/**
 	 * @var LocalizationParser
@@ -29,16 +23,13 @@ class JsLocalizationGenerator {
 
 	/**
 	 * @param Filesystem $fs
-	 * @param ModuleManager $moduleManager
 	 * @param LocalizationParser $localizationParser
 	 */
 	public function __construct(
 		Filesystem $fs,
-		ModuleManager $moduleManager,
 		LocalizationParser $localizationParser
 	) {
 		$this->fs = $fs;
-		$this->moduleManager = $moduleManager;
 		$this->localizationParser = $localizationParser;
 	}
 
@@ -46,7 +37,7 @@ class JsLocalizationGenerator {
 	 * @return $this
 	 */
 	public function generateLocalizationFile() {
-		$messages = array_merge($this->getModuleMessages(), $this->getBaseMessages());
+		$messages = $this->getMessages();
 
 		$fileContent = sprintf('window.AppLocalizationMessages = %s;', json_encode($messages));
 		$this->fs->put($this->localizationFileName, $fileContent);
@@ -73,38 +64,14 @@ class JsLocalizationGenerator {
 	/**
 	 * @return string[]
 	 */
-	protected function getModuleMessages() {
+	protected function getMessages(): array {
 		$result = [];
 
-		$this->moduleManager->scanModules();
+		$messages = $this->localizationParser->parseDirectory(resource_path('lang'));
 
-		$moduleNames = $this->moduleManager->getFoundModuleNames();
-
-		foreach ($moduleNames as $moduleName) {
-			$rawModuleMessages = $this->localizationParser->parseModule($moduleName);
-			$result[$moduleName] = [];
-
-			foreach ($rawModuleMessages as $languageCode => $moduleMessages) {
-				if (isset($moduleMessages['js'])) {
-					$result[$moduleName][$languageCode] = $moduleMessages['js'];
-				}
-			}
-		}
-
-		return $result;
-	}
-
-	/**
-	 * @return string[]
-	 */
-	protected function getBaseMessages() {
-		$result = [];
-
-		$rawBaseMessages = $this->localizationParser->parseDirectory(resource_path('lang'));
-
-		foreach ($rawBaseMessages as $languageCode => $baseMessages) {
+		foreach ($messages as $languageCode => $baseMessages) {
 			if (isset($baseMessages['js'])) {
-				$result[''][$languageCode] = $baseMessages['js'];
+				$result[$languageCode] = $baseMessages['js'];
 			}
 		}
 

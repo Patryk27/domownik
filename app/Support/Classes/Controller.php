@@ -26,26 +26,22 @@ class Controller {
 	 * @return string
 	 */
 	public function getViewCssClass(): string {
-		return sprintf('view-%s-%s-%s', $this->getRouteModuleName(), $this->getRouteControllerName(), $this->getRouteActionName());
+		return sprintf('view-%s-%s-%s', $this->getSectionName(), $this->getControllerName(), $this->getActionName());
 	}
 
 	/**
 	 * @return string
 	 */
-	protected function getRouteModuleName(): string {
+	public function getSectionName(): string {
 		$controllerNameParts = $this->getControllerNameParts();
 
-		if ($controllerNameParts[1] === 'Modules') {
-			return strtolower($controllerNameParts[2]);
-		} else {
-			return 'base';
-		}
+		return strtolower($controllerNameParts[3]);
 	}
 
 	/**
 	 * @return string
 	 */
-	protected function getRouteControllerName(): string {
+	public function getControllerName(): string {
 		$controllerNameParts = $this->getControllerNameParts();
 		$controllerName = end($controllerNameParts);
 
@@ -60,7 +56,7 @@ class Controller {
 	/**
 	 * @return string
 	 */
-	protected function getRouteActionName(): string {
+	public function getActionName(): string {
 		$actionMethod = $this->currentRoute->getActionMethod();
 
 		if (!starts_with($actionMethod, 'action')) {

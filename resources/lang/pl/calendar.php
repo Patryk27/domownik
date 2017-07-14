@@ -1,6 +1,7 @@
 <?php
 
 return [
+	// @todo rename to weekdays
 	'week-days' => [
 		'monday' => 'poniedziałek',
 		'tuesday' => 'wtorek',

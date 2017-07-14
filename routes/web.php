@@ -1,3 +1,5 @@
 <?php
 
-Route::get('/', '\\' . \App\Modules\Dashboard\Controllers\UserController::class . '@actionLogin');
+use App\Http\Controllers\Dashboard\UserController;
+
+Route::get('/', '\\' . UserController::class . '@actionLogin');

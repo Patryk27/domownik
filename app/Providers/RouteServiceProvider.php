@@ -10,11 +10,6 @@ class RouteServiceProvider
 	extends ServiceProvider {
 
 	/**
-	 * @var string
-	 */
-	protected $namespace = 'App\Http\Controllers';
-
-	/**
 	 * @return void
 	 */
 	public function boot() {
@@ -37,9 +32,16 @@ class RouteServiceProvider
 	 * @return void
 	 */
 	protected function createRoutes() {
+		// @todo autoload routes
+
 		Route::middleware('web')
-			 ->namespace($this->namespace)
 			 ->group(base_path('routes/web.php'));
+
+		Route::middleware('web')
+			 ->group(base_path('routes/dashboard.php'));
+
+		Route::middleware('web')
+			 ->group(base_path('routes/finances.php'));
 	}
 
 }

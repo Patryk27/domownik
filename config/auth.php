@@ -11,11 +11,6 @@ return [
 			'driver' => 'session',
 			'provider' => 'users',
 		],
-
-		'api' => [
-			'driver' => 'token',
-			'provider' => 'users',
-		],
 	],
 
 	'providers' => [

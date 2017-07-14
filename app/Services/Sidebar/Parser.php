@@ -3,14 +3,17 @@
 namespace App\Services\Sidebar;
 
 use App\Exceptions\Exception;
+use App\ValueObjects\Sidebar;
 use App\ValueObjects\Sidebar\Item as SidebarItem;
 use Illuminate\Contracts\Filesystem\Factory as FilesystemFactoryContract;
 use Illuminate\Contracts\Filesystem\Filesystem as FilesystemContract;
 use Laravie\Parser\Document as XmlDocument;
+use League\Flysystem\FileNotFoundException;
 use SimpleXMLElement;
 use XmlParser;
 
-class Parser {
+class Parser
+	implements ParserContract {
 
 	/**
 	 * @var FilesystemContract
@@ -18,20 +21,11 @@ class Parser {
 	protected $fs;
 
 	/**
-	 * @var XmlDocument
-	 */
-	protected $xml;
-
-	/**
-	 * Module name read from the XML file.
-	 * Used to perform text translations.
 	 * @var string
 	 */
-	protected $moduleName;
+	protected $sectionName;
 
 	/**
-	 * First, collective sidebar item.
-	 * All the 'real' sidebar items are its children (subitems).
 	 * @var SidebarItem
 	 */
 	protected $rootItem;
@@ -42,62 +36,49 @@ class Parser {
 	public function __construct(
 		FilesystemFactoryContract $fsFactory
 	) {
-		$this->fs = $fsFactory->disk('app');
+		$this->fs = $fsFactory->disk('resources');
 	}
 
 	/**
-	 * @param string $fileName
-	 * @return $this
+	 * @inheritdoc
 	 */
-	public function parseFile(string $fileName): self {
+	public function parseXml(string $fileName): Sidebar {
 		// @todo cache
 
 		if (!$this->fs->exists($fileName)) {
-			throw new Exception('Could not find sidebar file: %s.', $fileName);
+			throw new FileNotFoundException('Could not find sidebar file: %s.', $fileName);
 		}
 
 		$fileContents = $this->fs->get($fileName);
-		$this->xml = XmlParser::extract($fileContents);
+		$xmlDocument = XmlParser::extract($fileContents);
 
-		$this->parseXml();
+		$this->parseDocument($xmlDocument);
 
-		return $this;
-	}
-
-	/**
-	 * @return string
-	 */
-	public function getModuleName(): string {
-		return $this->moduleName;
-	}
-
-	/**
-	 * @return SidebarItem
-	 */
-	public function getRootItem(): SidebarItem {
-		return $this->rootItem;
+		return new Sidebar($this->sectionName, $this->rootItem);;
 	}
 
 	/**
 	 * @return $this
 	 */
-	protected function parseXml(): Parser {
+	protected function parseDocument(XmlDocument $xml): Parser {
 		/**
 		 * @var SimpleXMLElement $xmlRootNode
 		 */
-		$xmlRootNode = $this->xml->getContent();
+		$xmlRootNode = $xml->getContent();
 		$xmlRootNodeAttributes = $xmlRootNode->attributes();
 
-		$this->moduleName = (string)$xmlRootNodeAttributes['module-name'];
+		// parse section name
+		$this->sectionName = (string)$xmlRootNodeAttributes['section-name'];
 
-		if (empty($this->moduleName)) {
-			throw new Exception('No module name specified in root node (no \'module-name\' attribute found).');
+		if (empty($this->sectionName)) {
+			throw new Exception('No module name specified in root node (no \'section-name\' attribute found).');
 		}
 
+		// parse items
 		$this->rootItem = new SidebarItem();
 
 		foreach ($xmlRootNode->children() as $xmlNode) {
-			$this->rootItem->addChild($this->parseNode($this->rootItem, $xmlNode));
+			$this->rootItem->addChild($this->processNode($this->rootItem, $xmlNode));
 		}
 
 		return $this;
@@ -108,14 +89,14 @@ class Parser {
 	 * @param SimpleXMLElement $xmlNode
 	 * @return SidebarItem
 	 */
-	protected function parseNode(SidebarItem $parentItem, SimpleXMLElement $xmlNode): SidebarItem {
+	protected function processNode(SidebarItem $parentItem, SimpleXMLElement $xmlNode): SidebarItem {
 		switch ($xmlNode->getName()) {
 			case 'item':
 			case 'item-template':
-				return $this->parseItem($parentItem, $xmlNode);
-				break;
+				return $this->processItem($parentItem, $xmlNode);
 
 			default:
+				// @todo do not throw generic exception
 				throw new Exception('Unexpected node: %s.', $xmlNode->getName());
 		}
 	}
@@ -125,7 +106,7 @@ class Parser {
 	 * @param SimpleXMLElement $xmlNode
 	 * @return SidebarItem
 	 */
-	protected function parseItem(SidebarItem $parentItem, SimpleXMLElement $xmlNode): SidebarItem {
+	protected function processItem(SidebarItem $parentItem, SimpleXMLElement $xmlNode): SidebarItem {
 		$nodeAttributes = $xmlNode->attributes();
 
 		$sidebarItem = new SidebarItem();
@@ -139,12 +120,12 @@ class Parser {
 			->setIsTemplate($xmlNode->getName() === 'item-template');
 
 		if (!$sidebarItem->hasCaption()) {
-			$itemTranslationIdentifier = sprintf('%s::sidebar.%s', $this->moduleName, $sidebarItem->getFullName());
+			$itemTranslationIdentifier = sprintf('sidebars/%s.%s', $this->sectionName, $sidebarItem->getFullName());
 			$sidebarItem->setCaption(__($itemTranslationIdentifier));
 		}
 
 		foreach ($xmlNode->children() as $xmlChildNode) {
-			$sidebarItem->addChild($this->parseNode($sidebarItem, $xmlChildNode));
+			$sidebarItem->addChild($this->processNode($sidebarItem, $xmlChildNode));
 		}
 
 		return $sidebarItem;

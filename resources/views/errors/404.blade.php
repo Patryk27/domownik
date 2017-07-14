@@ -1,4 +1,4 @@
-@extends('layouts.application.error')
+@extends('layouts.app.error')
 
 @section('content')
     <p>

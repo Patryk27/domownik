@@ -50,7 +50,7 @@ class Handler
 	 * @param \Illuminate\Auth\AuthenticationException $exception
 	 * @return \Illuminate\Http\Response
 	 */
-	protected function unauthenticated($request, AuthenticationException $exception) {
+	protected function unauthenticated($request) {
 		if ($request->expectsJson()) {
 			return response()->json(['error' => 'Unauthenticated.'], 401);
 		}

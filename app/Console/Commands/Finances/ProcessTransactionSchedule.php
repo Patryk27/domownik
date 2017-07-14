@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands\Finances;
 
-use App\Modules\Finances\Services\Transaction\Schedule\ProcessorContract;
+use App\Services\Transaction\Schedule\ProcessorContract;
 use Illuminate\Console\Command;
 
 class ProcessTransactionSchedule

@@ -8,9 +8,8 @@ trait UsesCache {
 
 	/**
 	 * Returns cache key name of given function call.
-	 * Accepts any $methodArgs.
 	 * @param string $functionName
-	 * @param array $methodArgs
+	 * @param mixed[] $methodArgs
 	 * @return string
 	 */
 	protected function getCacheKey($functionName, array $methodArgs = []): string {
@@ -21,7 +20,7 @@ trait UsesCache {
 			$methodArgsString = implode(',', array_map(function($methodArg) {
 				/**
 				 * We use Redis and thus, in order to simplify debugging, we do our best effort to make sure the cache
-				 * key human-readable.
+				 * key is human-readable.
 				 */
 
 				if (is_null($methodArg)) {

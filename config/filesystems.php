@@ -8,5 +8,10 @@ return [
 			'driver' => 'local',
 			'root' => app_path(),
 		],
+		
+		'resources' => [
+			'driver' => 'local',
+			'root' => resource_path(),
+		],
 	],
 ];
