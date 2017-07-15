@@ -13,4 +13,7 @@ return [
 	'date-to' => 'Data do',
 
 	'submit' => 'Pokaż',
+
+	'filtering-title' => 'Kryteria',
+	'results-title' => 'Wyniki',
 ];

@@ -12,6 +12,8 @@ return [
 	'date-from' => 'Data od',
 	'date-to' => 'Data do',
 	'count' => 'Liczba transakcji',
-
 	'submit' => 'Pokaż',
+
+	'filtering-title' => 'Kryteria',
+	'results-title' => 'Wyniki',
 ];

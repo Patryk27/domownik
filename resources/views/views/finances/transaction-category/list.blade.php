@@ -6,31 +6,36 @@
 </script>
 @endpush
 
-@section('title')
-    {{ __('views/finances/transaction-category/list.page.title') }}
-@endsection
-
 @section('content')
     <form id="editTransactionCategoriesForm"
           action="{{ route('finances.transaction-category.store') }}"
           method="post">
-        <a id="btnCreateNewRootCategory"
-           href="#"
-           class="btn btn-xs btn-primary">
-            <i class="fa fa-plus"></i>&nbsp;
-            {{ __('views/finances/transaction-category/list.create-new-root-category') }}
-        </a>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div class="panel-title">
+                    <i class="fa fa-tags"></i>&nbsp;
+                    {{ __('views/finances/transaction-category/list.page.title') }}
+                </div>
+            </div>
 
-        <hr>
+            <div class="panel-body">
+                <a id="btnCreateNewRootCategory"
+                   href="#"
+                   class="btn btn-primary">
+                    <i class="fa fa-plus"></i>&nbsp;
+                    {{ __('views/finances/transaction-category/list.create-new-root-category') }}
+                </a>
 
-        <div id="transactionCategoryTree">
-            {{ __('views/finances/transaction-category/list.waiting') }}
-        </div>
+                <hr>
 
-        <hr>
+                <div id="transactionCategoryTree">
+                    {{ __('views/finances/transaction-category/list.waiting') }}
+                </div>
+            </div>
 
-        <div>
-            @include('common.form.save-button')
+            <div class="panel-footer">
+                @include('common.form.save-button')
+            </div>
         </div>
     </form>
 @endsection

@@ -25,70 +25,86 @@
 @endsection
 
 @section('content')
-    <div class="row">
-        <div class="col-md-12">
-            <h4>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div class="panel-title">
+                <i class="fa fa-tasks"></i>&nbsp;
                 {{ __('views/finances/budget/show.budget-management.header') }}
-            </h4>
+            </div>
+        </div>
 
+        <div class="panel-body">
             <a href="{{ route('finances.transaction.create-to-budget', $budget->id) }}"
-               class="btn btn-sm btn-success">
+               class="btn btn-success">
                 <i class="fa fa-plus"></i>&nbsp;
                 {{ __('views/finances/budget/show.budget-management.create-transaction') }}
             </a>
 
+            &nbsp;
+
             <a href="{{ route('finances.transaction.list-from-budget', $budget->id) }}"
-               class="btn btn-sm btn-info">
+               class="btn btn-info">
                 <i class="fa fa-list"></i>&nbsp;
                 {{ __('views/finances/budget/show.budget-management.list-transactions') }}
             </a>
         </div>
     </div>
 
-    <hr>
-
     <div class="row">
         {{-- Recently booked transactions --}}
         <div class="col-sm-12 col-md-6">
-            <h4>
-                {{ __('views/finances/budget/show.recently-booked-transactions.header') }}
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <div class="panel-title">
+                        <i class="fa fa-history"></i>&nbsp;
+                        {{ __('views/finances/budget/show.recently-booked-transactions.header') }}
 
-                <a class="btn btn-xs btn-default pull-right"
-                   href="{{ route('finances.budget.show-recent-transactions', $budget->id) }}">
-                    {{ __('views/finances/budget/show.recently-booked-transactions.show-more') }}
-                </a>
-            </h4>
+                        <a class="btn btn-xs btn-default pull-right"
+                           href="{{ route('finances.budget.show-recent-transactions', $budget->id) }}">
+                            {{ __('views/finances/budget/show.recently-booked-transactions.show-more') }}
+                        </a>
+                    </div>
+                </div>
 
-            @include('components.transaction-list.compact', [
-                'transactions' => $recentTransactions,
-                'transactionButtons' => ['edit', 'edit-parent'],
-            ])
+                <div class="panel-body">
+                    @include('components.transaction-list.compact', [
+                        'transactions' => $recentTransactions,
+                        'transactionButtons' => ['edit', 'edit-parent'],
+                    ])
+                </div>
+            </div>
         </div>
 
         {{-- Incoming transactions --}}
         <div class="col-sm-12 col-md-6">
-            <h4>
-                {{ __('views/finances/budget/show.incoming-transactions.header') }}
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <div class="panel-title">
+                        <i class="fa fa-calendar"></i>&nbsp;
+                        {{ __('views/finances/budget/show.incoming-transactions.header') }}
 
-                <a class="btn btn-xs btn-default pull-right"
-                   href="{{ route('finances.budget.show-incoming-transactions', $budget->id) }}">
-                    {{ __('views/finances/budget/show.incoming-transactions.show-more') }}
-                </a>
-            </h4>
+                        <a class="btn btn-xs btn-default pull-right"
+                           href="{{ route('finances.budget.show-incoming-transactions', $budget->id) }}">
+                            {{ __('views/finances/budget/show.incoming-transactions.show-more') }}
+                        </a>
+                    </div>
+                </div>
 
-            @include('components.transaction-list.compact', [
-                'transactions' => $incomingTransactions,
-                'transactionButtons' => ['edit', 'edit-parent'],
-            ])
+                <div class="panel-body">
+                    @include('components.transaction-list.compact', [
+                        'transactions' => $incomingTransactions,
+                        'transactionButtons' => ['edit', 'edit-parent'],
+                    ])
+                </div>
+            </div>
         </div>
     </div>
 
-    <hr>
-
     {{-- Budget history --}}
-    <div class="row">
-        <div class="col-md-12">
-            <h4>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div class="panel-title">
+                <i class="fa fa-database"></i>&nbsp;
                 {{ __('views/finances/budget/show.history.header') }}
 
                 <div style="display:inline-block">
@@ -113,8 +129,10 @@
                         })
                     !!}
                 </div>
-            </h4>
+            </div>
+        </div>
 
+        <div class="panel-body">
             <div id="budget-history">
                 @include('common.ajax.loader', [
                     'icon' => true,

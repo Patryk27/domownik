@@ -53,7 +53,7 @@ class Parser
 
 		$this->parseDocument($xmlDocument);
 
-		return new Sidebar($this->sectionName, $this->rootItem);;
+		return new Sidebar($this->sectionName, $this->rootItem);
 	}
 
 	/**

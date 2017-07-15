@@ -2,7 +2,7 @@
 
 return [
 	'validation' => [
-		'userLogin.required' => 'Login użytkownika jest wymagany.',
+		'userLogin.required' => 'Nazwa użytkownika jest wymagana.',
 		'userFullName.required' => 'Imię i nazwisko użytkownika są wymagane.',
 		'userPassword.required' => 'Hasło użytkownika jest wymagane.',
 		'userStatus.required' => 'Status użytkownika jest wymagany.',

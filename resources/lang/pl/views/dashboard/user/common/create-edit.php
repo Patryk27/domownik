@@ -2,21 +2,21 @@
 
 return [
 	'user-login' => [
-		'label' => 'Login',
-		'placeholder' => 'Login',
+		'label' => 'Nazwa użytkownika',
+		'placeholder' => 'Nazwa użytkownika (login)',
 	],
 
 	'user-full-name' => [
-		'label' => 'Imię i nazwisko',
-		'placeholder' => 'Imię i nazwisko',
+		'label' => 'Imię i nazwisko użytkownika',
+		'placeholder' => 'Imię i nazwisko użytkownika',
 	],
 
 	'user-password' => [
-		'label' => 'Hasło',
+		'label' => 'Hasło użytkownika',
 	],
 
 	'user-status' => [
-		'label' => 'Status',
+		'label' => 'Status użytkownika',
 	],
 
 	'delete-confirmation-message' => 'Czy na pewno chcesz usunąć tego użytkownika?',

@@ -5,21 +5,19 @@
      */
 @endphp
 
-@extends('layouts.app.auth')
-
 @push('scripts')
 <script>
   var AppView = App.Views.Finances.Transaction.CreateEdit.initializeView();
 </script>
 @endpush
 
-@section('content')
-    <form role="form"
-          id="transactionForm"
-          data-toggle="validator"
-          action="{{ route('finances.transaction.store') }}"
-          method="post">
 
+<form role="form"
+      id="transactionForm"
+      data-toggle="validator"
+      action="{{ route('finances.transaction.store') }}"
+      method="post">
+    <div class="panel-body">
         @isset($budget)
             {!!
                 Form::hiddenInput()
@@ -84,18 +82,17 @@
 
         <hr>
 
-        <div>
-            @include('common.form.save-button')
+        @include('common.form.required-fields')
+    </div>
 
-            @isset($transaction)
-                @include('common.form.delete-button', [
-                    'route' => route('finances.transaction.delete', $transaction->id),
-                    'confirmationMessage' => __('views/finances/transaction/common/create-edit.delete-confirmation-message'),
-                ])
-            @endisset
+    <div class="panel-footer">
+        @include('common.form.save-button')
 
-            @include('common.form.required-fields')
-        </div>
-
-    </form>
-@endsection
+        @isset($transaction)
+            @include('common.form.delete-button', [
+                'route' => route('finances.transaction.delete', $transaction->id),
+                'confirmationMessage' => __('views/finances/transaction/common/create-edit.delete-confirmation-message'),
+            ])
+        @endisset
+    </div>
+</form>

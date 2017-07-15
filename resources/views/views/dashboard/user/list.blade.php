@@ -6,64 +6,82 @@
 
 @extends('layouts.app.auth')
 
-@section('title')
-    {{ __('views/dashboard/user/list.page.title') }}
-@endsection
-
 @section('content')
-    <a href="{{ route('dashboard.user.create') }}"
-       class="btn btn-success">
-        <i class="fa fa-plus"></i>&nbsp;
-        {{ __('views/dashboard/user/list.create-new-user') }}
-    </a>
+    {{-- User management --}}
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div class="panel-title">
+                <i class="fa fa-tasks"></i>&nbsp;
+                {{ __('views/dashboard/user/list.user-management') }}
+            </div>
+        </div>
 
-    <hr>
+        <div class="panel-body">
+            <a href="{{ route('dashboard.user.create') }}"
+               class="btn btn-success">
+                <i class="fa fa-plus"></i>&nbsp;
+                {{ __('views/dashboard/user/list.create-user') }}
+            </a>
+        </div>
+    </div>
 
-    <p>
-        @php($userCount = count($users))
+    {{-- User list --}}
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div class="panel-title">
+                <i class="fa fa-users"></i>&nbsp;
+                {{ __('views/dashboard/user/list.user-list') }}
+            </div>
+        </div>
 
-        {!! Lang::choice(__('views/dashboard/user/list.found-user-count', [
-            'userCount' => $userCount,
-        ]), $userCount) !!}
-    </p>
+        <div class="panel-body">
+            <p>
+                @php($userCount = count($users))
 
-    <table class="table table-hover table-striped">
-        <thead>
-        <tr>
-            <th>{{ __('views/dashboard/user/list.users-table.header.user-id') }}</th>
-            <th>{{ __('views/dashboard/user/list.users-table.header.user-login') }}</th>
-            <th>{{ __('views/dashboard/user/list.users-table.header.user-full-name') }}</th>
-            <th></th>
-        </tr>
-        </thead>
-        <tbody>
-        @foreach ($users as $user)
-            @php
-                /**
-                 * @var $user \App\Models\User
-                 */
+                {!! Lang::choice(__('views/dashboard/user/list.found-user-count', [
+                    'userCount' => $userCount,
+                ]), $userCount) !!}
+            </p>
 
-                $userPresenter = $user->getPresenter();
+            <table class="table table-hover table-striped">
+                <thead>
+                <tr>
+                    <th>{{ __('views/dashboard/user/list.users-table.header.user-id') }}</th>
+                    <th>{{ __('views/dashboard/user/list.users-table.header.user-login') }}</th>
+                    <th>{{ __('views/dashboard/user/list.users-table.header.user-full-name') }}</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach ($users as $user)
+                    @php
+                        /**
+                         * @var $user \App\Models\User
+                         */
 
-                $trClass = '';
+                        $userPresenter = $user->getPresenter();
 
-                if ($user->status === \App\Models\User::STATUS_INACTIVE) {
-                    $trClass = 'warning';
-                }
-            @endphp
-            <tr class="{{ $trClass }}">
-                <td>{{ $user->id }}</td>
-                <td>{{ $user->login }}</td>
-                <td>{{ $user->full_name }}</td>
-                <td>
-                    <a class="btn btn-xs btn-primary"
-                       href="{{ $userPresenter->getEditUrl() }}">
-                        <i class="fa fa-gear"></i>&nbsp;
-                        {{ __('views/dashboard/user/list.users-table.body.btn-edit') }}
-                    </a>
-                </td>
-            </tr>
-        @endforeach
-        </tbody>
-    </table>
+                        $trClass = '';
+
+                        if ($user->status === \App\Models\User::STATUS_INACTIVE) {
+                            $trClass = 'warning';
+                        }
+                    @endphp
+                    <tr class="{{ $trClass }}">
+                        <td>{{ $user->id }}</td>
+                        <td>{{ $user->login }}</td>
+                        <td>{{ $user->full_name }}</td>
+                        <td>
+                            <a class="btn btn-xs btn-primary"
+                               href="{{ $userPresenter->getEditUrl() }}">
+                                <i class="fa fa-gear"></i>&nbsp;
+                                {{ __('views/dashboard/user/list.users-table.body.btn-edit') }}
+                            </a>
+                        </td>
+                    </tr>
+                @endforeach
+                </tbody>
+            </table>
+        </div>
+    </div>
 @endsection
