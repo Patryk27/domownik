@@ -45,16 +45,25 @@
             $transactionPresenter = $transaction->getPresenter();
         @endphp
         <tr>
+            {{-- Row counter --}}
             @if($showCounter)
                 <td>{{ ++$counter }}</td>
             @endif
+
+            {{-- Transaction date --}}
             <td>{{ Date::format('%Y-%m-%e %a', $date) }}</td>
+
+            {{-- Transaction name --}}
             <td>{{ $transaction->name }}</td>
+
+            {{-- Transaction value --}}
             <td>
                 @include('components.transaction.value', [
                     'transaction' => $transaction,
                 ])
             </td>
+
+            {{-- Action buttons --}}
             @if(isset($transactionButtons))
                 <td class="transaction-list-buttons">
                     @if (in_array('edit-parent', $transactionButtons) && isset($transaction->parent_transaction_id))

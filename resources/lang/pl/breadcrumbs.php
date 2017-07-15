@@ -4,6 +4,7 @@ return [
 	'budget' => [
 		'show' => 'Budżet: :budgetName',
 		'create' => 'Tworzenie nowego budżetu',
+		'list' => 'Lista budżetów',
 		'show-recent-transactions' => 'Spis ostatnio zaksięgowanych transakcji',
 		'show-incoming-transactions' => 'Spis zbliżających się transakcji',
 	],

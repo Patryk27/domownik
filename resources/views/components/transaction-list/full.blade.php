@@ -8,8 +8,8 @@
 <p>
     @php($transactionCount = count($transactions))
 
-    {!! Lang::choice(__('components/transaction-list.found-transaction-count', [
-        'transactionCount' => $transactionCount,
+    {!! Lang::choice(__('common/transaction.misc.found-count', [
+        'count' => $transactionCount,
     ]), $transactionCount) !!}
 </p>
 

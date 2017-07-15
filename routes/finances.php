@@ -20,6 +20,10 @@ Route::group(['prefix' => 'finances', 'middleware' => 'auth'], function() {
 		Route::get('show/{budget}', '\\' . BudgetController::class . '@actionShow')
 			 ->name('finances.budget.show');
 
+		// /finances/budget/list
+		Route::get('list', '\\' . BudgetController::class . '@actionList')
+			 ->name('finances.budget.list');
+
 		// /finances/budget/show-recent-transactions
 		Route::match(['GET', 'POST'], 'show-recent-transactions/{budget}', '\\' . BudgetController::class . '@actionShowRecentTransactions')
 			 ->name('finances.budget.show-recent-transactions');

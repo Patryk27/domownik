@@ -11,7 +11,7 @@ class UserPresenter
 	/**
 	 * @return string
 	 */
-	public function getEditUrl() {
+	public function getEditUrl(): string {
 		return route('dashboard.user.edit', $this->model->id);
 	}
 

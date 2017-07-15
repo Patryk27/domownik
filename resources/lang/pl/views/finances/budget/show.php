@@ -1,10 +1,10 @@
 <?php
 
 return [
-	'page.title' => 'Podgląd budżetu: :budgetName',
+	'page.title' => 'Budżet :budgetName',
 
 	'budget-management' => [
-		'header' => 'Zarządzanie budżetem',
+		'header' => 'Zarządzanie budżetem: :budgetName',
 		'create-transaction' => 'Dodaj transakcję',
 		'list-transactions' => 'Pokaż spis transakcji',
 	],

@@ -28,8 +28,10 @@
     <div class="panel panel-default">
         <div class="panel-heading">
             <div class="panel-title">
-                <i class="fa fa-tasks"></i>&nbsp;
-                {{ __('views/finances/budget/show.budget-management.header') }}
+                <i class="fa fa-cog"></i>&nbsp;
+                {{ __('views/finances/budget/show.budget-management.header', [
+                    'budgetName' => $budget->name,
+                ]) }}
             </div>
         </div>
 

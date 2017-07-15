@@ -5,6 +5,9 @@ namespace App\Presenters;
 use App\Models\TransactionCategory;
 use App\Repositories\Contracts\TransactionCategoryRepositoryContract;
 
+/**
+ * @property TransactionCategory $model
+ */
 class TransactionCategoryPresenter
 	extends AbstractPresenter {
 
@@ -12,11 +15,6 @@ class TransactionCategoryPresenter
 	 * @var TransactionCategoryRepositoryContract
 	 */
 	protected $transactionCategoryRepository;
-
-	/**
-	 * @var TransactionCategory
-	 */
-	protected $model;
 
 	/**
 	 * @param TransactionCategoryRepositoryContract $transactionCategoryRepository
@@ -32,15 +30,12 @@ class TransactionCategoryPresenter
 	 * Eg.: 'Hello -> World'.
 	 * @return string
 	 */
-	public function getFullName() {
+	public function getFullName(): string{
 		if ($this->model->offsetExists('full_name')) {
 			return $this->model->full_name;
 		}
 
-		$fullName = $this->transactionCategoryRepository->getFullName($this->model->id);
-		$this->model->full_name = $fullName;
-
-		return $fullName;
+		return $this->model->full_name = $this->transactionCategoryRepository->getFullName($this->model->id);
 	}
 
 }

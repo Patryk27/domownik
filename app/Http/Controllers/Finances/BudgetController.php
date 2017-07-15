@@ -148,6 +148,19 @@ class BudgetController
 	}
 
 	/**
+	 * @return mixed
+	 */
+	public function actionList() {
+		$this->breadcrumbManager->push(route('finances.budget.list'), __('breadcrumbs.budget.list'));
+
+		$budgets = $this->budgetRepository->getActiveBudgets();
+
+		return view('views.finances.budget.list', [
+			'budgets' => $budgets,
+		]);
+	}
+
+	/**
 	 * @param Budget $budget
 	 * @param Request $request
 	 * @return \Illuminate\Http\Response

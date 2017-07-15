@@ -11,7 +11,7 @@
     <div class="panel panel-default">
         <div class="panel-heading">
             <div class="panel-title">
-                <i class="fa fa-tasks"></i>&nbsp;
+                <i class="fa fa-cogs"></i>&nbsp;
                 {{ __('views/dashboard/user/list.user-management') }}
             </div>
         </div>
@@ -38,8 +38,8 @@
             <p>
                 @php($userCount = count($users))
 
-                {!! Lang::choice(__('views/dashboard/user/list.found-user-count', [
-                    'userCount' => $userCount,
+                {!! Lang::choice(__('common/user.misc.found-count', [
+                    'count' => $userCount,
                 ]), $userCount) !!}
             </p>
 

@@ -20,4 +20,8 @@ return [
 		Transaction::PERIODICITY_TYPE_MONTHLY => 'Miesięczna',
 		Transaction::PERIODICITY_TYPE_YEARLY => 'Roczna',
 	],
+
+	'misc' => [
+		'found-count' => 'Odnaleziono <b>1</b> transakcję.|Odnaleziono <b>:count</b> transakcje.|Odnaleziono <b>:count</b> transakcji.',
+	],
 ];

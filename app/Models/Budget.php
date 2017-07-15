@@ -17,6 +17,8 @@ use Carbon\Carbon;
 class Budget
 	extends Model {
 
+	use HasPresenter;
+
 	const
 		TYPE_REGULAR = 'regular',
 		TYPE_CONSOLIDATED = 'consolidated';
@@ -42,6 +44,11 @@ class Budget
 		'created_at',
 		'updated_at',
 	];
+
+	/**
+	 * @var string
+	 */
+	public $presenterClass = \App\Presenters\BudgetPresenter::class;
 
 	/**
 	 * @return \Illuminate\Database\Eloquent\Relations\MorphMany
