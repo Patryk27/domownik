@@ -3,7 +3,6 @@
 namespace App\Repositories\Contracts;
 
 use App\Models\Budget;
-
 use Illuminate\Support\Collection;
 
 interface BudgetRepositoryContract

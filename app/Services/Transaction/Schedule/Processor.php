@@ -5,11 +5,11 @@ namespace App\Services\Transaction\Schedule;
 use App\Models\Transaction;
 use App\Models\TransactionValueConstant;
 use App\Models\TransactionValueRange;
-use App\ValueObjects\ScheduledTransaction;
 use App\Repositories\Contracts\TransactionPeriodicityRepositoryContract;
 use App\Repositories\Contracts\TransactionRepositoryContract;
 use App\Repositories\Contracts\TransactionScheduleRepositoryContract;
 use App\Services\Logger\Contract as LoggerContract;
+use App\ValueObjects\ScheduledTransaction;
 use Carbon\Carbon;
 use Illuminate\Database\Connection as DatabaseConnection;
 

@@ -3,8 +3,8 @@
 namespace App\Services\Sidebar;
 
 use App\Exceptions\InternalException;
-use App\ValueObjects\Sidebar;
 use App\Services\Section\ManagerContract as SectionManagerContract;
+use App\ValueObjects\Sidebar;
 
 class Manager
 	implements ManagerContract {

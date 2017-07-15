@@ -2,8 +2,8 @@
 
 namespace App\Services\User;
 
-use App\Models\User;
 use App\Http\Requests\User\StoreRequest as UserStoreRequest;
+use App\Models\User;
 use App\Repositories\Contracts\UserRepositoryContract;
 use App\ServiceContracts\RequestManagerContract as BaseRequestManagerContract;
 use App\Services\Logger\Contract as LoggerContract;

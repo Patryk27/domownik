@@ -2,7 +2,6 @@
 
 namespace App\Providers;
 
-use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 
 class SupportServiceProvider

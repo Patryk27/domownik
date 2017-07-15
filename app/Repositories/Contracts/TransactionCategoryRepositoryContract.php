@@ -3,7 +3,6 @@
 namespace App\Repositories\Contracts;
 
 use App\Models\TransactionCategory;
-
 use Illuminate\Support\Collection;
 
 interface TransactionCategoryRepositoryContract

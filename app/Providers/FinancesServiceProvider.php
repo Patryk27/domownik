@@ -2,8 +2,6 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\ServiceProvider;
-
 use App\Models\Budget;
 use App\Models\Transaction;
 use App\Models\TransactionPeriodicityDaily;
@@ -16,6 +14,7 @@ use App\Models\TransactionValueRange;
 use App\Services\Breadcrumb\CustomPushHandlerContract;
 use App\ValueObjects\Breadcrumb;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Support\ServiceProvider;
 
 class FinancesServiceProvider
 	extends ServiceProvider {

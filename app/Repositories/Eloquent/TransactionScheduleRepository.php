@@ -3,9 +3,9 @@
 namespace App\Repositories\Eloquent;
 
 use App\Models\TransactionSchedule;
-use App\ValueObjects\ScheduledTransaction;
 use App\Repositories\Contracts\TransactionRepositoryContract;
 use App\Repositories\Contracts\TransactionScheduleRepositoryContract;
+use App\ValueObjects\ScheduledTransaction;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 

@@ -8,8 +8,8 @@ use App\Http\Requests\TransactionCategory\StoreRequest;
 use App\Models\TransactionCategory;
 use App\Repositories\Contracts\TransactionCategoryRepositoryContract;
 use App\Repositories\Contracts\TransactionRepositoryContract;
-use App\Services\Transaction\Category\RequestManagerContract;
 use App\Services\Breadcrumb\Manager as BreadcrumbManager;
+use App\Services\Transaction\Category\RequestManagerContract;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 

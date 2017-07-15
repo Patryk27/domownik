@@ -3,13 +3,13 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller as BaseController;
-use App\Models\User;
 use App\Http\Requests\User\LoginRequest as UserLoginRequest;
 use App\Http\Requests\User\StoreRequest as UserStoreRequest;
-use App\Services\User\RequestManagerContract as UserRequestManagerContract;
+use App\Models\User;
 use App\Repositories\Contracts\UserRepositoryContract;
 use App\ServiceContracts\RequestManagerContract as BaseRequestManagerContract;
 use App\Services\Breadcrumb\Manager as BreadcrumbManager;
+use App\Services\User\RequestManagerContract as UserRequestManagerContract;
 use Auth;
 
 class UserController
