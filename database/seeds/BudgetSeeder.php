@@ -1,6 +1,6 @@
 <?php
 
-use App\Modules\Finances\Models\Budget;
+use App\Models\Budget;
 use App\Services\Logger\Contract as LoggerContract;
 use Illuminate\Database\Seeder;
 
