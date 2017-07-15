@@ -37,7 +37,7 @@ class StoreRequest
 	 * @return array
 	 */
 	public function messages() {
-		return __('dashboard.requests/user/store.validation');
+		return __('requests/user/store.validation');
 	}
 
 }

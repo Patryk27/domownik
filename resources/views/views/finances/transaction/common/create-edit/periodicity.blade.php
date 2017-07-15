@@ -1,25 +1,25 @@
 @php
     /**
-     * @var \App\Modules\Finances\Models\Transaction $transaction
+     * @var \App\Models\Transaction $transaction
      */
 @endphp
 
 @php
-    $transactionPeriodicityTypes = \App\Modules\Finances\Models\Transaction::getPeriodicityTypes();
+    $transactionPeriodicityTypes = \App\Models\Transaction::getPeriodicityTypes();
 @endphp
 
 {{-- Transaction periodicity type --}}
 {!!
     Form::select()
         ->setIdAndName('transactionPeriodicityType')
-        ->setLabel(__('Finances::views/transaction/common/create-edit.transaction-periodicity-type.label'))
+        ->setLabel(__('views/finances/transaction/common/create-edit.transaction-periodicity-type.label'))
         ->setValueFromModel($transaction, 'periodicity_type')
         ->setRequired(true)
         ->setItems(function() use ($transactionPeriodicityTypes) {
             $items = [];
 
             foreach ($transactionPeriodicityTypes as $transactionPeriodicityType) {
-                $items[$transactionPeriodicityType] =  __('Finances::common/transaction.periodicity-type.' . $transactionPeriodicityType);
+                $items[$transactionPeriodicityType] =  __('common/transaction.periodicity-type.' . $transactionPeriodicityType);
             }
 
             return $items;
@@ -29,11 +29,11 @@
 {{-- One shot periodicity --}}
 <div id="transaction-periodicity-one-shot"
      class="transaction-periodicity"
-     data-transaction-periodicity-type="{{ \App\Modules\Finances\Models\Transaction::PERIODICITY_TYPE_ONE_SHOT }}">
+     data-transaction-periodicity-type="{{ \App\Models\Transaction::PERIODICITY_TYPE_ONE_SHOT }}">
     <hr>
 
     <h5>
-        {{ __('Finances::views/transaction/common/create-edit.transaction-periodicity.one-shot.title') }}
+        {{ __('views/finances/transaction/common/create-edit.transaction-periodicity.one-shot.title') }}
     </h5>
 
     <div class="periodicity-wrapper">
@@ -44,22 +44,22 @@
 {{-- Daily periodicity --}}
 <div id="transaction-periodicity-daily"
      class="transaction-periodicity"
-     data-transaction-periodicity-type="{{ \App\Modules\Finances\Models\Transaction::PERIODICITY_TYPE_DAILY }}">
+     data-transaction-periodicity-type="{{ \App\Models\Transaction::PERIODICITY_TYPE_DAILY }}">
     <hr>
 
     <h5>
-        {{ __('Finances::views/transaction/common/create-edit.transaction-periodicity.daily.title') }}
+        {{ __('views/finances/transaction/common/create-edit.transaction-periodicity.daily.title') }}
     </h5>
 </div>
 
 {{-- Weekly periodicity --}}
 <div id="transaction-periodicity-weekly"
      class="transaction-periodicity"
-     data-transaction-periodicity-type="{{ \App\Modules\Finances\Models\Transaction::PERIODICITY_TYPE_WEEKLY }}">
+     data-transaction-periodicity-type="{{ \App\Models\Transaction::PERIODICITY_TYPE_WEEKLY }}">
     <hr>
 
     <h5>
-        {{ __('Finances::views/transaction/common/create-edit.transaction-periodicity.weekly.title') }}
+        {{ __('views/finances/transaction/common/create-edit.transaction-periodicity.weekly.title') }}
     </h5>
 
     <div class="form-group" data-control-name="transactionPeriodicityWeeklyDays">
@@ -81,11 +81,11 @@
 {{-- Monthly periodicity --}}
 <div id="transaction-periodicity-monthly"
      class="transaction-periodicity"
-     data-transaction-periodicity-type="{{ \App\Modules\Finances\Models\Transaction::PERIODICITY_TYPE_MONTHLY }}">
+     data-transaction-periodicity-type="{{ \App\Models\Transaction::PERIODICITY_TYPE_MONTHLY }}">
     <hr>
 
     <h5>
-        {{ __('Finances::views/transaction/common/create-edit.transaction-periodicity.monthly.title') }}
+        {{ __('views/finances/transaction/common/create-edit.transaction-periodicity.monthly.title') }}
     </h5>
 
     <div class="form-group" data-control-name="transactionPeriodicityMonthlyDays">
@@ -113,18 +113,18 @@
     </div>
 
     <h5 class="text-muted">
-        {{ __('Finances::views/transaction/common/create-edit.transaction-periodicity.monthly.warning') }}
+        {{ __('views/finances/transaction/common/create-edit.transaction-periodicity.monthly.warning') }}
     </h5>
 </div>
 
 {{-- Yearly periodicity --}}
 <div id="transaction-periodicity-yearly"
      class="transaction-periodicity"
-     data-transaction-periodicity-type="{{ \App\Modules\Finances\Models\Transaction::PERIODICITY_TYPE_YEARLY }}">
+     data-transaction-periodicity-type="{{ \App\Models\Transaction::PERIODICITY_TYPE_YEARLY }}">
     <hr>
 
     <h5>
-        {{ __('Finances::views/transaction/common/create-edit.transaction-periodicity.yearly.title') }}
+        {{ __('views/finances/transaction/common/create-edit.transaction-periodicity.yearly.title') }}
     </h5>
 
     <div class="periodicity-wrapper">
@@ -138,32 +138,32 @@
       @php
           if (isset($transaction)) {
               switch ($transaction->periodicity_type) {
-                  case \App\Modules\Finances\Models\Transaction::PERIODICITY_TYPE_ONE_SHOT:
-                      $rows = $transaction->periodicityOneShots->map(function(\App\Modules\Finances\Models\TransactionPeriodicityOneShot $row) {
+                  case \App\Models\Transaction::PERIODICITY_TYPE_ONE_SHOT:
+                      $rows = $transaction->periodicityOneShots->map(function(\App\Models\TransactionPeriodicityOneShot $row) {
                           return sprintf('\'%s\'', $row->date->format('Y-m-d'));
                       });
 
                       echo sprintf('AppView.Periodicity.OneShot.prepare([%s]);', $rows->implode(','));
                       break;
 
-                  case \App\Modules\Finances\Models\Transaction::PERIODICITY_TYPE_WEEKLY:
-                      $rows = $transaction->periodicityWeeklies->map(function(\App\Modules\Finances\Models\TransactionPeriodicityWeekly $row) {
+                  case \App\Models\Transaction::PERIODICITY_TYPE_WEEKLY:
+                      $rows = $transaction->periodicityWeeklies->map(function(\App\Models\TransactionPeriodicityWeekly $row) {
                           return $row->weekday;
                       });
 
                       echo sprintf('AppView.Periodicity.Weekly.prepare([%s]);', $rows->implode(','));
                       break;
 
-                  case \App\Modules\Finances\Models\Transaction::PERIODICITY_TYPE_MONTHLY:
-                      $rows = $transaction->periodicityMonthlies->map(function(\App\Modules\Finances\Models\TransactionPeriodicityMonthly $row) {
+                  case \App\Models\Transaction::PERIODICITY_TYPE_MONTHLY:
+                      $rows = $transaction->periodicityMonthlies->map(function(\App\Models\TransactionPeriodicityMonthly $row) {
                           return $row->day;
                       });
 
                       echo sprintf('AppView.Periodicity.Monthly.prepare([%s]);', $rows->implode(','));
                       break;
 
-                  case \App\Modules\Finances\Models\Transaction::PERIODICITY_TYPE_YEARLY:
-                      $rows = $transaction->periodicityYearlies->map(function(\App\Modules\Finances\Models\TransactionPeriodicityYearly $row) {
+                  case \App\Models\Transaction::PERIODICITY_TYPE_YEARLY:
+                      $rows = $transaction->periodicityYearlies->map(function(\App\Models\TransactionPeriodicityYearly $row) {
                           return sprintf('[%d,%d]', $row->month, $row->day);
                       });
 

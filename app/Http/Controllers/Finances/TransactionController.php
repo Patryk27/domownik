@@ -87,7 +87,7 @@ class TransactionController
 	public function actionCreateToBudget(Budget $budget) {
 		$this->breadcrumbManager
 			->pushCustom($budget)
-			->push(route('finances.transaction.create-to-budget', $budget->id), __('Finances::breadcrumb.transaction.create'));
+			->push(route('finances.transaction.create-to-budget', $budget->id), __('breadcrumbs.transaction.create'));
 
 		$view = $this->getCreateEditView('create-to-budget');
 		$view->with([
@@ -104,7 +104,7 @@ class TransactionController
 	public function actionEdit(Transaction $transaction) {
 		$this->pushTransactionParentBreadcrumb($transaction);
 
-		$this->breadcrumbManager->push(route('finances.transaction.edit', $transaction->id), __('Finances::breadcrumb.transaction.edit', [
+		$this->breadcrumbManager->push(route('finances.transaction.edit', $transaction->id), __('breadcrumbs.transaction.edit', [
 			'transactionName' => $transaction->name,
 		]));
 
@@ -128,12 +128,12 @@ class TransactionController
 
 		switch ($storeResult) {
 			case BaseRequestManagerContract::STORE_RESULT_CREATED:
-				flash()->success(__('Finances::requests/transaction/store.messages.create-success'));
+				flash()->success(__('requests/transaction/store.messages.create-success'));
 				$redirectUrl = $this->getTransactionParentUrl($transaction);
 				break;
 
 			case BaseRequestManagerContract::STORE_RESULT_UPDATED:
-				flash()->success(__('Finances::requests/transaction/store.messages.update-success'));
+				flash()->success(__('requests/transaction/store.messages.update-success'));
 				$redirectUrl = route('finances.transaction.edit', $transaction->id);
 				break;
 
@@ -152,7 +152,7 @@ class TransactionController
 	 */
 	public function actionDelete(Transaction $transaction) {
 		$this->transactionRequestManagerService->delete($transaction->id);
-		flash()->success(__('Finances::requests/transaction/delete.messages.delete-success'));
+		flash()->success(__('requests/transaction/delete.messages.delete-success'));
 
 		return redirect($this->getTransactionParentUrl($transaction));
 	}
@@ -174,7 +174,7 @@ class TransactionController
 		$categories = $this->transactionCategoryRepository->resolveFullNames($categories);
 		$categories = $categories->sortBy('full_name');
 
-		return View('Finances::transaction.' . $viewName, [
+		return View('views.finances.transaction.' . $viewName, [
 			'categories' => $categories,
 			'transaction' => null,
 			'budget' => null,
@@ -185,7 +185,7 @@ class TransactionController
 	 * @param Transaction $transaction
 	 * @return string
 	 */
-	protected function getTransactionParentUrl(Transaction $transaction) {
+	protected function getTransactionParentUrl(Transaction $transaction): string {
 		switch ($transaction->parent_type) {
 			case Transaction::PARENT_TYPE_BUDGET:
 				return route('finances.budget.show', $transaction->parent_id);

@@ -32,7 +32,7 @@ class SidebarParserTest
 		 * Create file 'parse-valid.xml'
 		 */
 		$vfs->put('parse-valid.xml', <<<END
-<sidebar module-name="Test">
+<sidebar section-name="Test">
 	<item name="first" icon="first-icon">
 		<item name="first-first" url="first-first-url"/>
 		
@@ -48,14 +48,14 @@ END
 		 * Create file 'parse-error.xml'
 		 */
 		$vfs->put('parse-error.xml', <<<END
-<sidebar module-name="Test">
+<sidebar section-name="Test">
 	<error
 </sidebar>
 END
 		);
 
 		$this->storage = new FilesystemManager($this->app);
-		$this->storage->set('app', $vfs);
+		$this->storage->set('resources', $vfs);
 
 		$this->app
 			->when(SidebarParser::class)
@@ -71,16 +71,16 @@ END
 	}
 
 	/**
-	 * Tests if parseFile() works properly on a specially prepared file.
+	 * Checks if parseXml() works properly on a specially prepared file.
 	 */
-	public function testParseValid() {
-		$this->sidebarParser->parseFile('parse-valid.xml');
+	public function testParseOnValidFile() {
+		$sidebar = $this->sidebarParser->parseXml('parse-valid.xml');
 
 		// check module name
-		$this->assertEquals('Test', $this->sidebarParser->getModuleName());
+		$this->assertEquals('Test', $sidebar->getSectionName());
 
 		// check root item
-		$rootItem = $this->sidebarParser->getRootItem();
+		$rootItem = $sidebar->getRootItem();
 		$this->assertInstanceOf(SidebarItem::class, $rootItem);
 
 		// check first children
@@ -117,11 +117,19 @@ END
 	}
 
 	/**
-	 * Tests if parseFile() fails on an invalid XML file.
+	 * Checks if parseXml() fails on an invalid XML file.
 	 */
-	public function testParseError() {
+	public function testParseOnInvalidFile() {
 		$this->expectExceptionMessage('Unable to parse XML from string.');
-		$this->sidebarParser->parseFile('parse-error.xml');
+		$this->sidebarParser->parseXml('parse-error.xml');
+	}
+
+	/**
+	 * Checks if parseXml() throws an exception when trying to read an non-existing file.
+	 */
+	public function testParseOnNonExistingFile() {
+		$this->expectExceptionMessage('Could not find sidebar file: parse-non-existing-file.xml');
+		$this->sidebarParser->parseXml('parse-non-existing-file.xml');
 	}
 
 }

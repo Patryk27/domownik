@@ -20,11 +20,11 @@ module.exports = (function() {
 
     // Highcharts
     Highcharts.setOptions({
-      lang: __(':highcharts.language'),
+      lang: __('highcharts.language'),
     });
 
     // @fengyuanchen/datepicker
-    $.fn.datepicker.languages['pl-PL'] = __(':datepicker.language');
+    $.fn.datepicker.languages['pl-PL'] = __('datepicker.language');
 
     $.fn.datepicker.setDefaults({
       autoHide: true,
@@ -56,7 +56,7 @@ module.exports = (function() {
 
       // do not show error on '422 Unprocessable Entity' because $.ajaxForm() already handles it
       if (request.status !== 422) {
-        bootbox.alert(__(':ajax.alerts.error'));
+        bootbox.alert(__('ajax.alerts.error'));
       }
     });
   }

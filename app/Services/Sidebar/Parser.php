@@ -8,7 +8,6 @@ use App\ValueObjects\Sidebar\Item as SidebarItem;
 use Illuminate\Contracts\Filesystem\Factory as FilesystemFactoryContract;
 use Illuminate\Contracts\Filesystem\Filesystem as FilesystemContract;
 use Laravie\Parser\Document as XmlDocument;
-use League\Flysystem\FileNotFoundException;
 use SimpleXMLElement;
 use XmlParser;
 
@@ -46,7 +45,7 @@ class Parser
 		// @todo cache
 
 		if (!$this->fs->exists($fileName)) {
-			throw new FileNotFoundException('Could not find sidebar file: %s.', $fileName);
+			throw new Exception('Could not find sidebar file: %s.', $fileName);
 		}
 
 		$fileContents = $this->fs->get($fileName);

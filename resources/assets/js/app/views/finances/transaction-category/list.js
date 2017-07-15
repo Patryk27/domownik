@@ -45,7 +45,7 @@ module.exports = (function() {
     });
 
     $('#btnCreateNewRootCategory').on('click', function() {
-      bootbox.prompt(__('Finances:views.transaction-category.list.prompts.new-root-category-name'), function(categoryName) {
+      bootbox.prompt(__('views.finances.transaction-category.list.prompts.new-root-category-name'), function(categoryName) {
         if (typeof categoryName === 'string') {
           var jsTree = $('#transactionCategoryTree').jstree(true);
 
@@ -77,7 +77,7 @@ module.exports = (function() {
         this.getDefaultOptions().success(msg);
 
         if (msg.success) {
-          bootbox.alert(__('Finances:views.transaction-category.list.alerts.save-success'));
+          bootbox.alert(__('views.finances.transaction-category.list.alerts.save-success'));
         }
       },
 

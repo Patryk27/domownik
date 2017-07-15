@@ -1,11 +1,11 @@
 @php
     /**
-     * @var \App\Modules\Finances\Models\Transaction $transaction
-     * @var \App\Modules\Finances\Models\Budget $budget
+     * @var \App\Models\Transaction $transaction
+     * @var \App\Models\Budget $budget
      */
 @endphp
 
-@extends('layouts.application.auth')
+@extends('layouts.app.auth')
 
 @push('scripts')
 <script>
@@ -24,7 +24,7 @@
             {!!
                 Form::hiddenInput()
                     ->setName('transactionParentType')
-                    ->setValue(\App\Modules\Finances\Models\Transaction::PARENT_TYPE_BUDGET)
+                    ->setValue(\App\Models\Transaction::PARENT_TYPE_BUDGET)
             !!}
 
             {!!
@@ -47,7 +47,7 @@
             <li role="presentation" class="active">
                 <a href="#tab-basic" aria-controls="tab-basic" role="tab" data-toggle="tab">
                     <i class="fa fa-cube"></i>&nbsp;
-                    {{ __('Finances::views/transaction/common/create-edit.tabs.basic.title') }}
+                    {{ __('views/finances/transaction/common/create-edit.tabs.basic.title') }}
                 </a>
             </li>
 
@@ -55,7 +55,7 @@
             <li role="presentation">
                 <a href="#tab-value" aria-controls="tab-value" role="tab" data-toggle="tab">
                     <i class="fa fa-money"></i>&nbsp;
-                    {{ __('Finances::views/transaction/common/create-edit.tabs.value.title') }}
+                    {{ __('views/finances/transaction/common/create-edit.tabs.value.title') }}
                 </a>
             </li>
 
@@ -63,22 +63,22 @@
             <li role="presentation">
                 <a href="#tab-periodicity" aria-controls="tab-periodicity" role="tab" data-toggle="tab">
                     <i class="fa fa-calendar"></i>&nbsp;
-                    {{ __('Finances::views/transaction/common/create-edit.tabs.periodicity.title') }}
+                    {{ __('views/finances/transaction/common/create-edit.tabs.periodicity.title') }}
                 </a>
             </li>
         </ul>
 
         <div class="tab-content">
             <div role="tabpanel" class="tab-pane active" id="tab-basic">
-                @include('Finances::transaction.common.create-edit.basic')
+                @include('views.finances.transaction.common.create-edit.basic')
             </div>
 
             <div role="tabpanel" class="tab-pane" id="tab-value">
-                @include('Finances::transaction.common.create-edit.value')
+                @include('views.finances.transaction.common.create-edit.value')
             </div>
 
             <div role="tabpanel" class="tab-pane" id="tab-periodicity">
-                @include('Finances::transaction.common.create-edit.periodicity')
+                @include('views.finances.transaction.common.create-edit.periodicity')
             </div>
         </div>
 
@@ -90,7 +90,7 @@
             @isset($transaction)
                 @include('common.form.delete-button', [
                     'route' => route('finances.transaction.delete', $transaction->id),
-                    'confirmationMessage' => __('Finances::views/transaction/common/create-edit.delete-confirmation-message'),
+                    'confirmationMessage' => __('views/finances/transaction/common/create-edit.delete-confirmation-message'),
                 ])
             @endisset
 

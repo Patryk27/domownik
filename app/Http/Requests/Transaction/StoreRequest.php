@@ -74,7 +74,7 @@ class StoreRequest
 	 * @return array
 	 */
 	public function messages() {
-		return __('Finances::requests/transaction/store.validation');
+		return __('requests/transaction/store.validation');
 	}
 
 }

@@ -1,6 +1,6 @@
 @php
     /**
-      * @var \App\Modules\Finances\ValueObjects\ScheduledTransaction[] $transactions
+      * @var \App\ValueObjects\ScheduledTransaction[] $transactions
       * @var string[] $transactionButtons
       */
 @endphp
@@ -15,11 +15,11 @@
     <thead>
     <tr>
         @if($showCounter)
-            <th>{{ __('common/table.head.row-counter') }}</th>
+            <th>{{ __('components/table.head.row-counter') }}</th>
         @endif
-        <th>{{ __('Finances::common/transaction-list.table.transaction-date') }}</th>
-        <th>{{ __('Finances::common/transaction-list.table.transaction-name') }}</th>
-        <th>{{ __('Finances::common/transaction-list.table.transaction-amount') }}</th>
+        <th>{{ __('components/transaction-list.transaction-date') }}</th>
+        <th>{{ __('components/transaction-list.transaction-name') }}</th>
+        <th>{{ __('components/transaction-list.transaction-amount') }}</th>
 
         @if(isset($transactionButtons))
             <th></th>
@@ -31,10 +31,10 @@
     @foreach ($transactions as $item)
         @php
             /**
-              * @var \App\Modules\Finances\Models\Transaction|\App\Modules\Finances\ValueObjects\ScheduledTransaction $transaction
+              * @var \App\Models\Transaction|\App\ValueObjects\ScheduledTransaction $transaction
               */
 
-            if ($item instanceof \App\Modules\Finances\ValueObjects\ScheduledTransaction) {
+            if ($item instanceof \App\ValueObjects\ScheduledTransaction) {
                 $transaction = $item->getTransaction();
                 $date = $item->getDate();
             } else {
@@ -51,7 +51,7 @@
             <td>{{ Date::format('%Y-%m-%e %a', $date) }}</td>
             <td>{{ $transaction->name }}</td>
             <td>
-                @include('Finances::common.transaction.value', [
+                @include('components.transaction.value', [
                     'transaction' => $transaction,
                 ])
             </td>

@@ -13,9 +13,9 @@
             <directory suffix="Test.php">./tests/unit/*</directory>
         </testsuite>
 
-        <testsuite name="Integration Tests">
+        <!-- <testsuite name="Integration Tests">
             <directory suffix="Test.php">./tests/Integration/*</directory>
-        </testsuite>
+        </testsuite> -->
     </testsuites>
 
     <filter>

@@ -1,11 +1,11 @@
-@extends('layouts.application.auth')
+@extends('layouts.app.auth')
 
 @section('title')
-    {{ __('Dashboard::views/user/create.page.title') }}
+    {{ __('views/dashboard/user/create.page.title') }}
 @endsection
 
 @section('content')
-    @include('Dashboard::user.common.create-edit', [
+    @include('views.dashboard.user.common.create-edit', [
         'user' => null,
     ])
 @endsection

@@ -1,13 +1,13 @@
 @php
     /**
-     * @var \App\Modules\Finances\Models\Budget $budget
-     * @var \App\Modules\Finances\Models\Transaction[] $recentTransactions
-     * @var \App\Modules\Finances\ValueObjects\ScheduledTransaction[] $incomingTransactions
+     * @var \App\Models\Budget $budget
+     * @var \App\Models\Transaction[] $recentTransactions
+     * @var \App\ValueObjects\ScheduledTransaction[] $incomingTransactions
      * @var array $recentTransactionsChart
      */
 @endphp
 
-@extends('layouts.application.auth')
+@extends('layouts.app.auth')
 
 @push('scripts')
 <script>
@@ -19,7 +19,7 @@
 @endpush
 
 @section('title')
-    {{ __('Finances::views/budget/show.page.title', [
+    {{ __('views/finances/budget/show.page.title', [
         'budgetName' => $budget->name,
     ]) }}
 @endsection
@@ -28,19 +28,19 @@
     <div class="row">
         <div class="col-md-12">
             <h4>
-                {{ __('Finances::views/budget/show.budget-management.header') }}
+                {{ __('views/finances/budget/show.budget-management.header') }}
             </h4>
 
             <a href="{{ route('finances.transaction.create-to-budget', $budget->id) }}"
                class="btn btn-sm btn-success">
                 <i class="fa fa-plus"></i>&nbsp;
-                {{ __('Finances::views/budget/show.budget-management.create-transaction') }}
+                {{ __('views/finances/budget/show.budget-management.create-transaction') }}
             </a>
 
             <a href="{{ route('finances.transaction.list-from-budget', $budget->id) }}"
                class="btn btn-sm btn-info">
                 <i class="fa fa-list"></i>&nbsp;
-                {{ __('Finances::views/budget/show.budget-management.list-transactions') }}
+                {{ __('views/finances/budget/show.budget-management.list-transactions') }}
             </a>
         </div>
     </div>
@@ -51,15 +51,15 @@
         {{-- Recently booked transactions --}}
         <div class="col-sm-12 col-md-6">
             <h4>
-                {{ __('Finances::views/budget/show.recently-booked-transactions.header') }}
+                {{ __('views/finances/budget/show.recently-booked-transactions.header') }}
 
                 <a class="btn btn-xs btn-default pull-right"
                    href="{{ route('finances.budget.show-recent-transactions', $budget->id) }}">
-                    {{ __('Finances::views/budget/show.recently-booked-transactions.show-more') }}
+                    {{ __('views/finances/budget/show.recently-booked-transactions.show-more') }}
                 </a>
             </h4>
 
-            @include('Finances::common.transaction-list.compact', [
+            @include('components.transaction-list.compact', [
                 'transactions' => $recentTransactions,
                 'transactionButtons' => ['edit', 'edit-parent'],
             ])
@@ -68,15 +68,15 @@
         {{-- Incoming transactions --}}
         <div class="col-sm-12 col-md-6">
             <h4>
-                {{ __('Finances::views/budget/show.incoming-transactions.header') }}
+                {{ __('views/finances/budget/show.incoming-transactions.header') }}
 
                 <a class="btn btn-xs btn-default pull-right"
                    href="{{ route('finances.budget.show-incoming-transactions', $budget->id) }}">
-                    {{ __('Finances::views/budget/show.incoming-transactions.show-more') }}
+                    {{ __('views/finances/budget/show.incoming-transactions.show-more') }}
                 </a>
             </h4>
 
-            @include('Finances::common.transaction-list.compact', [
+            @include('components.transaction-list.compact', [
                 'transactions' => $incomingTransactions,
                 'transactionButtons' => ['edit', 'edit-parent'],
             ])
@@ -89,9 +89,7 @@
     <div class="row">
         <div class="col-md-12">
             <h4>
-                {{ __('Finances::views/budget/show.history.header') }}
-
-                &nbsp;
+                {{ __('views/finances/budget/show.history.header') }}
 
                 <div style="display:inline-block">
                     {!!
@@ -99,16 +97,16 @@
                         ->setIdAndName('budget-history-group-mode')
                         ->setItems(function() {
                             $items = [
-                                \App\Modules\Finances\Services\Transaction\HistoryCollectorContract::GROUP_MODE_DAILY,
-                                \App\Modules\Finances\Services\Transaction\HistoryCollectorContract::GROUP_MODE_WEEKLY,
-                                \App\Modules\Finances\Services\Transaction\HistoryCollectorContract::GROUP_MODE_MONTHLY,
-                                \App\Modules\Finances\Services\Transaction\HistoryCollectorContract::GROUP_MODE_YEARLY,
+                                \App\Services\Transaction\HistoryCollectorContract::GROUP_MODE_DAILY,
+                                \App\Services\Transaction\HistoryCollectorContract::GROUP_MODE_WEEKLY,
+                                \App\Services\Transaction\HistoryCollectorContract::GROUP_MODE_MONTHLY,
+                                \App\Services\Transaction\HistoryCollectorContract::GROUP_MODE_YEARLY,
                             ];
 
                             $result = [];
 
                             foreach ($items as $item) {
-                                $result[$item] = __(sprintf('Finances::views/budget/show.history-group-mode.%s', $item));
+                                $result[$item] = __(sprintf('views/finances/budget/show.history-group-mode.%s', $item));
                             }
 
                             return $result;

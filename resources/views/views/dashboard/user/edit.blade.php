@@ -4,16 +4,16 @@
      */
 @endphp
 
-@extends('layouts.application.auth')
+@extends('layouts.app.auth')
 
 @section('title')
-    {{ __('Dashboard::views/user/edit.page.title', [
+    {{ __('views/dashboard/user/edit.page.title', [
         'userName' => $user->full_name
     ]) }}
 @endsection
 
 @section('content')
-    @include('Dashboard::user.common.create-edit', [
+    @include('views.dashboard.user.common.create-edit', [
         'user' => $user,
     ])
 @endsection

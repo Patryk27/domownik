@@ -28,7 +28,7 @@ class LoginRequest
 	 * @return array
 	 */
 	public function messages() {
-		return __('dashboard.requests/user/login.validation');
+		return __('requests/user/login.validation');
 	}
 
 }

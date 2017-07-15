@@ -1,7 +1,7 @@
 @php
     /**
-     * @var \App\Modules\Finances\Models\Transaction $transaction
-     * @var \App\Modules\Finances\Models\TransactionCategory[] $categories
+     * @var \App\Models\Transaction $transaction
+     * @var \App\Models\TransactionCategory[] $categories
      */
 @endphp
 
@@ -9,8 +9,8 @@
 {!!
     Form::textInput()
         ->setIdAndName('transactionName')
-        ->setLabel(__('Finances::views/transaction/common/create-edit.transaction-name.label'))
-        ->setPlaceholder( __('Finances::views/transaction/common/create-edit.transaction-name.placeholder'))
+        ->setLabel(__('views/finances/transaction/common/create-edit.transaction-name.label'))
+        ->setPlaceholder( __('views/finances/transaction/common/create-edit.transaction-name.placeholder'))
         ->setValueFromModel($transaction, 'name')
         ->setRequired(true)
         ->setAutofocus(true)
@@ -20,16 +20,16 @@
 {!!
     Form::select()
         ->setIdAndName('transactionCategoryId')
-        ->setLabel(__('Finances::views/transaction/common/create-edit.transaction-category.label'))
+        ->setLabel(__('views/finances/transaction/common/create-edit.transaction-category.label'))
         ->setValueFromModel($transaction, 'category_id')
         ->setItems(function() use ($categories) {
             $result = [
-                null => __('Finances::views/transaction/common/create-edit.transaction-category.empty-option'),
+                null => __('views/finances/transaction/common/create-edit.transaction-category.empty-option'),
             ];
 
             foreach ($categories as $category) {
                 /**
-                 * @var \App\Modules\Finances\Models\TransactionCategory $category
+                 * @var \App\Models\TransactionCategory $category
                  */
 
                  $categoryPresenter = $category->getPresenter();
@@ -45,8 +45,8 @@
 {!!
     Form::textarea()
         ->setIdAndName('transactionDescription')
-        ->setLabel(__('Finances::views/transaction/common/create-edit.transaction-description.label'))
-        ->setPlaceholder(__('Finances::views/transaction/common/create-edit.transaction-description.placeholder'))
+        ->setLabel(__('views/finances/transaction/common/create-edit.transaction-description.label'))
+        ->setPlaceholder(__('views/finances/transaction/common/create-edit.transaction-description.placeholder'))
         ->setValueFromModel($transaction, 'description')
 !!}
 
@@ -54,16 +54,16 @@
 {!!
     Form::select()
         ->setIdAndName('transactionType')
-        ->setLabel(__('Finances::views/transaction/common/create-edit.transaction-type.label'))
+        ->setLabel(__('views/finances/transaction/common/create-edit.transaction-type.label'))
         ->setValueFromModel($transaction, 'type')
         ->setRequired(true)
         ->setItems(function() {
             $items = [];
 
-            $transactionTypes = \App\Modules\Finances\Models\Transaction::getTypes();
+            $transactionTypes = \App\Models\Transaction::getTypes();
 
             foreach ($transactionTypes as $transactionType) {
-                $items[$transactionType] =  __('Finances::common/transaction.type.' . $transactionType);
+                $items[$transactionType] =  __('common/transaction.type.' . $transactionType);
             }
 
             return $items;

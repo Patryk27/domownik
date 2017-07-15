@@ -1,13 +1,13 @@
 <?php
 
-use App\Modules\Finances\Models\Transaction;
-use App\Modules\Finances\Models\TransactionPeriodicityMonthly;
-use App\Modules\Finances\Models\TransactionPeriodicityOneShot;
-use App\Modules\Finances\Models\TransactionPeriodicityWeekly;
-use App\Modules\Finances\Models\TransactionPeriodicityYearly;
-use App\Modules\Finances\Repositories\Contracts\TransactionPeriodicityRepositoryContract;
-use App\Modules\Finances\Repositories\Contracts\TransactionRepositoryContract;
-use App\Modules\Finances\Services\Transaction\PeriodicityParser;
+use App\Models\Transaction;
+use App\Models\TransactionPeriodicityMonthly;
+use App\Models\TransactionPeriodicityOneShot;
+use App\Models\TransactionPeriodicityWeekly;
+use App\Models\TransactionPeriodicityYearly;
+use App\Repositories\Contracts\TransactionPeriodicityRepositoryContract;
+use App\Repositories\Contracts\TransactionRepositoryContract;
+use App\Services\Transaction\PeriodicityParser;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Tests\Unit\TestCase;

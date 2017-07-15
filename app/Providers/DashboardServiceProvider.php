@@ -48,7 +48,7 @@ class DashboardServiceProvider
 				if (is_object($custom) && $custom instanceof User) {
 					return new Breadcrumb(
 						route('dashboard.user.edit', $custom->id),
-						__('Dashboard::breadcrumb.user.edit', [
+						__('breadcrumbs.user.edit', [
 							'userName' => $custom->full_name,
 						])
 					);

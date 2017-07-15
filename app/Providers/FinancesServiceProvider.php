@@ -100,7 +100,7 @@ class FinancesServiceProvider
 				if (is_object($custom) && $custom instanceof Budget) {
 					return new Breadcrumb(
 						route('finances.budget.show', $custom->id),
-						__('Finances::breadcrumb.budget.show', [
+						__('breadcrumbs.budget.show', [
 							'budgetName' => $custom->name,
 						])
 					);

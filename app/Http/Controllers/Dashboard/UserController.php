@@ -53,7 +53,7 @@ class UserController
 			return redirect(route('dashboard.index.index'));
 		}
 
-		return view('dashboard.user/login');
+		return view('views.dashboard.user.login');
 	}
 
 	/**
@@ -72,7 +72,7 @@ class UserController
 		if ($authSuccess) {
 			return redirect()->route('dashboard.index.index');
 		} else {
-			flash(__('dashboard.requests/user/login.messages.invalid-credentials'), 'danger');
+			flash(__('requests/user/login.messages.invalid-credentials'), 'danger');
 
 			return
 				redirect()
@@ -87,7 +87,7 @@ class UserController
 	public function actionLogout() {
 		if (Auth::check()) {
 			Auth::logout();
-			flash(__('dashboard.requests/user/logout.messages.success'), 'success');
+			flash(__('requests/user/logout.messages.success'), 'success');
 		}
 
 		return redirect()->intended(route('dashboard.user.login'));
@@ -99,9 +99,9 @@ class UserController
 	public function actionList() {
 		// @todo ACL (root-only section)
 
-		$this->breadcrumbManager->push(route('dashboard.user.list'), __('dashboard.breadcrumb.user.list'));
+		$this->breadcrumbManager->push(route('dashboard.user.list'), __('breadcrumbs.user.list'));
 
-		return view('dashboard.user/list', [
+		return view('views.dashboard.user.list', [
 			'users' => $this->userRepository->getAll(),
 		]);
 	}
@@ -111,10 +111,10 @@ class UserController
 	 */
 	public function actionCreate() {
 		$this->breadcrumbManager
-			->push(route('dashboard.user.list'), __('dashboard.breadcrumb.user.list'))
-			->push(route('dashboard.user.create'), __('dashboard.breadcrumb.user.create'));
+			->push(route('dashboard.user.list'), __('breadcrumbs.user.list'))
+			->push(route('dashboard.user.create'), __('breadcrumbs.user.create'));
 
-		return view('dashboard.user/create');
+		return view('views.dashboard.user.create');
 	}
 
 	/**
@@ -125,10 +125,10 @@ class UserController
 		// @todo ACL
 
 		$this->breadcrumbManager
-			->push(route('dashboard.user.list'), __('dashboard.breadcrumb.user.list'))
+			->push(route('dashboard.user.list'), __('breadcrumbs.user.list'))
 			->pushCustom($user);
 
-		return view('dashboard.user/edit', [
+		return view('views.dashboard.user.edit', [
 			'user' => $user,
 		]);
 	}
@@ -140,11 +140,11 @@ class UserController
 	public function actionStore(UserStoreRequest $request) {
 		switch ($this->userRequestManager->store($request)) {
 			case BaseRequestManagerContract::STORE_RESULT_CREATED:
-				flash(__('dashboard.requests/user/store.messages.create-success'), 'success');
+				flash(__('requests/user/store.messages.create-success'), 'success');
 				break;
 
 			case BaseRequestManagerContract::STORE_RESULT_UPDATED:
-				flash(__('dashboard.requests/user/store.messages.update-success'), 'success');
+				flash(__('requests/user/store.messages.update-success'), 'success');
 				break;
 		}
 
@@ -162,7 +162,7 @@ class UserController
 	public function actionDelete(User $user) {
 		$this->userRequestManager->delete($user->id);
 
-		flash(__('dashboard.requests/user/store.messages.delete-success'), 'success');
+		flash(__('requests/user/store.messages.delete-success'), 'success');
 
 		return response()->redirectTo(route('dashboard.user.list'));
 	}

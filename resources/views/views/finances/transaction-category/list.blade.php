@@ -1,4 +1,4 @@
-@extends('layouts.application.auth')
+@extends('layouts.app.auth')
 
 @push('scripts')
 <script>
@@ -7,7 +7,7 @@
 @endpush
 
 @section('title')
-    {{ __('Finances::views/transaction-category/list.page.title') }}
+    {{ __('views/finances/transaction-category/list.page.title') }}
 @endsection
 
 @section('content')
@@ -18,13 +18,13 @@
            href="#"
            class="btn btn-xs btn-primary">
             <i class="fa fa-plus"></i>&nbsp;
-            {{ __('Finances::views/transaction-category/list.create-new-root-category') }}
+            {{ __('views/finances/transaction-category/list.create-new-root-category') }}
         </a>
 
         <hr>
 
         <div id="transactionCategoryTree">
-            {{ __('Finances::views/transaction-category/list.waiting') }}
+            {{ __('views/finances/transaction-category/list.waiting') }}
         </div>
 
         <hr>

@@ -1,17 +1,17 @@
 @php
     /**
-     * @var \App\Modules\Finances\Models\Budget $budget
-     * @var \App\Modules\Finances\Models\Transaction[] $transactions
+     * @var \App\Models\Budget $budget
+     * @var \App\Models\Transaction[] $transactions
      * @var string $dateFrom
      * @var string $dateTo
      * @var int $count
      */
 @endphp
 
-@extends('layouts.application.auth')
+@extends('layouts.app.auth')
 
 @section('title')
-    {{ __('Finances::views/budget/show-recent-transactions.page.title', [
+    {{ __('views/finances/budget/show-recent-transactions.page.title', [
         'budgetName' => $budget->name,
     ]) }}
 @endsection
@@ -22,7 +22,7 @@
 
         <div class="form-inline">
             <label>
-                {{ __('Finances::views/budget/show-recent-transactions.date-from') }}
+                {{ __('views/finances/budget/show-recent-transactions.date-from') }}
             </label>
 
             <div class="horizontal-gutters">
@@ -37,7 +37,7 @@
 
         <div class="form-inline">
             <label>
-                {{ __('Finances::views/budget/show-recent-transactions.date-to') }}
+                {{ __('views/finances/budget/show-recent-transactions.date-to') }}
             </label>
 
             <div class="horizontal-gutters">
@@ -52,7 +52,7 @@
 
         <div class="form-inline">
             <label>
-                {{ __('Finances::views/budget/show-recent-transactions.count') }}
+                {{ __('views/finances/budget/show-recent-transactions.count') }}
             </label>
 
             <div class="horizontal-gutters">
@@ -80,7 +80,7 @@
         <div>
             <div class="horizontal-gutters">
                 <button type="submit" class="btn btn-success">
-                    {{ __('Finances::views/budget/show-incoming-transactions.submit') }}&nbsp;
+                    {{ __('views/finances/budget/show-incoming-transactions.submit') }}&nbsp;
                     <i class="fa fa-search"></i>
                 </button>
             </div>
@@ -89,7 +89,7 @@
 
     <hr>
 
-    @include('Finances::common.transaction-list.full', [
+    @include('components.transaction-list.full', [
         'transactions' => $transactions,
     ])
 @endsection

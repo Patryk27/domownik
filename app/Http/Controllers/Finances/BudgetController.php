@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Finances;
 
 use App\Http\Controllers\Controller as BaseController;
+use App\Http\Requests\Budget\StoreRequest as BudgetStoreRequest;
 use App\Models\Budget;
 use App\Models\Transaction;
 use App\Repositories\Contracts\BudgetRepositoryContract;
@@ -78,9 +79,9 @@ class BudgetController
 	 * @return \Illuminate\Http\Response
 	 */
 	public function actionCreate() {
-		$this->breadcrumbManager->push(route('finances.budget.create'), __('Finances::breadcrumb.budget.create'));
+		$this->breadcrumbManager->push(route('finances.budget.create'), __('breadcrumbs.budget.create'));
 
-		return view('Finances::budget/create', [
+		return view('views.finances.budget.create', [
 			'budgetTypes' => Budget::getTypes(),
 			'activeBudgets' => $this->budgetRepository->getActiveBudgets(),
 		]);
@@ -95,7 +96,7 @@ class BudgetController
 
 		$budget = $this->budgetRequestManager->getBudget();
 
-		flash(__('Finances::requests/budget/store.messages.success', [
+		flash(__('requests/budget/store.messages.success', [
 			'budgetName' => $budget->name,
 		]), 'success');
 
@@ -138,7 +139,7 @@ class BudgetController
 		$incomingTransactions = $this->transactionScheduleRepository->getByBudgetId($budget->id, $dateFrom, $dateTo);
 		$incomingTransactions = $incomingTransactions->take(5); // @todo make this value configurable somewhere for the user
 
-		return view('Finances::budget/show', [
+		return view('views.finances.budget.show', [
 			'budget' => $budget,
 			'recentTransactions' => $recentTransactions,
 			'recentTransactionsChart' => json_encode($recentTransactionsChart),
@@ -154,7 +155,7 @@ class BudgetController
 	public function actionShowRecentTransactions(Budget $budget, Request $request) {
 		$this->breadcrumbManager
 			->pushCustom($budget)
-			->push(route('finances.budget.show-recent-transactions', $budget->id), __('Finances::breadcrumb.budget.show-recent-transactions'));
+			->push(route('finances.budget.show-recent-transactions', $budget->id), __('breadcrumbs.budget.show-recent-transactions'));
 
 		// load request data
 		$dateFrom = $request->get('dateFrom');
@@ -177,7 +178,7 @@ class BudgetController
 		// check if date range is valid
 		if ($dateTo < $dateFrom) {
 			$transactions = new Collection();
-			flash()->warning(__('Finances::views/budget/show-recent-transactions.messages.date-to-is-before-from'));
+			flash()->warning(__('views/finances/budget/show-recent-transactions.messages.date-to-is-before-from'));
 		} else {
 			$this->transactionHistoryCollectorService
 				->reset()
@@ -197,7 +198,7 @@ class BudgetController
 			}
 		}
 
-		return view('Finances::budget/show-recent-transactions', [
+		return view('views.finances.budget.show-recent-transactions', [
 			'budget' => $budget,
 			'transactions' => $transactions,
 			'dateFrom' => isset($dateFrom) ? $dateFrom->format('Y-m-d') : '', // @todo format should not be hardcoded
@@ -214,7 +215,7 @@ class BudgetController
 	public function actionShowIncomingTransactions(Budget $budget, Request $request) {
 		$this->breadcrumbManager
 			->pushCustom($budget)
-			->push(route('finances.budget.show-incoming-transactions', $budget->id), __('Finances::breadcrumb.budget.show-incoming-transactions'));
+			->push(route('finances.budget.show-incoming-transactions', $budget->id), __('breadcrumbs.budget.show-incoming-transactions'));
 
 		// load request data
 		$dateFrom = $request->get('dateFrom');
@@ -239,12 +240,12 @@ class BudgetController
 		// check if date range is valid
 		if ($dateTo < $dateFrom) {
 			$transactions = new Collection();
-			flash()->warning(__('Finances::views/budget/show-incoming-transactions.messages.date-to-is-before-from'));
+			flash()->warning(__('views/finances/budget/show-incoming-transactions.messages.date-to-is-before-from'));
 		} else {
 			$transactions = $this->transactionScheduleRepository->getByBudgetId($budget->id, $dateFrom, $dateTo);
 		}
 
-		return view('Finances::budget/show-incoming-transactions', [
+		return view('views.finances.budget.show-incoming-transactions', [
 			'budget' => $budget,
 			'transactions' => $transactions,
 			'dateFrom' => $dateFrom->format('Y-m-d'), // @todo format should not be hardcoded

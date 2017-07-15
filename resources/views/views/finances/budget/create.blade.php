@@ -1,4 +1,4 @@
-@extends('layouts.application.auth')
+@extends('layouts.app.auth')
 
 @push('scripts')
 <script>
@@ -7,7 +7,7 @@
 @endpush
 
 @section('title')
-    {{ __('Finances::views/budget/create.page.title') }}
+    {{ __('views/finances/budget/create.page.title') }}
 @endsection
 
 @section('content')
@@ -21,8 +21,8 @@
         {!!
             Form::textInput()
                 ->setIdAndName('budgetName')
-                ->setLabel(__('Finances::views/budget/create.budget-name.label'))
-                ->setPlaceholder(__('Finances::views/budget/create.budget-name.placeholder'))
+                ->setLabel(__('views/finances/budget/create.budget-name.label'))
+                ->setPlaceholder(__('views/finances/budget/create.budget-name.placeholder'))
                 ->setAutoValue(true)
                 ->setRequired(true)
                 ->setAutofocus(true)
@@ -32,8 +32,8 @@
         {!!
             Form::textArea()
                 ->setIdAndName('budgetDescription')
-                ->setLabel(__('Finances::views/budget/create.budget-description.label'))
-                ->setPlaceholder(__('Finances::views/budget/create.budget-description.placeholder'))
+                ->setLabel(__('views/finances/budget/create.budget-description.label'))
+                ->setPlaceholder(__('views/finances/budget/create.budget-description.placeholder'))
                 ->setAutoValue(true)
                 ->setRequired(false)
          !!}
@@ -42,14 +42,14 @@
         {!!
             Form::select()
                 ->setIdAndName('budgetType')
-                ->setLabel(__('Finances::views/budget/create.budget-type.label'))
+                ->setLabel(__('views/finances/budget/create.budget-type.label'))
                 ->setAutoValue(true)
                 ->setRequired(true)
                 ->setItems(function() use ($budgetTypes) {
                     $items = [];
 
                     foreach ($budgetTypes as $budgetType) {
-                        $items[$budgetType] =  __('Finances::common/budget.type.' . $budgetType);
+                        $items[$budgetType] =  __('common/budget.type.' . $budgetType);
                     }
 
                     return $items;
@@ -61,7 +61,7 @@
             {!!
                 Form::select()
                     ->setIdAndName('consolidatedBudgets')
-                    ->setLabel(__('Finances::views/budget/create.consolidated-budgets.label'))
+                    ->setLabel(__('views/finances/budget/create.consolidated-budgets.label'))
                     ->setAutoValue(true)
                     ->setMultiple(true)
                     ->setItems(function() use ($activeBudgets) {

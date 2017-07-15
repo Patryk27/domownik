@@ -1,4 +1,4 @@
-@extends('layouts.application.guest')
+@extends('layouts.app.guest')
 
 @section('content')
     <div id="loginFormWrapper" class="well">
@@ -18,7 +18,7 @@
             {!!
                 Form::textInput()
                     ->setIdAndName('login')
-                    ->setPlaceholder(__('Dashboard::views/user/login.login.placeholder'))
+                    ->setPlaceholder(__('views/dashboard/user/login.login.placeholder'))
                     ->setLeftAddonIcon('fa fa-user')
                     ->setAutoValue(true)
                     ->setAutofocus(!$isLoginSet)
@@ -28,7 +28,7 @@
             {!!
                 Form::passwordInput()
                     ->setIdAndName('password')
-                    ->setPlaceholder(__('Dashboard::views/user/login.password.placeholder'))
+                    ->setPlaceholder(__('views/dashboard/user/login.password.placeholder'))
                     ->setLeftAddonIcon('fa fa-key')
                     ->setAutofocus($isLoginSet)
              !!}
@@ -37,13 +37,13 @@
             {!!
                 Form::checkbox()
                     ->setIdAndName('remember-me')
-                    ->setLabel(__('Dashboard::views/user/login.remember-me.label'))
+                    ->setLabel(__('views/dashboard/user/login.remember-me.label'))
                     ->setValue(1)
              !!}
 
             <div>
                 <button type="submit" class="btn btn-success">
-                    {{ __('Dashboard::views/user/login.submit') }}
+                    {{ __('views/dashboard/user/login.submit') }}
                 </button>
             </div>
         </form>

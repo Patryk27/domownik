@@ -43,14 +43,9 @@ module.exports = (function() {
      * @returns {String}
      */
     getMessage: function(key) {
-      var split = key.split(':');
-
-      var moduleName = split[0],
-          keyPath = split[1].split('.');
+      var keyPath = [locale].concat(key.split('.'));
 
       try {
-        keyPath = [moduleName, locale].concat(keyPath);
-
         var keys = messages;
 
         for (var i = 0; i < keyPath.length; ++i) {

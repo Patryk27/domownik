@@ -1,19 +1,19 @@
 @php
     /**
-     * @var \App\Modules\Finances\Models\Budget $budget
+     * @var \App\Models\Budget $budget
      */
 @endphp
 
-@extends('layouts.application.auth')
+@extends('layouts.app.auth')
 
 @section('title')
-    {{ __('Finances::views/transaction/create-to-budget.page.title', [
+    {{ __('views/finances/transaction/create-to-budget.page.title', [
         'budgetName' => $budget->name
     ]) }}
 @endsection
 
 @section('content')
-    @include('Finances::transaction.common.create-edit', [
+    @include('views.finances.transaction.common.create-edit', [
         'budget' => $budget,
         'transaction' => null,
     ])

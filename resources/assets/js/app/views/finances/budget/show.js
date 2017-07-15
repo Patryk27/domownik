@@ -63,7 +63,7 @@ module.exports = function() {
       },
 
       title: {
-        text: __('Finances:views.budget.show.chart.title'),
+        text: __('views.finances.budget.show.chart.title'),
       },
 
       xAxis: {
@@ -72,7 +72,7 @@ module.exports = function() {
 
       yAxis: {
         title: {
-          text: __('Finances:views.budget.show.chart.y-axis-title'),
+          text: __('views.finances.budget.show.chart.y-axis-title'),
         },
       },
 
@@ -113,36 +113,36 @@ module.exports = function() {
           {
             type: 'day',
             count: 3,
-            text: __(':highcharts.custom.range-selectors.3-days'),
+            text: __('highcharts.custom.range-selectors.3-days'),
           },
 
           {
             type: 'week',
             count: 1,
-            text: __(':highcharts.custom.range-selectors.1-week'),
+            text: __('highcharts.custom.range-selectors.1-week'),
           },
 
           {
             type: 'month',
             count: 1,
-            text: __(':highcharts.custom.range-selectors.1-month'),
+            text: __('highcharts.custom.range-selectors.1-month'),
           },
 
           {
             type: 'month',
             count: 6,
-            text: __(':highcharts.custom.range-selectors.6-months'),
+            text: __('highcharts.custom.range-selectors.6-months'),
           },
 
           {
             type: 'year',
             count: 1,
-            text: __(':highcharts.custom.range-selectors.1-year'),
+            text: __('highcharts.custom.range-selectors.1-year'),
           },
 
           {
             type: 'all',
-            text: __(':highcharts.custom.range-selectors.all'),
+            text: __('highcharts.custom.range-selectors.all'),
           },
         ],
 
@@ -152,7 +152,7 @@ module.exports = function() {
       series: [
         {
           type: 'area',
-          name: __('Finances:views.budget.show.chart.y-axis-title'),
+          name: __('views.finances.budget.show.chart.y-axis-title'),
           data: seriesData,
         },
       ],
