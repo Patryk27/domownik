@@ -3,7 +3,7 @@
           icon="fa fa-cube">
         <item name="users"
               icon="fa fa-user"
-              url="/dashboard/user/list"/>
+              url="/dashboard/users"/>
 
         <item name="permissions"
               icon="fa fa-chain"

@@ -82,7 +82,7 @@ class TransactionController
 
 	/**
 	 * @param Budget $budget
-	 * @return \Illuminate\Http\Response
+	 * @return mixed
 	 */
 	public function actionCreateToBudget(Budget $budget) {
 		$this->breadcrumbManager
@@ -99,7 +99,7 @@ class TransactionController
 
 	/**
 	 * @param Transaction $transaction
-	 * @return \Illuminate\Http\Response
+	 * @return mixed
 	 */
 	public function actionEdit(Transaction $transaction) {
 		$this->pushTransactionParentBreadcrumb($transaction);
@@ -118,7 +118,7 @@ class TransactionController
 
 	/**
 	 * @param StoreRequest $request
-	 * @return \Illuminate\Http\Response
+	 * @return mixed
 	 */
 	public function actionStore(StoreRequest $request) {
 		$storeResult = $this->transactionRequestManagerService->store($request);
@@ -148,7 +148,7 @@ class TransactionController
 
 	/**
 	 * @param Transaction $transaction
-	 * @return \Illuminate\Http\JsonResponse
+	 * @return mixed
 	 */
 	public function actionDelete(Transaction $transaction) {
 		$this->transactionRequestManagerService->delete($transaction->id);
@@ -159,7 +159,7 @@ class TransactionController
 
 	/**
 	 * @param Budget $budget
-	 * @return \Illuminate\Http\Response
+	 * @return mixed
 	 */
 	public function actionList(Budget $budget) {
 		// @todo

@@ -1,0 +1,19 @@
+.view-dashboard-auth-login {
+  #loginFormWrapper {
+    max-width: 350px;
+    margin: 0 auto;
+    padding: 25px 20px 15px 20px;
+    text-align: center;
+
+    #loginForm {
+      .dummy-avatar {
+        width: 125px;
+        margin-bottom: 20px;
+      }
+
+      .required-fields-wrapper {
+        text-align: right;
+      }
+    }
+  }
+}

@@ -42,9 +42,15 @@ return [
 		Illuminate\Validation\ValidationServiceProvider::class,
 		Illuminate\View\ViewServiceProvider::class,
 
+		// -------------- //
+
 		Laravel\Tinker\TinkerServiceProvider::class,
 		Laracasts\Flash\FlashServiceProvider::class,
 		Orchestra\Parser\XmlServiceProvider::class,
+		Collective\Html\HtmlServiceProvider::class,
+		Barryvdh\Debugbar\ServiceProvider::class,
+
+		// -------------- //
 
 		App\Providers\AppServiceProvider::class,
 		App\Providers\LogServiceProvider::class,
@@ -58,8 +64,6 @@ return [
 
 		App\Providers\DashboardServiceProvider::class,
 		App\Providers\FinancesServiceProvider::class,
-
-		Barryvdh\Debugbar\ServiceProvider::class,
 	],
 
 	'aliases' => [
@@ -83,9 +87,10 @@ return [
 		'Eloquent' => Illuminate\Database\Eloquent\Model::class,
 		'Event' => Illuminate\Support\Facades\Event::class,
 		'File' => Illuminate\Support\Facades\File::class,
-		'Form' => App\Support\Facades\Form::class,
+		'Form' => Collective\Html\FormFacade::class,
 		'Gate' => Illuminate\Support\Facades\Gate::class,
 		'Hash' => Illuminate\Support\Facades\Hash::class,
+		'Html' => Collective\Html\HtmlFacade::class,
 		'Lang' => Illuminate\Support\Facades\Lang::class,
 		'Log' => Illuminate\Support\Facades\Log::class,
 		'Mail' => Illuminate\Support\Facades\Mail::class,

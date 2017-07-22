@@ -1,11 +1,11 @@
-@import "skin/variables";
-@import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
-@import "skin/bootswatch";
+@import 'skin/variables';
+@import 'node_modules/bootstrap-sass/assets/stylesheets/bootstrap';
+@import 'skin/bootswatch';
 
-@import "modules/variables";
-@import "modules/app";
-@import "modules/_views";
+@import 'app/variables';
+@import 'app/app';
+@import 'app/_views';
 
-@import "utils/utils";
+@import 'utils/utils';
 
-@import "vendor/jstree";
+@import 'vendor/jstree';

@@ -69,6 +69,13 @@ class User
 	}
 
 	/**
+	 * @return array
+	 */
+	public static function getStatusesSelect(): array {
+		return map_translation(self::getStatuses(), 'models/user.status.%s');
+	}
+
+	/**
 	 * @inheritDoc
 	 */
 	public static function getCacheConfiguration(): array {

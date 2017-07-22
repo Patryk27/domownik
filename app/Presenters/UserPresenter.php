@@ -12,7 +12,7 @@ class UserPresenter
 	 * @return string
 	 */
 	public function getEditUrl(): string {
-		return route('dashboard.user.edit', $this->model->id);
+		return route('dashboard.users.edit', $this->model->id);
 	}
 
 }

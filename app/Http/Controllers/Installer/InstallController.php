@@ -12,7 +12,7 @@ class InstallController
 	use DispatchesJobs, ValidatesRequests;
 
 	/**
-	 * @return \Illuminate\Http\Response
+	 * @return mixed
 	 */
 	public function actionIndex() {
 		return view('Installer::install.index');

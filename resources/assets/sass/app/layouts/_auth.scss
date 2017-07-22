@@ -1,0 +1,25 @@
+.app-auth {
+  @import 'auth/breadcrumbs';
+  @import 'auth/form';
+  @import 'auth/navbar';
+  @import 'auth/sidebar';
+
+  #flash-message-container,
+  #session-message-container {
+    max-width: 450px;
+    margin: 0 auto;
+    
+    .alert {
+      margin: 25px auto;
+    }
+  }
+
+  #content {
+    margin-left: $app-sidebar-width;
+  }
+
+  // @todo separate rule below to another file
+  .panel .panel-body > table:last-child {
+    margin-bottom: 2px;
+  }
+}

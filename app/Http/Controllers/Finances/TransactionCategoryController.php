@@ -53,7 +53,7 @@ class TransactionCategoryController
 
 	/**
 	 * @param Request $request
-	 * @return \Illuminate\Http\Response
+	 * @return mixed
 	 */
 	public function actionList(Request $request) {
 		if ($request->ajax()) {
@@ -70,7 +70,7 @@ class TransactionCategoryController
 
 	/**
 	 * @param StoreRequest $request
-	 * @return \Illuminate\Http\Response
+	 * @return mixed
 	 */
 	public function actionStore(StoreRequest $request) {
 		try {

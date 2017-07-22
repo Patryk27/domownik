@@ -34,7 +34,6 @@ class Controller {
 	 */
 	public function getSectionName(): string {
 		$controllerNameParts = $this->getControllerNameParts();
-
 		return strtolower($controllerNameParts[3]);
 	}
 
@@ -57,20 +56,18 @@ class Controller {
 	 * @return string
 	 */
 	public function getActionName(): string {
-		$actionMethod = $this->currentRoute->getActionMethod();
-
-		if (!starts_with($actionMethod, 'action')) {
-			throw new \App\Exceptions\Exception('Route has unknown method name: %s.', $actionMethod);
-		}
-
-		return camel_case(substr($actionMethod, 6));
+		return camel_case($this->currentRoute->getActionMethod());
 	}
 
 	/**
 	 * @return string[]
 	 */
 	protected function getControllerNameParts(): array {
-		return explode('\\', get_class($this->currentRoute->getController()));
+		if (isset($this->currentRoute)) {
+			return explode('\\', get_class($this->currentRoute->getController()));
+		} else {
+			return ['', '', '', '', ''];
+		}
 	}
 
 }

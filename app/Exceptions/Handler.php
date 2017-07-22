@@ -56,7 +56,7 @@ class Handler
 
 		// @todo: show error 'you must be logged in to continue'
 
-		return redirect()->route('dashboard.user.login');
+		return redirect()->route('dashboard.auth.login');
 	}
 
 	/**

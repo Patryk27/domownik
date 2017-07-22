@@ -8,7 +8,7 @@ class SearchController
 	extends BaseController {
 
 	/**
-	 * @return \Illuminate\Http\Response
+	 * @return mixed
 	 */
 	public function actionIndex() {
 		return view('dashboard.index/index');

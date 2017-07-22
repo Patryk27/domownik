@@ -18,8 +18,8 @@ return [
 		'list' => 'Zarządzanie kategoriami transakcji',
 	],
 
-	'user' => [
-		'list' => 'Lista użytkowników',
+	'users' => [
+		'index' => 'Lista użytkowników',
 		'create' => 'Tworzenie nowego użytkownika',
 		'edit' => 'Edycja użytkownika: :userName',
 	],

@@ -24,7 +24,7 @@ class DashboardServiceProvider
 	 * @return $this
 	 */
 	protected function bindServices(): self {
-		$this->app->bind(\App\Services\User\RequestManagerContract::class, \App\Services\User\RequestManager::class);
+		$this->app->bind(\App\Services\User\RequestProcessorContract::class, \App\Services\User\RequestProcessor::class);
 
 		return $this;
 	}
@@ -47,8 +47,8 @@ class DashboardServiceProvider
 			public function getBreadcrumb($custom) {
 				if (is_object($custom) && $custom instanceof User) {
 					return new Breadcrumb(
-						route('dashboard.user.edit', $custom->id),
-						__('breadcrumbs.user.edit', [
+						route('dashboard.users.edit', $custom->id),
+						__('breadcrumbs.users.edit', [
 							'userName' => $custom->full_name,
 						])
 					);

@@ -76,7 +76,7 @@ class BudgetController
 	}
 
 	/**
-	 * @return \Illuminate\Http\Response
+	 * @return mixed
 	 */
 	public function actionCreate() {
 		$this->breadcrumbManager->push(route('finances.budget.create'), __('breadcrumbs.budget.create'));
@@ -89,7 +89,7 @@ class BudgetController
 
 	/**
 	 * @param BudgetStoreRequest $request
-	 * @return \Illuminate\Http\Response
+	 * @return mixed
 	 */
 	public function actionStore(BudgetStoreRequest $request) {
 		$this->budgetRequestManager->store($request);
@@ -107,7 +107,7 @@ class BudgetController
 
 	/**
 	 * @param Budget $budget
-	 * @return \Illuminate\Http\Response
+	 * @return mixed
 	 */
 	public function actionShow(Budget $budget) {
 		$this->breadcrumbManager->pushCustom($budget);
@@ -163,7 +163,7 @@ class BudgetController
 	/**
 	 * @param Budget $budget
 	 * @param Request $request
-	 * @return \Illuminate\Http\Response
+	 * @return mixed
 	 */
 	public function actionShowRecentTransactions(Budget $budget, Request $request) {
 		$this->breadcrumbManager
@@ -223,7 +223,7 @@ class BudgetController
 	/**
 	 * @param Budget $budget
 	 * @param Request $request
-	 * @return \Illuminate\Http\Response
+	 * @return mixed
 	 */
 	public function actionShowIncomingTransactions(Budget $budget, Request $request) {
 		$this->breadcrumbManager
