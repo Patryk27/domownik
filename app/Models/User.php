@@ -72,7 +72,7 @@ class User
 	 * @return array
 	 */
 	public static function getStatusesSelect(): array {
-		return map_translation(self::getStatuses(), 'models/user.status.%s');
+		return map_translation(self::getStatuses(), 'models/user.enums.statuses.%s');
 	}
 
 	/**

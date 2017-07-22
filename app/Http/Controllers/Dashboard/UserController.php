@@ -50,7 +50,6 @@ class UserController
 	 */
 	public function index() {
 		$this->breadcrumbManager->push(route('dashboard.users.index'), __('breadcrumbs.users.index'));
-
 		$users = $this->userRepository->getAll();
 
 		return view('views.dashboard.users.index', [
@@ -84,7 +83,7 @@ class UserController
 		$result = $this->userRequestProcessor->store($request);
 		$user = $result->getUser();
 
-		flash(__('requests/user/store.messages.stored'), 'success');
+		flash(__('requests/user/crud.messages.stored'), 'success');
 
 		return response()->json([
 			'redirectUrl' => route('dashboard.users.edit', $user->id),
@@ -127,7 +126,7 @@ class UserController
 		$result = $this->userRequestProcessor->update($request, $id);
 		$user = $result->getUser();
 
-		flash(__('requests/user/store.messages.updated'), 'success');
+		flash(__('requests/user/crud.messages.updated'), 'success');
 
 		return response()->json([
 			'redirectUrl' => route('dashboard.users.edit', $user->id),
@@ -141,9 +140,11 @@ class UserController
 	public function destroy(User $user) {
 		$this->userRequestProcessor->delete($user->id);
 
-		flash(__('requests/user/store.messages.delete-success'), 'success');
+		flash(__('requests/user/crud.messages.deleted'), 'success');
 
-		return response()->redirectTo(route('dashboard.users.index'));
+		return response()->json([
+			'redirectUrl' => route('dashboard.users.index'),
+		]);
 	}
 
 }

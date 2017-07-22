@@ -48,7 +48,7 @@ class AuthController
 	 * @return mixed
 	 */
 	public function postLogin(AuthLoginRequest $request) {
-		$rememberMe = (bool)$request->get('remember-me', false);
+		$rememberMe = (bool)$request->get('remember_me', false);
 
 		$authSuccess = $this->authGuard->attempt([
 			'login' => $request->get('login'),
@@ -59,7 +59,7 @@ class AuthController
 		if ($authSuccess) {
 			return redirect()->route('dashboard.index.index');
 		} else {
-			flash(__('requests/user/login.messages.invalid-credentials'), 'danger');
+			flash(__('requests/auth/login.messages.invalid-credentials'), 'danger');
 
 			return
 				redirect()
@@ -74,8 +74,7 @@ class AuthController
 	public function logout() {
 		if ($this->authGuard->check()) {
 			$this->authGuard->logout();
-
-			flash(__('requests/user/logout.messages.success'), 'success');
+			flash(__('requests/auth/logout.messages.success'), 'success');
 		}
 
 		return redirect()->intended(route('dashboard.auth.login'));

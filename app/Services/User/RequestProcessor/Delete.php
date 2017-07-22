@@ -10,7 +10,9 @@ class Delete
 	 * @return void
 	 */
 	public function process(int $id): void {
-		// @todo
+		$this->db->transaction(function() use ($id) {
+			$this->userRepository->delete($id);
+		});
 	}
 	
 }

@@ -18,35 +18,31 @@
      */
     function addError(controlName, errorMessage) {
       // look for the control's (input's, textarea's etc.) form-group
-      formGroup = getFormGroupByControlName(controlName);
+      formGroup = $('#' + controlName).parent('.form-group');
 
       if (formGroup.length === 0) {
-        console.log('Unable to find form-group block for element with controlName=\'{0}\'.'.format(controlName));
+        console.ERROR('Unable to find form-group block for element with controlName=\'{0}\'.'.format(controlName));
         return;
       }
 
       formGroup.addClass('has-error');
 
-      // find the help block
-      var helpBlock = formGroup.find('> .help-block');
+      // create a new help block or reuse the existing one
+      var helpBlock = formGroup.find('.help-block');
 
       if (helpBlock.length === 0) {
-        /**
-         * We do not create the help block dynamically because it may kill the page layout.
-         * If the programmer for some reason did not place the help block, we assume it's
-         * done deliberately and just skip.
-         */
-        console.log('Unable to find help block for element with controlName=\'{0}\'.'.format(controlName));
-        return;
+        helpBlock = $('<p>');
+        formGroup.append(helpBlock);
       }
 
-      // prepare the error message
+      helpBlock.empty();
+
       var ul = $('<ul>').addClass('list-unstyled');
       var li = $('<li>').html(errorMessage);
 
       ul.append(li);
 
-      helpBlock.addClass('with-errors');
+      helpBlock.addClass('help-block with-errors');
       helpBlock.append(ul);
     }
 

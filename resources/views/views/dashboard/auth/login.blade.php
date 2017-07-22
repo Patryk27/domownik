@@ -2,50 +2,51 @@
 
 @section('content')
     <div id="loginFormWrapper" class="well">
-        <form action="{{ route('dashboard.auth.login') }}"
-              id="loginForm"
-              method="post">
+        {!! Form::open([
+            'route' => 'dashboard.auth.login',
+            'method' => 'post',
+            'id' => 'loginForm',
+            'data-toggle' => 'validator',
+        ]) !!}
 
-            {{ csrf_field() }}
+        <img src="{{ asset('images/login-dummy-avatar.png') }}" class="dummy-avatar"/>
 
-            <div>
-                <img src="{{ asset('images/login-dummy-avatar.png') }}" class="dummy-avatar"/>
-            </div>
+        @php
+            $isLoginSet = !empty(old('login'))
+        @endphp
 
-            @php($isLoginSet = !empty(old('login')))
+        {{-- Login --}}
+        <div class="form-group">
+            {!! Form::text('login', null, [
+                'class' => 'form-control',
+                'placeholder' => __('views/dashboard/auth/login.login.placeholder'),
+                'autofocus' => !$isLoginSet,
+            ]) !!}
+        </div>
 
-            {{-- Login --}}
-            {!!
-                Form::textInput()
-                    ->setIdAndName('login')
-                    ->setPlaceholder(__('views/dashboard/user/login.login.placeholder'))
-                    ->setLeftAddonIcon('fa fa-user')
-                    ->setAutoValue(true)
-                    ->setAutofocus(!$isLoginSet)
-             !!}
+        {{-- Password --}}
+        <div class="form-group">
+            {!! Form::password('password', [
+                'class' => 'form-control',
+                'placeholder' => __('views/dashboard/auth/login.password.placeholder'),
+                'autofocus' => $isLoginSet,
+            ]) !!}
+        </div>
 
-            {{-- Password --}}
-            {!!
-                Form::passwordInput()
-                    ->setIdAndName('password')
-                    ->setPlaceholder(__('views/dashboard/user/login.password.placeholder'))
-                    ->setLeftAddonIcon('fa fa-key')
-                    ->setAutofocus($isLoginSet)
-             !!}
+        {{-- Remember me --}}
+        <div class="checkbox">
+            <label>
+                {!! Form::checkbox('remember_me') !!}
+                {{ __('views/dashboard/auth/login.remember-me.label') }}
+            </label>
+        </div>
 
-            {{-- Remember me --}}
-            {!!
-                Form::checkbox()
-                    ->setIdAndName('remember-me')
-                    ->setLabel(__('views/dashboard/user/login.remember-me.label'))
-                    ->setValue(1)
-             !!}
+        <div>
+            <button class="btn btn-success">
+                {{ __('views/dashboard/auth/login.submit') }}
+            </button>
+        </div>
 
-            <div>
-                <button type="submit" class="btn btn-success">
-                    {{ __('views/dashboard/user/login.submit') }}
-                </button>
-            </div>
-        </form>
+        {!! Form::close() !!}
     </div>
 @endsection

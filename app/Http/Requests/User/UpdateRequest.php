@@ -9,10 +9,17 @@ class UpdateRequest
 	 * @return array
 	 */
 	public function rules(): array {
-		return $this->patchRules(parent::rules(), [
-			'password' => 'nullable',
-			'password_confirm' => 'nullable',
-		]);
+		if ($this->has('password')) {
+			return $this->patchRules(parent::rules(), [
+				'password' => 'required',
+				'password_confirm' => 'required|same:password',
+			]);
+		} else {
+			return $this->patchRules(parent::rules(), [
+				'password' => 'nullable',
+				'password_confirm' => 'nullable',
+			]);
+		}
 	}
 
 }

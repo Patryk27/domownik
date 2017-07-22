@@ -4,15 +4,15 @@ return [
 	'validation' => [
 		'login.required' => 'Nazwa użytkownika jest wymagana.',
 		'login.min' => 'Nazwa użytkownika musi się składać z minimum :min znaków.',
-		'login.unique' => 'Konto o takim loginie już istnieje.',
+		'login.unique' => 'Konto o takiej nazwie użytkownika już istnieje.',
 
-		'full-name.required' => 'Imię i nazwisko są wymagane.',
-		'full-name.min' => 'Imię i nazwisko muszą w sumie składać się z minimum :min znaków.',
+		'full_name.required' => 'Imię i nazwisko są wymagane.',
+		'full_name.min' => 'Imię i nazwisko muszą w sumie składać się z minimum :min znaków.',
 
 		'password.required' => 'Hasło jest wymagane.',
 
-		'password-confirm.required' => 'Potwierdzenie hasła jest wymagane.',
-		'password-confirm.same' => 'Hasła muszą się zgadzać.',
+		'password_confirm.required' => 'Potwierdzenie hasła jest wymagane.',
+		'password_confirm.same' => 'Hasła muszą się zgadzać.',
 
 		'status.required' => 'Status użytkownika jest wymagany.',
 	],
@@ -23,7 +23,7 @@ return [
 		'deleted' => 'Użytkownik został usunięty.',
 	],
 
-	'prompts' => [
+	'confirms' => [
 		'delete' => 'Czy na pewno chcesz usunąć tego użytkownika?',
 	],
 ];

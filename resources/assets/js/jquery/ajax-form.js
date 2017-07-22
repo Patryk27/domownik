@@ -113,29 +113,28 @@
 
     /**
      * Parses given error response, adding error text to given fields.
-     * @param {Object} errorControls
+     * @param {Object} errors
      * @returns {}
      */
-    function parseErrorResponse(errorControls) {
+    function parseErrorResponse(errors) {
       $(form).form('clearErrors');
 
-      for (var controlName in errorControls) {
-        if (!errorControls.hasOwnProperty(controlName)) {
+      for (var controlName in errors) {
+        if (!errors.hasOwnProperty(controlName)) {
           continue;
         }
 
         $(form).form('addError', {
           controlName: controlName,
-          message: errorControls[controlName],
+          message: errors[controlName],
         });
       }
     };
 
     /**
-     * Called when form is submitted.
      * @returns {boolean}
      */
-    function onSubmit() {
+    function handleSubmit() {
       var formId = $(form).prop('id');
       var formData = options.prepareData($(form).serializeObject());
 
@@ -155,16 +154,15 @@
 
         options.success.call(context, msg);
       }).fail(function(xhr, textStatus, errorThrown) {
-        console.log('... failed.');
-        console.log('... -> textStatus = {0}'.format(textStatus));
-        console.log('... -> errorThrown = {0}'.format(errorThrown));
+        console.error('... failed.');
+        console.error('... -> xhr = ', xhr);
+        console.error('... -> textStatus = ', textStatus);
+        console.error('... -> errorThrown = ', errorThrown);
 
         // 422 Unprocessable Entity
         if (xhr.status === 422) {
           var response = JSON.parse(xhr.responseText);
-
-          console.log('... -> error response:');
-          console.log(response);
+          console.log('... -> error response = ', response);
 
           parseErrorResponse(response);
         }
@@ -178,25 +176,14 @@
       return false;
     };
 
-    /**
-     * Called when the delete button (if present) is clicked.
-     * @returns {boolean}
-     */
-    function onDeleteButtonClick() {
-      var href = $(this).attr('href');
-
-      bootbox.confirm($(this).data('confirmation-message'), function(confirmed) {
-        if (confirmed) {
-          window.location.href = href;
-        }
-      });
-
-      return false;
-    }
-
-    form.on('submit', onSubmit);
-    form.on('click', '.form-delete-button', onDeleteButtonClick);
+    form.on('submit', handleSubmit);
 
     return this;
   };
+
+  $(function() {
+    $('.form-ajax').each(function() {
+      $(this).ajaxForm();
+    });
+  });
 })(jQuery);

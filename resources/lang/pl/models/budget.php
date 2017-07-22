@@ -3,7 +3,7 @@
 use App\Models\Budget;
 
 return [
-	'type' => [
+	'types' => [
 		Budget::TYPE_REGULAR => 'Zwyczajny',
 		Budget::TYPE_CONSOLIDATED => 'Skonsolidowany',
 	],
