@@ -21,6 +21,8 @@ class AppServiceProvider
 
 		View::composer('*', \App\Http\ViewComposers\SectionComposer::class);
 
+		$this->registerServices();
+
 		if ($this->app->environment() !== 'production') {
 			$this->app->register(\Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class);
 		}
@@ -36,6 +38,16 @@ class AppServiceProvider
 		app()->setLocale('pl');
 
 		setlocale(LC_TIME, 'pl', 'pl-PL');
+	}
+
+	/**
+	 * @return $this
+	 */
+	protected function registerServices() {
+		$this->app->bind(\App\Services\Search\Transaction\OneShotSearchContract::class, \App\Services\Search\Transaction\OneShotSearch::class);
+		$this->app->bind(\App\Services\Search\Transaction\ScheduleSearchContract::class, \App\Services\Search\Transaction\ScheduleSearch::class);
+
+		return $this;
 	}
 
 }

@@ -3,13 +3,13 @@
 return [
 	'page.title' => 'Budżet :budgetName',
 
-	'budget-management' => [
+	'management' => [
 		'header' => 'Zarządzanie budżetem: :budgetName',
 		'create-transaction' => 'Dodaj transakcję',
 		'list-transactions' => 'Pokaż spis transakcji',
 	],
 
-	'recently-booked-transactions' => [
+	'recent-transactions' => [
 		'header' => 'Ostatnio zaksięgowane transakcje',
 		'show-more' => 'pokaż więcej',
 	],

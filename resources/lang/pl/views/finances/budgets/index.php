@@ -5,9 +5,4 @@ return [
 	'create-budget' => 'Stwórz nowy budżet',
 
 	'budget-list' => 'Lista budżetów',
-	'budgets-table' => [
-		'body' => [
-			'btn-show' => 'Pokaż',
-		],
-	],
 ];

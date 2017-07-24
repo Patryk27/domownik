@@ -60,11 +60,18 @@ class Budget
 	/**
 	 * @return string[]
 	 */
-	public static function getTypes() {
+	public static function getTypes(): array {
 		return [
 			self::TYPE_REGULAR,
 			self::TYPE_CONSOLIDATED,
 		];
+	}
+
+	/**
+	 * @return string[]
+	 */
+	public static function getTypesSelect(): array {
+		return map_translation(self::getTypes(), 'models/budget.enums.types.%s');
 	}
 
 	/**

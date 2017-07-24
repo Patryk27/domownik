@@ -2,7 +2,7 @@
 
 namespace App\Exceptions;
 
-class ModuleLoaderException
+class InvalidOperatorException
 	extends Exception {
 
 }

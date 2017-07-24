@@ -14,7 +14,7 @@ class BudgetPresenter
 	 * @return string
 	 */
 	public function getShowUrl(): string {
-		return route('finances.budget.show', $this->model->id);
+		return route('finances.budgets.show', $this->model->id);
 	}
 
 }

@@ -1,10 +1,16 @@
 <?php
 
 return [
-	'budget' => [
-		'show' => 'Budżet: :budgetName',
+	'users' => [
+		'index' => 'Lista użytkowników',
+		'create' => 'Tworzenie nowego użytkownika',
+		'edit' => 'Edycja użytkownika: :userName',
+	],
+
+	'budgets' => [
+		'index' => 'Lista budżetów',
 		'create' => 'Tworzenie nowego budżetu',
-		'list' => 'Lista budżetów',
+		'show' => 'Budżet: :budgetName',
 		'show-recent-transactions' => 'Spis ostatnio zaksięgowanych transakcji',
 		'show-incoming-transactions' => 'Spis zbliżających się transakcji',
 	],
@@ -16,11 +22,5 @@ return [
 
 	'transaction-category' => [
 		'list' => 'Zarządzanie kategoriami transakcji',
-	],
-
-	'users' => [
-		'index' => 'Lista użytkowników',
-		'create' => 'Tworzenie nowego użytkownika',
-		'edit' => 'Edycja użytkownika: :userName',
 	],
 ];

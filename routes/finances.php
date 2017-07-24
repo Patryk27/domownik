@@ -6,32 +6,29 @@ use App\Http\Controllers\Finances\TransactionController;
 
 // /finances
 Route::group(['prefix' => 'finances', 'middleware' => 'auth'], function() {
-	// /finances/budget
-	Route::group(['prefix' => 'budget'], function() {
-		// /finances/budget/create
-		Route::get('create', BudgetController::class . '@actionCreate')
-			 ->name('finances.budget.create');
+	// /finances/budgets
+	Route::group(['prefix' => 'budgets'], function() {
+		// /finances/budgets/{budget}/recent-transactions
+		Route::match(['GET', 'POST'], '{budget}/recent-transactions', BudgetController::class . '@recentTransactions')
+			 ->name('finances.budgets.recent-transactions');
 
-		// /finances/budget/store
-		Route::post('store', BudgetController::class . '@actionStore')
-			 ->name('finances.budget.store');
-
-		// /finances/budget/show
-		Route::get('show/{budget}', BudgetController::class . '@actionShow')
-			 ->name('finances.budget.show');
-
-		// /finances/budget/list
-		Route::get('list', BudgetController::class . '@actionList')
-			 ->name('finances.budget.list');
-
-		// /finances/budget/show-recent-transactions
-		Route::match(['GET', 'POST'], 'show-recent-transactions/{budget}', BudgetController::class . '@actionShowRecentTransactions')
-			 ->name('finances.budget.show-recent-transactions');
-
-		// /finances/budget/show-incoming-transactions
-		Route::match(['GET', 'POST'], 'show-incoming-transactions/{budget}', BudgetController::class . '@actionShowIncomingTransactions')
-			 ->name('finances.budget.show-incoming-transactions');
+		// /finances/budgets/{budget}/incoming-transactions
+		Route::match(['GET', 'POST'], '{budget}/incoming-transactions', BudgetController::class . '@incomingTransactions')
+			 ->name('finances.budgets.incoming-transactions');
 	});
+
+	// /dashboard/budgets
+	Route::resource('budgets', BudgetController::class, [
+		'names' => [
+			'index' => 'finances.budgets.index',
+			'create' => 'finances.budgets.create',
+			'store' => 'finances.budgets.store',
+			'show' => 'finances.budgets.show',
+			'edit' => 'finances.budgets.edit',
+			'update' => 'finances.budgets.update',
+			'destroy' => 'finances.budgets.destroy',
+		],
+	]);
 
 	// /finances/transaction
 	Route::group(['prefix' => 'transaction'], function() {

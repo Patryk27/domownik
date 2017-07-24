@@ -188,10 +188,7 @@ class TransactionController
 	protected function getTransactionParentUrl(Transaction $transaction): string {
 		switch ($transaction->parent_type) {
 			case Transaction::PARENT_TYPE_BUDGET:
-				return route('finances.budget.show', $transaction->parent_id);
-
-			case Transaction::PARENT_TYPE_SAVING:
-				return route('finances.saving.show', $transaction->parent_id);
+				return route('finances.budgets.show', $transaction->parent_id);
 		}
 
 		return '/';

@@ -70,7 +70,6 @@ class FinancesServiceProvider
 	 */
 	protected function bindServices(): self {
 		$this->app->bind(\App\Services\Budget\RequestManagerContract::class, \App\Services\Budget\RequestManager::class);
-		$this->app->bind(\App\Services\Transaction\HistoryCollectorContract::class, \App\Services\Transaction\HistoryCollector::class);
 		$this->app->bind(\App\Services\Transaction\PeriodicityParserContract::class, \App\Services\Transaction\PeriodicityParser::class);
 		$this->app->bind(\App\Services\Transaction\RequestManagerContract::class, \App\Services\Transaction\RequestManager::class);
 		$this->app->bind(\App\Services\Transaction\Category\RequestManagerContract::class, \App\Services\Transaction\Category\RequestManager::class);
@@ -98,8 +97,8 @@ class FinancesServiceProvider
 			public function getBreadcrumb($custom) {
 				if (is_object($custom) && $custom instanceof Budget) {
 					return new Breadcrumb(
-						route('finances.budget.show', $custom->id),
-						__('breadcrumbs.budget.show', [
+						route('finances.budgets.show', $custom->id),
+						__('breadcrumbs.budgets.show', [
 							'budgetName' => $custom->name,
 						])
 					);
