@@ -3,9 +3,9 @@
 /**
  * Creates translation for enumerated data (eg. data given to the HTML's 'select' node).
  * For example usage, see models.
- * @param array $items
+ * @param string[] $items
  * @param string $translationKey
- * @return array
+ * @return string[]
  */
 function map_translation(array $items, string $translationKey): array {
 	$result = [];

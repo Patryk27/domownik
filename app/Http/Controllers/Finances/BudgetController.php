@@ -3,8 +3,6 @@
 namespace App\Http\Controllers\Finances;
 
 use App\Http\Controllers\Controller as BaseController;
-use App\Http\Requests\Budget\Transaction\SearchBooked as SearchBookedTransactionRequest;
-use App\Http\Requests\Budget\Transaction\SearchScheduled as SearchScheduledTransactionRequest;
 use App\Models\Budget;
 use App\Models\Transaction;
 use App\Repositories\Contracts\BudgetRepositoryContract;
@@ -112,90 +110,6 @@ class BudgetController
 			'recentTransactions' => $recentTransactions,
 			'recentTransactionsChart' => $recentTransactionsChart,
 			'incomingTransactions' => $incomingTransactions,
-		]);
-	}
-
-	/**
-	 * @param Budget $budget
-	 * @param SearchBookedTransactionRequest $request
-	 * @return mixed
-	 */
-	public function bookedTransactions(Budget $budget, SearchBookedTransactionRequest $request) {
-		$this->breadcrumbManager
-			->pushCustom($budget)
-			->push(route('finances.budgets.booked-transactions', $budget->id), __('breadcrumbs.budgets.booked-transactions'));
-
-		$this->oneShotTransactionSearch->parent(Transaction::PARENT_TYPE_BUDGET, $budget->id);
-
-		// apply filters
-		if ($request->has('dateFrom')) {
-			$this->oneShotTransactionSearch->date('>=', new Carbon($request->get('dateFrom')));
-		}
-
-		if ($request->has('dateTo')) {
-			$this->oneShotTransactionSearch->date('<=', new Carbon($request->get('dateTo')));
-		} else {
-			$this->oneShotTransactionSearch->date('<=', new Carbon());
-		}
-
-		if ($request->has('name')) {
-			$this->oneShotTransactionSearch->name($request->get('name'));
-		}
-
-		// apply limit
-		$this->oneShotTransactionSearch
-			->getQueryBuilder()
-			->orderBy(OneShotTransactionSearchContract::ORDER_DATE, 'desc')
-			->limit($request->get('limit', 100));
-
-		// fetch data
-		$transactions = $this->oneShotTransactionSearch->get();
-
-		return view('views.finances.budgets.transactions', [
-			'budget' => $budget,
-			'transactions' => $transactions,
-		]);
-	}
-
-	/**
-	 * @param Budget $budget
-	 * @param SearchScheduledTransactionRequest $request
-	 * @return mixed
-	 */
-	public function scheduledTransactions(Budget $budget, SearchScheduledTransactionRequest $request) {
-		$this->breadcrumbManager
-			->pushCustom($budget)
-			->push(route('finances.budgets.scheduled-transactions', $budget->id), __('breadcrumbs.budgets.scheduled-transactions'));
-
-		$this->transactionScheduleSearch->parent(Transaction::PARENT_TYPE_BUDGET, $budget->id);
-
-		// apply filters
-		if ($request->has('dateFrom')) {
-			$this->transactionScheduleSearch->date('>=', new Carbon($request->get('dateFrom')));
-		} else {
-			$this->transactionScheduleSearch->date('>=', new Carbon());
-		}
-
-		if ($request->has('dateTo')) {
-			$this->transactionScheduleSearch->date('<=', new Carbon($request->get('dateTo')));
-		}
-
-		if ($request->has('name')) {
-			$this->transactionScheduleSearch->name($request->get('name'));
-		}
-
-		// apply limit
-		$this->transactionScheduleSearch
-			->getQueryBuilder()
-			->orderBy(TransactionScheduleSearchContract::ORDER_DATE, 'asc')
-			->orderBy(TransactionScheduleSearchContract::TRANSACTION_ID, 'asc')
-			->limit($request->get('limit', 100));
-
-		$transactions = $this->transactionScheduleSearch->get();
-
-		return view('views.finances.budgets.transactions', [
-			'budget' => $budget,
-			'transactions' => $transactions,
 		]);
 	}
 

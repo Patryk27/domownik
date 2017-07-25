@@ -14,14 +14,14 @@ class TransactionPresenter
 	 * @return string
 	 */
 	public function getEditUrl(): string {
-		return route('finances.transaction.edit', $this->model->id);
+		return route('finances.transactions.edit', $this->model->id);
 	}
 
 	/**
 	 * @return string
 	 */
 	public function getParentEditUrl(): string {
-		return route('finances.transaction.edit', $this->model->parent_transaction_id);
+		return route('finances.transactions.edit', $this->model->parent_transaction_id);
 	}
 
 }

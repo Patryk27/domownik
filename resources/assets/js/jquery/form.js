@@ -18,10 +18,10 @@
      */
     function addError(controlName, errorMessage) {
       // look for the control's (input's, textarea's etc.) form-group
-      formGroup = $('#' + controlName).parent('.form-group');
+      formGroup = $('#' + controlName).closest('.form-group');
 
       if (formGroup.length === 0) {
-        console.ERROR('Unable to find form-group block for element with controlName=\'{0}\'.'.format(controlName));
+        console.error('Unable to find form-group block for element with controlName=\'{0}\'.'.format(controlName));
         return;
       }
 

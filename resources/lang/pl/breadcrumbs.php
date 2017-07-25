@@ -11,11 +11,14 @@ return [
 		'index' => 'Lista budżetów',
 		'create' => 'Tworzenie nowego budżetu',
 		'show' => 'Budżet: :budgetName',
-		'booked-transactions' => 'Spis zaksięgowanych transakcji',
-		'scheduled-transactions' => 'Spis zbliżających się transakcji',
+
+		'transactions' => [
+			'booked' => 'Spis zaksięgowanych transakcji',
+			'scheduled' => 'Spis zbliżających się transakcji',
+		],
 	],
 
-	'transaction' => [
+	'transactions' => [
 		'create' => 'Tworzenie nowej transakcji',
 		'edit' => 'Edycja transakcji: :transactionName',
 	],

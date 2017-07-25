@@ -1,6 +1,11 @@
 module.exports = (function() {
 
   /**
+   * @type {jQuery}
+   */
+  var form = null;
+
+  /**
    * Pointer to the calendar.
    * @type {jQuery}
    */
@@ -19,8 +24,8 @@ module.exports = (function() {
    * Returns type of currently selected periodicity.
    * @returns {string}
    */
-  function getSelectedPeriodicityType() {
-    return $('#transactionPeriodicityType').val();
+  function getPeriodicityType() {
+    return $('#periodicity_type').val();
   }
 
   /**
@@ -35,14 +40,16 @@ module.exports = (function() {
    * Initializes the view.
    */
   function initialize() {
-    $('#transactionValueType').change(function() {
+    form = $('#transaction_form');
+
+    $('#value_type').change(function() {
       var activeTransactionValueType = $(this).val();
 
       $('.transaction-value-wrapper').hide().fieldsRequired(false);
       $('.transaction-value-wrapper[data-transaction-value-type="' + activeTransactionValueType + '"]').show().fieldsRequired(true);
     }).trigger('change');
 
-    $('#transactionPeriodicityType').change(function() {
+    $('#periodicity_type').change(function() {
       var selectedPeriodicity = $(this).val();
 
       $('.transaction-periodicity').hide();
@@ -58,7 +65,7 @@ module.exports = (function() {
             language: App.Configuration.getLocale(),
 
             clickDay: function(e) {
-              var periodicityCalendarDates = calendarDates[getSelectedPeriodicityType()];
+              var periodicityCalendarDates = calendarDates[getPeriodicityType()];
 
               var date = moment(e.date).format('YYYY-MM-DD');
               var dateIdx = periodicityCalendarDates.indexOf(date);
@@ -74,7 +81,7 @@ module.exports = (function() {
 
             customDayRenderer: function(element, date) {
               var dateString = moment(date).format('YYYY-MM-DD');
-              var periodicityCalendarDates = calendarDates[getSelectedPeriodicityType()];
+              var periodicityCalendarDates = calendarDates[getPeriodicityType()];
 
               if (periodicityCalendarDates.indexOf(dateString) >= 0) {
                 $(element).addClass('selected-day');
@@ -121,9 +128,9 @@ module.exports = (function() {
       }
     }).trigger('change');
 
-    $('#transactionForm').ajaxForm({
+    form.ajaxForm({
       prepareData: function(data) {
-        data.calendarDates = calendarDates[getSelectedPeriodicityType()];
+        data.calendar_dates = calendarDates[getPeriodicityType()];
         return data;
       },
     });
@@ -145,7 +152,7 @@ module.exports = (function() {
          * @returns {exports}
          */
         prepare: function(dates) {
-          var periodicityType = getSelectedPeriodicityType();
+          var periodicityType = getPeriodicityType();
           calendarDates[periodicityType] = dates;
 
           refreshCalendar();
@@ -196,7 +203,7 @@ module.exports = (function() {
          * @returns {exports}
          */
         prepare: function(dates) {
-          var periodicityType = getSelectedPeriodicityType();
+          var periodicityType = getPeriodicityType();
 
           var year = new String(new Date().getFullYear());
 

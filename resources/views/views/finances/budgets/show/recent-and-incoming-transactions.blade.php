@@ -8,7 +8,7 @@
                     {{ __('views/finances/budgets/show.recent-transactions.header') }}
 
                     <a class="btn btn-xs btn-default pull-right"
-                       href="{{ route('finances.budgets.booked-transactions', $budget->id) }}">
+                       href="{{ route('finances.budgets.transactions.booked', $budget->id) }}">
                         {{ __('views/finances/budgets/show.recent-transactions.show-more') }}
                     </a>
                 </div>
@@ -32,7 +32,7 @@
                     {{ __('views/finances/budgets/show.incoming-transactions.header') }}
 
                     <a class="btn btn-xs btn-default pull-right"
-                       href="{{ route('finances.budgets.scheduled-transactions', $budget->id) }}">
+                       href="{{ route('finances.budgets.transactions.scheduled', $budget->id) }}">
                         {{ __('views/finances/budgets/show.incoming-transactions.show-more') }}
                     </a>
                 </div>

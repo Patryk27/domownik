@@ -9,7 +9,7 @@
     </div>
 
     <div class="panel-body">
-        <a href="{{ route('finances.transaction.create-to-budget', $budget->id) }}"
+        <a href="{{ route('finances.budgets.transactions.create', $budget->id) }}"
            class="btn btn-success">
             <i class="fa fa-plus"></i>&nbsp;
             {{ __('views/finances/budgets/show.management.create-transaction') }}
@@ -17,7 +17,7 @@
 
         &nbsp;
 
-        <a href="{{ route('finances.transaction.list-from-budget', $budget->id) }}"
+        <a href="{{ route('finances.budgets.transactions.index', $budget->id) }}"
            class="btn btn-info">
             <i class="fa fa-list"></i>&nbsp;
             {{ __('views/finances/budgets/show.management.list-transactions') }}

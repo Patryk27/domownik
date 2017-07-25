@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\Finances\Budget\TransactionController as BudgetTransactionController;
 use App\Http\Controllers\Finances\BudgetController;
+use App\Http\Controllers\Finances\Transaction\BudgetController as TransactionBudgetController;
 use App\Http\Controllers\Finances\TransactionCategoryController;
 use App\Http\Controllers\Finances\TransactionController;
 
@@ -8,16 +10,32 @@ use App\Http\Controllers\Finances\TransactionController;
 Route::group(['prefix' => 'finances', 'middleware' => 'auth'], function() {
 	// /finances/budgets
 	Route::group(['prefix' => 'budgets'], function() {
-		// /finances/budgets/{budget}/transactions/booked
-		Route::match(['get', 'post'], '{budget}/transactions/booked', BudgetController::class . '@bookedTransactions')
-			 ->name('finances.budgets.booked-transactions');
+		// /finances/budgets/{budget}/transactions
+		Route::group(['prefix' => '{budget}/transactions'], function() {
+			// /finances/budgets/{budget}/transactions/booked
+			Route::match(['get', 'post'], 'booked', BudgetTransactionController::class . '@booked')
+				 ->name('finances.budgets.transactions.booked');
 
-		// /finances/budgets/{budget}/transactions/scheduled
-		Route::match(['get', 'post'], '{budget}/transactions/scheduled', BudgetController::class . '@scheduledTransactions')
-			 ->name('finances.budgets.scheduled-transactions');
+			// /finances/budgets/{budget}/transactions/scheduled
+			Route::match(['get', 'post'], 'scheduled', BudgetTransactionController::class . '@scheduled')
+				 ->name('finances.budgets.transactions.scheduled');
+
+			// /finances/budgets/{budget}/transactions
+			Route::resource('/', TransactionBudgetController::class, [
+				'only' => [
+					'create',
+					'edit',
+				],
+
+				'names' => [
+					'create' => 'finances.budgets.transactions.create',
+					'edit' => 'finances.budgets.transactions.edit',
+				],
+			]);
+		});
 	});
 
-	// /dashboard/budgets
+	// /finances/budgets
 	Route::resource('budgets', BudgetController::class, [
 		'names' => [
 			'index' => 'finances.budgets.index',
@@ -30,34 +48,26 @@ Route::group(['prefix' => 'finances', 'middleware' => 'auth'], function() {
 		],
 	]);
 
-	// /finances/transaction
-	Route::group(['prefix' => 'transaction'], function() {
-		// /finances/transaction/create/to-budget
-		Route::get('create/to-budget/{budget}', TransactionController::class . '@actionCreateToBudget')
-			 ->name('finances.transaction.create-to-budget');
+	// /finances/transactions
+	Route::resource('transactions', TransactionController::class, [
+		'only' => [
+			'store',
+			'show',
+			'edit',
+			'update',
+			'destroy',
+		],
 
-		// /finances/transaction/store
-		Route::post('store', TransactionController::class . '@actionStore')
-			 ->name('finances.transaction.store');
+		'names' => [
+			'store' => 'finances.transactions.store',
+			'show' => 'finances.transactions.show',
+			'edit' => 'finances.transactions.edit',
+			'update' => 'finances.transactions.update',
+			'destroy' => 'finances.transactions.destroy',
+		],
+	]);
 
-		// /finances/transaction/delete
-		Route::get('delete/{transaction}', TransactionController::class . '@actionDelete')
-			 ->name('finances.transaction.delete');
-
-		// /finances/transaction/list/from-budget
-		Route::get('list/from-budget/{budget}', TransactionController::class . '@actionListFromBudget')
-			 ->name('finances.transaction.list-from-budget');
-
-		// /finances/transaction/edit
-		Route::get('edit/{transaction}', TransactionController::class . '@actionEdit')
-			 ->name('finances.transaction.edit');
-
-		// /finances/transaction/view
-		Route::get('view/{transaction}', TransactionController::class . '@actionView')
-			 ->name('finances.transaction.view');
-	});
-
-	// /finances/transaction-category
+	// /finances/transaction-category | @todo change to Route::resource
 	Route::group(['prefix' => 'transaction-category'], function() {
 		// /finances/transaction-category/list
 		Route::get('list', TransactionCategoryController::class . '@actionList')
