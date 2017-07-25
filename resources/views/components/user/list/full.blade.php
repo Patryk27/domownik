@@ -12,6 +12,6 @@
     ]), $userCount) !!}
 </p>
 
-@include('components.user-list.compact', [
+@include('components.user.list.compact', [
     'users' => $users,
 ])

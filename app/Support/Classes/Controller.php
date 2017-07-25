@@ -39,6 +39,7 @@ class Controller {
 
 	/**
 	 * @return string
+	 * @throws \App\Exceptions\Exception
 	 */
 	public function getControllerName(): string {
 		$controllerNameParts = $this->getControllerNameParts();

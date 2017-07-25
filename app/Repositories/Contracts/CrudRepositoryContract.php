@@ -57,6 +57,7 @@ interface CrudRepositoryContract {
 	/**
 	 * Force-updates model in the database.
 	 * @param Model $model
+	 * @param int $id
 	 * @return CrudRepositoryContract
 	 */
 	public function persistUpdate(Model $model, int $id): CrudRepositoryContract;

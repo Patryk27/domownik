@@ -57,7 +57,9 @@ class Parser
 	}
 
 	/**
-	 * @return $this
+	 * @param XmlDocument $xml
+	 * @return Parser
+	 * @throws Exception
 	 */
 	protected function parseDocument(XmlDocument $xml): Parser {
 		/**
@@ -87,6 +89,7 @@ class Parser
 	 * @param SidebarItem $parentItem
 	 * @param SimpleXMLElement $xmlNode
 	 * @return SidebarItem
+	 * @throws Exception
 	 */
 	protected function processNode(SidebarItem $parentItem, SimpleXMLElement $xmlNode): SidebarItem {
 		switch ($xmlNode->getName()) {

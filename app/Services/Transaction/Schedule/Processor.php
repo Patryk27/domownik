@@ -92,7 +92,8 @@ class Processor
 	/**
 	 * Processes a single scheduled transaction.
 	 * @param ScheduledTransaction $scheduledTransaction
-	 * @return $this|Processor
+	 * @return Processor
+	 * @throws \Throwable
 	 */
 	protected function processScheduledTransaction(ScheduledTransaction $scheduledTransaction): self {
 		$stId = $scheduledTransaction->getId();

@@ -54,6 +54,7 @@ class CategoryUpdater {
 	 * Saves given category to the database, if required, and returns its id.
 	 * @param string $categoryId
 	 * @return int
+	 * @throws Exception
 	 */
 	protected function saveCategory(string $categoryId): int {
 		if (!isset($this->categoryList[$categoryId])) {

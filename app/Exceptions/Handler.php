@@ -46,8 +46,8 @@ class Handler
 
 	/**
 	 * @param \Illuminate\Http\Request $request
-	 * @param \Illuminate\Auth\AuthenticationException $exception
 	 * @return \Illuminate\Http\Response
+	 * @internal param \Illuminate\Auth\AuthenticationException $exception
 	 */
 	protected function unauthenticated($request) {
 		if ($request->expectsJson()) {

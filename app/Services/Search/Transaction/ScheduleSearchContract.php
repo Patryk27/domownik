@@ -3,6 +3,7 @@
 namespace App\Services\Search\Transaction;
 
 use App\Services\Search\SearchContract;
+use Carbon\Carbon;
 
 interface ScheduleSearchContract
 	extends SearchContract {
@@ -16,13 +17,19 @@ interface ScheduleSearchContract
 	 * @param int $parentId
 	 * @return $this
 	 */
-	public function parentTypeAndId(string $parentType, int $parentId);
+	public function parent(string $parentType, int $parentId);
 
 	/**
 	 * @param string $operator
-	 * @param $date
+	 * @param Carbon|string $date
 	 * @return $this
 	 */
 	public function date(string $operator, $date);
+
+	/**
+	 * @param string $name
+	 * @return $this
+	 */
+	public function name(string $name);
 
 }

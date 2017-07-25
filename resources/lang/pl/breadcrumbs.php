@@ -11,8 +11,8 @@ return [
 		'index' => 'Lista budżetów',
 		'create' => 'Tworzenie nowego budżetu',
 		'show' => 'Budżet: :budgetName',
-		'show-recent-transactions' => 'Spis ostatnio zaksięgowanych transakcji',
-		'show-incoming-transactions' => 'Spis zbliżających się transakcji',
+		'booked-transactions' => 'Spis zaksięgowanych transakcji',
+		'scheduled-transactions' => 'Spis zbliżających się transakcji',
 	],
 
 	'transaction' => [

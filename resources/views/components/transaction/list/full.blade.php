@@ -8,12 +8,12 @@
 <p>
     @php($transactionCount = count($transactions))
 
-    {!! Lang::choice(__('common/transaction.misc.found-count', [
+    {!! Lang::choice(__('models/transaction.misc.found-count', [
         'count' => $transactionCount,
     ]), $transactionCount) !!}
 </p>
 
-@include('components.transaction-list.compact', [
+@include('components.transaction.list.compact', [
     'transactions' => $transactions,
     'transactionButtons' => ['edit', 'edit-parent'],
     'showCounter' => true,

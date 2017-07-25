@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Services\Search\Filters\Transaction\OneShot;
+namespace App\Services\Search\Transaction\Filters\OneShot;
 
-use App\Services\Search\Filters\Common\Date as DateFilter;
+use App\Services\Search\Filters\DateFilter as BaseDateFilter;
 
-class Date
-	extends DateFilter {
+class DateFilter
+	extends BaseDateFilter {
 
 	/**
 	 * @param string $operator

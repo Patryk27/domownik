@@ -8,14 +8,14 @@
                     {{ __('views/finances/budgets/show.recent-transactions.header') }}
 
                     <a class="btn btn-xs btn-default pull-right"
-                       href="{{ route('finances.budgets.recent-transactions', $budget->id) }}">
+                       href="{{ route('finances.budgets.booked-transactions', $budget->id) }}">
                         {{ __('views/finances/budgets/show.recent-transactions.show-more') }}
                     </a>
                 </div>
             </div>
 
             <div class="panel-body">
-                @include('components.transaction-list.compact', [
+                @include('components.transaction.list.compact', [
                     'transactions' => $recentTransactions,
                     'transactionButtons' => ['edit', 'edit-parent'],
                 ])
@@ -32,14 +32,14 @@
                     {{ __('views/finances/budgets/show.incoming-transactions.header') }}
 
                     <a class="btn btn-xs btn-default pull-right"
-                       href="{{ route('finances.budgets.incoming-transactions', $budget->id) }}">
+                       href="{{ route('finances.budgets.scheduled-transactions', $budget->id) }}">
                         {{ __('views/finances/budgets/show.incoming-transactions.show-more') }}
                     </a>
                 </div>
             </div>
 
             <div class="panel-body">
-                @include('components.transaction-list.compact', [
+                @include('components.transaction.list.compact', [
                     'transactions' => $incomingTransactions,
                     'transactionButtons' => ['edit', 'edit-parent'],
                 ])

@@ -12,4 +12,14 @@ abstract class Controller
 
 	use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
+	/**
+	 * @param string $messageType
+	 * @param string $message
+	 * @return $this
+	 */
+	protected function flash(string $messageType, string $message) {
+		flash($message, $messageType);
+		return $this;
+	}
+
 }

@@ -26,6 +26,7 @@ class Manager
 
 	/**
 	 * @param SectionManagerContract $sectionManager
+	 * @param ParserContract $sidebarParser
 	 */
 	public function __construct(
 		SectionManagerContract $sectionManager,
@@ -65,6 +66,7 @@ class Manager
 	 * @param string $sectionName
 	 * @param string $fileName
 	 * @return Manager
+	 * @throws InternalException
 	 */
 	protected function loadSidebar(string $sectionName, string $fileName): Manager {
 		$sidebar = $this->sidebarParser->parseXml($fileName);

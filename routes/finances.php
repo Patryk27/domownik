@@ -8,13 +8,13 @@ use App\Http\Controllers\Finances\TransactionController;
 Route::group(['prefix' => 'finances', 'middleware' => 'auth'], function() {
 	// /finances/budgets
 	Route::group(['prefix' => 'budgets'], function() {
-		// /finances/budgets/{budget}/recent-transactions
-		Route::match(['GET', 'POST'], '{budget}/recent-transactions', BudgetController::class . '@recentTransactions')
-			 ->name('finances.budgets.recent-transactions');
+		// /finances/budgets/{budget}/transactions/booked
+		Route::match(['get', 'post'], '{budget}/transactions/booked', BudgetController::class . '@bookedTransactions')
+			 ->name('finances.budgets.booked-transactions');
 
-		// /finances/budgets/{budget}/incoming-transactions
-		Route::match(['GET', 'POST'], '{budget}/incoming-transactions', BudgetController::class . '@incomingTransactions')
-			 ->name('finances.budgets.incoming-transactions');
+		// /finances/budgets/{budget}/transactions/scheduled
+		Route::match(['get', 'post'], '{budget}/transactions/scheduled', BudgetController::class . '@scheduledTransactions')
+			 ->name('finances.budgets.scheduled-transactions');
 	});
 
 	// /dashboard/budgets

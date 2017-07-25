@@ -180,6 +180,7 @@ class Entity {
 	/**
 	 * @param Entity $child
 	 * @return Entity
+	 * @throws FileExistsException
 	 */
 	public function addChild(self $child): self {
 		$childName = $child->getName();

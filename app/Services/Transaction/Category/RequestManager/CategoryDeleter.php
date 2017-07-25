@@ -48,6 +48,7 @@ class CategoryDeleter {
 	/**
 	 * @param int $categoryId
 	 * @return CategoryDeleter
+	 * @throws Exception
 	 */
 	protected function deleteCategoryById(int $categoryId): self {
 		if (!isset($this->categories[$categoryId])) {

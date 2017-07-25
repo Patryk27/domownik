@@ -17,9 +17,9 @@
         @if($showCounter)
             <th>{{ __('components/table.head.row-counter') }}</th>
         @endif
-        <th>{{ __('components/transaction-list.transaction-date') }}</th>
-        <th>{{ __('components/transaction-list.transaction-name') }}</th>
-        <th>{{ __('components/transaction-list.transaction-amount') }}</th>
+        <th>{{ __('models/transaction.fields.date') }}</th>
+        <th>{{ __('models/transaction.fields.name') }}</th>
+        <th>{{ __('models/transaction.fields.value') }}</th>
 
         @if(isset($transactionButtons))
             <th></th>
@@ -73,7 +73,7 @@
                     @endif
 
                     @if (in_array('edit', $transactionButtons))
-                        <a class="btn btn-xs btn-info" href="{{ $transactionPresenter->getEditUrl() }}">
+                        <a class="btn btn-xs btn-primary" href="{{ $transactionPresenter->getEditUrl() }}">
                             <i class="fa fa-cog"></i>
                         </a>
                     @endif

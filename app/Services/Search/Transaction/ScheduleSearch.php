@@ -3,9 +3,10 @@
 namespace App\Services\Search\Transaction;
 
 use App\Repositories\Contracts\TransactionRepositoryContract;
-use App\Services\Search\Filters\Common\Date as DateCommonFilter;
-use App\Services\Search\Filters\Transaction\ParentTypeAndId as ParentTypeAndIdFilter;
+use App\Services\Search\Filters\DateFilter;
 use App\Services\Search\Search;
+use App\Services\Search\Transaction\Filters\NameFilter as TransactionNameFilter;
+use App\Services\Search\Transaction\Filters\ParentFilter as TransactionParentFilter;
 use App\ValueObjects\ScheduledTransaction;
 use Carbon\Carbon;
 use Illuminate\Database\Connection as DatabaseConnection;
@@ -50,15 +51,22 @@ class ScheduleSearch
 	/**
 	 * @inheritdoc
 	 */
-	public function parentTypeAndId(string $parentType, int $parentId) {
-		return $this->addFilter(new ParentTypeAndIdFilter($parentType, $parentId));
+	public function parent(string $parentType, int $parentId) {
+		return $this->addFilter(new TransactionParentFilter($parentType, $parentId));
 	}
 
 	/**
 	 * @inheritdoc
 	 */
 	public function date(string $operator, $date) {
-		return $this->addFilter(new DateCommonFilter('ts.date', $operator, $date));
+		return $this->addFilter(new DateFilter('ts.date', $operator, $date));
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public function name(string $name) {
+		return $this->addFilter(new TransactionNameFilter(TransactionNameFilter::OP_CONTAINS, $name));
 	}
 
 	/**

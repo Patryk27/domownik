@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Services\Search\Filters\Transaction;
+namespace App\Services\Search\Transaction\Filters;
 
 use App\Services\Search\Filters\FilterContract;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 
-class ParentTypeAndId
+class ParentFilter
 	implements FilterContract {
 
 	/**

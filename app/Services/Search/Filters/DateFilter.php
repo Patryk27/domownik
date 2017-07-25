@@ -1,14 +1,13 @@
 <?php
 
-namespace App\Services\Search\Filters\Common;
+namespace App\Services\Search\Filters;
 
 use App\Exceptions\InvalidOperatorException;
-use App\Services\Search\Filters\FilterContract;
 use Carbon\Carbon;
 use DateTime;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 
-class Date
+class DateFilter
 	implements FilterContract {
 
 	/**
@@ -29,7 +28,7 @@ class Date
 	/**
 	 * @param string $columnName
 	 * @param string $operator
-	 * @param $value
+	 * @param mixed $value
 	 */
 	public function __construct(
 		string $columnName,

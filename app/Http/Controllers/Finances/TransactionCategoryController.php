@@ -38,6 +38,9 @@ class TransactionCategoryController
 
 	/**
 	 * @param BreadcrumbManager $breadcrumbManager
+	 * @param TransactionRepositoryContract $transactionRepository
+	 * @param TransactionCategoryRepositoryContract $transactionCategoryRepository
+	 * @param RequestManagerContract $requestManagerService
 	 */
 	public function __construct(
 		BreadcrumbManager $breadcrumbManager,
