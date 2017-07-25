@@ -79,11 +79,15 @@ class BudgetController
 
 		$this->oneShotTransactionSearch
 			->getQueryBuilder()
-			->orderBy(OneShotTransactionSearchContract::ORDER_DATE, 'desc')
+			->orderBy(OneShotTransactionSearchContract::ORDER_DATE, 'desc');
+
+		$recentTransactionsChart = $this->oneShotTransactionSearch->getChart();
+
+		$this->oneShotTransactionSearch
+			->getQueryBuilder()
 			->limit(5);
 
 		$recentTransactions = $this->oneShotTransactionSearch->get();
-		// $recentTransactionsChart = $this->oneShotTransactionSearch->getChart(); @todo
 
 		// get incoming transactions
 		$this->transactionScheduleSearch
@@ -104,7 +108,7 @@ class BudgetController
 		return view('views.finances.budgets.show', [
 			'budget' => $budget,
 			'recentTransactions' => $recentTransactions,
-			'recentTransactionsChart' => json_encode([]),
+			'recentTransactionsChart' => $recentTransactionsChart,
 			'incomingTransactions' => $incomingTransactions,
 		]);
 	}

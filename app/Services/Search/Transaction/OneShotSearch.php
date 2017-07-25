@@ -2,7 +2,11 @@
 
 namespace App\Services\Search\Transaction;
 
+use App\Exceptions\UnexpectedStateException;
 use App\Models\Transaction;
+use App\Models\TransactionPeriodicityOneShot;
+use App\Models\TransactionValueConstant;
+use App\Models\TransactionValueRange;
 use App\Repositories\Contracts\TransactionPeriodicityRepositoryContract;
 use App\Services\Search\Filters\Transaction\OneShot\Date as OneShotDateFilter;
 use App\Services\Search\Filters\Transaction\ParentTypeAndId as ParentTypeAndIdFilter;
@@ -45,7 +49,8 @@ class OneShotSearch
 				'tpos.id AS transaction_periodicity_id',
 			])
 			->leftJoin('transaction_periodicities AS tp', 'tp.transaction_id', '=', 't.id')
-			->leftJoin('transaction_periodicity_one_shots AS tpos', 'tpos.id', '=', 'tp.transaction_periodicity_id');
+			->leftJoin('transaction_periodicity_one_shots AS tpos', 'tpos.id', '=', 'tp.transaction_periodicity_id')
+			->where('tp.transaction_periodicity_type', 'transaction-periodicity-one-shot');
 
 		return $this;
 	}
@@ -70,12 +75,25 @@ class OneShotSearch
 	public function get(): Collection {
 		$rows = parent::get();
 
-		$transactionPeriodicityIds = array_column($rows->all(), 'transaction_periodicity_id');
-		$transactionPeriodicities = $this->transactionPeriodicityRepository->getOneShotByIds($transactionPeriodicityIds, true);
+		$transactionPeriodicityIds =
+			$rows
+				->pluck('transaction_periodicity_id')
+				->all();
+
+		$transactionPeriodicities =
+			$this->transactionPeriodicityRepository
+				->getOneShotByIds($transactionPeriodicityIds, true)
+				->keyBy('id');
 
 		$result = new Collection();
 
-		foreach ($transactionPeriodicities as $transactionPeriodicity) {
+		/**
+		 * We're iterating basing on $transactionPeriodicityIds and not $transactionPeriodicities because the latter
+		 * may have other order than the original one we need.
+		 */
+		foreach ($transactionPeriodicityIds as $transactionPeriodicityId) {
+			$transactionPeriodicity = $transactionPeriodicities->get($transactionPeriodicityId);
+
 			$transaction = $transactionPeriodicity->transaction[0];
 
 			$transaction->periodicity = $transactionPeriodicity;
@@ -84,9 +102,60 @@ class OneShotSearch
 			$result->push($transaction);
 		}
 
-		//$result = $result->sortBy('periodicity.date.timestamp', SORT_REGULAR, $this->sortDirection === self::SORT_DIRECTION_DESCENDING);
-
 		return $result;
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public function getChart(): array {
+		return $this
+			->get()
+			->sortBy('periodicity.date.timestamp', SORT_REGULAR)
+			->map(function(Transaction $transaction) {
+				/**
+				 * @var TransactionPeriodicityOneShot $transactionPeriodicity
+				 */
+				$transactionPeriodicity = $transaction->periodicity;
+
+				$date = $transactionPeriodicity->date;
+				$value = $this->getTransactionValue($transaction);
+
+				return [
+					[$date->year, $date->month, $date->day],
+					round($value, 2),
+				];
+			})
+			->values()
+			->toArray();
+	}
+
+	/**
+	 * @param Transaction $transaction
+	 * @return float
+	 * @throws UnexpectedStateException
+	 */
+	protected function getTransactionValue(Transaction $transaction): float {
+		switch ($transaction->value_type) {
+			case Transaction::VALUE_TYPE_CONSTANT:
+				/**
+				 * @var TransactionValueConstant $value
+				 */
+				$value = $transaction->value;
+
+				return $value->value;
+
+			case Transaction::VALUE_TYPE_RANGE:
+				/**
+				 * @var TransactionValueRange $value
+				 */
+				$value = $transaction->value;
+
+				return ($value->value_from + $value->value_to) / 2.0;
+
+			default:
+				throw new UnexpectedStateException('Unexpected transaction value type [%s].', $transaction->value_type);
+		}
 	}
 
 }

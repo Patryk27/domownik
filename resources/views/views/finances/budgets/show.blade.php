@@ -3,19 +3,19 @@
      * @var \App\Models\Budget $budget
      * @var \App\Models\Transaction[] $recentTransactions
      * @var \App\ValueObjects\ScheduledTransaction[] $incomingTransactions
-     * @var string $recentTransactionsChart
+     * @var array $recentTransactionsChart
      */
 @endphp
 
 @extends('layouts.app.auth')
 
 @push('scripts')
-<script>
-  var AppView = App.Views.Finances.Budget.Show.initializeView({
-    budgetId: {{ $budget->id }},
-    recentTransactionsChart: {{ $recentTransactionsChart }}
-  });
-</script>
+    <script>
+      var AppView = App.Views.Finances.Budget.Show.initializeView({
+        budgetId: {{ $budget->id }},
+        recentTransactionsChart: {{ json_encode($recentTransactionsChart) }}
+      });
+    </script>
 @endpush
 
 @section('title')
@@ -27,5 +27,5 @@
 @section('content')
     @include('views.finances.budgets.show.management')
     @include('views.finances.budgets.show.recent-and-incoming-transactions')
-    {{-- @include('views.finances.budgets.show.history') --}}
+    @include('views.finances.budgets.show.history')
 @endsection

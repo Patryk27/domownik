@@ -3,29 +3,17 @@
     <div class="panel-heading">
         <div class="panel-title">
             <i class="fa fa-database"></i>&nbsp;
-            {{ __('views/finances/budget/show.history.header') }}
+            {{ __('views/finances/budgets/show.history.header') }}
 
             <div style="display:inline-block">
-                {!!
-                Form::select()
-                    ->setIdAndName('budget-history-group-mode')
-                    ->setItems(function() {
-                        $items = [
-                            \App\Services\Transaction\HistoryCollectorContract::GROUP_MODE_DAILY,
-                            \App\Services\Transaction\HistoryCollectorContract::GROUP_MODE_WEEKLY,
-                            \App\Services\Transaction\HistoryCollectorContract::GROUP_MODE_MONTHLY,
-                            \App\Services\Transaction\HistoryCollectorContract::GROUP_MODE_YEARLY,
-                        ];
+                @php
+                    $itemKeys = array_keys((array)__('views/finances/budgets/show.history-group-mode'));
+                @endphp
 
-                        $result = [];
-
-                        foreach ($items as $item) {
-                            $result[$item] = __(sprintf('views/finances/budget/show.history-group-mode.%s', $item));
-                        }
-
-                        return $result;
-                    })
-                !!}
+                {!! Form::select(null, map_translation($itemKeys, 'views/finances/budgets/show.history-group-mode.%s'), null, [
+                    'id' => 'budget-history-group-mode',
+                    'class' => 'form-control',
+                ]) !!}
             </div>
         </div>
     </div>

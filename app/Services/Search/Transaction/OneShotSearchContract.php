@@ -30,4 +30,9 @@ interface OneShotSearchContract
 	 */
 	public function get(): Collection;
 
+	/**
+	 * @return array
+	 */
+	public function getChart(): array;
+
 }
