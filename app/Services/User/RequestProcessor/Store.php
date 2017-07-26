@@ -6,7 +6,7 @@ use App\Http\Requests\User\StoreRequest as UserStoreRequest;
 use App\ValueObjects\Requests\User\StoreResult as UserStoreResult;
 
 class Store
-	extends Common {
+	extends Base {
 
 	/**
 	 * @param UserStoreRequest $request

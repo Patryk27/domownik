@@ -19,20 +19,22 @@ Route::group(['prefix' => 'finances', 'middleware' => 'auth'], function() {
 			// /finances/budgets/{budget}/transactions/scheduled
 			Route::match(['get', 'post'], 'scheduled', BudgetTransactionController::class . '@scheduled')
 				 ->name('finances.budgets.transactions.scheduled');
-
-			// /finances/budgets/{budget}/transactions
-			Route::resource('/', TransactionBudgetController::class, [
-				'only' => [
-					'create',
-					'edit',
-				],
-
-				'names' => [
-					'create' => 'finances.budgets.transactions.create',
-					'edit' => 'finances.budgets.transactions.edit',
-				],
-			]);
 		});
+
+		// /finances/budgets/{budget}/transactions
+		Route::resource('/{budget}/transactions', TransactionBudgetController::class, [
+			'only' => [
+				'index',
+				'create',
+				'edit',
+			],
+
+			'names' => [
+				'index' => 'finances.budgets.transactions.index',
+				'create' => 'finances.budgets.transactions.create',
+				'edit' => 'finances.budgets.transactions.edit',
+			],
+		]);
 	});
 
 	// /finances/budgets

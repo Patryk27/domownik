@@ -3,15 +3,6 @@
     var form = $(this);
 
     /**
-     * Returns form group according to given control name.
-     * @param {String} controlName
-     * @returns {jQuery}
-     */
-    function getFormGroupByControlName(controlName) {
-      return $('.form-group[data-control-name="{0}"]'.format(controlName));
-    }
-
-    /**
      * Adds an error message to given form's control.
      * @param {String} controlName
      * @param {String} errorMessage

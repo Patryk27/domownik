@@ -3,7 +3,7 @@
 namespace App\Services\User\RequestProcessor;
 
 class Delete
-	extends Common {
+	extends Base {
 
 	/**
 	 * @param int $id

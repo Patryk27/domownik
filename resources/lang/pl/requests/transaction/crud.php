@@ -7,8 +7,8 @@ return [
 	],
 
 	'messages' => [
-		'create-success' => 'Transakcja została utworzona.',
-		'update-success' => 'Transakcja została zaktualizowana.',
-		'delete-success' => 'Transakcja została usunięta.',
+		'stored' => 'Transakcja została utworzona.',
+		'updated' => 'Transakcja została zaktualizowana.',
+		'deleted' => 'Transakcja została usunięta.',
 	],
 ];

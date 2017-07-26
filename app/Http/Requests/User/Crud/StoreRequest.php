@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Requests\User;
+namespace App\Http\Requests\User\Crud;
 
 class StoreRequest
-	extends CrudRequest {
+	extends Request {
 
 	/**
 	 * @return array

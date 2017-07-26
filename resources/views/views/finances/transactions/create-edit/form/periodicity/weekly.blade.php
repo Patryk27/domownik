@@ -12,7 +12,7 @@
             @foreach (Calendar::getWeekdaysCapitalized() as $weekDayNumber => $weekDay)
                 <div class="checkbox">
                     <label>
-                        {!! Form::checkbox('periodicty_weekly_days[]', $weekDay) !!}
+                        {!! Form::checkbox('periodicity_weekly_days[]', $weekDayNumber) !!}
                         {{ __('calendar.week-days.' . $weekDay) }}
                     </label>
                 </div>

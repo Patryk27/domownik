@@ -25,22 +25,24 @@ class Controller
 	}
 
 	/**
-	 * Returns appropriate create/edit view with common data filled.
 	 * @param string $viewName
-	 * @param Transaction|null $transaction
 	 * @param Model $transactionParent
 	 * @param string $transactionParentType
 	 * @return mixed
 	 */
-	protected function getCreateEditView(string $viewName, ?Transaction $transaction, Model $transactionParent, string $transactionParentType) {
-		$categories = $this->getCategories();
+	protected function getCreateView(string $viewName, Model $transactionParent, string $transactionParentType) {
+		return $this->getCreateEditView($viewName, null, $transactionParent, $transactionParentType);
+	}
 
-		return view(sprintf('views.finances.transactions.create-edit.%s', $viewName), [
-			'transaction' => $transaction,
-			'transactionParent' => $transactionParent,
-			'transactionParentType' => $transactionParentType,
-			'categories' => $categories,
-		]);
+	/**
+	 * @param string $viewName
+	 * @param Transaction $transaction
+	 * @param Model $transactionParent
+	 * @param string $transactionParentType
+	 * @return mixed
+	 */
+	protected function getEditView(string $viewName, Transaction $transaction, Model $transactionParent, string $transactionParentType) {
+		return $this->getCreateEditView($viewName, $transaction, $transactionParent, $transactionParentType);
 	}
 
 	/**
@@ -63,6 +65,25 @@ class Controller
 		}
 
 		return $result;
+	}
+
+	/**
+	 * Returns appropriate create/edit view with common data filled.
+	 * @param string $viewName
+	 * @param Transaction|null $transaction
+	 * @param Model $transactionParent
+	 * @param string $transactionParentType
+	 * @return mixed
+	 */
+	private function getCreateEditView(string $viewName, ?Transaction $transaction, Model $transactionParent, string $transactionParentType) {
+		$categories = $this->getCategories();
+
+		return view(sprintf('views.finances.transactions.create-edit.%s', $viewName), [
+			'transaction' => $transaction,
+			'transactionParent' => $transactionParent,
+			'transactionParentType' => $transactionParentType,
+			'categories' => $categories,
+		]);
 	}
 
 }

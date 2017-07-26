@@ -8,7 +8,7 @@ use App\Repositories\Contracts\UserRepositoryContract;
 use App\Services\Logger\Contract as LoggerContract;
 use Illuminate\Database\Connection as DatabaseConnection;
 
-abstract class Common {
+abstract class Base {
 
 	/**
 	 * @var LoggerContract

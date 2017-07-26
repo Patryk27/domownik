@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\User;
+namespace App\Http\Requests\User\Crud;
 
 use App\Http\Requests\FormRequest;
 
-abstract class CrudRequest
+abstract class Request
 	extends FormRequest {
 
 	/**
