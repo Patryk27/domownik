@@ -3,7 +3,6 @@
 namespace App\Providers;
 
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Factory as ValidationFactory;
 

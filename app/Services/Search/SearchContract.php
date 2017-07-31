@@ -2,7 +2,6 @@
 
 namespace App\Services\Search;
 
-use App\Services\Search\Filters\FilterContract;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Support\Collection;
 
