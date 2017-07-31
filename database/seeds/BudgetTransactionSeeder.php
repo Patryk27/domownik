@@ -63,7 +63,7 @@ class BudgetTransactionSeeder
 		}
 
 		$this->log->info('Processing transaction schedule...');
-		$this->transactionScheduleProcessorService->processTransactionsSchedule();
+		$this->transactionScheduleProcessorService->processSchedule();
 
 		$this->log->info('Flushing cache...');
 		Cache::flush();

@@ -21,6 +21,7 @@ return [
 	'transactions' => [
 		'create' => 'Tworzenie nowej transakcji',
 		'edit' => 'Edycja transakcji: :transactionName',
+		'show' => 'Transakcja: :transactionName',
 	],
 
 	'transaction-category' => [

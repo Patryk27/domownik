@@ -22,8 +22,7 @@ class BudgetController
 	 * @return mixed
 	 */
 	public function edit(Budget $budget, Transaction $transaction) {
-		return $this->getEditView('budget'); // @todo
-		// http://domownik.dev/finances/budgets/1/transactions/1008/edit
+		return $this->getEditView($transaction, $budget, Transaction::PARENT_TYPE_BUDGET);
 	}
 
 }

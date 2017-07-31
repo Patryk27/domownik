@@ -1,22 +1,22 @@
 <?php
 
-namespace App\Console\Commands\Localization;
+namespace App\Console\Commands;
 
 use App\Services\I18n\JsLocalizationGenerator;
 use Illuminate\Console\Command;
 
-class Update
+class RefreshJsTranslations
 	extends Command {
 
 	/**
 	 * @var string
 	 */
-	protected $signature = 'dk:localization:update';
+	protected $signature = 'app:refresh-js-translations';
 
 	/**
 	 * @var string
 	 */
-	protected $description = 'Updates the JS translation messages.';
+	protected $description = 'Refreshes the JS translation messages.';
 
 	/**
 	 * @var JsLocalizationGenerator

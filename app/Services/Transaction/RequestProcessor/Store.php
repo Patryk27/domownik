@@ -20,7 +20,6 @@ class Store
 			$transaction->parent_type = $request->get('parent_type');
 
 			$this->parseCrudRequest($request, $transaction);
-
 			$this->transactionRepository->persist($transaction);
 
 			return new TransactionStoreResult($transaction);

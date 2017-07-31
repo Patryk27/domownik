@@ -1,6 +1,7 @@
 @php
     /**
      * @var \App\Models\Transaction $transaction
+     * @var \App\Models\Model $transactionParent
      */
 @endphp
 
@@ -11,15 +12,15 @@
         <div class="panel-heading">
             <div class="panel-title">
                 <i class="fa fa-edit"></i>&nbsp;
-                {{ __('views/finances/transaction/edit.page.title', [
+                {{ __('views/finances/transactions/edit.page.title', [
                     'transactionName' => $transaction->name
                 ]) }}
             </div>
         </div>
 
-        @include('views.finances.transaction.common.create-edit', [
-            'budget' => null,
+        @include('views.finances.transactions.create-edit.form', [
             'transaction' => $transaction,
+            'transactionParent' => $transactionParent,
         ])
     </div>
 @endsection

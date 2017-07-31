@@ -95,16 +95,41 @@ class FinancesServiceProvider
 			 * @inheritDoc
 			 */
 			public function getBreadcrumb($custom) {
-				if (is_object($custom) && $custom instanceof Budget) {
-					return new Breadcrumb(
-						route('finances.budgets.show', $custom->id),
-						__('breadcrumbs.budgets.show', [
-							'budgetName' => $custom->name,
-						])
-					);
-				}
+				if (is_object($custom)) {
+					if ($custom instanceof Budget) {
+						return $this->getBudgetBreadcrumb($custom);
+					} elseif ($custom instanceof Transaction) {
+						return $this->getTransactionBreadcrumb($custom);
+					}
 
+				}
 				return null;
+			}
+
+			/**
+			 * @param Budget $budget
+			 * @return Breadcrumb
+			 */
+			protected function getBudgetBreadcrumb(Budget $budget) {
+				return new Breadcrumb(
+					route('finances.budgets.show', $budget->id),
+					__('breadcrumbs.budgets.show', [
+						'budgetName' => $budget->name,
+					])
+				);
+			}
+
+			/**
+			 * @param Transaction $transaction
+			 * @return Breadcrumb[]
+			 */
+			protected function getTransactionBreadcrumb(Transaction $transaction) {
+				return new Breadcrumb(
+					route('finances.transactions.show', $transaction->id),
+					__('breadcrumbs.transactions.show', [
+						'transactionName' => $transaction->name,
+					])
+				);
 			}
 
 		});

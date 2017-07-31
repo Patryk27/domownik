@@ -12,13 +12,15 @@
 @endpush
 
 @php
-    $route = isset($transaction) ? ['finances.transactions.update', $transaction->id] : 'finances.transactions.store';
-    $method = isset($transaction) ? 'put' : 'post';
+    $form = [
+        'route' => isset($transaction) ? ['finances.transactions.update', $transaction->id] : 'finances.transactions.store',
+        'method' => isset($transaction) ? 'put' : 'post',
+    ];
 @endphp
 
 {!! Form::model($transaction, [
-    'route' => $route,
-    'method' => $method,
+    'route' => $form['route'],
+    'method' => $form['method'],
     'id' => 'transaction_form',
     'data-toggle' => 'validator',
 ]) !!}
@@ -77,8 +79,8 @@
 
     @isset($transaction)
         @include('components.form.buttons.delete', [
-            'route' => route('finances.transaction.delete', $transaction->id),
-            'confirmationMessage' => __('views/finances/transactions/create-edit.delete-confirmation-message'),
+            'url' => route('finances.transactions.destroy', $transaction->id),
+            'message' => __('views/finances/transactions/create-edit.delete-confirmation-message'),
         ])
     @endisset
 </div>

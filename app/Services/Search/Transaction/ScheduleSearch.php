@@ -4,9 +4,8 @@ namespace App\Services\Search\Transaction;
 
 use App\Repositories\Contracts\TransactionRepositoryContract;
 use App\Services\Search\Filters\DateFilter;
+use App\Services\Search\Filters\StringFilter;
 use App\Services\Search\Search;
-use App\Services\Search\Transaction\Filters\NameFilter as TransactionNameFilter;
-use App\Services\Search\Transaction\Filters\ParentFilter as TransactionParentFilter;
 use App\ValueObjects\ScheduledTransaction;
 use Carbon\Carbon;
 use Illuminate\Database\Connection as DatabaseConnection;
@@ -52,29 +51,31 @@ class ScheduleSearch
 	 * @inheritdoc
 	 */
 	public function parent(string $parentType, int $parentId) {
-		return $this->addFilter(new TransactionParentFilter($parentType, $parentId));
+		$this->builder
+			->where('t.parent_type', $parentType)
+			->where('t.parent_id', $parentId);
+
+		return $this;
 	}
 
 	/**
 	 * @inheritdoc
 	 */
 	public function date(string $operator, $date) {
-		return $this->addFilter(new DateFilter('ts.date', $operator, $date));
+		return $this->applyFilter(new DateFilter('ts.date', $operator, $date));
 	}
 
 	/**
 	 * @inheritDoc
 	 */
 	public function name(string $name) {
-		return $this->addFilter(new TransactionNameFilter(TransactionNameFilter::OP_CONTAINS, $name));
+		return $this->applyFilter(new StringFilter('t.name', StringFilter::OP_CONTAINS, $name));
 	}
 
 	/**
 	 * @inheritdoc
 	 */
 	public function get(): Collection {
-		$this->applyFilters();
-
 		return $this->builder
 			->get([
 				'ts.id',
@@ -82,6 +83,7 @@ class ScheduleSearch
 				'ts.date',
 			])
 			->map(function(stdClass $row) {
+				// @todo n+1 problem
 				$transaction = $this->transactionRepository->getOrFail($row->transaction_id);
 
 				return new ScheduledTransaction(

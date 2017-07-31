@@ -14,7 +14,14 @@ class Update
 	 * @return TransactionUpdateResult
 	 */
 	public function process(TransactionUpdateRequest $request, int $id): TransactionUpdateResult {
+		return $this->db->transaction(function() use ($request, $id) {
+			$transaction = $this->transactionRepository->getOrFail($id);
 
+			$this->parseCrudRequest($request, $transaction);
+			$this->transactionRepository->persist($transaction);
+
+			return new TransactionUpdateResult($transaction);
+		});
 	}
 
 }

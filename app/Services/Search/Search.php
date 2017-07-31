@@ -21,18 +21,12 @@ abstract class Search
 	protected $builder;
 
 	/**
-	 * @var Collection|FilterContract[]
-	 */
-	protected $filters;
-
-	/**
 	 * @param DatabaseConnection $db
 	 */
 	public function __construct(
 		DatabaseConnection $db
 	) {
 		$this->db = $db;
-
 		$this->reset();
 	}
 
@@ -41,16 +35,6 @@ abstract class Search
 	 */
 	public function reset() {
 		$this->builder = $this->db->query();
-		$this->filters = new Collection();
-
-		return $this;
-	}
-
-	/**
-	 * @inheritdoc
-	 */
-	public function addFilter(FilterContract $filter) {
-		$this->filters->push($filter);
 		return $this;
 	}
 
@@ -58,9 +42,7 @@ abstract class Search
 	 * @inheritdoc
 	 */
 	public function get(): Collection {
-		$this->applyFilters();
-
-		return $this->builder->get(['*']);
+		return $this->builder->get();
 	}
 
 	/**
@@ -71,13 +53,10 @@ abstract class Search
 	}
 
 	/**
-	 * @return $this
+	 * @inheritdoc
 	 */
-	protected function applyFilters() {
-		foreach ($this->filters as $filter) {
-			$this->builder = $filter->apply($this->builder);
-		}
-
+	protected function applyFilter(FilterContract $filter) {
+		$filter->apply($this->builder);
 		return $this;
 	}
 

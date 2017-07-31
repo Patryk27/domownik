@@ -8,10 +8,8 @@ use App\Models\TransactionPeriodicityOneShot;
 use App\Models\TransactionValueConstant;
 use App\Models\TransactionValueRange;
 use App\Repositories\Contracts\TransactionPeriodicityRepositoryContract;
+use App\Services\Search\Filters\StringFilter;
 use App\Services\Search\Search;
-use App\Services\Search\Transaction\Filters\NameFilter as TransactionNameFilter;
-use App\Services\Search\Transaction\Filters\OneShot\DateFilter as TransactionOneShotDateFilter;
-use App\Services\Search\Transaction\Filters\ParentFilter as TransactionParentFilter;
 use Illuminate\Database\Connection as DatabaseConnection;
 use Illuminate\Support\Collection;
 
@@ -60,21 +58,26 @@ class OneShotSearch
 	 * @inheritdoc
 	 */
 	public function parent(string $parentType, int $parentId) {
-		return $this->addFilter(new TransactionParentFilter($parentType, $parentId));
+		$this->builder
+			->where('t.parent_type', $parentType)
+			->where('t.parent_id', $parentId);
+
+		return $this;
 	}
 
 	/**
 	 * @inheritdoc
 	 */
 	public function date(string $operator, $date) {
-		return $this->addFilter(new TransactionOneShotDateFilter($operator, $date));
+		$this->builder->where('tpos.date', $operator, $date);
+		return $this;
 	}
 
 	/**
 	 * @inheritDoc
 	 */
 	public function name(string $name) {
-		return $this->addFilter(new TransactionNameFilter(TransactionNameFilter::OP_CONTAINS, $name));
+		return $this->applyFilter(new StringFilter('t.name', StringFilter::OP_CONTAINS, $name));
 	}
 
 	/**

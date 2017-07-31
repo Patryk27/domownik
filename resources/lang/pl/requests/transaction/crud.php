@@ -11,4 +11,8 @@ return [
 		'updated' => 'Transakcja została zaktualizowana.',
 		'deleted' => 'Transakcja została usunięta.',
 	],
+
+	'prompts' => [
+		'delete' => 'Czy na pewno chcesz usunąć tę transakcję?',
+	],
 ];

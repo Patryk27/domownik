@@ -8,6 +8,6 @@ interface ProcessorContract {
 	 * Processes the transactions' schedules, booking appropriate transactions etc.
 	 * @return ProcessorContract
 	 */
-	public function processTransactionsSchedule(): ProcessorContract;
+	public function processSchedule(): ProcessorContract;
 
 }

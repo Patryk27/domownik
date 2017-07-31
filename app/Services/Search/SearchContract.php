@@ -14,12 +14,6 @@ interface SearchContract {
 	public function reset();
 
 	/**
-	 * @param FilterContract $filter
-	 * @return $this
-	 */
-	public function addFilter(FilterContract $filter);
-
-	/**
 	 * Applies filters onto the query builder and returns matching rows/
 	 * @return Collection
 	 */

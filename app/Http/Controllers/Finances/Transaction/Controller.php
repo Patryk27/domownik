@@ -6,9 +6,21 @@ use App\Http\Controllers\Controller as BaseController;
 use App\Models\Model;
 use App\Models\Transaction;
 use App\Repositories\Contracts\TransactionCategoryRepositoryContract;
+use App\Repositories\Contracts\TransactionRepositoryContract;
+use App\Services\Breadcrumb\Manager as BreadcrumbManager;
 
 class Controller
 	extends BaseController {
+
+	/**
+	 * @var BreadcrumbManager
+	 */
+	protected $breadcrumbManager;
+
+	/**
+	 * @var TransactionRepositoryContract
+	 */
+	protected $transactionRepository;
 
 	/**
 	 * @var TransactionCategoryRepositoryContract
@@ -16,11 +28,17 @@ class Controller
 	protected $transactionCategoryRepository;
 
 	/**
+	 * @param BreadcrumbManager $breadcrumbManager
+	 * @param TransactionRepositoryContract $transactionRepository
 	 * @param TransactionCategoryRepositoryContract $transactionCategoryRepository
 	 */
 	public function __construct(
+		BreadcrumbManager $breadcrumbManager,
+		TransactionRepositoryContract $transactionRepository,
 		TransactionCategoryRepositoryContract $transactionCategoryRepository
 	) {
+		$this->breadcrumbManager = $breadcrumbManager;
+		$this->transactionRepository = $transactionRepository;
 		$this->transactionCategoryRepository = $transactionCategoryRepository;
 	}
 
@@ -31,18 +49,34 @@ class Controller
 	 * @return mixed
 	 */
 	protected function getCreateView(string $viewName, Model $transactionParent, string $transactionParentType) {
-		return $this->getCreateEditView($viewName, null, $transactionParent, $transactionParentType);
+		$this->breadcrumbManager
+			->pushCustom($transactionParent)
+			->push(route('finances.transactions.create'), __('breadcrumbs.transactions.create'));
+
+		return $this->getCreateEditView(sprintf('views.finances.transactions.create.%s', $viewName), null, $transactionParent, $transactionParentType);
 	}
 
 	/**
-	 * @param string $viewName
 	 * @param Transaction $transaction
 	 * @param Model $transactionParent
 	 * @param string $transactionParentType
 	 * @return mixed
 	 */
-	protected function getEditView(string $viewName, Transaction $transaction, Model $transactionParent, string $transactionParentType) {
-		return $this->getCreateEditView($viewName, $transaction, $transactionParent, $transactionParentType);
+	protected function getEditView(Transaction $transaction, Model $transactionParent, string $transactionParentType) {
+		$this->breadcrumbManager
+			->pushCustom($transactionParent);
+
+		if (isset($transaction->parent_transaction_id)) {
+			$parentTransaction = $this->transactionRepository->getOrFail($transaction->parent_transaction_id);
+			$this->breadcrumbManager->pushCustom($parentTransaction);
+		}
+
+		$this->breadcrumbManager
+			->push(route('finances.transactions.edit', $transaction->id), __('breadcrumbs.transactions.edit', [
+				'transactionName' => $transaction->name,
+			]));
+
+		return $this->getCreateEditView('views.finances.transactions.edit', $transaction, $transactionParent, $transactionParentType);
 	}
 
 	/**
@@ -78,7 +112,7 @@ class Controller
 	private function getCreateEditView(string $viewName, ?Transaction $transaction, Model $transactionParent, string $transactionParentType) {
 		$categories = $this->getCategories();
 
-		return view(sprintf('views.finances.transactions.create-edit.%s', $viewName), [
+		return view($viewName, [
 			'transaction' => $transaction,
 			'transactionParent' => $transactionParent,
 			'transactionParentType' => $transactionParentType,

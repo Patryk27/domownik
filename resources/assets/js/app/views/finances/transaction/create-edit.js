@@ -169,7 +169,7 @@ module.exports = (function() {
          * @returns {exports}
          */
         prepare: function(weekdays) {
-          $('input[name="transactionPeriodicityWeeklyDays[]"]').each(function() {
+          $('input[name="periodicity_weekly_days[]"]').each(function() {
             var isValid = weekdays.indexOf(parseInt($(this).val())) >= 0;
             $(this).prop('checked', isValid);
           });
@@ -186,7 +186,7 @@ module.exports = (function() {
          * @returns {exports}
          */
         prepare: function(monthDays) {
-          $('input[name="transactionPeriodicityMonthlyDays[]"]').each(function() {
+          $('input[name="periodicity_monthly_days[]"]').each(function() {
             var isValid = monthDays.indexOf(parseInt($(this).val())) >= 0;
             $(this).prop('checked', isValid);
           });

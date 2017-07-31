@@ -12,7 +12,6 @@ use Illuminate\Support\Collection;
  * @property string $parent_type
  * @property int $parent_id
  * @property int $category_id
- * @property TransactionCategory $category
  * @property string $type
  * @property string $name
  * @property string $description
@@ -22,6 +21,7 @@ use Illuminate\Support\Collection;
  * @property Carbon $updated_at
  * @property Carbon $created_at
  * @property Model $value
+ * @property TransactionCategory $category
  * @property Collection|TransactionPeriodicityOneShot[] $periodicityOneShots
  * @property Collection|TransactionPeriodicityDaily[] $periodicityDailies
  * @property Collection|TransactionPeriodicityWeekly[] $periodicityWeeklies
