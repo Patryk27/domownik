@@ -2,7 +2,7 @@
 
 namespace App\Services\User\RequestProcessor;
 
-use App\Http\Requests\User\StoreRequest as UserStoreRequest;
+use App\Http\Requests\User\Crud\StoreRequest as UserStoreRequest;
 use App\ValueObjects\Requests\User\StoreResult as UserStoreResult;
 
 class Store

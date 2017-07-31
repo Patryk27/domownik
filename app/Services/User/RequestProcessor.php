@@ -2,8 +2,8 @@
 
 namespace App\Services\User;
 
-use App\Http\Requests\User\StoreRequest as UserStoreRequest;
-use App\Http\Requests\User\UpdateRequest as UserUpdateRequest;
+use App\Http\Requests\User\Crud\StoreRequest as UserStoreRequest;
+use App\Http\Requests\User\Crud\UpdateRequest as UserUpdateRequest;
 use App\Services\User\RequestProcessor\Delete as UserDeleteRequestProcessor;
 use App\Services\User\RequestProcessor\Store as UserStoreRequestProcessor;
 use App\Services\User\RequestProcessor\Update as UserUpdateRequestProcessor;

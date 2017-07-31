@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller as BaseController;
-use App\Http\Requests\User\StoreRequest as UserStoreRequest;
-use App\Http\Requests\User\UpdateRequest as UserUpdateRequest;
+use App\Http\Requests\User\Crud\StoreRequest as UserStoreRequest;
+use App\Http\Requests\User\Crud\UpdateRequest as UserUpdateRequest;
 use App\Models\User;
 use App\Repositories\Contracts\UserRepositoryContract;
 use App\Services\Breadcrumb\Manager as BreadcrumbManager;

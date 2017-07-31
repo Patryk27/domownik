@@ -2,8 +2,8 @@
 
 namespace App\Services\User;
 
-use App\Http\Requests\User\StoreRequest as UserStoreRequest;
-use App\Http\Requests\User\UpdateRequest as UserUpdateRequest;
+use App\Http\Requests\User\Crud\StoreRequest as UserStoreRequest;
+use App\Http\Requests\User\Crud\UpdateRequest as UserUpdateRequest;
 use App\ValueObjects\Requests\User\StoreResult as UserStoreResult;
 use App\ValueObjects\Requests\User\UpdateResult as UserUpdateResult;
 

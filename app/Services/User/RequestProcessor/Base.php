@@ -2,7 +2,7 @@
 
 namespace App\Services\User\RequestProcessor;
 
-use App\Http\Requests\User\CrudRequest as UserCrudRequest;
+use App\Http\Requests\User\Crud\Request as UserCrudRequest;
 use App\Models\User;
 use App\Repositories\Contracts\UserRepositoryContract;
 use App\Services\Logger\Contract as LoggerContract;
