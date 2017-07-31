@@ -83,7 +83,7 @@ class UserController
 		$result = $this->userRequestProcessor->store($request);
 		$user = $result->getUser();
 
-		flash(__('requests/user/crud.messages.stored'), 'success');
+		$this->flash('success', __('requests/user/crud.messages.stored'));
 
 		return response()->json([
 			'redirectUrl' => route('dashboard.users.edit', $user->id),
@@ -126,7 +126,7 @@ class UserController
 		$result = $this->userRequestProcessor->update($request, $id);
 		$user = $result->getUser();
 
-		flash(__('requests/user/crud.messages.updated'), 'success');
+		$this->flash('success', __('requests/user/crud.messages.updated'));
 
 		return response()->json([
 			'redirectUrl' => route('dashboard.users.edit', $user->id),
