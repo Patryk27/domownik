@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Budget;
+namespace App\Http\Requests\Budget\Crud;
 
 use Illuminate\Foundation\Http\FormRequest;
 

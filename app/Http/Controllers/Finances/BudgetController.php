@@ -66,6 +66,27 @@ class BudgetController
 	}
 
 	/**
+	 * @return mixed
+	 */
+	public function create() {
+		$budgets =
+			$this->budgetRepository
+				->getActiveBudgets()
+				->keyBy('id')
+				->map(function(Budget $budget) {
+					return $budget->name;
+				});
+
+		return view('views.finances.budgets.create', [
+			'availableConsolidatedBudgets' => $budgets,
+		]);
+	}
+
+	public function store() {
+		// @todo
+	}
+
+	/**
 	 * @param Budget $budget
 	 * @return mixed
 	 */

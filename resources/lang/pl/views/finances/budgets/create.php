@@ -3,17 +3,17 @@
 return [
 	'page.title' => 'Tworzenie nowego budżetu',
 
-	'budget-name' => [
+	'name' => [
 		'label' => 'Nazwa budżetu',
 		'placeholder' => 'Wpisz nazwę, która najlepiej będzie odzwierciedlała ten budżet; np. \'Patryk\' lub \'Domowy\'.',
 	],
 
-	'budget-description' => [
+	'description' => [
 		'label' => 'Opis budżetu',
 		'placeholder' => 'Opcjonalny opis budżetu; np. \'Zbiorczy budżet domowy\'.',
 	],
 
-	'budget-type' => [
+	'type' => [
 		'label' => 'Rodzaj budżetu',
 	],
 

@@ -1,4 +1,4 @@
 module.exports = {
-  Create: require('./budget/create'),
+  CreateEdit: require('./budget/create-edit'),
   Show: require('./budget/show'),
 };
