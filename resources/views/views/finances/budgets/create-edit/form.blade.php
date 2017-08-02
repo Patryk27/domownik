@@ -1,7 +1,8 @@
 @php
     /**
+     * @var array $form
      * @var \App\Models\Budget|null $budget
-     * @var array $availableConsolidatedBudgets
+     * @var \Illuminate\Support\Collection|string[] $budgetsSelect
      */
 @endphp
 
@@ -12,8 +13,8 @@
 @endpush
 
 {!! Form::model($budget, [
-    'route' => 'finances.budgets.store',
-    'method' => 'post',
+    'url' => $form['url'],
+    'method' => $form['method'],
     'id' => 'budgetForm',
     'class' => 'form-ajax',
 ]) !!}
@@ -21,10 +22,10 @@
 <div class="panel-body">
     {{-- Budget name --}}
     <div class="form-group required">
-        {!! Form::label('name', __('views/finances/budgets/create.name.label')) !!}
+        {!! Form::label('name', __('views/finances/budgets/create-edit/form.name.label')) !!}
         {!! Form::text('name', null, [
             'class' => 'form-control',
-            'placeholder' => __('views/finances/budgets/create.name.placeholder'),
+            'placeholder' => __('views/finances/budgets/create-edit/form.name.placeholder'),
             'required',
             'autofocus',
         ]) !!}
@@ -32,27 +33,28 @@
 
     {{-- Budget description --}}
     <div class="form-group">
-        {!! Form::label('description', __('views/finances/budgets/create.description.label')) !!}
+        {!! Form::label('description', __('views/finances/budgets/create-edit/form.description.label')) !!}
         {!! Form::textarea('description', null, [
             'class' => 'form-control',
-            'placeholder' => __('views/finances/budgets/create.description.placeholder'),
+            'placeholder' => __('views/finances/budgets/create-edit/form.description.placeholder'),
         ]) !!}
     </div>
 
     {{-- Budget type --}}
     <div class="form-group required">
-        {!! Form::label('type', __('views/finances/budgets/create.type.label')) !!}
+        {!! Form::label('type', __('views/finances/budgets/create-edit/form.type.label')) !!}
         {!! Form::select('type', \App\Models\Budget::getTypesSelect(), null, [
             'class' => 'form-control',
-            'required',
+            'disabled' => isset($budget),
+            'required' => is_null($budget),
         ]) !!}
     </div>
 
     {{-- Consolidated budgets, if required --}}
     <div id="consolidated_budgets_wrapper" style="display:none">
         <div class="form-group">
-            {!! Form::label('consolidated_budgets', __('views/finances/budgets/create.consolidated-budgets.label')) !!}
-            {!! Form::select('consolidated_budgets', $availableConsolidatedBudgets, null, [
+            {!! Form::label('consolidated_budgets', __('views/finances/budgets/create-edit/form.consolidated-budgets.label')) !!}
+            {!! Form::select('consolidated_budgets', $budgetsSelect, null, [
                 'class' => 'form-control',
                 'multiple',
             ]) !!}
@@ -66,6 +68,7 @@
 
 <div class="panel-footer">
     @include('components.form.buttons.save')
+    {{-- @todo delete button --}}
 </div>
 
 {!! Form::close() !!}

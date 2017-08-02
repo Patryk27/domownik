@@ -4,6 +4,7 @@ return [
 	'users' => [
 		'index' => 'Lista użytkowników',
 		'create' => 'Tworzenie nowego użytkownika',
+		'show' => 'Użytkownik: userName',
 		'edit' => 'Edycja użytkownika: :userName',
 	],
 
@@ -11,6 +12,7 @@ return [
 		'index' => 'Lista budżetów',
 		'create' => 'Tworzenie nowego budżetu',
 		'show' => 'Budżet: :budgetName',
+		'edit' => 'Edycja budżetu: :budgetName',
 
 		'transactions' => [
 			'booked' => 'Spis zaksięgowanych transakcji',
@@ -20,8 +22,8 @@ return [
 
 	'transactions' => [
 		'create' => 'Tworzenie nowej transakcji',
-		'edit' => 'Edycja transakcji: :transactionName',
 		'show' => 'Transakcja: :transactionName',
+		'edit' => 'Edycja transakcji: :transactionName',
 	],
 
 	'transaction-category' => [

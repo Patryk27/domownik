@@ -69,7 +69,7 @@ class FinancesServiceProvider
 	 * @return $this
 	 */
 	protected function bindServices(): self {
-		$this->app->bind(\App\Services\Budget\RequestManagerContract::class, \App\Services\Budget\RequestManager::class);
+		$this->app->bind(\App\Services\Budget\RequestProcessorContract::class, \App\Services\Budget\RequestProcessor::class);
 		$this->app->bind(\App\Services\Transaction\PeriodicityParserContract::class, \App\Services\Transaction\PeriodicityParser::class);
 		$this->app->bind(\App\Services\Transaction\RequestProcessorContract::class, \App\Services\Transaction\RequestProcessor::class);
 		$this->app->bind(\App\Services\Transaction\Category\RequestManagerContract::class, \App\Services\Transaction\Category\RequestManager::class);

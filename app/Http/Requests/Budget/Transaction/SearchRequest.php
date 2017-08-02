@@ -4,7 +4,7 @@ namespace App\Http\Requests\Budget\Transaction;
 
 use App\Http\Requests\FormRequest;
 
-abstract class Search
+abstract class SearchRequest
 	extends FormRequest {
 
 	/**

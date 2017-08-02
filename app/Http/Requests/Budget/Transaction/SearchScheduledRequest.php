@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests\Budget\Transaction;
 
-class SearchScheduled
-	extends Search {
+class SearchScheduledRequest
+	extends SearchRequest {
 
 	/**
 	 * @return array

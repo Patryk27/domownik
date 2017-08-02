@@ -17,7 +17,7 @@ class Update
 		return $this->db->transaction(function() use ($request, $id) {
 			$transaction = $this->transactionRepository->getOrFail($id);
 
-			$this->parseCrudRequest($request, $transaction);
+			$this->updateTransactionFromRequest($transaction, $request);
 			$this->transactionRepository->persist($transaction);
 
 			return new TransactionUpdateResult($transaction);

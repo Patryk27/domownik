@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\Budget\Crud;
 
-class StoreRequest
+class UpdateRequest
 	extends Request {
 
 	/**
@@ -10,8 +10,8 @@ class StoreRequest
 	 */
 	public function rules(): array {
 		return $this->patchRules(parent::rules(), [
+			// @todo fix 'unique'
 			'name' => 'unique:budgets,name',
-			'type' => 'required',
 		]);
 	}
 

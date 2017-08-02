@@ -2,4 +2,5 @@
 
 return [
 	'show' => 'Pokaż',
+	'edit' => 'Edytuj',
 ];

@@ -45,25 +45,25 @@ abstract class Base {
 	}
 
 	/**
-	 * @param TransactionCrudRequest $request
 	 * @param Transaction $transaction
+	 * @param TransactionCrudRequest $request
 	 * @return $this
 	 */
-	protected function parseCrudRequest(TransactionCrudRequest $request, Transaction $transaction) {
+	protected function updateTransactionFromRequest(Transaction $transaction, TransactionCrudRequest $request) {
 		$this
-			->parseMeta($request, $transaction)
-			->parseValue($request, $transaction)
-			->parsePeriodicity($request, $transaction);
+			->updateMeta($transaction, $request)
+			->updateValue($transaction, $request)
+			->updatePeriodicity($transaction, $request);
 
 		return $this;
 	}
 
 	/**
-	 * @param TransactionCrudRequest $request
 	 * @param Transaction $transaction
+	 * @param TransactionCrudRequest $request
 	 * @return $this
 	 */
-	private function parseMeta(TransactionCrudRequest $request, Transaction $transaction) {
+	private function updateMeta(Transaction $transaction, TransactionCrudRequest $request) {
 		$transaction->type = $request->get('type');
 		$transaction->name = $request->get('name');
 		$transaction->category_id = $request->get('category_id');
@@ -75,11 +75,12 @@ abstract class Base {
 	}
 
 	/**
-	 * @param TransactionCrudRequest $request
 	 * @param Transaction $transaction
+	 * @param TransactionCrudRequest $request
 	 * @return $this
+	 * @throws InvalidRequestException
 	 */
-	private function parseValue(TransactionCrudRequest $request, Transaction $transaction) {
+	private function updateValue(Transaction $transaction, TransactionCrudRequest $request) {
 		switch ($request->get('value_type')) {
 			case Transaction::VALUE_TYPE_CONSTANT:
 				$transactionValue = new TransactionValueConstant();
@@ -112,12 +113,12 @@ abstract class Base {
 	}
 
 	/**
-	 * @param TransactionCrudRequest $request
 	 * @param Transaction $transaction
+	 * @param TransactionCrudRequest $request
 	 * @return $this
 	 * @throws InvalidRequestException
 	 */
-	private function parsePeriodicity(TransactionCrudRequest $request, Transaction $transaction) {
+	private function updatePeriodicity(Transaction $transaction, TransactionCrudRequest $request) {
 		if ($transaction->exists) {
 			$this->transactionPeriodicityRepository->deleteByTransactionId($transaction->id);
 		}

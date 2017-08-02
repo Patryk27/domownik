@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Finances\Budget;
 
 use App\Http\Controllers\Controller as BaseController;
-use App\Http\Requests\Budget\Transaction\SearchBooked as SearchBookedTransactionRequest;
-use App\Http\Requests\Budget\Transaction\SearchScheduled as SearchScheduledTransactionRequest;
+use App\Http\Requests\Budget\Transaction\SearchBookedRequest as SearchBookedTransactionRequest;
+use App\Http\Requests\Budget\Transaction\SearchScheduledRequest as SearchScheduledTransactionRequest;
 use App\Models\Budget;
 use App\Models\Transaction;
 use App\Services\Breadcrumb\Manager as BreadcrumbManager;
