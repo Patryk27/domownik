@@ -1,4 +1,5 @@
 @import "calendar";
+@import "dividers";
 
 .no-gutter {
   padding-left: 0;
@@ -16,4 +17,8 @@
   left: 2px;
 
   content: "*";
+}
+
+.inline-block {
+  display: inline-block;
 }

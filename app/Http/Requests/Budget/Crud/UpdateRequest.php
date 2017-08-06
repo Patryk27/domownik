@@ -9,9 +9,10 @@ class UpdateRequest
 	 * @return array
 	 */
 	public function rules(): array {
+		$budgetId = $this->route('budget');
+
 		return $this->patchRules(parent::rules(), [
-			// @todo fix 'unique'
-			'name' => 'unique:budgets,name',
+			'name' => sprintf('unique:budgets,name,%d', $budgetId),
 		]);
 	}
 

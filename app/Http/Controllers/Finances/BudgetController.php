@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Finances;
 
 use App\Http\Controllers\Controller as BaseController;
 use App\Http\Requests\Budget\Crud\StoreRequest as BudgetStoreRequest;
+use App\Http\Requests\Budget\Crud\UpdateRequest as BudgetUpdateRequest;
 use App\Models\Budget;
 use App\Models\Transaction;
 use App\Repositories\Contracts\BudgetRepositoryContract;
@@ -95,26 +96,6 @@ class BudgetController
 	}
 
 	/**
-	 * @param Budget $budget
-	 * @return mixed
-	 */
-	public function edit(Budget $budget) {
-		$this->breadcrumbManager
-			->push(route('finances.budgets.index'), __('breadcrumbs.budgets.index'))
-			->push(route('finances.budgets.edit', $budget->id), __('breadcrumbs.budgets.edit'));
-
-		return view('views.finances.budgets.edit', [
-			'form' => [
-				'url' => route('finances.budgets.update', $budget->id),
-				'method' => 'put',
-			],
-
-			'budget' => $budget,
-			'budgetsSelect' => $this->getBudgetsSelect(),
-		]);
-	}
-
-	/**
 	 * @param BudgetStoreRequest $request
 	 * @return mixed
 	 */
@@ -133,8 +114,51 @@ class BudgetController
 	 * @param Budget $budget
 	 * @return mixed
 	 */
+	public function edit(Budget $budget) {
+		$this->breadcrumbManager
+			->push(route('finances.budgets.index'), __('breadcrumbs.budgets.index'))
+			->push(route('finances.budgets.show', $budget->id), __('breadcrumbs.budgets.show', [
+				'budgetName' => $budget->name,
+			]))
+			->push(route('finances.budgets.edit', $budget->id), __('breadcrumbs.budgets.edit', [
+				'budgetName' => $budget->name,
+			]));
+
+		return view('views.finances.budgets.edit', [
+			'form' => [
+				'url' => route('finances.budgets.update', $budget->id),
+				'method' => 'put',
+			],
+
+			'budget' => $budget,
+			'budgetsSelect' => $this->getBudgetsSelect(),
+		]);
+	}
+
+	/**
+	 * @param BudgetUpdateRequest $request
+	 * @param int $id
+	 * @return mixed
+	 */
+	public function update(BudgetUpdateRequest $request, int $id) {
+		$result = $this->budgetRequestProcessor->update($request, $id);
+		$budget = $result->getBudget();
+
+		$this->flash('success', __('requests/budget/crud.messages.updated'));
+
+		return response()->json([
+			'redirectUrl' => route('finances.budgets.edit', $budget->id),
+		]);
+	}
+
+	/**
+	 * @param Budget $budget
+	 * @return mixed
+	 */
 	public function show(Budget $budget) {
-		$this->breadcrumbManager->pushCustom($budget);
+		$this->breadcrumbManager
+			->push(route('finances.budgets.index'), __('breadcrumbs.budgets.index'))
+			->pushCustom($budget);
 
 		// get recently booked transactions
 		$this->oneShotTransactionSearch

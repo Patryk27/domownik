@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-
 use Carbon\Carbon;
 
 /**
@@ -49,6 +48,13 @@ class Budget
 	 * @var string
 	 */
 	public $presenterClass = \App\Presenters\BudgetPresenter::class;
+
+	/**
+	 * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+	 */
+	public function consolidatedBudgets() {
+		return $this->belongsToMany(self::class, 'budget_consolidations', 'base_budget_id', 'subject_budget_id');
+	}
 
 	/**
 	 * @return \Illuminate\Database\Eloquent\Relations\MorphMany

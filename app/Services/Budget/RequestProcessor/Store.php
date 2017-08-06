@@ -23,16 +23,6 @@ class Store
 			$this->updateBudgetFromRequest($budget, $request);
 			$this->budgetRepository->persist($budget);
 
-			if ($budget->type === Budget::TYPE_CONSOLIDATED) {
-				foreach ($request->get('consolidated_budgets') as $consolidatedBudgetId) {
-					$budgetConsolidation = new BudgetConsolidation();
-					$budgetConsolidation->base_budget_id = $budget->id;
-					$budgetConsolidation->subject_budget_id = $consolidatedBudgetId;
-
-					$this->budgetConsolidationRepository->persist($budgetConsolidation);
-				}
-			}
-
 			return new BudgetStoreResult($budget);
 		});
 	}

@@ -49,6 +49,10 @@ abstract class Base {
 		$budget->name = $request->get('name');
 		$budget->description = $request->get('description');
 
+		$budget
+			->consolidatedBudgets()
+			->sync($request->get('consolidated_budgets'));
+
 		return $this;
 	}
 

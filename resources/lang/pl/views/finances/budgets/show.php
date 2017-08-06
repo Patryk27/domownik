@@ -5,6 +5,7 @@ return [
 
 	'management' => [
 		'header' => 'Zarządzanie budżetem: :budgetName',
+		'edit-budget' => 'Edytuj budżet',
 		'create-transaction' => 'Dodaj transakcję',
 		'list-transactions' => 'Pokaż spis transakcji',
 	],

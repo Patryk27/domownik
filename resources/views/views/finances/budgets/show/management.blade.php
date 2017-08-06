@@ -9,13 +9,19 @@
     </div>
 
     <div class="panel-body">
+        <div class="inline-block right-divider">
+            <a href="{{ route('finances.budgets.edit', $budget->id) }}"
+               class="btn btn-primary">
+                <i class="fa fa-gear"></i>&nbsp;
+                {{ __('views/finances/budgets/show.management.edit-budget') }}
+            </a>
+        </div>
+
         <a href="{{ route('finances.budgets.transactions.create', $budget->id) }}"
            class="btn btn-success">
             <i class="fa fa-plus"></i>&nbsp;
             {{ __('views/finances/budgets/show.management.create-transaction') }}
         </a>
-
-        &nbsp;
 
         <a href="{{ route('finances.budgets.transactions.index', $budget->id) }}"
            class="btn btn-info">

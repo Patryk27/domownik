@@ -24,7 +24,7 @@ abstract class Request
 	 * @return array
 	 */
 	public function messages(): array {
-		return __('requests/budget/crud');
+		return __('requests/budget/crud.validation');
 	}
 
 }
