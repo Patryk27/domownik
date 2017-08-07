@@ -49,10 +49,6 @@ class Controller
 	 * @return mixed
 	 */
 	protected function getCreateView(string $viewName, Model $transactionParent, string $transactionParentType) {
-		$this->breadcrumbManager
-			->pushCustom($transactionParent)
-			->push(route('finances.transactions.create'), __('breadcrumbs.transactions.create'));
-
 		return $this->getCreateEditView(sprintf('views.finances.transactions.create.%s', $viewName), null, $transactionParent, $transactionParentType);
 	}
 
@@ -63,9 +59,6 @@ class Controller
 	 * @return mixed
 	 */
 	protected function getEditView(Transaction $transaction, Model $transactionParent, string $transactionParentType) {
-		$this->breadcrumbManager
-			->pushCustom($transactionParent);
-
 		if (isset($transaction->parent_transaction_id)) {
 			$parentTransaction = $this->transactionRepository->getOrFail($transaction->parent_transaction_id);
 			$this->breadcrumbManager->pushCustom($parentTransaction);

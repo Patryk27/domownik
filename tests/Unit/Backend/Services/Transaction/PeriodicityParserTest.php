@@ -7,7 +7,7 @@ use App\Models\TransactionPeriodicityWeekly;
 use App\Models\TransactionPeriodicityYearly;
 use App\Repositories\Contracts\TransactionPeriodicityRepositoryContract;
 use App\Repositories\Contracts\TransactionRepositoryContract;
-use App\Services\Transaction\PeriodicityParser;
+use App\Services\Transaction\Periodicity\Parser;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Tests\Unit\TestCase;
@@ -62,7 +62,7 @@ class PeriodicityParserTest
 			->with(1)
 			->willReturn($transactionPeriodicities);
 
-		$periodicityParser = new PeriodicityParser($this->transactionRepositoryMock, $this->transactionPeriodicityRepositoryMock);
+		$periodicityParser = $this->getPeriodicityParser();
 		$periodicityParser
 			->setTransactionId(1)
 			->setDateRange(new Carbon('2010-01-01'), new Carbon('2010-03-06'));
@@ -89,7 +89,7 @@ class PeriodicityParserTest
 			->with(1)
 			->willReturn($transaction);
 
-		$periodicityParser = new PeriodicityParser($this->transactionRepositoryMock, $this->transactionPeriodicityRepositoryMock);
+		$periodicityParser = $this->getPeriodicityParser();
 		$periodicityParser
 			->setTransactionId(1)
 			->setDateRange(new Carbon('2009-12-30'), new Carbon('2010-01-10'));
@@ -131,7 +131,7 @@ class PeriodicityParserTest
 			->with(1)
 			->willReturn($transactionPeriodicities);
 
-		$periodicityParser = new PeriodicityParser($this->transactionRepositoryMock, $this->transactionPeriodicityRepositoryMock);
+		$periodicityParser = $this->getPeriodicityParser();
 		$periodicityParser
 			->setTransactionId(1)
 			->setDateRange(new Carbon('2009-12-01'), new Carbon('2010-01-10'));
@@ -183,7 +183,7 @@ class PeriodicityParserTest
 			->with(1)
 			->willReturn($transactionPeriodicities);
 
-		$periodicityParser = new PeriodicityParser($this->transactionRepositoryMock, $this->transactionPeriodicityRepositoryMock);
+		$periodicityParser = $this->getPeriodicityParser();
 		$periodicityParser
 			->setTransactionId(1)
 			->setDateRange(new Carbon('2009-12-01'), new Carbon('2010-01-10'));
@@ -226,7 +226,7 @@ class PeriodicityParserTest
 			->with(1)
 			->willReturn($transactionPeriodicities);
 
-		$periodicityParser = new PeriodicityParser($this->transactionRepositoryMock, $this->transactionPeriodicityRepositoryMock);
+		$periodicityParser = $this->getPeriodicityParser();
 		$periodicityParser
 			->setTransactionId(1)
 			->setDateRange(new Carbon('2009-12-01'), new Carbon('2010-03-06'));
@@ -238,6 +238,27 @@ class PeriodicityParserTest
 		$this->assertRow($rows[0], 2010, 1, 1);
 		$this->assertRow($rows[1], 2010, 2, 4);
 		$this->assertRow($rows[2], 2010, 3, 6);
+	}
+
+	/**
+	 * @return Parser
+	 */
+	protected function getPeriodicityParser(): Parser {
+		$this->app
+			->when(Parser::class)
+			->needs(TransactionRepositoryContract::class)
+			->give(function() {
+				return $this->transactionRepositoryMock;
+			});
+
+		$this->app
+			->when(Parser::class)
+			->needs(TransactionPeriodicityRepositoryContract::class)
+			->give(function() {
+				return $this->transactionPeriodicityRepositoryMock;
+			});
+
+		return $this->app->make(Parser::class);
 	}
 
 	/**

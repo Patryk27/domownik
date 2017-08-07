@@ -2,8 +2,6 @@
 
 namespace App\Models;
 
-
-
 /**
  * @property int $id
  * @property int $base_budget_id

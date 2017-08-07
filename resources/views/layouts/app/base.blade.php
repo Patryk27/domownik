@@ -17,7 +17,7 @@
 
     {{-- Scripts --}}
     <script>
-      window.Laravel = {!! json_encode([
+        window.Laravel = {!! json_encode([
             'csrfToken' => csrf_token(),
         ]) !!};
     </script>
@@ -27,7 +27,7 @@
     <script src="{{ asset('js/third-party.js') }}"></script>
 
     <script>
-      window.App.Configuration.setLocale('{{ Configuration::getLanguage() }}');
+        window.App.Configuration.setLocale('{{ Configuration::getLanguage() }}');
     </script>
 
     @stack('scripts')

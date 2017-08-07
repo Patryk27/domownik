@@ -22,6 +22,7 @@ use Illuminate\Support\Collection;
  * @property Carbon $created_at
  * @property Model $value
  * @property TransactionCategory $category
+ * @property mixed $periodicity
  * @property Collection|TransactionPeriodicityOneShot[] $periodicityOneShots
  * @property Collection|TransactionPeriodicityDaily[] $periodicityDailies
  * @property Collection|TransactionPeriodicityWeekly[] $periodicityWeeklies

@@ -19,7 +19,7 @@ interface TransactionCategoryRepositoryContract
 	 * @param int $parentId
 	 * @return Collection|TransactionCategory[]
 	 */
-	public function getSubcategories(int $parentId): Collection;
+	public function getChildren(int $parentId): Collection;
 
 	/**
 	 * Returns category full name.

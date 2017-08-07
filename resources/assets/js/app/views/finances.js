@@ -1,5 +1,5 @@
 module.exports = {
-  Budget: require('./finances/budget'),
-  Transaction: require('./finances/transaction'),
-  TransactionCategory: require('./finances/transaction-category'),
+    Budgets: require('./finances/budgets'),
+    Transactions: require('./finances/transactions'),
+    TransactionCategories: require('./finances/transaction-categories'),
 };

@@ -7,9 +7,9 @@
 <p>
     @php($budgetCount = count($budgets))
 
-    {!! Lang::choice(__('models/budget.misc.found-count', [
-        'count' => $budgetCount,
-    ]), $budgetCount) !!}
+        {!! Lang::choice(__('models/budget.misc.found-count', [
+            'count' => $budgetCount,
+        ]), $budgetCount) !!}
 </p>
 
 @include('components.budget.list.compact', [

@@ -16,6 +16,6 @@
     <item name="transaction" icon="fa fa-tags">
         <item name="category-list"
               icon="fa fa-list"
-              url="/finances/transaction-category/list"/>
+              url="/finances/transaction-categories"/>
     </item>
 </sidebar>

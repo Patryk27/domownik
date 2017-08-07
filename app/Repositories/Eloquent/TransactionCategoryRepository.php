@@ -39,7 +39,7 @@ class TransactionCategoryRepository
 	/**
 	 * @inheritDoc
 	 */
-	public function getSubcategories(int $parentId): Collection {
+	public function getChildren(int $parentId): Collection {
 		$cacheKey = $this->getCacheKey(__FUNCTION__, func_get_args());
 		$cache = $this->getCache();
 

@@ -66,7 +66,7 @@ class LocalizationParser {
 	 * @param string $languagePath
 	 * @return $this
 	 */
-	protected function scanLanguageDirectory($languagePath): LocalizationParser {
+	protected function scanLanguageDirectory($languagePath) {
 		$languagePathInfo = pathinfo($languagePath);
 		$languageCode = $languagePathInfo['filename'];
 

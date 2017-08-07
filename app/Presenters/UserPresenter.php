@@ -3,7 +3,7 @@
 namespace App\Presenters;
 
 /**
- * @property $model \App\Models\User
+ * @property $model App\Models\User
  */
 class UserPresenter
 	extends AbstractPresenter {

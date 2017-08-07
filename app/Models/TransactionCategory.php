@@ -2,8 +2,6 @@
 
 namespace App\Models;
 
-
-
 use App\Presenters\TransactionCategoryPresenter;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
@@ -17,6 +15,7 @@ use Illuminate\Support\Collection;
  * @property Collection|TransactionCategory[] $subcategories
  * @property Collection|Transaction[] $transactions
  * @method TransactionCategoryPresenter getPresenter()
+ * @property string $full_name // set by the presenter
  */
 class TransactionCategory
 	extends Model {
@@ -70,6 +69,7 @@ class TransactionCategory
 			],
 
 			'flush-tags' => [
+				'Finances.Transaction',
 				'Finances.TransactionCategory',
 			],
 		];

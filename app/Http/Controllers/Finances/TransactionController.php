@@ -7,7 +7,8 @@ use App\Http\Controllers\Controller as BaseController;
 use App\Http\Requests\Transaction\Crud\StoreRequest as TransactionStoreRequest;
 use App\Http\Requests\Transaction\Crud\UpdateRequest as TransactionUpdateRequest;
 use App\Models\Transaction;
-use App\Services\Transaction\RequestProcessorContract as TransactionRequestProcessorContract;
+use App\Services\Transaction\Request\ProcessorContract as TransactionRequestProcessorContract;
+use Illuminate\Http\Request;
 
 class TransactionController
 	extends BaseController {
@@ -34,7 +35,7 @@ class TransactionController
 		$result = $this->transactionRequestProcessor->store($request);
 		$transaction = $result->getTransaction();
 
-		$this->flash('success', __('requests/transaction/crud.created'));
+		$this->flash('success', __('requests/transaction/crud.messages.stored'));
 
 		return response()->json([
 			'redirectUrl' => route('finances.transactions.edit', $transaction->id),
@@ -50,13 +51,18 @@ class TransactionController
 	}
 
 	/**
+	 * @param Request $request
 	 * @param Transaction $transaction
 	 * @return mixed
 	 * @throws InvalidRequestException
 	 */
-	public function edit(Transaction $transaction) {
+	public function edit(Request $request, Transaction $transaction) {
 		switch ($transaction->parent_type) {
 			case Transaction::PARENT_TYPE_BUDGET:
+				$request
+					->session()
+					->reflash();
+
 				return redirect()->route('finances.budgets.transactions.edit', [$transaction->parent_id, $transaction->id]);
 
 			default:
@@ -73,7 +79,7 @@ class TransactionController
 		$result = $this->transactionRequestProcessor->update($request, $id);
 		$transaction = $result->getTransaction();
 
-		$this->flash('success', __('requests/transaction.crud.updated'));
+		$this->flash('success', __('requests/transaction/crud.messages.updated'));
 
 		return response()->json([
 			'redirectUrl' => route('finances.transactions.edit', $transaction->id),

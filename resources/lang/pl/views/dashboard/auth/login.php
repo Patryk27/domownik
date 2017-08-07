@@ -12,6 +12,6 @@ return [
 	'remember-me' => [
 		'label' => 'Pamiętaj mnie',
 	],
-	
+
 	'submit' => 'Zaloguj się',
 ];

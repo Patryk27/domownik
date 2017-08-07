@@ -69,10 +69,12 @@ class FinancesServiceProvider
 	 * @return $this
 	 */
 	protected function bindServices(): self {
-		$this->app->bind(\App\Services\Budget\RequestProcessorContract::class, \App\Services\Budget\RequestProcessor::class);
-		$this->app->bind(\App\Services\Transaction\PeriodicityParserContract::class, \App\Services\Transaction\PeriodicityParser::class);
-		$this->app->bind(\App\Services\Transaction\RequestProcessorContract::class, \App\Services\Transaction\RequestProcessor::class);
-		$this->app->bind(\App\Services\Transaction\Category\RequestManagerContract::class, \App\Services\Transaction\Category\RequestManager::class);
+		$this->app->bind(\App\Services\Budget\Request\ProcessorContract::class, \App\Services\Budget\Request\Processor::class);
+
+		$this->app->bind(\App\Services\Transaction\Category\Request\ProcessorContract::class, \App\Services\Transaction\Category\Request\Processor::class);
+		$this->app->bind(\App\Services\Transaction\Category\TransformatorContract::class, \App\Services\Transaction\Category\Transformator::class);
+		$this->app->bind(\App\Services\Transaction\Periodicity\ParserContract::class, \App\Services\Transaction\Periodicity\Parser::class);
+		$this->app->bind(\App\Services\Transaction\Request\ProcessorContract::class, \App\Services\Transaction\Request\Processor::class);
 		$this->app->bind(\App\Services\Transaction\Schedule\ProcessorContract::class, \App\Services\Transaction\Schedule\Processor::class);
 		$this->app->bind(\App\Services\Transaction\Schedule\UpdaterContract::class, \App\Services\Transaction\Schedule\Updater::class);
 
@@ -101,7 +103,6 @@ class FinancesServiceProvider
 					} elseif ($custom instanceof Transaction) {
 						return $this->getTransactionBreadcrumb($custom);
 					}
-
 				}
 				return null;
 			}
@@ -121,7 +122,7 @@ class FinancesServiceProvider
 
 			/**
 			 * @param Transaction $transaction
-			 * @return Breadcrumb[]
+			 * @return Breadcrumb
 			 */
 			protected function getTransactionBreadcrumb(Transaction $transaction) {
 				return new Breadcrumb(

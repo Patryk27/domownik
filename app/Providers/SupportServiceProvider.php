@@ -17,7 +17,6 @@ class SupportServiceProvider
 		$this->app->bind('controller', \App\Support\Classes\Controller::class);
 		$this->app->bind('currency', \App\Support\Classes\Currency::class);
 		$this->app->bind('date', \App\Support\Classes\Date::class);
-		$this->app->bind('form', \App\Support\Classes\Form::class);
 		$this->app->bind('utils', \App\Support\Classes\Utils::class);
 	}
 

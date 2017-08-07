@@ -35,6 +35,7 @@ abstract class Search
 	 */
 	public function reset() {
 		$this->builder = $this->db->query();
+
 		return $this;
 	}
 

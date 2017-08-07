@@ -11,7 +11,7 @@ class HelpController
 	 * @return mixed
 	 */
 	public function error404() {
-		return view('dashboard.help/error-404');
+		return view('views.dashboard.help.errors.404');
 	}
 
 }

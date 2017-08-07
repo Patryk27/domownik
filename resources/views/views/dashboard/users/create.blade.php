@@ -9,6 +9,6 @@
             </div>
         </div>
 
-        @include('views.dashboard.users.partials.form')
+        @include('views.dashboard.users.create-edit.form')
     </div>
 @endsection

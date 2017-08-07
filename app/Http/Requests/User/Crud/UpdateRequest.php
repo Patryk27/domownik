@@ -9,8 +9,10 @@ class UpdateRequest
 	 * @return array
 	 */
 	public function rules(): array {
+		$userId = $this->route('user');
+
 		$rules = $this->patchRules(parent::rules(), [
-			// 'login' => 'unique:users,login', @todo
+			'login' => sprintf('unique:users,login,%d', $userId),
 		]);
 
 		if ($this->has('password')) {

@@ -1,78 +1,78 @@
 module.exports = (function() {
 
-  /**
-   * Message list.
-   * @type {{}}
-   */
-  var messages = {};
-
-  /**
-   * Currently selected locale.
-   * @type {?String}
-   */
-  var locale = null;
-
-  /**
-   * Returns given translation.
-   * Example keys:
-   *  'Finances:something.someone' or
-   *  ':something.someone', when referring to global namespace.
-   * @param {String} key
-   * @returns {String}
-   */
-  window.__ = function(key) {
-    return module.exports.getMessage(key);
-  }
-
-  //noinspection JSUnusedGlobalSymbols
-  return {
-
     /**
-     * @param {String} paramLocale
-     * @returns {exports}
+     * Message list.
+     * @type {{}}
      */
-    initialize: function(paramLocale) {
-      messages = window.AppLocalizationMessages;
-      locale = paramLocale;
-
-      return this;
-    },
+    var messages = {};
 
     /**
+     * Currently selected locale.
+     * @type {?String}
+     */
+    var locale = null;
+
+    /**
+     * Returns given translation.
+     * Example keys:
+     *  'Finances:something.someone' or
+     *  ':something.someone', when referring to global namespace.
      * @param {String} key
      * @returns {String}
      */
-    getMessage: function(key) {
-      var keyPath = [locale].concat(key.split('.'));
+    window.__ = function(key) {
+        return module.exports.getMessage(key);
+    };
 
-      try {
-        var keys = messages;
+    //noinspection JSUnusedGlobalSymbols
+    return {
 
-        for (var i = 0; i < keyPath.length; ++i) {
-          var keyItem = keyPath[i];
+        /**
+         * @param {String} paramLocale
+         * @returns {exports}
+         */
+        initialize: function(paramLocale) {
+            messages = window.AppLocalizationMessages;
+            locale = paramLocale;
 
-          if (!keys.hasOwnProperty(keyItem)) {
-            throw 'translation-not-found';
-          }
+            return this;
+        },
 
-          keys = keys[keyItem];
-        }
+        /**
+         * @param {String} key
+         * @returns {String}
+         */
+        getMessage: function(key) {
+            var keyPath = [locale].concat(key.split('.'));
 
-        return keys;
-      } catch (ex) {
-        if (ex === 'translation-not-found') {
-          /**
-           * Mock the Laravel behaviour - that is: return referenced language key
-           * except throwing an exception. Makes it easier for debugging.
-           */
+            try {
+                var keys = messages;
 
-          console.log('Translation key could not have been found: ' + key);
-          return key;
-        }
+                for (var i = 0; i < keyPath.length; ++i) {
+                    var keyItem = keyPath[i];
 
-        throw ex;
-      }
-    },
+                    if (!keys.hasOwnProperty(keyItem)) {
+                        throw 'translation-not-found';
+                    }
 
-  };
+                    keys = keys[keyItem];
+                }
+
+                return keys;
+            } catch (ex) {
+                if (ex === 'translation-not-found') {
+                    /**
+                     * Mock the Laravel behaviour - that is: return referenced language key
+                     * except throwing an exception. Makes it easier for debugging.
+                     */
+
+                    console.log('Translation key could not have been found: ' + key);
+                    return key;
+                }
+
+                throw ex;
+            }
+        },
+
+    };
 })();

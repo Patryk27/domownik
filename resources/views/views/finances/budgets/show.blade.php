@@ -11,10 +11,10 @@
 
 @push('scripts')
     <script>
-      var AppView = App.Views.Finances.Budget.Show.initializeView({
-        budgetId: {{ $budget->id }},
-        recentTransactionsChart: {{ json_encode($recentTransactionsChart) }}
-      });
+        var AppView = App.Views.Finances.Budgets.Show.initializeView({
+            budgetId: {{ $budget->id }},
+            recentTransactionsChart: {{ json_encode($recentTransactionsChart) }}
+        });
     </script>
 @endpush
 

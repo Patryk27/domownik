@@ -14,8 +14,9 @@ class DashboardServiceProvider
 	 * @inheritdoc
 	 */
 	public function register() {
-		$this->bindServices()
-			 ->prepareBreadcrumbs();
+		$this
+			->bindServices()
+			->prepareBreadcrumbs();
 
 		return $this;
 	}
@@ -24,7 +25,7 @@ class DashboardServiceProvider
 	 * @return $this
 	 */
 	protected function bindServices(): self {
-		$this->app->bind(\App\Services\User\RequestProcessorContract::class, \App\Services\User\RequestProcessor::class);
+		$this->app->bind(\App\Services\User\Request\ProcessorContract::class, \App\Services\User\Request\Processor::class);
 
 		return $this;
 	}
@@ -45,16 +46,26 @@ class DashboardServiceProvider
 			 * @inheritDoc
 			 */
 			public function getBreadcrumb($custom) {
-				if (is_object($custom) && $custom instanceof User) {
-					return new Breadcrumb(
-						route('dashboard.users.edit', $custom->id),
-						__('breadcrumbs.users.edit', [
-							'userName' => $custom->full_name,
-						])
-					);
+				if (is_object($custom)) {
+					if ($custom instanceof User) {
+						return $this->getUserBreadcrumb($custom);
+					}
 				}
 
 				return null;
+			}
+
+			/**
+			 * @param User $user
+			 * @return Breadcrumb
+			 */
+			protected function getUserBreadcrumb(User $user) {
+				return new Breadcrumb(
+					route('dashboard.users.edit', $user->id),
+					__('breadcrumbs.users.edit', [
+						'userName' => $user->full_name,
+					])
+				);
 			}
 
 		});

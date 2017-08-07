@@ -46,7 +46,7 @@ Route::group(['prefix' => 'finances', 'middleware' => 'auth'], function() {
 			'show' => 'finances.budgets.show',
 			'edit' => 'finances.budgets.edit',
 			'update' => 'finances.budgets.update',
-			'destroy' => 'finances.budgets.destroy',
+			'destroy' => 'finances.budgets.destroy', // @todo create this method
 		],
 	]);
 
@@ -65,18 +65,20 @@ Route::group(['prefix' => 'finances', 'middleware' => 'auth'], function() {
 			'show' => 'finances.transactions.show',
 			'edit' => 'finances.transactions.edit',
 			'update' => 'finances.transactions.update',
-			'destroy' => 'finances.transactions.destroy',
+			'destroy' => 'finances.transactions.destroy', // @todo create this method
 		],
 	]);
 
-	// /finances/transaction-category | @todo change to Route::resource
-	Route::group(['prefix' => 'transaction-category'], function() {
-		// /finances/transaction-category/list
-		Route::get('list', TransactionCategoryController::class . '@actionList')
-			 ->name('finances.transaction-category.list');
+	// /finances/transaction-categories
+	Route::resource('transaction-categories', TransactionCategoryController::class, [
+		'only' => [
+			'index',
+			'store',
+		],
 
-		// /finances/transaction-category/store
-		Route::post('store', TransactionCategoryController::class . '@actionStore')
-			 ->name('finances.transaction-category.store');
-	});
+		'names' => [
+			'index' => 'finances.transaction-categories.index',
+			'store' => 'finances.transaction-categories.store',
+		],
+	]);
 });

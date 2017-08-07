@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 

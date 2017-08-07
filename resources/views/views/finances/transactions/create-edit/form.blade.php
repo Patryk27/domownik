@@ -7,7 +7,7 @@
 
 @push('scripts')
     <script>
-      var AppView = App.Views.Finances.Transaction.CreateEdit.initializeView();
+        var AppView = App.Views.Finances.Transactions.CreateEdit.initializeView();
     </script>
 @endpush
 

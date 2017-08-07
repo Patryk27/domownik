@@ -11,7 +11,7 @@ class SearchController
 	 * @return mixed
 	 */
 	public function actionIndex() {
-		return view('dashboard.index/index');
+		return view('views.dashboard.index.index');
 	}
 
 }

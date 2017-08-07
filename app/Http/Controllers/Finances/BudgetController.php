@@ -9,7 +9,7 @@ use App\Models\Budget;
 use App\Models\Transaction;
 use App\Repositories\Contracts\BudgetRepositoryContract;
 use App\Services\Breadcrumb\Manager as BreadcrumbManager;
-use App\Services\Budget\RequestProcessorContract as BudgetRequestProcessorContract;
+use App\Services\Budget\Request\ProcessorContract as BudgetRequestProcessorContract;
 use App\Services\Search\Transaction\OneShotSearchContract as OneShotTransactionSearchContract;
 use App\Services\Search\Transaction\ScheduleSearchContract as TransactionScheduleSearchContract;
 use Carbon\Carbon;
@@ -116,7 +116,6 @@ class BudgetController
 	 */
 	public function edit(Budget $budget) {
 		$this->breadcrumbManager
-			->push(route('finances.budgets.index'), __('breadcrumbs.budgets.index'))
 			->push(route('finances.budgets.show', $budget->id), __('breadcrumbs.budgets.show', [
 				'budgetName' => $budget->name,
 			]))
@@ -157,7 +156,6 @@ class BudgetController
 	 */
 	public function show(Budget $budget) {
 		$this->breadcrumbManager
-			->push(route('finances.budgets.index'), __('breadcrumbs.budgets.index'))
 			->pushCustom($budget);
 
 		// get recently booked transactions

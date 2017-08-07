@@ -4,6 +4,7 @@ namespace App\Exceptions;
 
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\Request;
 
 class Handler
 	extends ExceptionHandler {
@@ -21,7 +22,7 @@ class Handler
 	];
 
 	/**
-	 * @param \Exception $exception
+	 * @param Exception $exception
 	 * @return void
 	 */
 	public function report(Exception $exception) {
@@ -29,9 +30,9 @@ class Handler
 	}
 
 	/**
-	 * @param \Illuminate\Http\Request $request
-	 * @param \Exception $exception
-	 * @return \Illuminate\Http\Response
+	 * @param Request $request
+	 * @param Exception $exception
+	 * @return mixed
 	 */
 	public function render($request, Exception $exception) {
 		$exceptionClass = get_class($exception);
@@ -45,7 +46,7 @@ class Handler
 	}
 
 	/**
-	 * @param \Illuminate\Http\Request $request
+	 * @param Request $request
 	 * @return \Illuminate\Http\Response
 	 * @internal param \Illuminate\Auth\AuthenticationException $exception
 	 */
@@ -60,7 +61,7 @@ class Handler
 	}
 
 	/**
-	 * @param \Exception $exception
+	 * @param Exception $exception
 	 * @return \Illuminate\Http\Response
 	 */
 	protected function renderExceptionWithWhoops(Exception $exception) {

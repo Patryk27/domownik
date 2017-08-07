@@ -8,7 +8,7 @@ use App\Http\Requests\User\Crud\UpdateRequest as UserUpdateRequest;
 use App\Models\User;
 use App\Repositories\Contracts\UserRepositoryContract;
 use App\Services\Breadcrumb\Manager as BreadcrumbManager;
-use App\Services\User\RequestProcessorContract as UserRequestManagerContract;
+use App\Services\User\Request\ProcessorContract as UserRequestProcessorContract;
 
 class UserController
 	extends BaseController {
@@ -24,19 +24,19 @@ class UserController
 	protected $userRepository;
 
 	/**
-	 * @var UserRequestManagerContract
+	 * @var UserRequestProcessorContract
 	 */
 	protected $userRequestProcessor;
 
 	/**
 	 * @param BreadcrumbManager $breadcrumbManager
 	 * @param UserRepositoryContract $userRepository
-	 * @param UserRequestManagerContract $userRequestProcessor
+	 * @param UserRequestProcessorContract $userRequestProcessor
 	 */
 	public function __construct(
 		BreadcrumbManager $breadcrumbManager,
 		UserRepositoryContract $userRepository,
-		UserRequestManagerContract $userRequestProcessor
+		UserRequestProcessorContract $userRequestProcessor
 	) {
 		// @todo ACL (root-only controller)
 
@@ -140,7 +140,7 @@ class UserController
 	public function destroy(User $user) {
 		$this->userRequestProcessor->delete($user->id);
 
-		flash(__('requests/user/crud.messages.deleted'), 'success');
+		$this->flash('success', __('requests/user/crud.messages.deleted'));
 
 		return response()->json([
 			'redirectUrl' => route('dashboard.users.index'),

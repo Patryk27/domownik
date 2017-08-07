@@ -30,7 +30,7 @@ class TransactionCategoryPresenter
 	 * Eg.: 'Hello -> World'.
 	 * @return string
 	 */
-	public function getFullName(): string{
+	public function getFullName(): string {
 		if ($this->model->offsetExists('full_name')) {
 			return $this->model->full_name;
 		}

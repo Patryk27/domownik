@@ -4,14 +4,13 @@ namespace App\Http\Controllers\Finances;
 
 use App\Exceptions\Exception;
 use App\Http\Controllers\Controller as BaseController;
-use App\Http\Requests\TransactionCategory\StoreRequest;
-use App\Models\TransactionCategory;
+use App\Http\Requests\Transaction\Category\StoreRequest as TransactionCategoryStoreRequest;
 use App\Repositories\Contracts\TransactionCategoryRepositoryContract;
 use App\Repositories\Contracts\TransactionRepositoryContract;
 use App\Services\Breadcrumb\Manager as BreadcrumbManager;
-use App\Services\Transaction\Category\RequestManagerContract;
+use App\Services\Transaction\Category\Request\ProcessorContract as TransactionCategoryRequestProcessorContract;
+use App\Services\Transaction\Category\TransformatorContract as TransactionCategoryTransformatorContract;
 use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
 
 class TransactionCategoryController
 	extends BaseController {
@@ -32,52 +31,66 @@ class TransactionCategoryController
 	protected $transactionCategoryRepository;
 
 	/**
-	 * @var RequestManagerContract
+	 * @var TransactionCategoryTransformatorContract
 	 */
-	protected $transactionCategoryRequestManagerService;
+	protected $transactionCategoryTransformator;
+
+	/**
+	 * @var TransactionCategoryRequestProcessorContract
+	 */
+	protected $transactionCategoryRequestProcessor;
 
 	/**
 	 * @param BreadcrumbManager $breadcrumbManager
 	 * @param TransactionRepositoryContract $transactionRepository
 	 * @param TransactionCategoryRepositoryContract $transactionCategoryRepository
-	 * @param RequestManagerContract $requestManagerService
+	 * @param TransactionCategoryTransformatorContract $transactionCategoryTransformator
+	 * @param TransactionCategoryRequestProcessorContract $transactionCategoryRequestProcessor
 	 */
 	public function __construct(
 		BreadcrumbManager $breadcrumbManager,
 		TransactionRepositoryContract $transactionRepository,
 		TransactionCategoryRepositoryContract $transactionCategoryRepository,
-		RequestManagerContract $requestManagerService
+		TransactionCategoryTransformatorContract $transactionCategoryTransformator,
+		TransactionCategoryRequestProcessorContract $transactionCategoryRequestProcessor
 	) {
 		$this->breadcrumbManager = $breadcrumbManager;
 		$this->transactionRepository = $transactionRepository;
 		$this->transactionCategoryRepository = $transactionCategoryRepository;
-		$this->transactionCategoryRequestManagerService = $requestManagerService;
+		$this->transactionCategoryTransformator = $transactionCategoryTransformator;
+		$this->transactionCategoryRequestProcessor = $transactionCategoryRequestProcessor;
 	}
 
 	/**
 	 * @param Request $request
 	 * @return mixed
 	 */
-	public function actionList(Request $request) {
+	public function index(Request $request) {
 		if ($request->ajax()) {
-			$transactionCategories = $this->transactionCategoryRepository->getMainCategories();
-			$tree = $this->prepareTransactionCategoryTree($transactionCategories);
+			$categories = $this->transactionCategoryRepository->getMainCategories();
+			$categoryTree = $this->transactionCategoryTransformator->convertListToTree($categories);
+			$categoryJsTree = $this->transactionCategoryTransformator->convertTreeToJsTree($categoryTree);
 
-			return response()->json($tree);
+			return response()->json($categoryJsTree);
 		}
 
-		$this->breadcrumbManager->push(route('finances.transaction-category.list'), __('breadcrumbs.transaction-category.list'));
+		$this->breadcrumbManager->push(route('finances.transaction-categories.index'), __('breadcrumbs.transaction-categories.index'));
 
-		return view('views.finances.transaction-category.list');
+		return view('views.finances.transaction-categories.index', [
+			'form' => [
+				'url' => route('finances.transaction-categories.store'),
+				'method' => 'put',
+			],
+		]);
 	}
 
 	/**
-	 * @param StoreRequest $request
+	 * @param TransactionCategoryStoreRequest $request
 	 * @return mixed
 	 */
-	public function actionStore(StoreRequest $request) {
+	public function store(TransactionCategoryStoreRequest $request) {
 		try {
-			$this->transactionCategoryRequestManagerService->store($request);
+			$this->transactionCategoryRequestProcessor->store($request);
 
 			return response()->json([
 				'success' => true,
@@ -88,26 +101,6 @@ class TransactionCategoryController
 				'message' => $ex->getMessage(),
 			]);
 		}
-	}
-
-	/**
-	 * @param Collection|TransactionCategory[] $transactionCategories
-	 * @return array
-	 */
-	protected function prepareTransactionCategoryTree(Collection $transactionCategories): array {
-		$result = [];
-
-		foreach ($transactionCategories as $transactionCategory) {
-			$categorySubcategories = $this->transactionCategoryRepository->getSubcategories($transactionCategory->id);
-
-			$result[] = [
-				'id' => $transactionCategory->id,
-				'text' => $transactionCategory->name,
-				'children' => $this->prepareTransactionCategoryTree($categorySubcategories),
-			];
-		}
-
-		return $result;
 	}
 
 }

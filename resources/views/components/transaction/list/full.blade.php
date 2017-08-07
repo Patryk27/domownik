@@ -8,9 +8,9 @@
 <p>
     @php($transactionCount = count($transactions))
 
-    {!! Lang::choice(__('models/transaction.misc.found-count', [
-        'count' => $transactionCount,
-    ]), $transactionCount) !!}
+        {!! Lang::choice(__('models/transaction.misc.found-count', [
+            'count' => $transactionCount,
+        ]), $transactionCount) !!}
 </p>
 
 @include('components.transaction.list.compact', [

@@ -1,3 +1,3 @@
 module.exports = {
-  Finances: require('./views/finances'),
+    Finances: require('./views/finances'),
 };

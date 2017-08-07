@@ -15,8 +15,9 @@
     <thead>
     <tr>
         @if($showCounter)
-            <th>{{ __('components/table.head.row-counter') }}</th>
+            <th>{{ __('components/table.row-counter') }}</th>
         @endif
+
         <th>{{ __('models/transaction.fields.date') }}</th>
         <th>{{ __('models/transaction.fields.name') }}</th>
         <th>{{ __('models/transaction.fields.value') }}</th>
@@ -28,60 +29,60 @@
     </thead>
     <tbody>
     @php($counter = 0)
-    @foreach ($transactions as $item)
-        @php
-            /**
-              * @var \App\Models\Transaction|\App\ValueObjects\ScheduledTransaction $transaction
-              */
+        @foreach ($transactions as $item)
+            @php
+                /**
+                  * @var \App\Models\Transaction|\App\ValueObjects\ScheduledTransaction $transaction
+                  */
 
-            if ($item instanceof \App\ValueObjects\ScheduledTransaction) {
-                $transaction = $item->getTransaction();
-                $date = $item->getDate();
-            } else {
-                $transaction = $item;
-                $date = $item->periodicity->date;
-            }
+                if ($item instanceof \App\ValueObjects\ScheduledTransaction) {
+                    $transaction = $item->getTransaction();
+                    $date = $item->getDate();
+                } else {
+                    $transaction = $item;
+                    $date = $item->periodicity->date;
+                }
 
-            $transactionPresenter = $transaction->getPresenter();
-        @endphp
-        <tr>
-            {{-- Row counter --}}
-            @if($showCounter)
-                <td>{{ ++$counter }}</td>
-            @endif
+                $transactionPresenter = $transaction->getPresenter();
+            @endphp
+            <tr>
+                {{-- Row counter --}}
+                @if($showCounter)
+                    <td>{{ ++$counter }}</td>
+                @endif
 
-            {{-- Transaction date --}}
-            <td>{{ Date::format('%Y-%m-%e %a', $date) }}</td>
+                {{-- Transaction date --}}
+                <td>{{ Date::format('%Y-%m-%e %a', $date) }}</td>
 
-            {{-- Transaction name --}}
-            <td>{{ $transaction->name }}</td>
+                {{-- Transaction name --}}
+                <td>{{ $transaction->name }}</td>
 
-            {{-- Transaction value --}}
-            <td>
-                @include('components.transaction.value', [
-                    'transaction' => $transaction,
-                ])
-            </td>
-
-            {{-- Action buttons --}}
-            @if(isset($transactionButtons))
-                <td class="transaction-list-buttons">
-                    @if (in_array('edit-parent', $transactionButtons) && isset($transaction->parent_transaction_id))
-                        <a class="btn btn-xs btn-default" href="{{ $transactionPresenter->getParentEditUrl() }}">
-                            <i class="fa fa-level-up"></i>
-                        </a>
-                    @endif
-
-                    @if (in_array('edit', $transactionButtons))
-                        <a class="btn btn-xs btn-primary" href="{{ $transactionPresenter->getEditUrl() }}">
-                            <i class="fa fa-cog"></i>
-                        </a>
-                    @endif
+                {{-- Transaction value --}}
+                <td>
+                    @include('components.transaction.value', [
+                        'transaction' => $transaction,
+                    ])
                 </td>
-            @endif
-        </tr>
 
-        @php(++$counter)
-    @endforeach
+                {{-- Action buttons --}}
+                @if(isset($transactionButtons))
+                    <td class="transaction-list-buttons">
+                        @if (in_array('edit-parent', $transactionButtons) && isset($transaction->parent_transaction_id))
+                            <a class="btn btn-xs btn-default" href="{{ $transactionPresenter->getParentEditUrl() }}">
+                                <i class="fa fa-level-up"></i>
+                            </a>
+                        @endif
+
+                        @if (in_array('edit', $transactionButtons))
+                            <a class="btn btn-xs btn-primary" href="{{ $transactionPresenter->getEditUrl() }}">
+                                <i class="fa fa-cog"></i>
+                            </a>
+                        @endif
+                    </td>
+                @endif
+            </tr>
+
+            @php(++$counter)
+                @endforeach
     </tbody>
 </table>

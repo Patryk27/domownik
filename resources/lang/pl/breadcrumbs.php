@@ -26,7 +26,7 @@ return [
 		'edit' => 'Edycja transakcji: :transactionName',
 	],
 
-	'transaction-category' => [
-		'list' => 'Zarządzanie kategoriami transakcji',
+	'transaction-categories' => [
+		'index' => 'Zarządzanie kategoriami transakcji',
 	],
 ];

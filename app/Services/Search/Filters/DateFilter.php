@@ -59,7 +59,7 @@ class DateFilter
 					if (!is_array($this->value)) {
 						throw new InvalidOperatorException('Expected an array value for operator [between].');
 					}
-					
+
 					$builder->whereBetween($this->columnName, $this->value[0], $this->value[1]);
 					break;
 

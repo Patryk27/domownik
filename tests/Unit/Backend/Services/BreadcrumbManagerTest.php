@@ -3,6 +3,7 @@
 use App\Services\Breadcrumb\CustomPushHandlerContract;
 use App\Services\Breadcrumb\Manager as BreadcrumbManager;
 use App\ValueObjects\Breadcrumb as BreadcrumbVO;
+use stdClass;
 use Tests\Unit\TestCase;
 
 class BreadcrumbManagerTest
@@ -35,7 +36,7 @@ class BreadcrumbManagerTest
 		$this->expectExceptionMessage('No valid custom push handler found.');
 
 		$breadcrumbManager = new BreadcrumbManager();
-		$breadcrumbManager->pushCustom(new \stdClass());
+		$breadcrumbManager->pushCustom(new stdClass());
 	}
 
 	/**
@@ -50,7 +51,7 @@ class BreadcrumbManagerTest
 			 * @inheritDoc
 			 */
 			public function getBreadcrumb($custom) {
-				if ($custom instanceof \stdClass && isset($custom->url, $custom->name)) {
+				if ($custom instanceof stdClass && isset($custom->url, $custom->name)) {
 					return new BreadcrumbVO($custom->url, $custom->name);
 				}
 
@@ -60,7 +61,7 @@ class BreadcrumbManagerTest
 		});
 
 		// prepare and push custom breadcrumb
-		$custom = new \stdClass();
+		$custom = new stdClass();
 		$custom->url = 'custom-url';
 		$custom->name = 'custom-name';
 
@@ -77,7 +78,7 @@ class BreadcrumbManagerTest
 
 		// check if it fails on some other object
 		$this->expectExceptionMessage('No valid custom push handler found.');
-		$breadcrumbManager->pushCustom(new \stdClass());
+		$breadcrumbManager->pushCustom(new stdClass());
 	}
 
 }
