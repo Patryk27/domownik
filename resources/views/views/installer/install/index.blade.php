@@ -3,7 +3,7 @@
 @section('content')
     <div class="text-center">
         <h4>
-            {{ __('Installer::views/install/index.messages')[0] }}
+            {{ __('views/installer/install/index.messages')[0] }}
         </h4>
 
         <p style="margin:30px 0">
@@ -11,7 +11,7 @@
         </p>
 
         <p>
-            {!! __('Installer::views/install/index.messages')[1] !!}
+            {!! __('views/installer/install/index.messages')[1] !!}
         </p>
     </div>
 @endsection

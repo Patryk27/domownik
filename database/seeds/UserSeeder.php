@@ -2,6 +2,7 @@
 
 use App\Models\User;
 use App\Services\Logger\Contract as LoggerContract;
+use Illuminate\Database\Connection as DatabaseConnection;
 use Illuminate\Database\Seeder;
 
 class UserSeeder
@@ -13,26 +14,31 @@ class UserSeeder
 	protected $log;
 
 	/**
+	 * @var DatabaseConnection
+	 */
+	protected $db;
+
+	/**
 	 * @param LoggerContract $log
+	 * @param DatabaseConnection $db
 	 */
 	public function __construct(
-		LoggerContract $log
+		LoggerContract $log,
+		DatabaseConnection $db
 	) {
 		$this->log = $log;
+		$this->db = $db;
 	}
 
 	/**
 	 * @return void
 	 */
 	public function run() {
-		$user =
-			User::where('login', 'admin')
-				->first();
+		$this->log->info('Truncating \'users\' table...');
 
-		if (!empty($user)) {
-			$this->log->warning('Not creating \'admin\' user because one already exists.');
-			return;
-		}
+		$this->db
+			->table('users')
+			->delete();
 
 		$this->log->info('Creating \'admin\' user...');
 

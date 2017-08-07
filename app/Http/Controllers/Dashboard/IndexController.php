@@ -8,9 +8,9 @@ class IndexController
 	extends BaseController {
 
 	/**
-	 * @return \Illuminate\Http\Response
+	 * @return mixed
 	 */
-	public function actionIndex() {
+	public function index() {
 		return view('views.dashboard.index.index');
 	}
 

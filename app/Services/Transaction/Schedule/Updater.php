@@ -5,10 +5,11 @@ namespace App\Services\Transaction\Schedule;
 use App\Models\TransactionSchedule;
 use App\Repositories\Contracts\TransactionScheduleRepositoryContract;
 use App\Services\Logger\Contract as LoggerContract;
-use App\Services\Transaction\PeriodicityParserContract;
+use App\Services\Transaction\Periodicity\ParserContract as TransactionPeriodicityParserContract;
 use App\Support\Facades\Date;
 use Carbon\Carbon;
 use Illuminate\Database\Connection as DatabaseConnection;
+use Throwable;
 
 class Updater
 	implements UpdaterContract {
@@ -29,26 +30,26 @@ class Updater
 	protected $transactionScheduleRepository;
 
 	/**
-	 * @var PeriodicityParserContract
+	 * @var TransactionPeriodicityParserContract
 	 */
-	protected $transactionPeriodicityParserService;
+	protected $transactionPeriodicityParser;
 
 	/**
 	 * @param LoggerContract $log
 	 * @param DatabaseConnection $db
 	 * @param TransactionScheduleRepositoryContract $transactionScheduleRepository
-	 * @param PeriodicityParserContract $transactionPeriodicityParserService
+	 * @param TransactionPeriodicityParserContract $transactionPeriodicityParser
 	 */
 	public function __construct(
 		LoggerContract $log,
 		DatabaseConnection $db,
 		TransactionScheduleRepositoryContract $transactionScheduleRepository,
-		PeriodicityParserContract $transactionPeriodicityParserService
+		TransactionPeriodicityParserContract $transactionPeriodicityParser
 	) {
 		$this->log = $log;
 		$this->db = $db;
 		$this->transactionScheduleRepository = $transactionScheduleRepository;
-		$this->transactionPeriodicityParserService = $transactionPeriodicityParserService;
+		$this->transactionPeriodicityParser = $transactionPeriodicityParser;
 	}
 
 	/**
@@ -64,12 +65,12 @@ class Updater
 		try {
 			$this->transactionScheduleRepository->deleteByTransactionId($transactionId);
 
-			$this->transactionPeriodicityParserService
+			$this->transactionPeriodicityParser
 				->reset()
 				->setTransactionId($transactionId)
-				->setDateRange($this->getScheduleUpdateBeginningDate(), $this->getScheduleUpdateEndingDate());
+				->setDateRange($this->getScheduleUpdateFrom(), $this->getScheduleUpdateTo());
 
-			$dates = $this->transactionPeriodicityParserService->getRows();
+			$dates = $this->transactionPeriodicityParser->getRows();
 
 			foreach ($dates as $date) {
 				if ($date->lt($today)) {
@@ -86,7 +87,7 @@ class Updater
 			}
 
 			$this->db->commit();
-		} catch (\Throwable $ex) {
+		} catch (Throwable $ex) {
 			$this->db->rollBack();
 			throw $ex;
 		} finally {
@@ -103,17 +104,15 @@ class Updater
 	/**
 	 * @return Carbon
 	 */
-	protected function getScheduleUpdateBeginningDate() {
-		$date = Date::stripTime(new Carbon('now'));
-
-		return $date;
+	protected function getScheduleUpdateFrom(): Carbon {
+		return Date::stripTime(new Carbon('now'));
 	}
 
 	/**
 	 * @return Carbon
 	 */
-	protected function getScheduleUpdateEndingDate() {
-		$date = $this->getScheduleUpdateBeginningDate();
+	protected function getScheduleUpdateTo(): Carbon {
+		$date = $this->getScheduleUpdateFrom();
 		$date->addYear(1);
 
 		return $date;

@@ -3,18 +3,16 @@
 namespace App\Http\Controllers\Finances;
 
 use App\Http\Controllers\Controller as BaseController;
-use App\Http\Requests\Budget\StoreRequest as BudgetStoreRequest;
+use App\Http\Requests\Budget\Crud\StoreRequest as BudgetStoreRequest;
+use App\Http\Requests\Budget\Crud\UpdateRequest as BudgetUpdateRequest;
 use App\Models\Budget;
 use App\Models\Transaction;
 use App\Repositories\Contracts\BudgetRepositoryContract;
-use App\Repositories\Contracts\TransactionRepositoryContract;
-use App\Repositories\Contracts\TransactionScheduleRepositoryContract;
 use App\Services\Breadcrumb\Manager as BreadcrumbManager;
-use App\Services\Budget\RequestManagerContract as BudgetRequestManagerContract;
-use App\Services\Transaction\HistoryCollectorContract;
-use App\Support\Facades\Date;
+use App\Services\Budget\Request\ProcessorContract as BudgetRequestProcessorContract;
+use App\Services\Search\Transaction\OneShotSearchContract as OneShotTransactionSearchContract;
+use App\Services\Search\Transaction\ScheduleSearchContract as TransactionScheduleSearchContract;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 
 class BudgetController
@@ -26,244 +24,193 @@ class BudgetController
 	protected $breadcrumbManager;
 
 	/**
-	 * @var BudgetRequestManagerContract
-	 */
-	protected $budgetRequestManager;
-
-	/**
 	 * @var BudgetRepositoryContract
 	 */
 	protected $budgetRepository;
 
 	/**
-	 * @var TransactionRepositoryContract
+	 * @var BudgetRequestProcessorContract
 	 */
-	protected $budgetTransactionRepository;
+	protected $budgetRequestProcessor;
 
 	/**
-	 * @var TransactionScheduleRepositoryContract
+	 * @var OneShotTransactionSearchContract
 	 */
-	protected $transactionScheduleRepository;
+	protected $oneShotTransactionSearch;
 
 	/**
-	 * @var HistoryCollectorContract
+	 * @var TransactionScheduleSearchContract
 	 */
-	protected $transactionHistoryCollectorService;
+	protected $transactionScheduleSearch;
 
 	/**
 	 * @param BreadcrumbManager $breadcrumbManager
-	 * @param BudgetRequestManagerContract $budgetRequestManager
 	 * @param BudgetRepositoryContract $budgetRepository
-	 * @param TransactionRepositoryContract $budgetTransactionRepository
-	 * @param TransactionScheduleRepositoryContract $transactionScheduleRepository
-	 * @param HistoryCollectorContract $transactionHistoryCollectorService
-	 * @internal param HistoryCollectorContract $historyCollectorService
+	 * @param BudgetRequestProcessorContract $budgetRequestProcessor
+	 * @param OneShotTransactionSearchContract $oneShotTransactionSearch
+	 * @param TransactionScheduleSearchContract $transactionScheduleSearch
 	 */
 	public function __construct(
 		BreadcrumbManager $breadcrumbManager,
-		BudgetRequestManagerContract $budgetRequestManager,
 		BudgetRepositoryContract $budgetRepository,
-		TransactionRepositoryContract $budgetTransactionRepository,
-		TransactionScheduleRepositoryContract $transactionScheduleRepository,
-		HistoryCollectorContract $transactionHistoryCollectorService
+		BudgetRequestProcessorContract $budgetRequestProcessor,
+		OneShotTransactionSearchContract $oneShotTransactionSearch,
+		TransactionScheduleSearchContract $transactionScheduleSearch
 	) {
 		$this->breadcrumbManager = $breadcrumbManager;
-		$this->budgetRequestManager = $budgetRequestManager;
 		$this->budgetRepository = $budgetRepository;
-		$this->budgetTransactionRepository = $budgetTransactionRepository;
-		$this->transactionScheduleRepository = $transactionScheduleRepository;
-		$this->transactionHistoryCollectorService = $transactionHistoryCollectorService;
+		$this->budgetRequestProcessor = $budgetRequestProcessor;
+		$this->oneShotTransactionSearch = $oneShotTransactionSearch;
+		$this->transactionScheduleSearch = $transactionScheduleSearch;
 	}
 
 	/**
-	 * @return \Illuminate\Http\Response
+	 * @return mixed
 	 */
-	public function actionCreate() {
-		$this->breadcrumbManager->push(route('finances.budget.create'), __('breadcrumbs.budget.create'));
+	public function index() {
+		$this->breadcrumbManager->push(route('finances.budgets.index'), __('breadcrumbs.budgets.index'));
 
-		return view('views.finances.budget.create', [
-			'budgetTypes' => Budget::getTypes(),
-			'activeBudgets' => $this->budgetRepository->getActiveBudgets(),
-		]);
-	}
+		$budgets = $this->budgetRepository->getActiveBudgets();
 
-	/**
-	 * @param BudgetStoreRequest $request
-	 * @return \Illuminate\Http\Response
-	 */
-	public function actionStore(BudgetStoreRequest $request) {
-		$this->budgetRequestManager->store($request);
-
-		$budget = $this->budgetRequestManager->getBudget();
-
-		flash(__('requests/budget/store.messages.success', [
-			'budgetName' => $budget->name,
-		]), 'success');
-
-		return response()->json([
-			'redirectUrl' => route('finances.budget.show', $budget->id),
-		]);
-	}
-
-	/**
-	 * @param Budget $budget
-	 * @return \Illuminate\Http\Response
-	 */
-	public function actionShow(Budget $budget) {
-		$this->breadcrumbManager->pushCustom($budget);
-
-		// prepare budget history
-		$this->transactionHistoryCollectorService
-			->reset()
-			->setParentType(Transaction::PARENT_TYPE_BUDGET)
-			->setParentId($budget->id)
-			->setDateTo(new Carbon('now'))
-			->setSortDirection('asc');
-
-		$recentTransactionsChart = $this->transactionHistoryCollectorService->getRowsForChart();
-
-		$recentTransactions =
-			$this->transactionHistoryCollectorService
-				->getRows()
-				->reverse()
-				->take(5); // @todo make this value configurable somewhere for the user
-
-		// prepare incoming transactions
-		$dateFrom = Date::stripTime(new Carbon('now'));
-
-		$dateTo =
-			$dateFrom
-				->copy()
-				->addYear();
-
-		$incomingTransactions = $this->transactionScheduleRepository->getByBudgetId($budget->id, $dateFrom, $dateTo);
-		$incomingTransactions = $incomingTransactions->take(5); // @todo make this value configurable somewhere for the user
-
-		return view('views.finances.budget.show', [
-			'budget' => $budget,
-			'recentTransactions' => $recentTransactions,
-			'recentTransactionsChart' => json_encode($recentTransactionsChart),
-			'incomingTransactions' => $incomingTransactions,
+		return view('views.finances.budgets.index', [
+			'budgets' => $budgets,
 		]);
 	}
 
 	/**
 	 * @return mixed
 	 */
-	public function actionList() {
-		$this->breadcrumbManager->push(route('finances.budget.list'), __('breadcrumbs.budget.list'));
+	public function create() {
+		$this->breadcrumbManager
+			->push(route('finances.budgets.index'), __('breadcrumbs.budgets.index'))
+			->push(route('finances.budgets.create'), __('breadcrumbs.budgets.create'));
 
-		$budgets = $this->budgetRepository->getActiveBudgets();
+		return view('views.finances.budgets.create', [
+			'form' => [
+				'url' => route('finances.budgets.store'),
+				'method' => 'post',
+			],
 
-		return view('views.finances.budget.list', [
-			'budgets' => $budgets,
+			'budgetsSelect' => $this->getBudgetsSelect(),
+		]);
+	}
+
+	/**
+	 * @param BudgetStoreRequest $request
+	 * @return mixed
+	 */
+	public function store(BudgetStoreRequest $request) {
+		$result = $this->budgetRequestProcessor->store($request);
+		$budget = $result->getBudget();
+
+		$this->flash('success', __('requests/budget/crud.messages.stored'));
+
+		return response()->json([
+			'redirectUrl' => route('finances.budgets.edit', $budget->id),
 		]);
 	}
 
 	/**
 	 * @param Budget $budget
-	 * @param Request $request
-	 * @return \Illuminate\Http\Response
+	 * @return mixed
 	 */
-	public function actionShowRecentTransactions(Budget $budget, Request $request) {
+	public function edit(Budget $budget) {
 		$this->breadcrumbManager
-			->pushCustom($budget)
-			->push(route('finances.budget.show-recent-transactions', $budget->id), __('breadcrumbs.budget.show-recent-transactions'));
+			->push(route('finances.budgets.show', $budget->id), __('breadcrumbs.budgets.show', [
+				'budgetName' => $budget->name,
+			]))
+			->push(route('finances.budgets.edit', $budget->id), __('breadcrumbs.budgets.edit', [
+				'budgetName' => $budget->name,
+			]));
 
-		// load request data
-		$dateFrom = $request->get('dateFrom');
-		$dateTo = $request->get('dateTo');
-		$count = $request->get('count');
+		return view('views.finances.budgets.edit', [
+			'form' => [
+				'url' => route('finances.budgets.update', $budget->id),
+				'method' => 'put',
+			],
 
-		// prepare date range
-		if (empty($dateFrom)) {
-			$dateFrom = null;
-		} else {
-			$dateFrom = new Carbon($dateFrom);
-		}
-
-		if (empty($dateTo)) {
-			$dateTo = new Carbon('now');
-		} else {
-			$dateTo = new Carbon($dateTo);
-		}
-
-		// check if date range is valid
-		if ($dateTo < $dateFrom) {
-			$transactions = new Collection();
-			flash()->warning(__('views/finances/budget/show-recent-transactions.messages.date-to-is-before-from'));
-		} else {
-			$this->transactionHistoryCollectorService
-				->reset()
-				->setParentType(Transaction::PARENT_TYPE_BUDGET)
-				->setParentId($budget->id)
-				->setDateFrom($dateFrom)
-				->setDateTo($dateTo)
-				->setSortDirection('asc');
-
-			$transactions =
-				$this->transactionHistoryCollectorService
-					->getRows()
-					->reverse();
-
-			if (isset($count)) {
-				$transactions = $transactions->take($count);
-			}
-		}
-
-		return view('views.finances.budget.show-recent-transactions', [
 			'budget' => $budget,
-			'transactions' => $transactions,
-			'dateFrom' => isset($dateFrom) ? $dateFrom->format('Y-m-d') : '', // @todo format should not be hardcoded
-			'dateTo' => $dateTo->format('Y-m-d'), // @todo format should not be hardcoded
-			'count' => $count,
+			'budgetsSelect' => $this->getBudgetsSelect(),
+		]);
+	}
+
+	/**
+	 * @param BudgetUpdateRequest $request
+	 * @param int $id
+	 * @return mixed
+	 */
+	public function update(BudgetUpdateRequest $request, int $id) {
+		$result = $this->budgetRequestProcessor->update($request, $id);
+		$budget = $result->getBudget();
+
+		$this->flash('success', __('requests/budget/crud.messages.updated'));
+
+		return response()->json([
+			'redirectUrl' => route('finances.budgets.edit', $budget->id),
 		]);
 	}
 
 	/**
 	 * @param Budget $budget
-	 * @param Request $request
-	 * @return \Illuminate\Http\Response
+	 * @return mixed
 	 */
-	public function actionShowIncomingTransactions(Budget $budget, Request $request) {
+	public function show(Budget $budget) {
 		$this->breadcrumbManager
-			->pushCustom($budget)
-			->push(route('finances.budget.show-incoming-transactions', $budget->id), __('breadcrumbs.budget.show-incoming-transactions'));
+			->pushCustom($budget);
 
-		// load request data
-		$dateFrom = $request->get('dateFrom');
-		$dateTo = $request->get('dateTo');
+		// get recently booked transactions
+		$this->oneShotTransactionSearch
+			->parent(Transaction::PARENT_TYPE_BUDGET, $budget->id)
+			->date('<=', new Carbon());
 
-		// prepare date range
-		if (empty($dateFrom)) {
-			$dateFrom = Date::stripTime(new Carbon('now'));
-		} else {
-			$dateFrom = new Carbon($dateFrom);
-		}
+		$this->oneShotTransactionSearch
+			->getQueryBuilder()
+			->orderBy(OneShotTransactionSearchContract::ORDER_DATE, 'desc');
 
-		if (empty($dateTo)) {
-			$dateTo =
-				$dateFrom
-					->copy()
-					->addMonth();
-		} else {
-			$dateTo = new Carbon($dateTo);
-		}
+		$recentTransactionsChart = $this->oneShotTransactionSearch->getChart();
 
-		// check if date range is valid
-		if ($dateTo < $dateFrom) {
-			$transactions = new Collection();
-			flash()->warning(__('views/finances/budget/show-incoming-transactions.messages.date-to-is-before-from'));
-		} else {
-			$transactions = $this->transactionScheduleRepository->getByBudgetId($budget->id, $dateFrom, $dateTo);
-		}
+		$this->oneShotTransactionSearch
+			->getQueryBuilder()
+			->limit(5);
 
-		return view('views.finances.budget.show-incoming-transactions', [
+		$recentTransactions = $this->oneShotTransactionSearch->get();
+
+		// get incoming transactions
+		$this->transactionScheduleSearch
+			->parent(Transaction::PARENT_TYPE_BUDGET, $budget->id)
+			->date('>=', new Carbon());
+
+		$this->transactionScheduleSearch
+			->getQueryBuilder()
+			->orderBy(TransactionScheduleSearchContract::ORDER_DATE, 'asc')
+			->orderBy(TransactionScheduleSearchContract::TRANSACTION_ID, 'asc')
+			->limit(5);
+
+		$incomingTransactions =
+			$this->transactionScheduleSearch
+				->get()
+				->reverse();
+
+		return view('views.finances.budgets.show', [
 			'budget' => $budget,
-			'transactions' => $transactions,
-			'dateFrom' => $dateFrom->format('Y-m-d'), // @todo format should not be hardcoded
-			'dateTo' => $dateTo->format('Y-m-d'), // @todo format should not be hardcoded
+			'recentTransactions' => $recentTransactions,
+			'recentTransactionsChart' => $recentTransactionsChart,
+			'incomingTransactions' => $incomingTransactions,
 		]);
+	}
+
+	/**
+	 * @return Collection
+	 */
+	protected function getBudgetsSelect(): Collection {
+		return
+			$this->budgetRepository
+				->getActiveBudgets()
+				->mapWithKeys(function(Budget $budget) {
+					return [
+						$budget->id => $budget->name,
+					];
+				});
 	}
 
 }

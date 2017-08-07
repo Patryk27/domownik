@@ -1,7 +1,7 @@
 window.App = {
-  Configuration: require('./app/configuration'),
-  Language: require('./app/language'),
-  Views: require('./app/views'),
+    Configuration: require('./app/configuration'),
+    Language: require('./app/language'),
+    Views: require('./app/views'),
 };
 
 require('./bootstrap');
@@ -16,10 +16,10 @@ require('highcharts/modules/exporting')(window.Highcharts);
  * Bootstraps the application.
  */
 (function($) {
-  $(function() {
-    var bootstrap = require('./app/bootstrap');
-    bootstrap.bootstrapApplication();
-  });
+    $(function() {
+        var bootstrap = require('./app/bootstrap');
+        bootstrap.bootstrapApplication();
+    });
 })(jQuery);
 
 //noinspection JSUnusedLocalSymbols

@@ -1,4 +1,5 @@
-require('./jquery/ajaxForm');
-require('./jquery/fieldsRequired');
+require('./jquery/ajax-form');
+require('./jquery/confirm-button');
+require('./jquery/fields-required');
 require('./jquery/form');
-require('./jquery/serializeObject');
+require('./jquery/serialize-object');

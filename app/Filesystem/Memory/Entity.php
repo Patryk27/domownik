@@ -54,7 +54,7 @@ class Entity {
 	 * @param mixed $contents
 	 * @return Entity
 	 */
-	public static function buildFile(string $name, $contents = null) {
+	public static function buildFile(string $name, $contents = null): Entity {
 		$entity = new self(self::TYPE_FILE, $name);
 		$entity->setContents($contents);
 
@@ -67,7 +67,7 @@ class Entity {
 	 * @param Entity[] $children
 	 * @return Entity
 	 */
-	public static function buildDirectory(string $name, array $children = []) {
+	public static function buildDirectory(string $name, array $children = []): Entity {
 		$entity = new self(self::TYPE_DIRECTORY, $name);
 		$entity->setChildren($children);
 
@@ -78,7 +78,7 @@ class Entity {
 	 * @param string|array $path
 	 * @return Entity|null
 	 */
-	public function findByPath($path) {
+	public function findByPath($path): ?Entity {
 		if (is_string($path)) {
 			$pathItems = explode('/', $path);
 		} else {
@@ -119,7 +119,7 @@ class Entity {
 	 * @return Entity|null
 	 * @throws FileNotFoundException
 	 */
-	public function findByPathOrFail($path) {
+	public function findByPathOrFail($path): ?Entity {
 		$entity = $this->findByPath($path);
 
 		if (empty($entity)) {
@@ -138,9 +138,9 @@ class Entity {
 
 	/**
 	 * @param string $type
-	 * @return Entity
+	 * @return $this
 	 */
-	public function setType(string $type): Entity {
+	public function setType(string $type) {
 		$this->type = $type;
 		return $this;
 	}
@@ -154,9 +154,9 @@ class Entity {
 
 	/**
 	 * @param string $name
-	 * @return Entity
+	 * @return $this
 	 */
-	public function setName(string $name): Entity {
+	public function setName(string $name) {
 		$this->name = $name;
 		return $this;
 	}
@@ -170,18 +170,19 @@ class Entity {
 
 	/**
 	 * @param Entity[] $children
-	 * @return Entity
+	 * @return $this
 	 */
-	public function setChildren(array $children): Entity {
+	public function setChildren(array $children) {
 		$this->children = $children;
 		return $this;
 	}
 
 	/**
 	 * @param Entity $child
-	 * @return Entity
+	 * @return $this
+	 * @throws FileExistsException
 	 */
-	public function addChild(self $child): self {
+	public function addChild(self $child) {
 		$childName = $child->getName();
 
 		if (array_key_exists($childName, $this->children)) {

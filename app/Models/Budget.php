@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-
 use Carbon\Carbon;
 
 /**
@@ -51,6 +50,13 @@ class Budget
 	public $presenterClass = \App\Presenters\BudgetPresenter::class;
 
 	/**
+	 * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+	 */
+	public function consolidatedBudgets() {
+		return $this->belongsToMany(self::class, 'budget_consolidations', 'base_budget_id', 'subject_budget_id');
+	}
+
+	/**
 	 * @return \Illuminate\Database\Eloquent\Relations\MorphMany
 	 */
 	public function transactions() {
@@ -60,11 +66,18 @@ class Budget
 	/**
 	 * @return string[]
 	 */
-	public static function getTypes() {
+	public static function getTypes(): array {
 		return [
 			self::TYPE_REGULAR,
 			self::TYPE_CONSOLIDATED,
 		];
+	}
+
+	/**
+	 * @return string[]
+	 */
+	public static function getTypesSelect(): array {
+		return map_translation(self::getTypes(), 'models/budget.enums.types.%s');
 	}
 
 	/**

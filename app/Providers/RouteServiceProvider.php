@@ -24,16 +24,16 @@ class RouteServiceProvider
 		InstallManager $installManager
 	) {
 		if ($installManager->isApplicationInstalled()) {
-			$this->createRoutes();
+			$this->createApplicationRoutes();
+		} else {
+			$this->createInstallerRoutes();
 		}
 	}
 
 	/**
 	 * @return void
 	 */
-	protected function createRoutes() {
-		// @todo autoload routes
-
+	protected function createApplicationRoutes(): void {
 		Route::middleware('web')
 			 ->group(base_path('routes/web.php'));
 
@@ -42,6 +42,14 @@ class RouteServiceProvider
 
 		Route::middleware('web')
 			 ->group(base_path('routes/finances.php'));
+	}
+
+	/**
+	 * @return void
+	 */
+	protected function createInstallerRoutes(): void {
+		Route::middleware('web')
+			 ->group(base_path('routes/installer.php'));
 	}
 
 }

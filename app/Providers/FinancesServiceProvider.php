@@ -69,11 +69,12 @@ class FinancesServiceProvider
 	 * @return $this
 	 */
 	protected function bindServices(): self {
-		$this->app->bind(\App\Services\Budget\RequestManagerContract::class, \App\Services\Budget\RequestManager::class);
-		$this->app->bind(\App\Services\Transaction\HistoryCollectorContract::class, \App\Services\Transaction\HistoryCollector::class);
-		$this->app->bind(\App\Services\Transaction\PeriodicityParserContract::class, \App\Services\Transaction\PeriodicityParser::class);
-		$this->app->bind(\App\Services\Transaction\RequestManagerContract::class, \App\Services\Transaction\RequestManager::class);
-		$this->app->bind(\App\Services\Transaction\Category\RequestManagerContract::class, \App\Services\Transaction\Category\RequestManager::class);
+		$this->app->bind(\App\Services\Budget\Request\ProcessorContract::class, \App\Services\Budget\Request\Processor::class);
+
+		$this->app->bind(\App\Services\Transaction\Category\Request\ProcessorContract::class, \App\Services\Transaction\Category\Request\Processor::class);
+		$this->app->bind(\App\Services\Transaction\Category\TransformatorContract::class, \App\Services\Transaction\Category\Transformator::class);
+		$this->app->bind(\App\Services\Transaction\Periodicity\ParserContract::class, \App\Services\Transaction\Periodicity\Parser::class);
+		$this->app->bind(\App\Services\Transaction\Request\ProcessorContract::class, \App\Services\Transaction\Request\Processor::class);
 		$this->app->bind(\App\Services\Transaction\Schedule\ProcessorContract::class, \App\Services\Transaction\Schedule\Processor::class);
 		$this->app->bind(\App\Services\Transaction\Schedule\UpdaterContract::class, \App\Services\Transaction\Schedule\Updater::class);
 
@@ -96,16 +97,40 @@ class FinancesServiceProvider
 			 * @inheritDoc
 			 */
 			public function getBreadcrumb($custom) {
-				if (is_object($custom) && $custom instanceof Budget) {
-					return new Breadcrumb(
-						route('finances.budget.show', $custom->id),
-						__('breadcrumbs.budget.show', [
-							'budgetName' => $custom->name,
-						])
-					);
+				if (is_object($custom)) {
+					if ($custom instanceof Budget) {
+						return $this->getBudgetBreadcrumb($custom);
+					} elseif ($custom instanceof Transaction) {
+						return $this->getTransactionBreadcrumb($custom);
+					}
 				}
-
 				return null;
+			}
+
+			/**
+			 * @param Budget $budget
+			 * @return Breadcrumb
+			 */
+			protected function getBudgetBreadcrumb(Budget $budget) {
+				return new Breadcrumb(
+					route('finances.budgets.show', $budget->id),
+					__('breadcrumbs.budgets.show', [
+						'budgetName' => $budget->name,
+					])
+				);
+			}
+
+			/**
+			 * @param Transaction $transaction
+			 * @return Breadcrumb
+			 */
+			protected function getTransactionBreadcrumb(Transaction $transaction) {
+				return new Breadcrumb(
+					route('finances.transactions.show', $transaction->id),
+					__('breadcrumbs.transactions.show', [
+						'transactionName' => $transaction->name,
+					])
+				);
 			}
 
 		});

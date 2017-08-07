@@ -2,6 +2,7 @@
 
 use App\Models\Budget;
 use App\Services\Logger\Contract as LoggerContract;
+use Illuminate\Database\Connection as DatabaseConnection;
 use Illuminate\Database\Seeder;
 
 class BudgetSeeder
@@ -13,26 +14,31 @@ class BudgetSeeder
 	protected $log;
 
 	/**
+	 * @var DatabaseConnection
+	 */
+	protected $db;
+
+	/**
 	 * @param LoggerContract $log
+	 * @param DatabaseConnection $db
 	 */
 	public function __construct(
-		LoggerContract $log
+		LoggerContract $log,
+		DatabaseConnection $db
 	) {
 		$this->log = $log;
+		$this->db = $db;
 	}
 
 	/**
 	 * @return void
 	 */
 	public function run() {
-		$budget =
-			Budget::where('name', 'First budget')
-				->first();
+		$this->log->info('Truncating \'budgets\' table...');
 
-		if (!empty($budget)) {
-			$this->log->warning('Not creating \'First budget\' budget because one already exists.');
-			return;
-		}
+		$this->db
+			->table('budgets')
+			->delete();
 
 		$this->log->info('Creating first budget...');
 

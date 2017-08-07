@@ -3,14 +3,12 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller as BaseController;
-use App\Http\Requests\User\LoginRequest as UserLoginRequest;
-use App\Http\Requests\User\StoreRequest as UserStoreRequest;
+use App\Http\Requests\User\Crud\StoreRequest as UserStoreRequest;
+use App\Http\Requests\User\Crud\UpdateRequest as UserUpdateRequest;
 use App\Models\User;
 use App\Repositories\Contracts\UserRepositoryContract;
-use App\ServiceContracts\RequestManagerContract as BaseRequestManagerContract;
 use App\Services\Breadcrumb\Manager as BreadcrumbManager;
-use App\Services\User\RequestManagerContract as UserRequestManagerContract;
-use Auth;
+use App\Services\User\Request\ProcessorContract as UserRequestProcessorContract;
 
 class UserController
 	extends BaseController {
@@ -26,145 +24,127 @@ class UserController
 	protected $userRepository;
 
 	/**
-	 * @var UserRequestManagerContract
+	 * @var UserRequestProcessorContract
 	 */
-	protected $userRequestManager;
+	protected $userRequestProcessor;
 
 	/**
 	 * @param BreadcrumbManager $breadcrumbManager
 	 * @param UserRepositoryContract $userRepository
-	 * @param UserRequestManagerContract $userRequestManager
+	 * @param UserRequestProcessorContract $userRequestProcessor
 	 */
 	public function __construct(
 		BreadcrumbManager $breadcrumbManager,
 		UserRepositoryContract $userRepository,
-		UserRequestManagerContract $userRequestManager
+		UserRequestProcessorContract $userRequestProcessor
 	) {
+		// @todo ACL (root-only controller)
+
 		$this->breadcrumbManager = $breadcrumbManager;
 		$this->userRepository = $userRepository;
-		$this->userRequestManager = $userRequestManager;
+		$this->userRequestProcessor = $userRequestProcessor;
 	}
 
 	/**
-	 * @return \Illuminate\Http\Response
+	 * @return mixed
 	 */
-	public function actionLogin() {
-		if (Auth::check()) {
-			return redirect(route('dashboard.index.index'));
-		}
+	public function index() {
+		$this->breadcrumbManager->push(route('dashboard.users.index'), __('breadcrumbs.users.index'));
+		$users = $this->userRepository->getAll();
 
-		return view('views.dashboard.user.login');
-	}
-
-	/**
-	 * @param UserLoginRequest $request
-	 * @return \Illuminate\Http\Response
-	 */
-	public function actionPostLogin(UserLoginRequest $request) {
-		$rememberMe = (bool)$request->get('remember-me', false);
-
-		$authSuccess = Auth::attempt([
-			'login' => $request->get('login'),
-			'password' => $request->get('password'),
-			'status' => User::STATUS_ACTIVE,
-		], $rememberMe);
-
-		if ($authSuccess) {
-			return redirect()->route('dashboard.index.index');
-		} else {
-			flash(__('requests/user/login.messages.invalid-credentials'), 'danger');
-
-			return
-				redirect()
-					->route('dashboard.user.login')
-					->withInput();
-		}
-	}
-
-	/**
-	 * @return \Illuminate\Http\Response
-	 */
-	public function actionLogout() {
-		if (Auth::check()) {
-			Auth::logout();
-			flash(__('requests/user/logout.messages.success'), 'success');
-		}
-
-		return redirect()->intended(route('dashboard.user.login'));
-	}
-
-	/**
-	 * @return \Illuminate\Http\Response
-	 */
-	public function actionList() {
-		// @todo ACL (root-only section)
-
-		$this->breadcrumbManager->push(route('dashboard.user.list'), __('breadcrumbs.user.list'));
-
-		return view('views.dashboard.user.list', [
-			'users' => $this->userRepository->getAll(),
+		return view('views.dashboard.users.index', [
+			'users' => $users,
 		]);
 	}
 
 	/**
-	 * @return \Illuminate\Http\Response
+	 * @return mixed
 	 */
-	public function actionCreate() {
+	public function create() {
 		$this->breadcrumbManager
-			->push(route('dashboard.user.list'), __('breadcrumbs.user.list'))
-			->push(route('dashboard.user.create'), __('breadcrumbs.user.create'));
+			->push(route('dashboard.users.index'), __('breadcrumbs.users.index'))
+			->push(route('dashboard.users.create'), __('breadcrumbs.users.create'));
 
-		return view('views.dashboard.user.create');
-	}
+		return view('views.dashboard.users.create', [
+			'user' => null,
 
-	/**
-	 * @param User $user
-	 * @return \Illuminate\Http\Response
-	 */
-	public function actionEdit(User $user) {
-		// @todo ACL
-
-		$this->breadcrumbManager
-			->push(route('dashboard.user.list'), __('breadcrumbs.user.list'))
-			->pushCustom($user);
-
-		return view('views.dashboard.user.edit', [
-			'user' => $user,
+			'form' => [
+				'url' => route('dashboard.users.store'),
+				'method' => 'post',
+			],
 		]);
 	}
 
 	/**
 	 * @param UserStoreRequest $request
-	 * @return \Illuminate\Http\Response
+	 * @return mixed
 	 */
-	public function actionStore(UserStoreRequest $request) {
-		switch ($this->userRequestManager->store($request)) {
-			case BaseRequestManagerContract::STORE_RESULT_CREATED:
-				flash(__('requests/user/store.messages.create-success'), 'success');
-				break;
+	public function store(UserStoreRequest $request) {
+		$result = $this->userRequestProcessor->store($request);
+		$user = $result->getUser();
 
-			case BaseRequestManagerContract::STORE_RESULT_UPDATED:
-				flash(__('requests/user/store.messages.update-success'), 'success');
-				break;
-		}
-
-		$user = $this->userRequestManager->getModel();
+		$this->flash('success', __('requests/user/crud.messages.stored'));
 
 		return response()->json([
-			'redirectUrl' => route('dashboard.user.edit', $user->id),
+			'redirectUrl' => route('dashboard.users.edit', $user->id),
 		]);
 	}
 
 	/**
 	 * @param User $user
-	 * @return \Illuminate\Http\Response
+	 * @return mixed
 	 */
-	public function actionDelete(User $user) {
-		$this->userRequestManager->delete($user->id);
+	public function show(User $user) {
+		return redirect()->route('dashboard.users.edit', $user);
+	}
 
-		flash(__('requests/user/store.messages.delete-success'), 'success');
+	/**
+	 * @param User $user
+	 * @return mixed
+	 */
+	public function edit(User $user) {
+		$this->breadcrumbManager
+			->push(route('dashboard.users.index'), __('breadcrumbs.users.index'))
+			->pushCustom($user);
 
-		return response()->redirectTo(route('dashboard.user.list'));
+		return view('views.dashboard.users.edit', [
+			'user' => $user,
+
+			'form' => [
+				'url' => route('dashboard.users.update', $user->id),
+				'method' => 'put',
+			],
+		]);
+	}
+
+	/**
+	 * @param UserUpdateRequest $request
+	 * @param int $id
+	 * @return mixed
+	 */
+	public function update(UserUpdateRequest $request, int $id) {
+		$result = $this->userRequestProcessor->update($request, $id);
+		$user = $result->getUser();
+
+		$this->flash('success', __('requests/user/crud.messages.updated'));
+
+		return response()->json([
+			'redirectUrl' => route('dashboard.users.edit', $user->id),
+		]);
+	}
+
+	/**
+	 * @param User $user
+	 * @return mixed
+	 */
+	public function destroy(User $user) {
+		$this->userRequestProcessor->delete($user->id);
+
+		$this->flash('success', __('requests/user/crud.messages.deleted'));
+
+		return response()->json([
+			'redirectUrl' => route('dashboard.users.index'),
+		]);
 	}
 
 }

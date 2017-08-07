@@ -15,7 +15,7 @@
         <div id="navbar-main" class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right" style="text-align:right">
                 <li>
-                    <a href="{{ route('dashboard.user.logout') }}">
+                    <a href="{{ route('dashboard.auth.logout') }}">
                         <i class="fa fa-sign-out"></i>&nbsp;
                         {{ __('layout.navbar.logout') }}
                     </a>
@@ -25,14 +25,9 @@
             <form action="{{ route('dashboard.search.find') }}"
                   method="post"
                   class="navbar-form navbar-right">
-                {!!
-                   Form::textInput()
-                        ->setIdAndName('top-search')
-                        ->setPlaceholder(__('layout.navbar.search_with_dots'))
-                        ->setHelpBlockEnabled(false)
-                 !!}
+                {!! Form::text('top-search', null, ['class' => 'form-control', 'placeholder' => __('layout.navbar.search_with_dots')]) !!}
 
-                <button type="submit" class="btn btn-default">
+                <button class="btn btn-default">
                     <i class="fa fa-search"></i>
                 </button>
             </form>

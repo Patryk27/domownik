@@ -1,5 +1,5 @@
 <?php
 
-use App\Http\Controllers\Dashboard\UserController;
+use App\Http\Controllers\Dashboard\AuthController;
 
-Route::get('/', '\\' . UserController::class . '@actionLogin');
+Route::get('/', AuthController::class . '@login');

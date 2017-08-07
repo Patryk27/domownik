@@ -1,7 +1,5 @@
 <?php
 
 return [
-	'head' => [
-		'row-counter' => 'Lp.',
-	],
+	'row-counter' => 'Lp.',
 ];

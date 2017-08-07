@@ -16,9 +16,7 @@ class TransactionRepository
 	protected $model;
 
 	/**
-	 * @param int $id
-	 * @param array $columns
-	 * @return Transaction|null
+	 * @inheritdoc
 	 */
 	public function get(int $id, array $columns = ['*']) {
 		$cacheKey = $this->getCacheKey(__FUNCTION__, func_get_args());

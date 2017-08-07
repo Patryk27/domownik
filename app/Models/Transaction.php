@@ -2,8 +2,6 @@
 
 namespace App\Models;
 
-
-
 use App\Presenters\TransactionPresenter;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
@@ -14,7 +12,6 @@ use Illuminate\Support\Collection;
  * @property string $parent_type
  * @property int $parent_id
  * @property int $category_id
- * @property TransactionCategory $category
  * @property string $type
  * @property string $name
  * @property string $description
@@ -24,6 +21,8 @@ use Illuminate\Support\Collection;
  * @property Carbon $updated_at
  * @property Carbon $created_at
  * @property Model $value
+ * @property TransactionCategory $category
+ * @property mixed $periodicity
  * @property Collection|TransactionPeriodicityOneShot[] $periodicityOneShots
  * @property Collection|TransactionPeriodicityDaily[] $periodicityDailies
  * @property Collection|TransactionPeriodicityWeekly[] $periodicityWeeklies
@@ -142,7 +141,7 @@ class Transaction
 	/**
 	 * @return string[]
 	 */
-	public static function getTypes() {
+	public static function getTypes(): array {
 		return [
 			self::TYPE_INCOME,
 			self::TYPE_EXPENSE,
@@ -152,7 +151,14 @@ class Transaction
 	/**
 	 * @return string[]
 	 */
-	public static function getValueTypes() {
+	public static function getTypesSelect(): array {
+		return map_translation(self::getTypes(), 'models/transaction.enums.types.%s');
+	}
+
+	/**
+	 * @return string[]
+	 */
+	public static function getValueTypes(): array {
 		return [
 			self::VALUE_TYPE_CONSTANT,
 			self::VALUE_TYPE_RANGE,
@@ -162,7 +168,14 @@ class Transaction
 	/**
 	 * @return string[]
 	 */
-	public static function getPeriodicityTypes() {
+	public static function getValueTypesSelect(): array {
+		return map_translation(self::getValueTypes(), 'models/transaction.enums.value-types.%s');
+	}
+
+	/**
+	 * @return string[]
+	 */
+	public static function getPeriodicityTypes(): array {
 		return [
 			self::PERIODICITY_TYPE_ONE_SHOT,
 			self::PERIODICITY_TYPE_DAILY,
@@ -170,6 +183,13 @@ class Transaction
 			self::PERIODICITY_TYPE_MONTHLY,
 			self::PERIODICITY_TYPE_YEARLY,
 		];
+	}
+
+	/**
+	 * @return string[]
+	 */
+	public static function getPeriodicityTypesSelect(): array {
+		return map_translation(self::getPeriodicityTypes(), 'models/transaction.enums.periodicity-types.%s');
 	}
 
 	/**

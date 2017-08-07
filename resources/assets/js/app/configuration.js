@@ -4,33 +4,33 @@
  */
 
 module.exports = (function() {
-  var config = {
+    var config = {
 
-    /**
-     * Application language code (pl, en, gb, etc.)
-     * @type {String}
-     */
-    locale: '',
+        /**
+         * Application language code (pl, en, gb, etc.)
+         * @type {String}
+         */
+        locale: '',
 
-  };
+    };
 
-  return {
+    return {
 
-    /**
-     * @param {String} locale
-     * @returns {module.exports}
-     */
-    setLocale: function(locale) {
-      config.locale = locale;
-      return this;
-    },
+        /**
+         * @param {String} locale
+         * @returns {module.exports}
+         */
+        setLocale: function(locale) {
+            config.locale = locale;
+            return this;
+        },
 
-    /**
-     * @returns {String}
-     */
-    getLocale: function() {
-      return config.locale;
-    },
+        /**
+         * @returns {String}
+         */
+        getLocale: function() {
+            return config.locale;
+        },
 
-  };
+    };
 })();

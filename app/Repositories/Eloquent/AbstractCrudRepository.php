@@ -136,7 +136,7 @@ abstract class AbstractCrudRepository
 	 */
 	public function persist(Model $model): CrudRepositoryContract {
 		if (get_class($model) !== get_class($this->model)) {
-			throw new RepositoryException('persist() was given a model of class \'%s\' which does not match repository model class \'%s\'.', get_class($model), get_class($this->model));
+			throw new RepositoryException('persist() was given a model of class \'%s\' which does not match repository\'s model class \'%s\'.', get_class($model), get_class($this->model));
 		}
 
 		$model->saveOrFail();
@@ -145,6 +145,20 @@ abstract class AbstractCrudRepository
 			 ->flush();
 
 		return $this;
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public function persistUpdate(Model $model, int $id): CrudRepositoryContract {
+		// assert model with given id exists
+		$this->getOrFail($id);
+
+		// update the model
+		$model->id = $id;
+		$model->exists = true;
+
+		return $this->persist($model);
 	}
 
 	/**

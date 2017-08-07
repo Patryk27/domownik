@@ -10,7 +10,7 @@ abstract class Model
 	extends BaseModel {
 
 	/**
-	 * @return string
+	 * @return array
 	 */
 	abstract public static function getCacheConfiguration(): array;
 

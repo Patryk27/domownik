@@ -8,10 +8,10 @@ class HelpController
 	extends BaseController {
 
 	/**
-	 * @return \Illuminate\Http\Response
+	 * @return mixed
 	 */
-	public function actionError404() {
-		return view('dashboard.help/error-404');
+	public function error404() {
+		return view('views.dashboard.help.errors.404');
 	}
 
 }

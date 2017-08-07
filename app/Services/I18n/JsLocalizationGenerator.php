@@ -54,9 +54,9 @@ class JsLocalizationGenerator {
 
 	/**
 	 * @param string $localizationFileName
-	 * @return JsLocalizationGenerator
+	 * @return $this
 	 */
-	public function setLocalizationFileName(string $localizationFileName): JsLocalizationGenerator {
+	public function setLocalizationFileName(string $localizationFileName) {
 		$this->localizationFileName = $localizationFileName;
 		return $this;
 	}

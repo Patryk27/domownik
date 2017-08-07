@@ -13,34 +13,27 @@ class SettingRepository
 	implements SettingRepositoryContract {
 
 	/**
-	 * @param string $key
-	 * @return mixed
+	 * @inheritdoc
 	 */
 	public function getValueByKey(string $key) {
 		return $this->getUserValueByKey(null, $key);
 	}
 
 	/**
-	 * @param int $userId
-	 * @param string $key
-	 * @return mixed
+	 * @inheritdoc
 	 */
-	public function getUserValueByKey($userId, string $key) {
+	public function getUserValueByKey(?int $userId, string $key) {
 		$cacheKey = $this->getCacheKey(__FUNCTION__, func_get_args());
 		$cache = $this->getCache();
 
 		return $cache->rememberForever($cacheKey, function() use ($userId, $key) {
 			$model = $this->model
-				->where('user_id', '=', $userId)
-				->where('key', '=', $key)
+				->where('user_id', $userId)
+				->where('key', $key)
 				->get()
 				->first();
 
-			if (is_null($model)) {
-				return null;
-			} else {
-				return $model->value;
-			}
+			return isset($model) ? $model->value : null;
 		});
 	}
 

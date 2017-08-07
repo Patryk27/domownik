@@ -19,7 +19,7 @@ interface SettingRepositoryContract
 	 * @param string $key
 	 * @return mixed|null
 	 */
-	public function getUserValueByKey($userId, string $key);
+	public function getUserValueByKey(?int $userId, string $key);
 
 	#region Inherited from CrudRepositoryContract
 

@@ -48,10 +48,19 @@ interface CrudRepositoryContract {
 	public function delete(int $id): CrudRepositoryContract;
 
 	/**
+	 * Creates or updates model in the database.
 	 * @param Model $model
 	 * @return CrudRepositoryContract
 	 */
 	public function persist(Model $model): CrudRepositoryContract;
+
+	/**
+	 * Force-updates model in the database.
+	 * @param Model $model
+	 * @param int $id
+	 * @return CrudRepositoryContract
+	 */
+	public function persistUpdate(Model $model, int $id): CrudRepositoryContract;
 
 	/**
 	 * @return TaggedCache

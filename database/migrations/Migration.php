@@ -40,22 +40,4 @@ abstract class Migration
 		$this->testing = defined('PHPUNIT_RUNNING');
 	}
 
-	/**
-	 * @param string $tableName
-	 * @return $this
-	 */
-	protected function logCreateTable(string $tableName): self {
-		$this->log->info('Creating table: %s.', $tableName);
-		return $this;
-	}
-
-	/**
-	 * @param string $tableName
-	 * @return $this
-	 */
-	protected function logAlterTable(string $tableName): self {
-		$this->log->info('Altering table: %s.', $tableName);
-		return $this;
-	}
-
 }

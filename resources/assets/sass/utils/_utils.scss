@@ -1,4 +1,5 @@
 @import "calendar";
+@import "dividers";
 
 .no-gutter {
   padding-left: 0;
@@ -9,8 +10,15 @@
   color: #b94e4c;
 }
 
-.form-group.required .control-label:after {
+.form-group.required label:after {
   @extend .required-field;
 
+  position: relative;
+  left: 2px;
+
   content: "*";
+}
+
+.inline-block {
+  display: inline-block;
 }

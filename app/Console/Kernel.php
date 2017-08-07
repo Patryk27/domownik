@@ -12,14 +12,8 @@ class Kernel
 	 * @var array
 	 */
 	protected $commandsApplication = [
-		Commands\Finances\ProcessTransactionSchedule::class,
-		Commands\Localization\Update::class,
-	];
-
-	/**
-	 * @var array
-	 */
-	protected $commandsInstaller = [
+		Commands\ProcessTransactionSchedule::class,
+		Commands\RefreshJsTranslations::class,
 	];
 
 	/**
@@ -30,8 +24,6 @@ class Kernel
 
 		if ($installManager->isApplicationInstalled()) {
 			$this->commands = $this->commandsApplication;
-		} else {
-			$this->command = $this->commandsInstaller;
 		}
 	}
 

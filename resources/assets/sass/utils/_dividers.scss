@@ -1,0 +1,18 @@
+.right-divider {
+  position: relative;
+  margin-right: $divider-spacing;
+  padding-right: $divider-spacing;
+
+  &::after {
+    content: ' ';
+    border-right: 1px solid $gray-lighter;
+
+    display: block;
+    width: 1px;
+    height: 70%;
+
+    position: absolute;
+    top: 15%;
+    right: 0;
+  }
+}

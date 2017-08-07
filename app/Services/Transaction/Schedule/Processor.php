@@ -9,9 +9,12 @@ use App\Repositories\Contracts\TransactionPeriodicityRepositoryContract;
 use App\Repositories\Contracts\TransactionRepositoryContract;
 use App\Repositories\Contracts\TransactionScheduleRepositoryContract;
 use App\Services\Logger\Contract as LoggerContract;
+use App\Services\Search\Transaction\ScheduleSearchContract as TransactionScheduleSearchContract;
 use App\ValueObjects\ScheduledTransaction;
 use Carbon\Carbon;
 use Illuminate\Database\Connection as DatabaseConnection;
+use Illuminate\Support\Collection;
+use Throwable;
 
 class Processor
 	implements ProcessorContract {
@@ -27,11 +30,6 @@ class Processor
 	protected $db;
 
 	/**
-	 * @var TransactionScheduleRepositoryContract
-	 */
-	protected $transactionScheduleRepository;
-
-	/**
 	 * @var TransactionRepositoryContract
 	 */
 	protected $transactionRepository;
@@ -42,33 +40,46 @@ class Processor
 	protected $transactionPeriodicityRepository;
 
 	/**
+	 * @var TransactionScheduleRepositoryContract
+	 */
+	protected $transactionScheduleRepository;
+
+	/**
+	 * @var TransactionScheduleSearchContract
+	 */
+	protected $transactionScheduleSearch;
+
+	/**
 	 * @param LoggerContract $log
 	 * @param DatabaseConnection $db
-	 * @param TransactionScheduleRepositoryContract $transactionScheduleRepository
 	 * @param TransactionRepositoryContract $transactionRepository
 	 * @param TransactionPeriodicityRepositoryContract $transactionPeriodicityRepository
+	 * @param TransactionScheduleRepositoryContract $transactionScheduleRepository
+	 * @param TransactionScheduleSearchContract $transactionScheduleSearch
 	 */
 	public function __construct(
 		LoggerContract $log,
 		DatabaseConnection $db,
-		TransactionScheduleRepositoryContract $transactionScheduleRepository,
 		TransactionRepositoryContract $transactionRepository,
-		TransactionPeriodicityRepositoryContract $transactionPeriodicityRepository
+		TransactionPeriodicityRepositoryContract $transactionPeriodicityRepository,
+		TransactionScheduleRepositoryContract $transactionScheduleRepository,
+		TransactionScheduleSearchContract $transactionScheduleSearch
 	) {
 		$this->log = $log;
 		$this->db = $db;
-		$this->transactionScheduleRepository = $transactionScheduleRepository;
 		$this->transactionRepository = $transactionRepository;
 		$this->transactionPeriodicityRepository = $transactionPeriodicityRepository;
+		$this->transactionScheduleRepository = $transactionScheduleRepository;
+		$this->transactionScheduleSearch = $transactionScheduleSearch;
 	}
 
 	/**
 	 * @inheritDoc
 	 */
-	public function processTransactionsSchedule(): ProcessorContract {
+	public function processSchedule(): ProcessorContract {
 		try {
-			$this->log->info('Processing transaction schedule...');
-			$scheduledTransactions = $this->transactionScheduleRepository->getToDate(Carbon::yesterday());
+			$this->log->info('Fetching scheduled transactions...');
+			$scheduledTransactions = $this->getScheduledTransactions();
 			$this->log->info('Got %d scheduled transactions.', $scheduledTransactions->count());
 
 			foreach ($scheduledTransactions as $scheduledTransaction) {
@@ -90,9 +101,20 @@ class Processor
 	}
 
 	/**
+	 * @return Collection|ScheduledTransaction[]
+	 */
+	protected function getScheduledTransactions(): Collection {
+		return
+			$this->transactionScheduleSearch
+				->date('<=', Carbon::yesterday())
+				->get();
+	}
+
+	/**
 	 * Processes a single scheduled transaction.
 	 * @param ScheduledTransaction $scheduledTransaction
-	 * @return $this|Processor
+	 * @return Processor
+	 * @throws Throwable
 	 */
 	protected function processScheduledTransaction(ScheduledTransaction $scheduledTransaction): self {
 		$stId = $scheduledTransaction->getId();
@@ -104,42 +126,43 @@ class Processor
 		$this->db->beginTransaction();
 
 		try {
-			// @todo consider using $stTransaction->replace() (without children!)
-			$targetTransaction = new Transaction();
-			$targetTransaction->parent_transaction_id = $stTransaction->id;
-			$targetTransaction->parent_id = $stTransaction->parent_id;
-			$targetTransaction->parent_type = $stTransaction->parent_type;
-			$targetTransaction->category_id = $stTransaction->category_id;
-			$targetTransaction->type = $stTransaction->type;
-			$targetTransaction->name = $stTransaction->name;
-			$targetTransaction->description = $stTransaction->description;
+			// @todo consider using $stTransaction->replicate() (without children!)
+			$newTransaction = new Transaction();
+			$newTransaction->parent_transaction_id = $stTransaction->id;
+			$newTransaction->parent_id = $stTransaction->parent_id;
+			$newTransaction->parent_type = $stTransaction->parent_type;
+			$newTransaction->category_id = $stTransaction->category_id;
+			$newTransaction->type = $stTransaction->type;
+			$newTransaction->name = $stTransaction->name;
+			$newTransaction->description = $stTransaction->description;
+			$newTransaction->periodicity_type = Transaction::PERIODICITY_TYPE_ONE_SHOT;
 
 			// prepare transaction value
 			/**
-			 * @var TransactionValueConstant|TransactionValueRange $targetTransactionValue
+			 * @var TransactionValueConstant|TransactionValueRange $newTransactionValue
 			 */
-			$targetTransactionValue = $stTransaction->value->replicate();
-			$targetTransactionValue->saveOrFail();
+			$newTransactionValue = $stTransaction->value->replicate();
+			$newTransactionValue->saveOrFail();
 
-			$targetTransactionValue
+			$newTransactionValue
 				->transaction()
-				->save($targetTransaction);
+				->save($newTransaction);
 
 			// prepare transaction periodicity
-			$targetTransaction
+			$newTransaction
 				->periodicityOneShots()
 				->create([
 					'date' => $stDate,
 				]);
 
 			// save data and delete transaction from schedule
-			$targetTransaction->saveOrFail();
+			$newTransaction->saveOrFail();
 			$this->transactionScheduleRepository->delete($stId);
 
-			$this->log->info('-> created transaction: transaction-id=%d.', $targetTransaction->id);
+			$this->log->info('-> created transaction: transaction-id=%d.', $newTransaction->id);
 
 			$this->db->commit();
-		} catch (\Throwable $ex) {
+		} catch (Throwable $ex) {
 			$this->log->error('Got an exception, aborting...');
 			$this->db->rollBack();
 

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Dashboard\AuthController;
 use App\Http\Controllers\Dashboard\HelpController;
 use App\Http\Controllers\Dashboard\IndexController;
 use App\Http\Controllers\Dashboard\SearchController;
@@ -9,62 +10,52 @@ use App\Http\Controllers\Dashboard\UserController;
 Route::group(['prefix' => 'dashboard'], function() {
 	Route::group(['middleware' => 'web'], function() {
 		// /dashboard/user
-		Route::group(['prefix' => 'user'], function() {
-			// /dashboard/user/login
-			Route::get('login', '\\' . UserController::class . '@actionLogin')
-				 ->name('dashboard.user.login');
+		Route::group(['prefix' => 'auth'], function() {
+			// /dashboard/auth/login
+			Route::get('login', AuthController::class . '@login')
+				 ->name('dashboard.auth.login');
 
-			// /dashboard/user/login
-			Route::post('login', '\\' . UserController::class . '@actionPostLogin');
+			// /dashboard/auth/login
+			Route::post('login', AuthController::class . '@postLogin');
+			
+			// /dashboard/auth/logout
+			Route::get('logout', AuthController::class . '@logout')
+				->name('dashboard.auth.logout');
 		});
 	});
 
 	Route::group(['middleware' => 'auth'], function() {
 		// /dashboard/help
 		Route::group(['prefix' => 'help'], function() {
-			Route::get('error-404', '\\' . HelpController::class . '@actionError404')
+			Route::get('error-404', HelpController::class . '@error404')
 				 ->name('dashboard.help.error-404');
 		});
 
 		// /dashboard/index
 		Route::group(['prefix' => 'index'], function() {
 			// /dashboard/index/index
-			Route::get('index', '\\' . IndexController::class . '@actionIndex')
+			Route::get('index', IndexController::class . '@index')
 				 ->name('dashboard.index.index');
 		});
 
 		// /dashboard/search
 		Route::group(['prefix' => 'search'], function() {
 			// /dashboard/search/find
-			Route::post('find', '\\' . SearchController::class . '@actionSearch')
+			Route::post('find', SearchController::class . '@search')
 				 ->name('dashboard.search.find');
 		});
 
-		// /dashboard/user
-		Route::group(['prefix' => 'user'], function() {
-			// /dashboard/user/logout
-			Route::get('logout', '\\' . UserController::class . '@actionLogout')
-				 ->name('dashboard.user.logout');
-
-			// /dashboard/user/list
-			Route::get('list', '\\' . UserController::class . '@actionList')
-				 ->name('dashboard.user.list');
-
-			// /dashboard/user/create
-			Route::get('create', '\\' . UserController::class . '@actionCreate')
-				 ->name('dashboard.user.create');
-
-			// /dashboard/user/edit
-			Route::get('edit/{user}', '\\' . UserController::class . '@actionEdit')
-				 ->name('dashboard.user.edit');
-
-			// /dashboard/user/store
-			Route::post('store', '\\' . UserController::class . '@actionStore')
-				 ->name('dashboard.user.store');
-
-			// /dashboard/user/delete
-			Route::get('delete/{user}', '\\' . UserController::class . '@actionDelete')
-				 ->name('dashboard.user.delete');
-		});
+		// /dashboard/users
+		Route::resource('users', UserController::class, [
+			'names' => [
+				'index' => 'dashboard.users.index',
+				'create' => 'dashboard.users.create',
+				'store' => 'dashboard.users.store',
+				'show' => 'dashboard.users.show',
+				'edit' => 'dashboard.users.edit',
+				'update' => 'dashboard.users.update',
+				'destroy' => 'dashboard.users.destroy',
+			],
+		]);
 	});
 });
