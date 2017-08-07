@@ -72,7 +72,7 @@ class Parser
 		$this->sectionName = (string)$xmlRootNodeAttributes['section-name'];
 
 		if (empty($this->sectionName)) {
-			throw new Exception('No module name specified in root node (no \'section-name\' attribute found).');
+			throw new Exception('No section name specified in root node (no \'section-name\' attribute found).');
 		}
 
 		// parse items
