@@ -5,9 +5,9 @@ use App\Models\Budget;
 use App\Models\Transaction;
 use App\Models\TransactionValueConstant;
 use App\Models\TransactionValueRange;
+use App\Services\Logger\Contract as LoggerContract;
 use App\Services\Transaction\Schedule\ProcessorContract as TransactionScheduleProcessorServiceContract;
 use App\Services\Transaction\Schedule\UpdaterContract as TransactionScheduleUpdaterServiceContract;
-use App\Services\Logger\Contract as LoggerContract;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 

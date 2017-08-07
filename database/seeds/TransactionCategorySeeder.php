@@ -1,11 +1,11 @@
 <?php
 
-use App\Models\User;
+use App\Models\TransactionCategory;
 use App\Services\Logger\Contract as LoggerContract;
 use Illuminate\Database\Connection as DatabaseConnection;
 use Illuminate\Database\Seeder;
 
-class UserSeeder
+class TransactionCategorySeeder
 	extends Seeder {
 
 	/**
@@ -34,20 +34,17 @@ class UserSeeder
 	 * @return void
 	 */
 	public function run() {
-		$this->log->info('Truncating \'users\' table...');
+		$this->log->info('Truncating \'transaction_categories\' table...');
 
 		$this->db
-			->table('users')
+			->table('transaction_categories')
 			->delete();
 
-		$this->log->info('Creating \'admin\' user...');
+		$this->log->info('Creating \'All transactions\' transaction category...');
 
-		$user = new User();
-		$user->login = 'admin';
-		$user->password = bcrypt('admin');
-		$user->full_name = 'Admin Admin';
-		$user->status = User::STATUS_ACTIVE;
-		$user->save();
+		$transactionCategory = new TransactionCategory();
+		$transactionCategory->name = 'All transactions';
+		$transactionCategory->save();
 
 		$this->log->info('Flushing cache...');
 		Cache::flush();

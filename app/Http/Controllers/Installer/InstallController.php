@@ -2,20 +2,16 @@
 
 namespace App\Http\Controllers\Installer;
 
-use Illuminate\Foundation\Bus\DispatchesJobs;
-use Illuminate\Foundation\Validation\ValidatesRequests;
-use Illuminate\Routing\Controller as BaseController;
+use App\Http\Controllers\Controller;
 
 class InstallController
-	extends BaseController {
-
-	use DispatchesJobs, ValidatesRequests;
+	extends Controller {
 
 	/**
 	 * @return mixed
 	 */
-	public function actionIndex() {
-		return view('Installer::install.index');
+	public function index() {
+		return view('views.installer.install.index');
 	}
 
 }
