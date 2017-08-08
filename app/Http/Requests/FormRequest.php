@@ -42,4 +42,13 @@ abstract class FormRequest
 		return $messages + $additionalMessages;
 	}
 
+	/**
+	 * @param string $translationKey
+	 * @return array
+	 */
+	protected function getMessages(string $translationKey): array {
+		$messages = __($translationKey);
+		return is_array($messages) ? $messages : [];
+	}
+
 }

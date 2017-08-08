@@ -35,8 +35,6 @@ class AppServiceProvider
 		// @todo should not be hard-coded
 		date_default_timezone_set('Europe/Warsaw');
 		Carbon::setLocale('pl');
-		app()->setLocale('pl');
-
 		setlocale(LC_TIME, 'pl', 'pl-PL');
 	}
 

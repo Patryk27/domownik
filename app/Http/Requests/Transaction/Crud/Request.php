@@ -3,21 +3,12 @@
 namespace App\Http\Requests\Transaction\Crud;
 
 use App\Http\Requests\FormRequest;
-use App\Http\Requests\IsLoggable;
 use App\Models\Transaction;
 
 abstract class Request
 	extends FormRequest {
 
-	use IsLoggable;
-
-	/**
-	 * @return bool
-	 */
-	public function authorize(): bool {
-		// @todo ACLs
-		return true;
-	}
+	// @todo ACL
 
 	/**
 	 * @return array
@@ -67,7 +58,7 @@ abstract class Request
 	 * @return array
 	 */
 	public function messages(): array {
-		return __('requests/transaction/crud.validation');
+		return $this->getMessages('requests/transaction/crud.validation');
 	}
 
 }

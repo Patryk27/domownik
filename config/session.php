@@ -14,7 +14,7 @@ return [
 	'State' => 'sessions',
 	'lottery' => [2, 100],
 
-	'cookie' => 'laravel_session',
+	'cookie' => 'dk',
 	'path' => '/',
 	'domain' => env('SESSION_DOMAIN', null),
 	'secure' => env('SESSION_SECURE_COOKIE', false),

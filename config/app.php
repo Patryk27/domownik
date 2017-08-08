@@ -8,9 +8,9 @@ return [
 
 	'url' => env('APP_URL', 'http://domownik.dev'),
 
-	'timezone' => 'UTC',
-	'locale' => 'pl',
-	'fallback_locale' => 'pl',
+	'timezone' => env('APP_TIMEZONE', 'UTC'),
+	'locale' => env('APP_LOCALE', 'pl'),
+	'fallback_locale' => env('APP_FALLBACK_LOCALE', 'pl'),
 
 	'key' => env('APP_KEY'),
 	'cipher' => 'AES-256-CBC',

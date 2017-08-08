@@ -7,13 +7,7 @@ use App\Http\Requests\FormRequest;
 abstract class Request
 	extends FormRequest {
 
-	/**
-	 * @return bool
-	 */
-	public function authorize(): bool {
-		// @todo ACL
-		return true;
-	}
+	// @todo ACL
 
 	/**
 	 * @return array
@@ -30,7 +24,7 @@ abstract class Request
 	 * @return array
 	 */
 	public function messages(): array {
-		return __('requests/user/crud.validation');
+		return $this->getMessages('requests/user/crud.validation');
 	}
 
 }

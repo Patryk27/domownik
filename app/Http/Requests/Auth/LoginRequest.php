@@ -2,22 +2,15 @@
 
 namespace App\Http\Requests\Auth;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\FormRequest;
 
 class LoginRequest
 	extends FormRequest {
 
 	/**
-	 * @return bool
-	 */
-	public function authorize() {
-		return true;
-	}
-
-	/**
 	 * @return array
 	 */
-	public function rules() {
+	public function rules(): array {
 		return [
 			'login' => 'required',
 			'password' => 'required',
@@ -27,8 +20,8 @@ class LoginRequest
 	/**
 	 * @return array
 	 */
-	public function messages() {
-		return __('requests/auth/login.validation');
+	public function messages(): array {
+		return $this->getMessages('requests/auth/login.validation');
 	}
 
 }

@@ -23,7 +23,7 @@ abstract class SearchRequest
 	 * @return array
 	 */
 	public function messages(): array {
-		return __('requests/budget/transaction/search');
+		return $this->getMessages('requests/budget/transaction/search');
 	}
 
 }

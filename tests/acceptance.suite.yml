@@ -1,0 +1,17 @@
+actor: AcceptanceTester
+modules:
+    enabled:
+        - Db:
+            dsn: 'mysql:host=127.0.0.1;dbname=domownik_testing'
+            user: 'root'
+            password:
+            dump: tests/_data/testing-database.sql
+            cleanup: false
+            populate: true
+
+        - WebDriver:
+            url: http://testing.domownik.dev/
+            browser: chrome
+            wait: 3
+
+        - \Helper\Acceptance
