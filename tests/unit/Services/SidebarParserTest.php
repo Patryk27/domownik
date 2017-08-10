@@ -3,12 +3,18 @@
 use App\Filesystem\Memory as MemoryFilesystem;
 use App\Services\Sidebar\Parser as SidebarParser;
 use App\ValueObjects\Sidebar\Item as SidebarItem;
+use Codeception\Test\Unit as UnitTest;
 use Illuminate\Contracts\Filesystem\Factory as FilesystemFactoryContract;
 use Illuminate\Filesystem\FilesystemManager;
-use Tests\Unit\TestCase;
+use Illuminate\Foundation\Application;
 
 class SidebarParserTest
-	extends TestCase {
+	extends UnitTest {
+
+	/**
+	 * @var Application
+	 */
+	protected $app;
 
 	/**
 	 * @var FilesystemManager
@@ -25,6 +31,8 @@ class SidebarParserTest
 	 */
 	public function setUp() {
 		parent::setUp();
+
+		$this->app = app();
 
 		$vfs = new MemoryFilesystem();
 

@@ -1,10 +1,10 @@
 <?php
 
 use App\Filesystem\Memory as MemoryFilesystem;
-use Tests\Unit\TestCase;
+use Codeception\Test\Unit as UnitTest;
 
 class MemoryFilesystemTest
-	extends TestCase {
+	extends UnitTest {
 
 	/**
 	 * @var MemoryFilesystem

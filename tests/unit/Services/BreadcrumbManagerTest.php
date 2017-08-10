@@ -3,11 +3,10 @@
 use App\Services\Breadcrumb\CustomPushHandlerContract;
 use App\Services\Breadcrumb\Manager as BreadcrumbManager;
 use App\ValueObjects\Breadcrumb as BreadcrumbVO;
-use stdClass;
-use Tests\Unit\TestCase;
+use Codeception\Test\Unit as UnitTest;
 
 class BreadcrumbManagerTest
-	extends TestCase {
+	extends UnitTest {
 
 	/**
 	 * Tests if basic push() works.

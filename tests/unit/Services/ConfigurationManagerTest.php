@@ -1,12 +1,29 @@
 <?php
 
 use App\Repositories\Contracts\SettingRepositoryContract;
-use App\Repositories\Eloquent\SettingRepository;
 use App\Services\Configuration\Manager as ConfigurationManager;
-use Tests\Unit\TestCase;
+use Codeception\Test\Unit as UnitTest;
+use Illuminate\Auth\AuthManager;
+use Illuminate\Contracts\Auth\Guard as AuthGuard;
+use Illuminate\Foundation\Application;
 
 class ConfigurationManagerTest
-	extends TestCase {
+	extends UnitTest {
+
+	/**
+	 * @var Application
+	 */
+	protected $app;
+
+	/**
+	 * @var AuthGuard|PHPUnit_Framework_MockObject_MockObject
+	 */
+	protected $authGuardMock;
+
+	/**
+	 * @var AuthManager|PHPUnit_Framework_MockObject_MockObject
+	 */
+	protected $authManagerMock;
 
 	/**
 	 * @var SettingRepositoryContract|PHPUnit_Framework_MockObject_MockObject
@@ -24,7 +41,23 @@ class ConfigurationManagerTest
 	public function setUp() {
 		parent::setUp();
 
-		$this->settingRepositoryMock = $this->createMock(SettingRepository::class);
+		$this->app = app();
+
+		$this->authGuardMock = $this->createMock(AuthGuard::class);
+		$this->authManagerMock = $this->createMock(AuthManager::class);
+		$this->settingRepositoryMock = $this->createMock(SettingRepositoryContract::class);
+
+		$this->authManagerMock
+			->expects($this->any())
+			->method('guard')
+			->willReturn($this->authGuardMock);
+
+		$this->app
+			->when(ConfigurationManager::class)
+			->needs(AuthManager::class)
+			->give(function() {
+				return $this->authManagerMock;
+			});
 
 		$this->app
 			->when(ConfigurationManager::class)
@@ -95,18 +128,26 @@ class ConfigurationManagerTest
 	 * Tests getValueOrNull() in an authorized context.
 	 */
 	public function testGetValueOrNullAuthorized() {
-		$this->be($sampleUser = $this->getSampleUser());
+		$this->authGuardMock
+			->expects($this->any())
+			->method('check')
+			->willReturn(true);
+
+		$this->authGuardMock
+			->expects($this->any())
+			->method('id')
+			->willReturn(666);
 
 		$this->settingRepositoryMock
 			->expects($this->at(0))
 			->method('getUserValueByKey')
-			->with($sampleUser->id, 'language')
+			->with(666, 'language')
 			->willReturn('en');
 
 		$this->settingRepositoryMock
 			->expects($this->at(1))
 			->method('getUserValueByKey')
-			->with($sampleUser->id, 'ur-mom')
+			->with(666, 'ur-mom')
 			->willReturn(null);
 
 		$this->assertEquals('en', $this->configurationManager->getValueOrNull('language'));

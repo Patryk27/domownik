@@ -9,11 +9,17 @@ use App\Repositories\Contracts\TransactionPeriodicityRepositoryContract;
 use App\Repositories\Contracts\TransactionRepositoryContract;
 use App\Services\Transaction\Periodicity\Parser;
 use Carbon\Carbon;
+use Codeception\Test\Unit as UnitTest;
+use Illuminate\Foundation\Application;
 use Illuminate\Support\Collection;
-use Tests\Unit\TestCase;
 
 class PeriodicityParserTest
-	extends TestCase {
+	extends UnitTest {
+
+	/**
+	 * @var Application
+	 */
+	protected $app;
 
 	/**
 	 * @var TransactionRepositoryContract|PHPUnit_Framework_MockObject_MockObject
@@ -31,6 +37,7 @@ class PeriodicityParserTest
 	public function setUp() {
 		parent::setUp();
 
+		$this->app = app();
 		$this->transactionRepositoryMock = $this->createMock(TransactionRepositoryContract::class);
 		$this->transactionPeriodicityRepositoryMock = $this->createMock(TransactionPeriodicityRepositoryContract::class);
 	}

@@ -91,6 +91,11 @@ class Manager {
 		// @todo
 
 		if ($key === 'language') {
+			// @todo use DI or something else
+			if (app()->environment() === 'testing') {
+				return 'testing';
+			}
+
 			return 'pl';
 		}
 
