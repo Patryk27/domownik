@@ -186,10 +186,7 @@ class BudgetsController
 			->orderBy(TransactionScheduleSearchContract::TRANSACTION_ID, 'asc')
 			->limit(5);
 
-		$incomingTransactions =
-			$this->transactionScheduleSearch
-				->get()
-				->reverse();
+		$incomingTransactions = $this->transactionScheduleSearch->get();
 
 		return view('views.finances.budgets.show', [
 			'budget' => $budget,
