@@ -76,4 +76,42 @@ class Calendar {
 		];
 	}
 
+	/**
+	 * Returns map [ year => year ].
+	 * @param int|null $startingYear
+	 * @param int|null $endingYear
+	 * @return array
+	 */
+	public function getYearsMap(?int $startingYear, ?int $endingYear): array {
+		if (is_null($startingYear)) {
+			$startingYear = (int)date('Y');
+		}
+
+		if (is_null($endingYear)) {
+			$endingYear = (int)date('Y');
+		}
+
+		$result = [];
+
+		for ($year = $startingYear; $year <= $endingYear; ++$year) {
+			$result[$year] = $year;
+		}
+
+		return $result;
+	}
+
+	/**
+	 * Returns map [ month-id => month-name ], eg.: [ 1 => January, 2 => February, ... ].
+	 * @return array
+	 */
+	public function getMonthsMap(): array {
+		$result = [];
+
+		for ($monthId = 1; $monthId <= 12; ++$monthId) {
+			$result[$monthId] = __('calendar.months')[$monthId];
+		}
+
+		return $result;
+	}
+
 }

@@ -197,6 +197,23 @@ class BudgetsController
 	}
 
 	/**
+	 * @param Budget $budget
+	 * @return mixed
+	 */
+	public function summary(Budget $budget) {
+		$this->breadcrumbManager
+			->pushCustom($budget)
+			->push(route('finances.budgets.summary', $budget), __('breadcrumbs.budgets.summary'));
+
+		$startingYear = 2017; // @todo
+
+		return view('views.finances.budgets.summary', [
+			'budget' => $budget,
+			'startingYear' => $startingYear,
+		]);
+	}
+
+	/**
 	 * @return Collection
 	 */
 	protected function getBudgetsSelect(): Collection {

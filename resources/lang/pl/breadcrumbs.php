@@ -13,6 +13,7 @@ return [
 		'create' => 'Tworzenie nowego budżetu',
 		'show' => 'Budżet: :budgetName',
 		'edit' => 'Edycja budżetu: :budgetName',
+		'summary' => 'Podsumowanie budżetu',
 
 		'transactions' => [
 			'booked' => 'Spis zaksięgowanych transakcji',
