@@ -16,6 +16,7 @@ return [
 
 	'misc' => [
 		'found-count' => 'Odnaleziono <b>1</b> transakcję.|Odnaleziono <b>:count</b> transakcje.|Odnaleziono <b>:count</b> transakcji.',
+		'found-none' => 'Nie odnaleziono żadnych transakcji.',
 	],
 
 	'enums' => [

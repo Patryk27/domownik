@@ -15,7 +15,7 @@ use App\Services\Search\Transaction\ScheduleSearchContract as TransactionSchedul
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 
-class BudgetController
+class BudgetsController
 	extends BaseController {
 
 	/**
@@ -165,7 +165,7 @@ class BudgetController
 
 		$this->oneShotTransactionSearch
 			->getQueryBuilder()
-			->orderBy(OneShotTransactionSearchContract::ORDER_DATE, 'desc');
+			->orderBy(OneShotTransactionSearchContract::TRANSACTION_DATE, 'desc');
 
 		$recentTransactionsChart = $this->oneShotTransactionSearch->getChart();
 
@@ -182,7 +182,7 @@ class BudgetController
 
 		$this->transactionScheduleSearch
 			->getQueryBuilder()
-			->orderBy(TransactionScheduleSearchContract::ORDER_DATE, 'asc')
+			->orderBy(TransactionScheduleSearchContract::TRANSACTION_DATE, 'asc')
 			->orderBy(TransactionScheduleSearchContract::TRANSACTION_ID, 'asc')
 			->limit(5);
 

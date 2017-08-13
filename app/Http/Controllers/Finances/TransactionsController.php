@@ -10,7 +10,7 @@ use App\Models\Transaction;
 use App\Services\Transaction\Request\ProcessorContract as TransactionRequestProcessorContract;
 use Illuminate\Http\Request;
 
-class TransactionController
+class TransactionsController
 	extends BaseController {
 
 	/**

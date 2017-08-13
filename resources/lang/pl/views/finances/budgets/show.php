@@ -4,7 +4,7 @@ return [
 	'page.title' => 'Budżet :budgetName',
 
 	'management' => [
-		'header' => 'Zarządzanie budżetem: :budgetName',
+		'header' => 'Zarządzanie budżetem',
 		'edit-budget' => 'Edytuj budżet',
 		'create-transaction' => 'Dodaj transakcję',
 		'list-transactions' => 'Pokaż spis transakcji',

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Finances\Budget;
+namespace App\Http\Controllers\Finances\Budgets;
 
 use App\Http\Controllers\Controller as BaseController;
 use App\Http\Requests\Budget\Transaction\SearchBookedRequest as SearchBookedTransactionRequest;
@@ -12,7 +12,7 @@ use App\Services\Search\Transaction\OneShotSearchContract as OneShotTransactionS
 use App\Services\Search\Transaction\ScheduleSearchContract as TransactionScheduleSearchContract;
 use Carbon\Carbon;
 
-class TransactionController
+class TransactionsController
 	extends BaseController {
 
 	/**
@@ -75,7 +75,7 @@ class TransactionController
 		// apply limit
 		$this->oneShotTransactionSearch
 			->getQueryBuilder()
-			->orderBy(OneShotTransactionSearchContract::ORDER_DATE, 'desc')
+			->orderBy(OneShotTransactionSearchContract::TRANSACTION_DATE, 'desc')
 			->limit($request->get('limit', 100));
 
 		// fetch data
@@ -117,7 +117,7 @@ class TransactionController
 		// apply limit
 		$this->transactionScheduleSearch
 			->getQueryBuilder()
-			->orderBy(TransactionScheduleSearchContract::ORDER_DATE, 'asc')
+			->orderBy(TransactionScheduleSearchContract::TRANSACTION_DATE, 'asc')
 			->orderBy(TransactionScheduleSearchContract::TRANSACTION_ID, 'asc')
 			->limit($request->get('limit', 100));
 

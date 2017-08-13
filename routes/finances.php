@@ -1,10 +1,10 @@
 <?php
 
-use App\Http\Controllers\Finances\Budget\TransactionController as BudgetTransactionController;
-use App\Http\Controllers\Finances\BudgetController;
-use App\Http\Controllers\Finances\Transaction\BudgetController as TransactionBudgetController;
-use App\Http\Controllers\Finances\TransactionCategoryController;
-use App\Http\Controllers\Finances\TransactionController;
+use App\Http\Controllers\Finances\Budgets\TransactionsController as BudgetTransactionController;
+use App\Http\Controllers\Finances\BudgetsController;
+use App\Http\Controllers\Finances\Transactions\BudgetsController as TransactionBudgetController;
+use App\Http\Controllers\Finances\TransactionCategoriesController;
+use App\Http\Controllers\Finances\TransactionsController;
 
 // /finances
 Route::group(['prefix' => 'finances', 'middleware' => 'auth'], function() {
@@ -38,7 +38,7 @@ Route::group(['prefix' => 'finances', 'middleware' => 'auth'], function() {
 	});
 
 	// /finances/budgets
-	Route::resource('budgets', BudgetController::class, [
+	Route::resource('budgets', BudgetsController::class, [
 		'names' => [
 			'index' => 'finances.budgets.index',
 			'create' => 'finances.budgets.create',
@@ -51,7 +51,7 @@ Route::group(['prefix' => 'finances', 'middleware' => 'auth'], function() {
 	]);
 
 	// /finances/transactions
-	Route::resource('transactions', TransactionController::class, [
+	Route::resource('transactions', TransactionsController::class, [
 		'only' => [
 			'store',
 			'show',
@@ -70,7 +70,7 @@ Route::group(['prefix' => 'finances', 'middleware' => 'auth'], function() {
 	]);
 
 	// /finances/transaction-categories
-	Route::resource('transaction-categories', TransactionCategoryController::class, [
+	Route::resource('transaction-categories', TransactionCategoriesController::class, [
 		'only' => [
 			'index',
 			'store',

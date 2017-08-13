@@ -57,108 +57,110 @@ module.exports = function() {
             ]);
         });
 
-        chart = Highcharts.stockChart('budget-history', {
-            chart: {
-                zoomType: 'x',
-            },
-
-            title: {
-                text: __('views.finances.budgets.show.chart.title'),
-            },
-
-            xAxis: {
-                type: 'datetime',
-            },
-
-            yAxis: {
-                title: {
-                    text: __('views.finances.budgets.show.chart.y-axis-title'),
+        if (seriesData.length > 0) {
+            chart = Highcharts.stockChart('budget-history', {
+                chart: {
+                    zoomType: 'x',
                 },
-            },
 
-            legend: {
-                enabled: false,
-            },
+                title: {
+                    text: __('views.finances.budgets.show.chart.title'),
+                },
 
-            tooltip: {
-                valueDecimals: 2,
-            },
+                xAxis: {
+                    type: 'datetime',
+                },
 
-            plotOptions: {
-                area: {
-                    fillColor: {
-                        linearGradient: {
-                            x1: 0,
-                            y1: 0,
-                            x2: 0,
-                            y2: 1,
+                yAxis: {
+                    title: {
+                        text: __('views.finances.budgets.show.chart.y-axis-title'),
+                    },
+                },
+
+                legend: {
+                    enabled: false,
+                },
+
+                tooltip: {
+                    valueDecimals: 2,
+                },
+
+                plotOptions: {
+                    area: {
+                        fillColor: {
+                            linearGradient: {
+                                x1: 0,
+                                y1: 0,
+                                x2: 0,
+                                y2: 1,
+                            },
+
+                            stops: [
+                                [0, Highcharts.getOptions().colors[0]],
+                                [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')],
+                            ],
                         },
 
-                        stops: [
-                            [0, Highcharts.getOptions().colors[0]],
-                            [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')],
-                        ],
-                    },
+                        marker: {
+                            radius: 1,
+                        },
 
-                    marker: {
-                        radius: 1,
+                        threshold: null,
                     },
-
-                    threshold: null,
                 },
-            },
 
-            rangeSelector: {
-                buttons: [
-                    {
-                        type: 'day',
-                        count: 3,
-                        text: __('highcharts.custom.range-selectors.3-days'),
-                    },
+                rangeSelector: {
+                    buttons: [
+                        {
+                            type: 'day',
+                            count: 3,
+                            text: __('highcharts.custom.range-selectors.3-days'),
+                        },
 
-                    {
-                        type: 'week',
-                        count: 1,
-                        text: __('highcharts.custom.range-selectors.1-week'),
-                    },
+                        {
+                            type: 'week',
+                            count: 1,
+                            text: __('highcharts.custom.range-selectors.1-week'),
+                        },
 
-                    {
-                        type: 'month',
-                        count: 1,
-                        text: __('highcharts.custom.range-selectors.1-month'),
-                    },
+                        {
+                            type: 'month',
+                            count: 1,
+                            text: __('highcharts.custom.range-selectors.1-month'),
+                        },
 
-                    {
-                        type: 'month',
-                        count: 6,
-                        text: __('highcharts.custom.range-selectors.6-months'),
-                    },
+                        {
+                            type: 'month',
+                            count: 6,
+                            text: __('highcharts.custom.range-selectors.6-months'),
+                        },
 
-                    {
-                        type: 'year',
-                        count: 1,
-                        text: __('highcharts.custom.range-selectors.1-year'),
-                    },
+                        {
+                            type: 'year',
+                            count: 1,
+                            text: __('highcharts.custom.range-selectors.1-year'),
+                        },
 
+                        {
+                            type: 'all',
+                            text: __('highcharts.custom.range-selectors.all'),
+                        },
+                    ],
+
+                    selected: 3,
+                },
+
+                series: [
                     {
-                        type: 'all',
-                        text: __('highcharts.custom.range-selectors.all'),
+                        type: 'area',
+                        name: __('views.finances.budgets.show.chart.y-axis-title'),
+                        data: seriesData,
                     },
                 ],
+            });
 
-                selected: 3,
-            },
-
-            series: [
-                {
-                    type: 'area',
-                    name: __('views.finances.budgets.show.chart.y-axis-title'),
-                    data: seriesData,
-                },
-            ],
-        });
-
-        $('#budget-history-group-mode').trigger('change');
+            $('#budget-history-group-mode').trigger('change');
+        }
     }
 
     return {

@@ -1,6 +1,6 @@
 @php
     /**
-      * @var \App\ValueObjects\ScheduledTransaction[] $transactions
+      * @var \Illuminate\Support\Collection|\App\ValueObjects\ScheduledTransaction[] $transactions
       * @var string[] $transactionButtons
       */
 @endphp
@@ -11,25 +11,29 @@
     }
 @endphp
 
-<table class="table table-hover table-striped transaction-list compact">
-    <thead>
-    <tr>
-        @if($showCounter)
-            <th>{{ __('components/table.row-counter') }}</th>
-        @endif
+@if ($transactions->isEmpty())
+    <p class="no-data">
+        {{ __('models/transaction.misc.found-none') }}
+    </p>
+@else
+    <table class="table table-hover table-striped transaction-list compact">
+        <thead>
+        <tr>
+            @if($showCounter)
+                <th>{{ __('components/table.row-counter') }}</th>
+            @endif
 
-        <th>{{ __('models/transaction.fields.date') }}</th>
-        <th>{{ __('models/transaction.fields.name') }}</th>
-        <th>{{ __('models/transaction.fields.value') }}</th>
+            <th>{{ __('models/transaction.fields.date') }}</th>
+            <th>{{ __('models/transaction.fields.name') }}</th>
+            <th>{{ __('models/transaction.fields.value') }}</th>
 
-        @if(isset($transactionButtons))
-            <th></th>
-        @endif
-    </tr>
-    </thead>
-    <tbody>
-    @php($counter = 0)
-        @foreach ($transactions as $item)
+            @if(isset($transactionButtons))
+                <th></th>
+            @endif
+        </tr>
+        </thead>
+        <tbody>
+        @foreach ($transactions->all() as $itemId => $item)
             @php
                 /**
                   * @var \App\Models\Transaction|\App\ValueObjects\ScheduledTransaction $transaction
@@ -48,7 +52,7 @@
             <tr>
                 {{-- Row counter --}}
                 @if($showCounter)
-                    <td>{{ ++$counter }}</td>
+                    <td>{{ $itemId + 1 }}</td>
                 @endif
 
                 {{-- Transaction date --}}
@@ -68,7 +72,8 @@
                 @if(isset($transactionButtons))
                     <td class="transaction-list-buttons">
                         @if (in_array('edit-parent', $transactionButtons) && isset($transaction->parent_transaction_id))
-                            <a class="btn btn-xs btn-default" href="{{ $transactionPresenter->getParentEditUrl() }}">
+                            <a class="btn btn-xs btn-default"
+                               href="{{ $transactionPresenter->getParentEditUrl() }}">
                                 <i class="fa fa-level-up"></i>
                             </a>
                         @endif
@@ -81,8 +86,7 @@
                     </td>
                 @endif
             </tr>
-
-            @php(++$counter)
-                @endforeach
-    </tbody>
-</table>
+        @endforeach
+        </tbody>
+    </table>
+@endif

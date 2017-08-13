@@ -13,7 +13,7 @@ interface SearchContract {
 	public function reset();
 
 	/**
-	 * Applies filters onto the query builder and returns matching rows/
+	 * Returns all the matching rows.
 	 * @return Collection
 	 */
 	public function get(): Collection;

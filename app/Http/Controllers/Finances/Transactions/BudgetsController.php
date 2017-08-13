@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Finances\Transaction;
+namespace App\Http\Controllers\Finances\Transactions;
 
 use App\Models\Budget;
 use App\Models\Transaction;
 
-class BudgetController
+class BudgetsController
 	extends Controller {
 
 	/**

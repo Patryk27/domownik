@@ -12,7 +12,7 @@ use App\Services\Transaction\Category\Request\ProcessorContract as TransactionCa
 use App\Services\Transaction\Category\TransformatorContract as TransactionCategoryTransformatorContract;
 use Illuminate\Http\Request;
 
-class TransactionCategoryController
+class TransactionCategoriesController
 	extends BaseController {
 
 	/**

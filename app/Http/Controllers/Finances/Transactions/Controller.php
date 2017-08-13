@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Finances\Transaction;
+namespace App\Http\Controllers\Finances\Transactions;
 
 use App\Http\Controllers\Controller as BaseController;
 use App\Models\Model;
@@ -9,7 +9,7 @@ use App\Repositories\Contracts\TransactionCategoryRepositoryContract;
 use App\Repositories\Contracts\TransactionRepositoryContract;
 use App\Services\Breadcrumb\Manager as BreadcrumbManager;
 
-class Controller
+abstract class Controller
 	extends BaseController {
 
 	/**

@@ -2,9 +2,7 @@
     <div class="panel-heading">
         <div class="panel-title">
             <i class="fa fa-cog"></i>&nbsp;
-            {{ __('views/finances/budgets/show.management.header', [
-                'budgetName' => $budget->name,
-            ]) }}
+            {{ __('views/finances/budgets/show.management.header') }}
         </div>
     </div>
 

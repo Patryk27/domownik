@@ -2,7 +2,11 @@
 @import 'node_modules/bootstrap-sass/assets/stylesheets/bootstrap';
 @import 'skin/bootswatch';
 @import 'app/variables';
-@import 'app/app';
-@import 'app/_views';
+
 @import 'utils/utils';
 @import 'vendor/jstree';
+
+@import 'app/components';
+@import 'app/layouts';
+@import 'app/modules';
+@import 'app/views';

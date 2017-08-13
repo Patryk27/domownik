@@ -33,7 +33,7 @@ class ScheduledTransaction {
 	 * @param Carbon $date
 	 */
 	public function __construct(
-		$id,
+		?int $id,
 		Transaction $transaction,
 		Carbon $date
 	) {
@@ -45,7 +45,7 @@ class ScheduledTransaction {
 	/**
 	 * @return int|null
 	 */
-	public function getId() {
+	public function getId(): ?int {
 		return $this->id;
 	}
 
