@@ -9,6 +9,7 @@ use App\Models\TransactionValueConstant;
 use App\Models\TransactionValueRange;
 use App\Repositories\Contracts\TransactionPeriodicityRepositoryContract;
 use App\Repositories\Contracts\TransactionRepositoryContract;
+use App\Services\Transaction\Schedule\Updater as TransactionScheduleUpdater;
 use Carbon\Carbon;
 use Illuminate\Database\Connection as DatabaseConnection;
 
@@ -30,18 +31,26 @@ abstract class Base {
 	protected $transactionPeriodicityRepository;
 
 	/**
+	 * @var TransactionScheduleUpdater
+	 */
+	protected $transactionScheduleUpdater;
+
+	/**
 	 * @param DatabaseConnection $db
 	 * @param TransactionRepositoryContract $transactionRepository
 	 * @param TransactionPeriodicityRepositoryContract $transactionPeriodicityRepository
+	 * @param TransactionScheduleUpdater $transactionScheduleUpdater
 	 */
 	public function __construct(
 		DatabaseConnection $db,
 		TransactionRepositoryContract $transactionRepository,
-		TransactionPeriodicityRepositoryContract $transactionPeriodicityRepository
+		TransactionPeriodicityRepositoryContract $transactionPeriodicityRepository,
+		TransactionScheduleUpdater $transactionScheduleUpdater
 	) {
 		$this->db = $db;
 		$this->transactionRepository = $transactionRepository;
 		$this->transactionPeriodicityRepository = $transactionPeriodicityRepository;
+		$this->transactionScheduleUpdater = $transactionScheduleUpdater;
 	}
 
 	/**

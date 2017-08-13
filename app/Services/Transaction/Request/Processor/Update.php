@@ -18,7 +18,9 @@ class Update
 			$transaction = $this->transactionRepository->getOrFail($id);
 
 			$this->updateTransactionFromRequest($transaction, $request);
-			$this->transactionRepository->persist($transaction);
+
+			$this->transactionRepository->persistUpdate($transaction, $id);
+			$this->transactionScheduleUpdater->updateTransactionSchedule($transaction->id);
 
 			return new TransactionUpdateResult($transaction);
 		});

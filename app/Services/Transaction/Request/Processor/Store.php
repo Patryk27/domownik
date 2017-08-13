@@ -20,7 +20,9 @@ class Store
 			$transaction->parent_type = $request->get('parent_type');
 
 			$this->updateTransactionFromRequest($transaction, $request);
+
 			$this->transactionRepository->persist($transaction);
+			$this->transactionScheduleUpdater->updateTransactionSchedule($transaction->id);
 
 			return new TransactionStoreResult($transaction);
 		});
