@@ -2,6 +2,7 @@
     /**
      * @var \App\Models\Budget $budget
      * @var int $startingYear
+     * @var \App\ValueObjects\Budget\Summary $summary
      */
 @endphp
 
@@ -9,4 +10,8 @@
 
 @section('content')
     @include('views.finances.budgets.summary.filtering')
+
+    @isset($summary)
+        @include('views.finances.budgets.summary.summary')
+    @endisset
 @endsection

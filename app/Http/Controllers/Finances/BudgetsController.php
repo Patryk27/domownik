@@ -10,9 +10,11 @@ use App\Models\Transaction;
 use App\Repositories\Contracts\BudgetRepositoryContract;
 use App\Services\Breadcrumb\Manager as BreadcrumbManager;
 use App\Services\Budget\Request\ProcessorContract as BudgetRequestProcessorContract;
+use App\Services\Budget\SummaryGeneratorContract as BudgetSummaryGeneratorContract;
 use App\Services\Search\Transaction\OneShotSearchContract as OneShotTransactionSearchContract;
 use App\Services\Search\Transaction\ScheduleSearchContract as TransactionScheduleSearchContract;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 
 class BudgetsController
@@ -44,24 +46,32 @@ class BudgetsController
 	protected $transactionScheduleSearch;
 
 	/**
+	 * @var BudgetSummaryGeneratorContract
+	 */
+	protected $budgetSummaryGenerator;
+
+	/**
 	 * @param BreadcrumbManager $breadcrumbManager
 	 * @param BudgetRepositoryContract $budgetRepository
 	 * @param BudgetRequestProcessorContract $budgetRequestProcessor
 	 * @param OneShotTransactionSearchContract $oneShotTransactionSearch
 	 * @param TransactionScheduleSearchContract $transactionScheduleSearch
+	 * @param BudgetSummaryGeneratorContract $budgetSummaryGenerator
 	 */
 	public function __construct(
 		BreadcrumbManager $breadcrumbManager,
 		BudgetRepositoryContract $budgetRepository,
 		BudgetRequestProcessorContract $budgetRequestProcessor,
 		OneShotTransactionSearchContract $oneShotTransactionSearch,
-		TransactionScheduleSearchContract $transactionScheduleSearch
+		TransactionScheduleSearchContract $transactionScheduleSearch,
+		BudgetSummaryGeneratorContract $budgetSummaryGenerator
 	) {
 		$this->breadcrumbManager = $breadcrumbManager;
 		$this->budgetRepository = $budgetRepository;
 		$this->budgetRequestProcessor = $budgetRequestProcessor;
 		$this->oneShotTransactionSearch = $oneShotTransactionSearch;
 		$this->transactionScheduleSearch = $transactionScheduleSearch;
+		$this->budgetSummaryGenerator = $budgetSummaryGenerator;
 	}
 
 	/**
@@ -197,19 +207,31 @@ class BudgetsController
 	}
 
 	/**
+	 * @param Request $request
 	 * @param Budget $budget
 	 * @return mixed
 	 */
-	public function summary(Budget $budget) {
+	public function summary(Request $request, Budget $budget) {
 		$this->breadcrumbManager
 			->pushCustom($budget)
 			->push(route('finances.budgets.summary', $budget), __('breadcrumbs.budgets.summary'));
 
 		$startingYear = 2017; // @todo
+		$summary = null;
+
+		if ($request->has(['year', 'month'])) {
+			$this->budgetSummaryGenerator
+				->setBudgetId($budget->id)
+				->setYear($request->get('year'))
+				->setMonth($request->get('month'));
+
+			$summary = $this->budgetSummaryGenerator->generateSummary();
+		}
 
 		return view('views.finances.budgets.summary', [
 			'budget' => $budget,
 			'startingYear' => $startingYear,
+			'summary' => $summary,
 		]);
 	}
 

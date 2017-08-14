@@ -2,7 +2,7 @@
 
 namespace App\Exceptions;
 
-class ValidateException
+class ValidationException
 	extends Exception {
 
 }

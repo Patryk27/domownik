@@ -3,7 +3,7 @@
 namespace App\Services\Transaction\Periodicity;
 
 use App\Exceptions\Exception;
-use App\Exceptions\ValidateException;
+use App\Exceptions\ValidationException;
 use App\Models\Transaction;
 use App\Repositories\Contracts\TransactionPeriodicityRepositoryContract;
 use App\Repositories\Contracts\TransactionRepositoryContract;
@@ -14,7 +14,6 @@ use App\Services\Transaction\Periodicity\Parser\Matchers\OneShotMatcher;
 use App\Services\Transaction\Periodicity\Parser\Matchers\WeeklyMatcher;
 use App\Services\Transaction\Periodicity\Parser\Matchers\YearlyMatcher;
 use Carbon\Carbon;
-use Dotenv\Exception\ValidationException;
 use Illuminate\Support\Collection;
 
 class Parser
@@ -133,19 +132,19 @@ class Parser
 
 	/**
 	 * @return $this
-	 * @throws ValidateException
+	 * @throws ValidationException
 	 */
 	protected function validate() {
 		if (empty($this->transactionId)) {
-			throw new ValidateException('Transaction id has not been set.');
+			throw new ValidationException('Transaction id has not been set.');
 		}
 
 		if (empty($this->dateFrom)) {
-			throw new ValidateException('Beginning date has not been set.');
+			throw new ValidationException('Beginning date has not been set.');
 		}
 
 		if (empty($this->dateTo)) {
-			throw new ValidateException('Ending date has not been set.');
+			throw new ValidationException('Ending date has not been set.');
 		}
 
 		if ($this->dateFrom > $this->dateTo) {

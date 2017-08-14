@@ -1,0 +1,11 @@
+.estimated-cost {
+  display: inline-block;
+
+  &.positive {
+    color: green;
+  }
+
+  &.negative {
+    color: red;
+  }
+}
