@@ -113,7 +113,7 @@
         </div>
 
         <div class="panel-body">
-            @include('components.transaction.list.full', [
+            @include('components.transaction.list', [
                 'transactions' => $transactions,
             ])
         </div>

@@ -29,15 +29,15 @@
                     'class' => 'form-control',
                 ]) !!}
             </div>
-        </div>
-    </div>
 
-    <div class="panel-footer">
-        {{-- Submit --}}
-        <button class="btn btn-success">
-            <i class="fa fa-search"></i>&nbsp;
-            {{ __('views/finances/budgets/summary.filtering.submit') }}
-        </button>
+            <div class="col-xs-12 col-sm-12 col-md-2">
+                {{-- Submit --}}
+                <button class="btn btn-success">
+                    <i class="fa fa-search"></i>&nbsp;
+                    {{ __('views/finances/budgets/summary.filtering.submit') }}
+                </button>
+            </div>
+        </div>
     </div>
 </div>
 

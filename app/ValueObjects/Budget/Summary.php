@@ -4,6 +4,8 @@ namespace App\ValueObjects\Budget;
 
 use App\ValueObjects\EstimatedCost;
 use App\ValueObjects\HasInitializationConstructor;
+use App\ValueObjects\ScheduledTransaction;
+use Illuminate\Support\Collection;
 
 class Summary {
 
@@ -35,19 +37,9 @@ class Summary {
 	protected $estimatedProfit;
 
 	/**
-	 * @var float[]
+	 * @var Collection|ScheduledTransaction[]
 	 */
-	protected $dailyIncome;
-
-	/**
-	 * @var float[]
-	 */
-	protected $dailyExpenses;
-
-	/**
-	 * @var float[]
-	 */
-	protected $dailyProfit;
+	protected $transactions;
 
 	/**
 	 * @return int
@@ -85,24 +77,10 @@ class Summary {
 	}
 
 	/**
-	 * @return float[]
+	 * @return Collection|ScheduledTransaction[]
 	 */
-	public function getDailyIncome(): array {
-		return $this->dailyIncome;
-	}
-
-	/**
-	 * @return float[]
-	 */
-	public function getDailyExpenses(): array {
-		return $this->dailyExpenses;
-	}
-
-	/**
-	 * @return float[]
-	 */
-	public function getDailyProfit(): array {
-		return $this->dailyProfit;
+	public function getTransactions(): Collection {
+		return $this->transactions;
 	}
 
 }

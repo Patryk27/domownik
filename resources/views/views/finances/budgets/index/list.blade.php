@@ -13,7 +13,7 @@
     </div>
 
     <div class="panel-body">
-        @include('components.budget.list.full', [
+        @include('components.budget.listw', [
             'budgets' => $budgets,
         ])
     </div>

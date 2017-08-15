@@ -216,17 +216,19 @@ class BudgetsController
 			->pushCustom($budget)
 			->push(route('finances.budgets.summary', $budget), __('breadcrumbs.budgets.summary'));
 
-		$startingYear = 2017; // @todo
-		$summary = null;
+		$startingYear = $budget->created_at->year; // @todo - this value should represent furthest possible transaction
 
-		if ($request->has(['year', 'month'])) {
-			$this->budgetSummaryGenerator
-				->setBudgetId($budget->id)
-				->setYear($request->get('year'))
-				->setMonth($request->get('month'));
-
-			$summary = $this->budgetSummaryGenerator->generateSummary();
+		if (!$request->has(['year', 'month'])) {
+			$request->offsetSet('year', date('Y'));
+			$request->offsetSet('month', date('m'));
 		}
+
+		$this->budgetSummaryGenerator
+			->setBudgetId($budget->id)
+			->setYear($request->get('year'))
+			->setMonth($request->get('month'));
+
+		$summary = $this->budgetSummaryGenerator->generateSummary();
 
 		return view('views.finances.budgets.summary', [
 			'budget' => $budget,

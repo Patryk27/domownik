@@ -23,7 +23,7 @@
             </div>
 
             <div class="panel-body">
-                @include('components.transaction.list.compact', [
+                @include('components.transaction.list.partial', [
                     'transactions' => $recentTransactions,
                     'transactionButtons' => ['edit', 'edit-parent'],
                 ])
@@ -47,7 +47,7 @@
             </div>
 
             <div class="panel-body">
-                @include('components.transaction.list.compact', [
+                @include('components.transaction.list.partial', [
                     'transactions' => $incomingTransactions,
                     'transactionButtons' => ['edit', 'edit-parent'],
                 ])

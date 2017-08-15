@@ -6,11 +6,14 @@ return [
 		'submit' => 'Pokaż podsumowanie',
 	],
 
-	'summary' => [
-		'title' => 'Podsumowanie :year-:month',
+	'overview' => [
+		'title' => 'Ogólne podsumowanie :year-:month',
 		'estimated-income' => 'Szacowane wpływy',
 		'estimated-expense' => 'Szacowane wydatki',
 		'estimated-profit' => 'Szacowana pozostała ilość pieniędzy',
-		'see-transactions' => 'zobacz transakcje',
+	],
+
+	'transactions' => [
+		'title' => 'Spis transakcji :year-:month',
 	],
 ];

@@ -3,25 +3,28 @@
 namespace App\Services\Budget;
 
 use App\Exceptions\ValidationException;
-use App\Services\Search\Transaction\OneShotSearchContract as TransactionOneShotSearchContract;
-use App\Services\Search\Transaction\ScheduleSearchContract as TransactionScheduleSearchContract;
+use App\Services\Budget\SummaryGenerator\OneShotProcessor;
+use App\Services\Budget\SummaryGenerator\ScheduleProcessor;
 use App\Services\ValueObjects\EstimatedCostBuilder;
 use App\ValueObjects\Budget\Summary as BudgetSummary;
+use App\ValueObjects\CarbonRange;
 use App\ValueObjects\EstimatedCost;
+use App\ValueObjects\ScheduledTransaction;
 use Carbon\Carbon;
+use Illuminate\Support\Collection;
 
 class SummaryGenerator
 	implements SummaryGeneratorContract {
 
 	/**
-	 * @var TransactionOneShotSearchContract
+	 * @var OneShotProcessor
 	 */
-	protected $transactionOneShotSearch;
+	protected $oneShotProcessor;
 
 	/**
-	 * @var TransactionScheduleSearchContract
+	 * @var ScheduleProcessor
 	 */
-	protected $transactionScheduleSearch;
+	protected $scheduleProcessor;
 
 	/**
 	 * @var int
@@ -39,30 +42,30 @@ class SummaryGenerator
 	protected $budgetId;
 
 	/**
-	 * @var Carbon
+	 * @var CarbonRange
 	 */
-	protected $monthBegin;
+	protected $monthRange;
 
 	/**
-	 * @var Carbon
+	 * @var Collection|EstimatedCost[][]
 	 */
-	protected $monthEnd;
+	protected $dailyCost;
 
 	/**
-	 * @var EstimatedCost[][]
+	 * @var Collection|ScheduledTransaction[]
 	 */
-	protected $dailyData;
+	protected $transactions;
 
 	/**
-	 * @param TransactionOneShotSearchContract $transactionOneShotSearch
-	 * @param TransactionScheduleSearchContract $transactionScheduleSearch
+	 * @param OneShotProcessor $oneShotProcessor
+	 * @param ScheduleProcessor $scheduleProcessor
 	 */
 	public function __construct(
-		TransactionOneShotSearchContract $transactionOneShotSearch,
-		TransactionScheduleSearchContract $transactionScheduleSearch
+		OneShotProcessor $oneShotProcessor,
+		ScheduleProcessor $scheduleProcessor
 	) {
-		$this->transactionOneShotSearch = $transactionOneShotSearch;
-		$this->transactionScheduleSearch = $transactionScheduleSearch;
+		$this->oneShotProcessor = $oneShotProcessor;
+		$this->scheduleProcessor = $scheduleProcessor;
 	}
 
 	/**
@@ -93,15 +96,11 @@ class SummaryGenerator
 	 * @inheritDoc
 	 */
 	public function generateSummary(): BudgetSummary {
-		$this->validate();
-
-		$this->monthBegin = Carbon::create($this->year, $this->month, 1, 0, 0, 0);
-		$this->monthEnd = (clone $this->monthBegin)->endOfMonth();
-
-		$this->dailyData = [];
-
-		$this->addOneShotTransactions()
-			 ->addScheduledTransactions();
+		$this
+			->validate()
+			->prepare()
+			->addOneShotTransactions()
+			->addScheduledTransactions();
 
 		return $this->prepareSummary();
 	}
@@ -120,7 +119,28 @@ class SummaryGenerator
 		}
 
 		if (is_null($this->budgetId)) {
-			throw new ValidationException('Month has not been set.');
+			throw new ValidationException('Budget it has not been set.');
+		}
+
+		return $this;
+	}
+
+	/**
+	 * @return $this
+	 */
+	protected function prepare() {
+		$monthBegin = Carbon::create($this->year, $this->month, 1, 0, 0, 0);
+
+		$this->monthRange = new CarbonRange(
+			$monthBegin,
+			(clone $monthBegin)->endOfMonth()
+		);
+
+		$this->dailyCost = new Collection();
+		$this->transactions = new Collection();
+
+		for ($i = 1; $i <= 31; ++$i) {
+			$this->dailyCost[$i] = new Collection();
 		}
 
 		return $this;
@@ -130,13 +150,11 @@ class SummaryGenerator
 	 * @return $this
 	 */
 	protected function addOneShotTransactions() {
-		$this->transactionOneShotSearch
-			->date('>=', $this->monthBegin)
-			->date('<=', $this->monthEnd);
+		$this->oneShotProcessor
+			->setMonthRange($this->monthRange)
+			->setBudgetId($this->budgetId);
 
-		$oneShotTransactions = $this->transactionOneShotSearch->get();
-
-		// @todo
+		$this->addTransactions($this->oneShotProcessor->processAndGetItems());
 
 		return $this;
 	}
@@ -145,20 +163,30 @@ class SummaryGenerator
 	 * @return $this
 	 */
 	protected function addScheduledTransactions() {
-		$this->transactionScheduleSearch
-			->date('>=', $this->monthBegin)
-			->date('<=', $this->monthEnd);
+		$this->scheduleProcessor
+			->setMonthRange($this->monthRange)
+			->setBudgetId($this->budgetId);
 
-		$scheduledTransactions = $this->transactionScheduleSearch->get();
+		$this->addTransactions($this->scheduleProcessor->processAndGetItems());
+
+		return $this;
+	}
+
+	/**
+	 * @param Collection|ScheduledTransaction[]|null $scheduledTransactions
+	 * @return $this
+	 */
+	protected function addTransactions(?Collection $scheduledTransactions) {
+		if (!isset($scheduledTransactions)) {
+			return $this;
+		}
 
 		foreach ($scheduledTransactions as $scheduledTransaction) {
-			$dayNumber = $scheduledTransaction->getDate()->day;
+			$this->dailyCost
+				->get($scheduledTransaction->getDate()->day)
+				->push(EstimatedCost::build($scheduledTransaction->getTransaction()));
 
-			if (!isset($this->dailyData[$dayNumber])) {
-				$this->dailyData[$dayNumber] = [];
-			}
-
-			$this->dailyData[$dayNumber][] = EstimatedCost::build($scheduledTransaction->getTransaction());
+			$this->transactions->push($scheduledTransaction);
 		}
 
 		return $this;
@@ -171,8 +199,8 @@ class SummaryGenerator
 		$estimatedIncome = new EstimatedCostBuilder();
 		$estimatedExpense = new EstimatedCostBuilder();
 
-		foreach ($this->dailyData as $dayId => $costs) {
-			foreach ($costs as $cost) {
+		foreach ($this->dailyCost as $day => $dayCosts) {
+			foreach ($dayCosts as $cost) {
 				if ($cost->getEstimateMin() <= 0) {
 					$estimatedExpense->addEstimateCost($cost);
 				} else {
@@ -192,6 +220,7 @@ class SummaryGenerator
 			'estimatedIncome' => $estimatedIncome->build(),
 			'estimatedExpense' => $estimatedExpense->build(),
 			'estimatedProfit' => $estimatedProfit,
+			'transactions' => $this->transactions,
 		]);
 	}
 

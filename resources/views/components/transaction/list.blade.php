@@ -1,7 +1,7 @@
 @php
     /**
       * @var \Illuminate\Support\Collection|\App\ValueObjects\ScheduledTransaction[] $transactions
-      * @var string[] $transactionButtons
+      * @var \App\ValueObjects\View\Components\Transaction\CList\Options|null $options
       */
 @endphp
 
@@ -11,10 +11,15 @@
     ]), $transactions->count()) !!}
 </p>
 
+{{-- @todo set options below in the $options (or use some $optionsOverride variable) --}}
+{{--
+'transactionButtons' => ['edit', 'edit-parent'],
+'showCounter' => true,
+--}}
+
 @if ($transactions->isNotEmpty())
-    @include('components.transaction.list.compact', [
+    @include('components.transaction.list.partial', [
         'transactions' => $transactions,
-        'transactionButtons' => ['edit', 'edit-parent'],
-        'showCounter' => true,
+        'options' => $options,
     ])
 @endif
