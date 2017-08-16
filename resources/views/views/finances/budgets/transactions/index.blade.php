@@ -9,10 +9,7 @@
 
 @section('content')
     {{-- Filtering --}}
-    {!! Form::open([
-        'url' => '#',
-        'method' => 'post',
-    ]) !!}
+    {!! Form::open(['url' => '#', 'method' => 'post']) !!}
 
     <div class="panel panel-default">
         <div class="panel-heading">
@@ -116,7 +113,7 @@
         </div>
 
         <div class="panel-body">
-            @include('components.transaction.list.full', [
+            @include('components.transaction.list', [
                 'transactions' => $transactions,
             ])
         </div>

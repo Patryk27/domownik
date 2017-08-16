@@ -139,6 +139,20 @@ class Transaction
 	}
 
 	/**
+	 * @return bool
+	 */
+	public function isIncome(): bool {
+		return $this->type === self::TYPE_INCOME;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function isExpense(): bool {
+		return $this->type === self::TYPE_EXPENSE;
+	}
+
+	/**
 	 * @return string[]
 	 */
 	public static function getTypes(): array {

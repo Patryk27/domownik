@@ -155,6 +155,7 @@ abstract class AbstractCrudRepository
 		$this->getOrFail($id);
 
 		// update the model
+		/** @noinspection PhpUndefinedFieldInspection */
 		$model->id = $id;
 		$model->exists = true;
 

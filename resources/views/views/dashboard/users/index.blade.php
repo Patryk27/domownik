@@ -35,7 +35,7 @@
         </div>
 
         <div class="panel-body">
-            @include('components.user.list.full', [
+            @include('components.user.list', [
                 'users' => $users,
             ])
         </div>

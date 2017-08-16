@@ -3,7 +3,9 @@
 namespace App\Services\Search\Transaction;
 
 use App\Services\Search\SearchContract;
+use App\ValueObjects\ScheduledTransaction;
 use Carbon\Carbon;
+use Illuminate\Support\Collection;
 
 interface ScheduleSearchContract
 	extends SearchContract {
@@ -34,5 +36,14 @@ interface ScheduleSearchContract
 	 * @return $this
 	 */
 	public function name(string $name);
+
+	#region Inherited from SearchContract
+
+	/**
+	 * @return Collection|ScheduledTransaction[]
+	 */
+	public function get(): Collection;
+
+	#endregion
 
 }

@@ -1,8 +1,14 @@
 @php
     /**
-     * @var \App\Models\User[] $users
+     * @var \Illuminate\Support\Collection|\App\Models\User[] $users
      */
 @endphp
+
+<p>
+    {!! Lang::choice(__('models/user.misc.found-count', [
+        'count' => $users->count(),
+    ]), $users->count()) !!}
+</p>
 
 <table class="table table-hover table-striped">
     <thead>
@@ -16,10 +22,6 @@
     <tbody>
     @foreach ($users as $user)
         @php
-            /**
-             * @var $user \App\Models\User
-             */
-
             $userPresenter = $user->getPresenter();
 
             $trClass = '';

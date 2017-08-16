@@ -35,7 +35,7 @@ class TransactionsController
 		$result = $this->transactionRequestProcessor->store($request);
 		$transaction = $result->getTransaction();
 
-		$this->flash('success', __('requests/transaction/crud.messages.stored'));
+		$this->putFlash('success', __('requests/transaction/crud.messages.stored'));
 
 		return response()->json([
 			'redirectUrl' => route('finances.transactions.edit', $transaction->id),
@@ -79,7 +79,7 @@ class TransactionsController
 		$result = $this->transactionRequestProcessor->update($request, $id);
 		$transaction = $result->getTransaction();
 
-		$this->flash('success', __('requests/transaction/crud.messages.updated'));
+		$this->putFlash('success', __('requests/transaction/crud.messages.updated'));
 
 		return response()->json([
 			'redirectUrl' => route('finances.transactions.edit', $transaction->id),

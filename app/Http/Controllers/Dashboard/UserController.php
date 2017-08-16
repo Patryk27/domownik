@@ -83,7 +83,7 @@ class UserController
 		$result = $this->userRequestProcessor->store($request);
 		$user = $result->getUser();
 
-		$this->flash('success', __('requests/user/crud.messages.stored'));
+		$this->putFlash('success', __('requests/user/crud.messages.stored'));
 
 		return response()->json([
 			'redirectUrl' => route('dashboard.users.edit', $user->id),
@@ -126,7 +126,7 @@ class UserController
 		$result = $this->userRequestProcessor->update($request, $id);
 		$user = $result->getUser();
 
-		$this->flash('success', __('requests/user/crud.messages.updated'));
+		$this->putFlash('success', __('requests/user/crud.messages.updated'));
 
 		return response()->json([
 			'redirectUrl' => route('dashboard.users.edit', $user->id),
@@ -140,7 +140,7 @@ class UserController
 	public function destroy(User $user) {
 		$this->userRequestProcessor->delete($user->id);
 
-		$this->flash('success', __('requests/user/crud.messages.deleted'));
+		$this->putFlash('success', __('requests/user/crud.messages.deleted'));
 
 		return response()->json([
 			'redirectUrl' => route('dashboard.users.index'),

@@ -11,7 +11,7 @@ return [
 		'description' => 'Opis',
 		'value' => 'Wartość',
 		'periodicity' => 'Okresowość',
-		'date' => 'Data utworzenia',
+		'date' => 'Data',
 	],
 
 	'misc' => [

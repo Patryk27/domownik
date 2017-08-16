@@ -7,7 +7,7 @@ use App\Exceptions\ValueObjectException;
 trait HasInitializationConstructor {
 
 	/**
-	 * @param array|null $data
+	 * @param array $data
 	 * @throws ValueObjectException
 	 */
 	public function __construct(array $data) {
