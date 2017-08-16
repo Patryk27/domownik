@@ -18,9 +18,12 @@
     <div class="panel-body">
         @include('components.transaction.list', [
             'transactions' => $summary->getTransactions(),
-            'options' => new \App\ValueObjects\View\Components\Transaction\CList\Options([
-                'highlightFuture' => false,
-            ]),
+            'options' => [
+                'buttons' => ['edit'],
+                'highlightFuture' => true,
+                'showCounter' => true,
+                'showRowCounter' => true,
+            ],
         ])
     </div>
 </div>

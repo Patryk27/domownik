@@ -4,7 +4,7 @@
      */
 @endphp
 
-<div class="panel panel-default">
+<div class="panel panel-default budget-summary-overview">
     <div class="panel-heading">
         <div class="panel-title">
             <i class="fa fa-database"></i>&nbsp;

@@ -2,6 +2,7 @@
 
 namespace App\Services\Budget;
 
+use App\Exceptions\UserInterfaceException;
 use App\Exceptions\ValidationException;
 use App\Services\Budget\SummaryGenerator\OneShotProcessor;
 use App\Services\Budget\SummaryGenerator\ScheduleProcessor;
@@ -98,6 +99,7 @@ class SummaryGenerator
 	public function generateSummary(): BudgetSummary {
 		$this
 			->validate()
+			->validateDate()
 			->prepare()
 			->addOneShotTransactions()
 			->addScheduledTransactions();
@@ -120,6 +122,29 @@ class SummaryGenerator
 
 		if (is_null($this->budgetId)) {
 			throw new ValidationException('Budget it has not been set.');
+		}
+
+		return $this;
+	}
+
+	/**
+	 * @return $this
+	 * @throws UserInterfaceException
+	 */
+	protected function validateDate() {
+		$summaryDate = Carbon::create($this->year, $this->month, 31, 0, 0, 0);
+
+		/**
+		 * As the 'transaction_schedules' table is created only with a year of spare time, we cannot show summary which
+		 * is further in past than a year.
+		 */
+
+		$summaryMaximumDate =
+			Carbon::now()
+				  ->addYear();
+
+		if ($summaryDate->greaterThanOrEqualTo($summaryMaximumDate)) {
+			throw new UserInterfaceException(__('requests/budget/summary.messages.too-far-into-future'));
 		}
 
 		return $this;

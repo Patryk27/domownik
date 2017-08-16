@@ -10,7 +10,7 @@ return [
 		'title' => 'Ogólne podsumowanie :year-:month',
 		'estimated-income' => 'Szacowane wpływy',
 		'estimated-expense' => 'Szacowane wydatki',
-		'estimated-profit' => 'Szacowana pozostała ilość pieniędzy',
+		'estimated-profit' => 'Szacowane oszczędności',
 	],
 
 	'transactions' => [

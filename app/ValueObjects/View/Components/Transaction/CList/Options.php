@@ -3,10 +3,11 @@
 namespace App\ValueObjects\View\Components\Transaction\CList;
 
 use App\ValueObjects\HasInitializationConstructor;
+use App\ValueObjects\HasOverwrite;
 
 class Options {
 
-	use HasInitializationConstructor;
+	use HasInitializationConstructor, HasOverwrite;
 
 	/**
 	 * @var ?bool
@@ -17,6 +18,16 @@ class Options {
 	 * @var string[]|null
 	 */
 	protected $buttons;
+
+	/**
+	 * @var ?bool
+	 */
+	protected $showCounter;
+
+	/**
+	 * @var ?bool
+	 */
+	protected $showRowCounter;
 
 	/**
 	 * @return bool
@@ -30,6 +41,35 @@ class Options {
 	 */
 	public function getButtons(): array {
 		return $this->buttons ?? [];
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function hasButtons(): bool {
+		return !empty($this->getButtons());
+	}
+
+	/**
+	 * @param string $buttonName
+	 * @return bool
+	 */
+	public function hasButton(string $buttonName): bool {
+		return in_array($buttonName, $this->getButtons());
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function getShowCounter(): bool {
+		return $this->showCounter ?? false;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function getShowRowCounter(): bool {
+		return $this->showRowCounter ?? false;
 	}
 
 }

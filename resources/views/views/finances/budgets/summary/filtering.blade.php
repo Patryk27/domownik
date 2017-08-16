@@ -4,7 +4,7 @@
      */
 @endphp
 
-{!! Form::open(['url' => '#', 'method' => 'post']) !!}
+{!! Form::open(['method' => 'get']) !!}
 
 <div class="panel panel-default">
     <div class="panel-heading">

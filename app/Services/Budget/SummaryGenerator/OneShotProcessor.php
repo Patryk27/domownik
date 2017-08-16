@@ -53,6 +53,15 @@ class OneShotProcessor {
 			return null;
 		}
 
+		/**
+		 * If today's the end date, both the @see OneShotProcessor and @see ScheduleProcessor would include this
+		 * transaction in the summary, effectively doubling it's value. To avoid this, we just sub one day from the
+		 * one-shot summary (we could also do addDay() in schedule processor but it really doesn't matter).
+		 */
+		if ($endDate->isToday()) {
+			$endDate->subDay();
+		}
+
 		$this->transactionOneShotSearch
 			->parent(Transaction::PARENT_TYPE_BUDGET, $this->budgetId)
 			->date('>=', $beginDate)

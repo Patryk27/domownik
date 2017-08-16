@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Finances;
 
+use App\Exceptions\UserInterfaceException;
 use App\Http\Controllers\Controller as BaseController;
 use App\Http\Requests\Budget\Crud\StoreRequest as BudgetStoreRequest;
 use App\Http\Requests\Budget\Crud\UpdateRequest as BudgetUpdateRequest;
@@ -113,7 +114,7 @@ class BudgetsController
 		$result = $this->budgetRequestProcessor->store($request);
 		$budget = $result->getBudget();
 
-		$this->flash('success', __('requests/budget/crud.messages.stored'));
+		$this->putFlash('success', __('requests/budget/crud.messages.stored'));
 
 		return response()->json([
 			'redirectUrl' => route('finances.budgets.edit', $budget->id),
@@ -153,7 +154,7 @@ class BudgetsController
 		$result = $this->budgetRequestProcessor->update($request, $id);
 		$budget = $result->getBudget();
 
-		$this->flash('success', __('requests/budget/crud.messages.updated'));
+		$this->putFlash('success', __('requests/budget/crud.messages.updated'));
 
 		return response()->json([
 			'redirectUrl' => route('finances.budgets.edit', $budget->id),
@@ -217,18 +218,18 @@ class BudgetsController
 			->push(route('finances.budgets.summary', $budget), __('breadcrumbs.budgets.summary'));
 
 		$startingYear = $budget->created_at->year; // @todo - this value should represent furthest possible transaction
+		$summary = null;
 
-		if (!$request->has(['year', 'month'])) {
-			$request->offsetSet('year', date('Y'));
-			$request->offsetSet('month', date('m'));
+		try {
+			$this->budgetSummaryGenerator
+				->setBudgetId($budget->id)
+				->setYear($request->get('year', date('Y')))
+				->setMonth($request->get('month', date('m')));
+
+			$summary = $this->budgetSummaryGenerator->generateSummary();
+		} catch (UserInterfaceException $ex) {
+			$this->putMessage('danger', $ex->getMessage());
 		}
-
-		$this->budgetSummaryGenerator
-			->setBudgetId($budget->id)
-			->setYear($request->get('year'))
-			->setMonth($request->get('month'));
-
-		$summary = $this->budgetSummaryGenerator->generateSummary();
 
 		return view('views.finances.budgets.summary', [
 			'budget' => $budget,

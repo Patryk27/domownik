@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Presenters\BudgetPresenter;
 use Carbon\Carbon;
 
 /**
@@ -12,6 +13,7 @@ use Carbon\Carbon;
  * @property string $status
  * @property Carbon $created_at
  * @property Carbon $updated_at
+ * @method BudgetPresenter getPresenter()
  */
 class Budget
 	extends Model {

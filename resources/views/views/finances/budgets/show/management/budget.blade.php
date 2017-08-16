@@ -7,7 +7,7 @@
 <div class="panel panel-default">
     <div class="panel-heading">
         <div class="panel-title">
-            <i class="fa fa-cog"></i>&nbsp;
+            <i class="fa fa-dashboard"></i>&nbsp;
             {{ __('views/finances/budgets/show.management.budget.header') }}
         </div>
     </div>
@@ -21,7 +21,7 @@
 
         {{-- Show budget summary --}}
         <a class="btn btn-info" href="{{ route('finances.budgets.summary', $budget->id) }}">
-            <i class="fa fa-list"></i>&nbsp;
+            <i class="fa fa-list-alt"></i>&nbsp;
             {{ __('views/finances/budgets/show.management.budget.show-summary') }}
         </a>
     </div>

@@ -4,20 +4,24 @@ namespace App\ValueObjects;
 
 use App\Exceptions\ValueObjectException;
 
-trait HasInitializationConstructor {
+trait HasOverwrite {
 
 	/**
 	 * @param array $data
 	 * @throws ValueObjectException
 	 */
-	public function __construct(array $data) {
+	public function overwriteWith(array $data) {
+		$result = clone $this;
+
 		foreach ($data as $key => $value) {
-			if (!property_exists($this, $key)) {
+			if (!property_exists($result, $key)) {
 				throw new ValueObjectException('Property [%s] does not exist in class [%s].', $key, get_class($this));
 			}
 
-			$this->$key = $value;
+			$result->$key = $value;
 		}
+
+		return $result;
 	}
 
 }

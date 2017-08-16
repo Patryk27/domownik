@@ -1,6 +1,6 @@
 <?php
 
 return [
-	'show' => 'Pokaż',
+	'show' => 'Otwórz',
 	'edit' => 'Edytuj',
 ];

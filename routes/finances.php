@@ -37,7 +37,7 @@ Route::group(['prefix' => 'finances', 'middleware' => 'auth'], function() {
 		]);
 
 		// /finances/budgets/{budget}/summary
-		Route::match(['get', 'post'], '/{budget}/summary', BudgetsController::class . '@summary')
+		Route::get('/{budget}/summary', BudgetsController::class . '@summary')
 			->name('finances.budgets.summary');
 	});
 
