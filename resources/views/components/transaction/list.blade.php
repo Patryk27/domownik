@@ -6,6 +6,10 @@
 @endphp
 
 @php
+    if (!isset($options)) {
+        $options = [];
+    }
+
     if (is_array($options)) {
         $options = new \App\ValueObjects\View\Components\Transaction\CList\Options($options);
     }
