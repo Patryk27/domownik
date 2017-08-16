@@ -35,6 +35,10 @@ Route::group(['prefix' => 'finances', 'middleware' => 'auth'], function() {
 				'edit' => 'finances.budgets.transactions.edit',
 			],
 		]);
+
+		// /finances/budgets/{budget}/summary
+		Route::get('/{budget}/summary', BudgetsController::class . '@summary')
+			->name('finances.budgets.summary');
 	});
 
 	// /finances/budgets

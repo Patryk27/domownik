@@ -70,6 +70,7 @@ class FinancesServiceProvider
 	 */
 	protected function bindServices(): self {
 		$this->app->bind(\App\Services\Budget\Request\ProcessorContract::class, \App\Services\Budget\Request\Processor::class);
+		$this->app->bind(\App\Services\Budget\SummaryGeneratorContract::class, \App\Services\Budget\SummaryGenerator::class);
 
 		$this->app->bind(\App\Services\Transaction\Category\Request\ProcessorContract::class, \App\Services\Transaction\Category\Request\Processor::class);
 		$this->app->bind(\App\Services\Transaction\Category\TransformatorContract::class, \App\Services\Transaction\Category\Transformator::class);

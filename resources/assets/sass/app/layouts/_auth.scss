@@ -4,9 +4,8 @@
   @import 'auth/navbar';
   @import 'auth/sidebar';
 
-  #flash-message-container,
-  #session-message-container {
-    max-width: 450px;
+  .message-container {
+    max-width: 650px;
     margin: 0 auto;
 
     .alert {

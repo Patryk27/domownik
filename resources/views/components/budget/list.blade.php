@@ -4,6 +4,12 @@
      */
 @endphp
 
+<p>
+    {!! Lang::choice(__('models/budget.misc.found-count', [
+        'count' => $budgets->count(),
+    ]), $budgets->count()) !!}
+</p>
+
 <table class="table table-hover table-striped">
     <thead>
     <tr>
@@ -16,11 +22,6 @@
     <tbody>
     @foreach ($budgets as $budget)
         @php
-            /**
-             * @var \App\Models\Budget $budget
-             * @var \App\Presenters\BudgetPresenter $budgetPresenter
-             */
-
             $budgetPresenter = $budget->getPresenter();
         @endphp
         <tr>

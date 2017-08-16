@@ -1,0 +1,1 @@
+The 'CList' word has been chosen for the namespace instead of just 'List' because the latter is, unfortunately, a reserved word in PHP :-/

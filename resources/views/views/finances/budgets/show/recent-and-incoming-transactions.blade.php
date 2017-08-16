@@ -1,3 +1,11 @@
+@php
+    /**
+     * @var \App\Models\Budget $budget
+     * @var \Illuminate\Support\Collection|\App\ValueObjects\ScheduledTransaction[] $recentTransactions
+     * @var \Illuminate\Support\Collection|\App\ValueObjects\ScheduledTransaction[] $incomingTransactions
+     */
+@endphp
+
 <div class="row">
     {{-- Recently booked transactions --}}
     <div class="col-sm-12 col-md-6">
@@ -15,9 +23,11 @@
             </div>
 
             <div class="panel-body">
-                @include('components.transaction.list.compact', [
+                @include('components.transaction.list', [
                     'transactions' => $recentTransactions,
-                    'transactionButtons' => ['edit', 'edit-parent'],
+                    'options' => [
+                        'buttons' => ['edit'],
+                    ],
                 ])
             </div>
         </div>
@@ -39,9 +49,11 @@
             </div>
 
             <div class="panel-body">
-                @include('components.transaction.list.compact', [
+                @include('components.transaction.list', [
                     'transactions' => $incomingTransactions,
-                    'transactionButtons' => ['edit', 'edit-parent'],
+                    'options' => [
+                        'buttons' => ['edit'],
+                    ],
                 ])
             </div>
         </div>

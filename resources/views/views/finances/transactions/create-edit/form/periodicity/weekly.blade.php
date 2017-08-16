@@ -13,7 +13,7 @@
                 <div class="checkbox">
                     <label>
                         {!! Form::checkbox('periodicity_weekly_days[]', $weekDayNumber) !!}
-                        {{ __('calendar.week-days.' . $weekDay) }}
+                        {{ __('calendar.weekdays.' . $weekDay) }}
                     </label>
                 </div>
             @endforeach

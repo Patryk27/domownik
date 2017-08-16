@@ -1,0 +1,34 @@
+.left-separator,
+.right-separator {
+  position: relative;
+
+  &::after {
+    content: ' ';
+    border-right: 1px solid $gray-lighter;
+
+    display: block;
+    width: 1px;
+    height: 70%;
+
+    position: absolute;
+    top: 15%;
+  }
+}
+
+.left-separator {
+  margin-left: $separator-spacing;
+  padding-left: $separator-spacing;
+
+  &::after {
+    left: 0;
+  }
+}
+
+.right-separator {
+  margin-right: $separator-spacing;
+  padding-right: $separator-spacing;
+
+  &::after {
+    right: 0;
+  }
+}

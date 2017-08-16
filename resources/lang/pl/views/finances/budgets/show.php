@@ -4,10 +4,17 @@ return [
 	'page.title' => 'Budżet :budgetName',
 
 	'management' => [
-		'header' => 'Zarządzanie budżetem',
-		'edit-budget' => 'Edytuj budżet',
-		'create-transaction' => 'Dodaj transakcję',
-		'list-transactions' => 'Pokaż spis transakcji',
+		'budget' => [
+			'header' => 'Zarządzanie budżetem',
+			'edit' => 'Edytuj budżet',
+			'show-summary' => 'Pokaż podsumowanie',
+		],
+
+		'transactions' => [
+			'header' => 'Zarządzanie transakcjami budżetu',
+			'create' => 'Dodaj transakcję',
+			'list' => 'Pokaż spis transakcji',
+		],
 	],
 
 	'recent-transactions' => [

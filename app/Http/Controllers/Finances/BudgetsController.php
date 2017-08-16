@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Finances;
 
+use App\Exceptions\UserInterfaceException;
 use App\Http\Controllers\Controller as BaseController;
 use App\Http\Requests\Budget\Crud\StoreRequest as BudgetStoreRequest;
 use App\Http\Requests\Budget\Crud\UpdateRequest as BudgetUpdateRequest;
@@ -10,9 +11,11 @@ use App\Models\Transaction;
 use App\Repositories\Contracts\BudgetRepositoryContract;
 use App\Services\Breadcrumb\Manager as BreadcrumbManager;
 use App\Services\Budget\Request\ProcessorContract as BudgetRequestProcessorContract;
+use App\Services\Budget\SummaryGeneratorContract as BudgetSummaryGeneratorContract;
 use App\Services\Search\Transaction\OneShotSearchContract as OneShotTransactionSearchContract;
 use App\Services\Search\Transaction\ScheduleSearchContract as TransactionScheduleSearchContract;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 
 class BudgetsController
@@ -44,24 +47,32 @@ class BudgetsController
 	protected $transactionScheduleSearch;
 
 	/**
+	 * @var BudgetSummaryGeneratorContract
+	 */
+	protected $budgetSummaryGenerator;
+
+	/**
 	 * @param BreadcrumbManager $breadcrumbManager
 	 * @param BudgetRepositoryContract $budgetRepository
 	 * @param BudgetRequestProcessorContract $budgetRequestProcessor
 	 * @param OneShotTransactionSearchContract $oneShotTransactionSearch
 	 * @param TransactionScheduleSearchContract $transactionScheduleSearch
+	 * @param BudgetSummaryGeneratorContract $budgetSummaryGenerator
 	 */
 	public function __construct(
 		BreadcrumbManager $breadcrumbManager,
 		BudgetRepositoryContract $budgetRepository,
 		BudgetRequestProcessorContract $budgetRequestProcessor,
 		OneShotTransactionSearchContract $oneShotTransactionSearch,
-		TransactionScheduleSearchContract $transactionScheduleSearch
+		TransactionScheduleSearchContract $transactionScheduleSearch,
+		BudgetSummaryGeneratorContract $budgetSummaryGenerator
 	) {
 		$this->breadcrumbManager = $breadcrumbManager;
 		$this->budgetRepository = $budgetRepository;
 		$this->budgetRequestProcessor = $budgetRequestProcessor;
 		$this->oneShotTransactionSearch = $oneShotTransactionSearch;
 		$this->transactionScheduleSearch = $transactionScheduleSearch;
+		$this->budgetSummaryGenerator = $budgetSummaryGenerator;
 	}
 
 	/**
@@ -103,7 +114,7 @@ class BudgetsController
 		$result = $this->budgetRequestProcessor->store($request);
 		$budget = $result->getBudget();
 
-		$this->flash('success', __('requests/budget/crud.messages.stored'));
+		$this->putFlash('success', __('requests/budget/crud.messages.stored'));
 
 		return response()->json([
 			'redirectUrl' => route('finances.budgets.edit', $budget->id),
@@ -143,7 +154,7 @@ class BudgetsController
 		$result = $this->budgetRequestProcessor->update($request, $id);
 		$budget = $result->getBudget();
 
-		$this->flash('success', __('requests/budget/crud.messages.updated'));
+		$this->putFlash('success', __('requests/budget/crud.messages.updated'));
 
 		return response()->json([
 			'redirectUrl' => route('finances.budgets.edit', $budget->id),
@@ -193,6 +204,37 @@ class BudgetsController
 			'recentTransactions' => $recentTransactions,
 			'recentTransactionsChart' => $recentTransactionsChart,
 			'incomingTransactions' => $incomingTransactions,
+		]);
+	}
+
+	/**
+	 * @param Request $request
+	 * @param Budget $budget
+	 * @return mixed
+	 */
+	public function summary(Request $request, Budget $budget) {
+		$this->breadcrumbManager
+			->pushCustom($budget)
+			->push(route('finances.budgets.summary', $budget), __('breadcrumbs.budgets.summary'));
+
+		$startingYear = $budget->created_at->year; // @todo - this value should represent furthest possible transaction
+		$summary = null;
+
+		try {
+			$this->budgetSummaryGenerator
+				->setBudgetId($budget->id)
+				->setYear($request->get('year', date('Y')))
+				->setMonth($request->get('month', date('m')));
+
+			$summary = $this->budgetSummaryGenerator->generateSummary();
+		} catch (UserInterfaceException $ex) {
+			$this->putMessage('danger', $ex->getMessage());
+		}
+
+		return view('views.finances.budgets.summary', [
+			'budget' => $budget,
+			'startingYear' => $startingYear,
+			'summary' => $summary,
 		]);
 	}
 
