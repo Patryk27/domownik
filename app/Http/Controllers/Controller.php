@@ -34,7 +34,7 @@ abstract class Controller
 			'type' => $messageType,
 			'message' => $message,
 		];
-		
+
 		View::share('layoutMessages', $layoutMessages);
 
 		return $this;

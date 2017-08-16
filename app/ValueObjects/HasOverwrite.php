@@ -8,6 +8,7 @@ trait HasOverwrite {
 
 	/**
 	 * @param array $data
+	 * @return HasOverwrite
 	 * @throws ValueObjectException
 	 */
 	public function overwriteWith(array $data) {
