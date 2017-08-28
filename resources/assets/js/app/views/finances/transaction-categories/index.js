@@ -75,11 +75,8 @@ module.exports = (function() {
 
                 if (msg.success) {
                     bootbox.alert(__('views.finances.transaction-categories.index.alerts.save-success'));
+                    deletedNodeIds = [];
                 }
-            },
-
-            always: function() {
-                deletedNodeIds = [];
             },
         });
     }
