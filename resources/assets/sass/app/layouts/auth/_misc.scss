@@ -1,0 +1,7 @@
+.panel {
+  .panel-body {
+    & > table:last-child {
+      margin-bottom: 2px;
+    }
+  }
+}

@@ -4,14 +4,16 @@
 
 html, body {
   height: 100%;
+  margin-bottom: 0 !important;
 }
 
-#app-wrapper, #app {
+.app-wrapper,
+.app {
   min-height: 100%;
   height: auto !important;
 }
 
-#app-wrapper {
+.app-wrapper {
   padding: 0;
 }
 

@@ -20,7 +20,7 @@ trait UsesCache {
 			$methodArgsString = implode(',', array_map(function($methodArg) {
 				/**
 				 * We use Redis and thus, in order to simplify debugging, we do our best effort to make sure the cache
-				 * key is human-readable.
+				 * keys are human-readable.
 				 */
 
 				if (is_null($methodArg)) {

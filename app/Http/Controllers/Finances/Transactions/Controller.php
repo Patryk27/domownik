@@ -7,13 +7,13 @@ use App\Models\Model;
 use App\Models\Transaction;
 use App\Repositories\Contracts\TransactionCategoryRepositoryContract;
 use App\Repositories\Contracts\TransactionRepositoryContract;
-use App\Services\Breadcrumb\Manager as BreadcrumbManager;
+use App\Services\Breadcrumb\ManagerContract as BreadcrumbManagerContract;
 
 abstract class Controller
 	extends BaseController {
 
 	/**
-	 * @var BreadcrumbManager
+	 * @var BreadcrumbManagerContract
 	 */
 	protected $breadcrumbManager;
 
@@ -28,12 +28,12 @@ abstract class Controller
 	protected $transactionCategoryRepository;
 
 	/**
-	 * @param BreadcrumbManager $breadcrumbManager
+	 * @param BreadcrumbManagerContract $breadcrumbManager
 	 * @param TransactionRepositoryContract $transactionRepository
 	 * @param TransactionCategoryRepositoryContract $transactionCategoryRepository
 	 */
 	public function __construct(
-		BreadcrumbManager $breadcrumbManager,
+		BreadcrumbManagerContract $breadcrumbManager,
 		TransactionRepositoryContract $transactionRepository,
 		TransactionCategoryRepositoryContract $transactionCategoryRepository
 	) {
@@ -61,11 +61,11 @@ abstract class Controller
 	protected function getEditView(Transaction $transaction, Model $transactionParent, string $transactionParentType) {
 		if (isset($transaction->parent_transaction_id)) {
 			$parentTransaction = $this->transactionRepository->getOrFail($transaction->parent_transaction_id);
-			$this->breadcrumbManager->pushCustom($parentTransaction);
+			$this->breadcrumbManager->push($parentTransaction);
 		}
 
 		$this->breadcrumbManager
-			->push(route('finances.transactions.edit', $transaction->id), __('breadcrumbs.transactions.edit', [
+			->pushUrl(route('finances.transactions.edit', $transaction->id), __('breadcrumbs.transactions.edit', [
 				'transactionName' => $transaction->name,
 			]));
 

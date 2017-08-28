@@ -2,29 +2,30 @@
 
 namespace App\Support\Classes;
 
-use App\Services\Breadcrumb\Manager as BreadcrumbManager;
+use App\Services\Breadcrumb\ManagerContract as BreadcrumbManagerContract;
+use Illuminate\Support\Collection;
 
 class Breadcrumb {
 
 	/**
-	 * @var BreadcrumbManager
+	 * @var BreadcrumbManagerContract
 	 */
 	protected $breadcrumbManager;
 
 	/**
-	 * @param BreadcrumbManager $breadcrumbManager
+	 * @param BreadcrumbManagerContract $breadcrumbManager
 	 */
 	public function __construct(
-		BreadcrumbManager $breadcrumbManager
+		BreadcrumbManagerContract $breadcrumbManager
 	) {
 		$this->breadcrumbManager = $breadcrumbManager;
 	}
 
 	/**
-	 * @return \App\ValueObjects\Breadcrumb[]
+	 * @return Collection|Breadcrumb[]
 	 */
-	public function getBreadcrumbs() {
-		return $this->breadcrumbManager->get();
+	public function getBreadcrumbs(): Collection {
+		return $this->breadcrumbManager->getBreadcrumbs();
 	}
 
 }

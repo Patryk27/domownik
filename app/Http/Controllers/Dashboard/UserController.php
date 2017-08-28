@@ -7,14 +7,14 @@ use App\Http\Requests\User\Crud\StoreRequest as UserStoreRequest;
 use App\Http\Requests\User\Crud\UpdateRequest as UserUpdateRequest;
 use App\Models\User;
 use App\Repositories\Contracts\UserRepositoryContract;
-use App\Services\Breadcrumb\Manager as BreadcrumbManager;
+use App\Services\Breadcrumb\ManagerContract as BreadcrumbManagerContract;
 use App\Services\User\Request\ProcessorContract as UserRequestProcessorContract;
 
 class UserController
 	extends BaseController {
 
 	/**
-	 * @var BreadcrumbManager
+	 * @var BreadcrumbManagerContract
 	 */
 	protected $breadcrumbManager;
 
@@ -29,12 +29,12 @@ class UserController
 	protected $userRequestProcessor;
 
 	/**
-	 * @param BreadcrumbManager $breadcrumbManager
+	 * @param BreadcrumbManagerContract $breadcrumbManager
 	 * @param UserRepositoryContract $userRepository
 	 * @param UserRequestProcessorContract $userRequestProcessor
 	 */
 	public function __construct(
-		BreadcrumbManager $breadcrumbManager,
+		BreadcrumbManagerContract $breadcrumbManager,
 		UserRepositoryContract $userRepository,
 		UserRequestProcessorContract $userRequestProcessor
 	) {
@@ -49,7 +49,7 @@ class UserController
 	 * @return mixed
 	 */
 	public function index() {
-		$this->breadcrumbManager->push(route('dashboard.users.index'), __('breadcrumbs.users.index'));
+		$this->breadcrumbManager->pushUrl(route('dashboard.users.index'), __('breadcrumbs.users.index'));
 		$users = $this->userRepository->getAll();
 
 		return view('views.dashboard.users.index', [
@@ -62,8 +62,8 @@ class UserController
 	 */
 	public function create() {
 		$this->breadcrumbManager
-			->push(route('dashboard.users.index'), __('breadcrumbs.users.index'))
-			->push(route('dashboard.users.create'), __('breadcrumbs.users.create'));
+			->pushUrl(route('dashboard.users.index'), __('breadcrumbs.users.index'))
+			->pushUrl(route('dashboard.users.create'), __('breadcrumbs.users.create'));
 
 		return view('views.dashboard.users.create', [
 			'user' => null,
@@ -104,8 +104,8 @@ class UserController
 	 */
 	public function edit(User $user) {
 		$this->breadcrumbManager
-			->push(route('dashboard.users.index'), __('breadcrumbs.users.index'))
-			->pushCustom($user);
+			->pushUrl(route('dashboard.users.index'), __('breadcrumbs.users.index'))
+			->push($user);
 
 		return view('views.dashboard.users.edit', [
 			'user' => $user,

@@ -9,7 +9,7 @@ use App\Http\Requests\Budget\Crud\UpdateRequest as BudgetUpdateRequest;
 use App\Models\Budget;
 use App\Models\Transaction;
 use App\Repositories\Contracts\BudgetRepositoryContract;
-use App\Services\Breadcrumb\Manager as BreadcrumbManager;
+use App\Services\Breadcrumb\ManagerContract as BreadcrumbManagerContract;
 use App\Services\Budget\Request\ProcessorContract as BudgetRequestProcessorContract;
 use App\Services\Budget\SummaryGeneratorContract as BudgetSummaryGeneratorContract;
 use App\Services\Search\Transaction\OneShotSearchContract as OneShotTransactionSearchContract;
@@ -22,7 +22,7 @@ class BudgetsController
 	extends BaseController {
 
 	/**
-	 * @var BreadcrumbManager
+	 * @var BreadcrumbManagerContract
 	 */
 	protected $breadcrumbManager;
 
@@ -52,7 +52,7 @@ class BudgetsController
 	protected $budgetSummaryGenerator;
 
 	/**
-	 * @param BreadcrumbManager $breadcrumbManager
+	 * @param BreadcrumbManagerContract $breadcrumbManager
 	 * @param BudgetRepositoryContract $budgetRepository
 	 * @param BudgetRequestProcessorContract $budgetRequestProcessor
 	 * @param OneShotTransactionSearchContract $oneShotTransactionSearch
@@ -60,7 +60,7 @@ class BudgetsController
 	 * @param BudgetSummaryGeneratorContract $budgetSummaryGenerator
 	 */
 	public function __construct(
-		BreadcrumbManager $breadcrumbManager,
+		BreadcrumbManagerContract $breadcrumbManager,
 		BudgetRepositoryContract $budgetRepository,
 		BudgetRequestProcessorContract $budgetRequestProcessor,
 		OneShotTransactionSearchContract $oneShotTransactionSearch,
@@ -79,7 +79,7 @@ class BudgetsController
 	 * @return mixed
 	 */
 	public function index() {
-		$this->breadcrumbManager->push(route('finances.budgets.index'), __('breadcrumbs.budgets.index'));
+		$this->breadcrumbManager->pushUrl(route('finances.budgets.index'), __('breadcrumbs.budgets.index'));
 
 		$budgets = $this->budgetRepository->getActiveBudgets();
 
@@ -93,8 +93,8 @@ class BudgetsController
 	 */
 	public function create() {
 		$this->breadcrumbManager
-			->push(route('finances.budgets.index'), __('breadcrumbs.budgets.index'))
-			->push(route('finances.budgets.create'), __('breadcrumbs.budgets.create'));
+			->pushUrl(route('finances.budgets.index'), __('breadcrumbs.budgets.index'))
+			->pushUrl(route('finances.budgets.create'), __('breadcrumbs.budgets.create'));
 
 		return view('views.finances.budgets.create', [
 			'form' => [
@@ -127,10 +127,10 @@ class BudgetsController
 	 */
 	public function edit(Budget $budget) {
 		$this->breadcrumbManager
-			->push(route('finances.budgets.show', $budget->id), __('breadcrumbs.budgets.show', [
+			->pushUrl(route('finances.budgets.show', $budget->id), __('breadcrumbs.budgets.show', [
 				'budgetName' => $budget->name,
 			]))
-			->push(route('finances.budgets.edit', $budget->id), __('breadcrumbs.budgets.edit', [
+			->pushUrl(route('finances.budgets.edit', $budget->id), __('breadcrumbs.budgets.edit', [
 				'budgetName' => $budget->name,
 			]));
 
@@ -166,8 +166,7 @@ class BudgetsController
 	 * @return mixed
 	 */
 	public function show(Budget $budget) {
-		$this->breadcrumbManager
-			->pushCustom($budget);
+		$this->breadcrumbManager->push($budget);
 
 		// get recently booked transactions
 		$this->oneShotTransactionSearch
@@ -214,8 +213,8 @@ class BudgetsController
 	 */
 	public function summary(Request $request, Budget $budget) {
 		$this->breadcrumbManager
-			->pushCustom($budget)
-			->push(route('finances.budgets.summary', $budget), __('breadcrumbs.budgets.summary'));
+			->push($budget)
+			->pushUrl(route('finances.budgets.summary', $budget), __('breadcrumbs.budgets.summary'));
 
 		$startingYear = $budget->created_at->year; // @todo - this value should represent furthest possible transaction
 		$summary = null;

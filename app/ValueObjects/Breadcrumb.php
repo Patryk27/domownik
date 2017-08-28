@@ -12,15 +12,18 @@ class Breadcrumb {
 	/**
 	 * @var string
 	 */
-	protected $name;
+	protected $caption;
 
 	/**
 	 * @param string $url
-	 * @param string $name
+	 * @param string $caption
 	 */
-	public function __construct($url, $name) {
+	public function __construct(
+		string $url,
+		string $caption
+	) {
 		$this->url = $url;
-		$this->name = $name;
+		$this->caption = $caption;
 	}
 
 	/**
@@ -40,8 +43,8 @@ class Breadcrumb {
 	/**
 	 * @return string
 	 */
-	public function getName(): string {
-		return $this->name;
+	public function getCaption(): string {
+		return $this->caption;
 	}
 
 }

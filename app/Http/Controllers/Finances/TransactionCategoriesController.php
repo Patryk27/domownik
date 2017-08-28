@@ -7,7 +7,7 @@ use App\Http\Controllers\Controller as BaseController;
 use App\Http\Requests\Transaction\Category\StoreRequest as TransactionCategoryStoreRequest;
 use App\Repositories\Contracts\TransactionCategoryRepositoryContract;
 use App\Repositories\Contracts\TransactionRepositoryContract;
-use App\Services\Breadcrumb\Manager as BreadcrumbManager;
+use App\Services\Breadcrumb\ManagerContract as BreadcrumbManagerContract;
 use App\Services\Transaction\Category\Request\ProcessorContract as TransactionCategoryRequestProcessorContract;
 use App\Services\Transaction\Category\TransformatorContract as TransactionCategoryTransformatorContract;
 use Illuminate\Http\Request;
@@ -16,7 +16,7 @@ class TransactionCategoriesController
 	extends BaseController {
 
 	/**
-	 * @var BreadcrumbManager
+	 * @var BreadcrumbManagerContract
 	 */
 	protected $breadcrumbManager;
 
@@ -41,14 +41,14 @@ class TransactionCategoriesController
 	protected $transactionCategoryRequestProcessor;
 
 	/**
-	 * @param BreadcrumbManager $breadcrumbManager
+	 * @param BreadcrumbManagerContract $breadcrumbManager
 	 * @param TransactionRepositoryContract $transactionRepository
 	 * @param TransactionCategoryRepositoryContract $transactionCategoryRepository
 	 * @param TransactionCategoryTransformatorContract $transactionCategoryTransformator
 	 * @param TransactionCategoryRequestProcessorContract $transactionCategoryRequestProcessor
 	 */
 	public function __construct(
-		BreadcrumbManager $breadcrumbManager,
+		BreadcrumbManagerContract $breadcrumbManager,
 		TransactionRepositoryContract $transactionRepository,
 		TransactionCategoryRepositoryContract $transactionCategoryRepository,
 		TransactionCategoryTransformatorContract $transactionCategoryTransformator,
@@ -74,7 +74,7 @@ class TransactionCategoriesController
 			return response()->json($categoryJsTree);
 		}
 
-		$this->breadcrumbManager->push(route('finances.transaction-categories.index'), __('breadcrumbs.transaction-categories.index'));
+		$this->breadcrumbManager->pushUrl(route('finances.transaction-categories.index'), __('breadcrumbs.transaction-categories.index'));
 
 		return view('views.finances.transaction-categories.index', [
 			'form' => [

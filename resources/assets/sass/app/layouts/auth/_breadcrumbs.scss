@@ -1,13 +1,8 @@
-#breadcrumbs {
-  margin: 60px 0 5px 0;
-  padding: 7px 0;
+.breadcrumbs {
+  margin: 5px 0;
+  padding: 0;
 
-  ol.breadcrumb {
+  .breadcrumb {
     padding: 12px;
   }
-}
-
-.breadcrumb {
-  margin: 1px 0;
-  padding-left: 0;
 }

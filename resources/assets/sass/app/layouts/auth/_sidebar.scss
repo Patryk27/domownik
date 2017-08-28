@@ -1,57 +1,42 @@
-#sidebar-wrapper {
-  z-index: 1000;
-
-  position: absolute;
-  left: $app-sidebar-width;
-
-  width: $app-sidebar-width;
-  height: 100%;
-
-  margin-left: -$app-sidebar-width;
+.sidebar-wrapper {
+  width: 250px;
 
   background-color: $navbar-default-bg;
   border-right: 1px solid $navbar-default-border;
 
-  box-shadow: -2px 0 2px 1px #000000;
-
-  overflow-x: hidden;
-  overflow-y: auto;
-
   transition: all 0.5s ease;
-}
 
-#sidebar {
-  margin-top: $navbar-height;
+  .sidebar {
+    padding: 12px 10px;
 
-  padding: 12px 10px;
+    a {
+      display: inline-block;
+      width: 100%;
 
-  a {
-    display: inline-block;
-    width: 100%;
+      text-decoration: none;
+    }
 
-    text-decoration: none;
-  }
+    .icon {
+      position: relative;
+      left: -5px;
+      float: left;
 
-  .icon {
-    position: relative;
-    left: -5px;
-    float: left;
+      display: inline-block;
+      width: 20px;
 
-    display: inline-block;
-    width: 20px;
+      text-align: center;
+    }
 
-    text-align: center;
-  }
+    .badge-label {
+      float: right;
+    }
 
-  .badge-label {
-    float: right;
-  }
+    .panel-heading {
+      background-color: darken($panel-default-heading-bg, 5%);
+    }
 
-  .panel-heading {
-    background-color: darken($panel-default-heading-bg, 5%);
-  }
-
-  .panel + .panel {
-    margin-top: 32px;
+    .panel + .panel {
+      margin-top: 32px;
+    }
   }
 }

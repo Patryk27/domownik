@@ -17,18 +17,20 @@ Route::group(['prefix' => 'dashboard'], function() {
 
 			// /dashboard/auth/login
 			Route::post('login', AuthController::class . '@postLogin');
-			
+
 			// /dashboard/auth/logout
 			Route::get('logout', AuthController::class . '@logout')
-				->name('dashboard.auth.logout');
+				 ->name('dashboard.auth.logout');
 		});
 	});
 
 	Route::group(['middleware' => 'auth'], function() {
 		// /dashboard/help
 		Route::group(['prefix' => 'help'], function() {
-			Route::get('error-404', HelpController::class . '@error404')
-				 ->name('dashboard.help.error-404');
+			// /dashboard/help/http-errors/{errorCode}
+			Route::get('http-errors/{errorCode}', HelpController::class . '@httpError')
+				 ->name('dashboard.help.http-errors')
+				 ->where('errorCode', '[0-9]{3}');
 		});
 
 		// /dashboard/index

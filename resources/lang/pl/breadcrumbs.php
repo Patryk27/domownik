@@ -30,4 +30,8 @@ return [
 	'transaction-categories' => [
 		'index' => 'Zarządzanie kategoriami transakcji',
 	],
+
+	'help' => [
+		'http-error' => 'Błąd HTTP :errorCode',
+	],
 ];

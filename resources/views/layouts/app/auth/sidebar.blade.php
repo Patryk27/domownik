@@ -6,10 +6,9 @@
      */
 @endphp
 
-<div id="sidebar-wrapper">
-    <div id="sidebar">
-        {{-- Section list --}}
-        <select id="section-select" class="form-control">
+<div class="sidebar-wrapper">
+    <div class="sidebar">
+        <select class="form-control">
             @foreach ($sectionNames as $itSectionName)
                 <option value="{{ $itSectionName }}" {{ $sectionName === $itSectionName ? 'selected' : '' }}>
                     {{ __(sprintf('common/sections.%s.name', $itSectionName)) }}
@@ -19,8 +18,7 @@
 
         <hr>
 
-        {{-- Current section's sidebar --}}
-        <div class="panel-group" id="sidebar-menu">
+        <div class="sidebar-menu panel-group">
             @each('layouts.app.auth.sidebar.items', $sidebar->getItems(), 'sidebarItem')
         </div>
     </div>

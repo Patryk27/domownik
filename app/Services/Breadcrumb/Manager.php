@@ -4,81 +4,86 @@ namespace App\Services\Breadcrumb;
 
 use App\Exceptions\InternalException;
 use App\ValueObjects\Breadcrumb;
+use Illuminate\Support\Collection;
 
 class Manager
-	implements \Countable {
+	implements ManagerContract {
 
 	/**
-	 * @var Breadcrumb[]
+	 * @var Collection|Breadcrumb[]
 	 */
 	protected $breadcrumbs;
 
 	/**
-	 * @var CustomPushHandlerContract[]
+	 * @var Collection|PushHandlerContract[]
 	 */
-	protected $customPushHandlers;
+	protected $pushHandlers;
 
-	/**
-	 * Constructor.
-	 */
 	public function __construct() {
-		$this->breadcrumbs = [];
-		$this->customPushHandlers = [];
-	}
+		$this->breadcrumbs = new Collection();
+		$this->pushHandlers = new Collection();
 
-	/**
-	 * @param string $url
-	 * @param string $title
-	 * @return $this
-	 */
-	public function push(string $url, string $title): self {
-		$this->breadcrumbs[] = new Breadcrumb($url, $title);
-		return $this;
-	}
+		$this->pushHandlers->push(new class
+			implements PushHandlerContract {
 
-	/**
-	 * @param mixed $custom
-	 * @return $this
-	 * @throws InternalException
-	 */
-	public function pushCustom($custom): self {
-		foreach ($this->customPushHandlers as $customPushHandler) {
-			$result = $customPushHandler->getBreadcrumb($custom);
-
-			if (isset($result)) {
-				if (is_object($result) && $result instanceof Breadcrumb) {
-					$this->breadcrumbs[] = $result;
-					return $this;
-				} else {
-					throw new InternalException('Custom push handler did not return a valid breadcrumb.');
+			/**
+			 * @inheritDoc
+			 */
+			public function handle($value): ?Breadcrumb {
+				if (is_object($value) && $value instanceof Breadcrumb) {
+					return $value;
 				}
+
+				return null;
 			}
-		}
 
-		throw new InternalException('No valid custom push handler found.');
-	}
-
-	/**
-	 * @param CustomPushHandlerContract $customPushHandler
-	 * @return $this
-	 */
-	public function registerCustomPushHandler(CustomPushHandlerContract $customPushHandler): self {
-		$this->customPushHandlers[] = $customPushHandler;
-		return $this;
-	}
-
-	/**
-	 * @return Breadcrumb[]
-	 */
-	public function get(): array {
-		return $this->breadcrumbs;
+		});
 	}
 
 	/**
 	 * @inheritDoc
 	 */
-	public function count(): int {
-		return count($this->breadcrumbs);
+	public function push($value) {
+		foreach ($this->pushHandlers as $customPushHandler) {
+			$breadcrumb = $customPushHandler->handle($value);
+
+			if (isset($breadcrumb)) {
+				if (is_object($breadcrumb) && $breadcrumb instanceof Breadcrumb) {
+					$this->breadcrumbs[] = $breadcrumb;
+					return $this;
+				}
+
+				throw new InternalException('Custom push handler did not return a valid breadcrumb.');
+			}
+		}
+
+		if (is_object($value)) {
+			throw new InternalException('No valid custom push handler found for an instance of class [%s].', get_class($value));
+		} else {
+			throw new InternalException('No valid custom push handler found for type [%s].', gettype($value));
+		}
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public function pushUrl(string $url, string $caption) {
+		return $this->push(new Breadcrumb($url, $caption));
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public function registerPushHandler(PushHandlerContract $customPushHandler) {
+		$this->pushHandlers->push($customPushHandler);
+		return $this;
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public function getBreadcrumbs(): Collection {
+		return $this->breadcrumbs;
 	}
 
 }

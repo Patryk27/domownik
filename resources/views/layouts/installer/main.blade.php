@@ -13,7 +13,7 @@
         </div>
 
         <div id="messages-container">
-            @include('layouts.common.messages')
+            @include('components.layout.messages')
         </div>
 
         <div id="content" class="container-fluid">

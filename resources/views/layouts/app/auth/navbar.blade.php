@@ -1,4 +1,4 @@
-<div id="navbar" class="navbar no-gutter navbar-default navbar-fixed-top">
+<div class="navbar navbar-default">
     <div class="container-fluid">
         <div class="navbar-header">
             <a href="{{ route('dashboard.index.index') }}" class="navbar-brand">
@@ -13,7 +13,7 @@
         </div>
 
         <div id="navbar-main" class="navbar-collapse collapse">
-            <ul class="nav navbar-nav navbar-right" style="text-align:right">
+            <ul class="nav navbar-nav navbar-right text-right">
                 <li>
                     <a href="{{ route('dashboard.auth.logout') }}">
                         <i class="fa fa-sign-out"></i>&nbsp;
@@ -22,15 +22,17 @@
                 </li>
             </ul>
 
-            <form action="{{ route('dashboard.search.find') }}"
-                  method="post"
-                  class="navbar-form navbar-right">
-                {!! Form::text('top-search', null, ['class' => 'form-control', 'placeholder' => __('layout.navbar.search_with_dots')]) !!}
+            {!! Form::open([
+                'route' => 'dashboard.search.find',
+                'method' => 'post',
+                'class' => 'navbar-form navbar-right',
+            ]) !!}
+            {!! Form::text('top-search', null, ['class' => 'form-control', 'placeholder' => __('layout.navbar.search_with_dots')]) !!}
 
-                <button class="btn btn-default">
-                    <i class="fa fa-search"></i>
-                </button>
-            </form>
+            <button class="btn btn-default">
+                <i class="fa fa-search"></i>
+            </button>
+            {!! Form::close() !!}
         </div>
     </div>
 </div>

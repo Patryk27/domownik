@@ -14,8 +14,8 @@ class BudgetsController
 	 */
 	public function create(Budget $budget) {
 		$this->breadcrumbManager
-			->pushCustom($budget)
-			->push(route('finances.budgets.transactions.create', $budget->id), __('breadcrumbs.transactions.create'));
+			->push($budget)
+			->pushUrl(route('finances.budgets.transactions.create', $budget->id), __('breadcrumbs.transactions.create'));
 
 		return $this->getCreateView('to-budget', $budget, Transaction::PARENT_TYPE_BUDGET);
 	}
@@ -26,8 +26,7 @@ class BudgetsController
 	 * @return mixed
 	 */
 	public function edit(Budget $budget, Transaction $transaction) {
-		$this->breadcrumbManager
-			->pushCustom($budget);
+		$this->breadcrumbManager->push($budget);
 
 		return $this->getEditView($transaction, $budget, Transaction::PARENT_TYPE_BUDGET);
 	}

@@ -1,13 +1,6 @@
-<div id="content">
-    <div class="container-fluid">
-        <div id="breadcrumbs">
-            @include('layouts.app.auth.content.breadcrumbs', ['breadcrumbs' => Breadcrumb::getBreadcrumbs()])
-        </div>
+<div class="content">
+    @include('layouts.app.auth.content.breadcrumbs', ['breadcrumbs' => Breadcrumb::getBreadcrumbs()])
+    @include('components.layout.messages')
 
-        @include('layouts.common.messages')
-
-        <div id="page-content">
-            @yield('content')
-        </div>
-    </div>
+    @yield('content')
 </div>

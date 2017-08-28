@@ -4,12 +4,12 @@ namespace App\Services\Breadcrumb;
 
 use App\ValueObjects\Breadcrumb;
 
-interface CustomPushHandlerContract {
+interface PushHandlerContract {
 
 	/**
-	 * @param mixed $custom
+	 * @param mixed $value
 	 * @return Breadcrumb|null
 	 */
-	public function getBreadcrumb($custom);
+	public function handle($value): ?Breadcrumb;
 
 }

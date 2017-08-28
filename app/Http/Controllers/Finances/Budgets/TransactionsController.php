@@ -7,7 +7,7 @@ use App\Http\Requests\Budget\Transaction\SearchBookedRequest as SearchBookedTran
 use App\Http\Requests\Budget\Transaction\SearchScheduledRequest as SearchScheduledTransactionRequest;
 use App\Models\Budget;
 use App\Models\Transaction;
-use App\Services\Breadcrumb\Manager as BreadcrumbManager;
+use App\Services\Breadcrumb\ManagerContract as BreadcrumbManagerContract;
 use App\Services\Search\Transaction\OneShotSearchContract as OneShotTransactionSearchContract;
 use App\Services\Search\Transaction\ScheduleSearchContract as TransactionScheduleSearchContract;
 use Carbon\Carbon;
@@ -16,7 +16,7 @@ class TransactionsController
 	extends BaseController {
 
 	/**
-	 * @var BreadcrumbManager
+	 * @var BreadcrumbManagerContract
 	 */
 	protected $breadcrumbManager;
 
@@ -31,12 +31,12 @@ class TransactionsController
 	protected $transactionScheduleSearch;
 
 	/**
-	 * @param BreadcrumbManager $breadcrumbManager
+	 * @param BreadcrumbManagerContract $breadcrumbManager
 	 * @param OneShotTransactionSearchContract $oneShotTransactionSearch
 	 * @param TransactionScheduleSearchContract $transactionScheduleSearch
 	 */
 	public function __construct(
-		BreadcrumbManager $breadcrumbManager,
+		BreadcrumbManagerContract $breadcrumbManager,
 		OneShotTransactionSearchContract $oneShotTransactionSearch,
 		TransactionScheduleSearchContract $transactionScheduleSearch
 	) {
@@ -52,8 +52,8 @@ class TransactionsController
 	 */
 	public function booked(Budget $budget, SearchBookedTransactionRequest $request) {
 		$this->breadcrumbManager
-			->pushCustom($budget)
-			->push(route('finances.budgets.transactions.booked', $budget->id), __('breadcrumbs.budgets.transactions.booked'));
+			->push($budget)
+			->pushUrl(route('finances.budgets.transactions.booked', $budget->id), __('breadcrumbs.budgets.transactions.booked'));
 
 		$this->oneShotTransactionSearch->parent(Transaction::PARENT_TYPE_BUDGET, $budget->id);
 
@@ -94,8 +94,8 @@ class TransactionsController
 	 */
 	public function scheduled(Budget $budget, SearchScheduledTransactionRequest $request) {
 		$this->breadcrumbManager
-			->pushCustom($budget)
-			->push(route('finances.budgets.transactions.scheduled', $budget->id), __('breadcrumbs.budgets.transactions.scheduled'));
+			->push($budget)
+			->pushUrl(route('finances.budgets.transactions.scheduled', $budget->id), __('breadcrumbs.budgets.transactions.scheduled'));
 
 		$this->transactionScheduleSearch->parent(Transaction::PARENT_TYPE_BUDGET, $budget->id);
 

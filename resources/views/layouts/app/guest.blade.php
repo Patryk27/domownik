@@ -1,23 +1,21 @@
 @extends('layouts.app.base')
 
-@section('layout-head-title')
+@section('layout-title')
     {{ config('app.name') }}
 @endsection
 
-@section('layout-body')
-    <div id="app" class="container-fluid app-guest {{ Controller::getViewCssClass() }}">
-        <div class="text-center">
-            <h1 id="app-name">
-                {{ config('app.name') }}
-            </h1>
+@section('layout-content')
+    <body class="app app-guest container-fluid {{ Controller::getViewCssClass() }}">
+        <h1 class="app-name">
+            {{ config('app.name') }}
+        </h1>
+
+        <div class="messages-container">
+            @include('components.layout.messages')
         </div>
 
-        <div id="messages-container">
-            @include('layouts.common.messages')
-        </div>
-
-        <div id="content" class="container-fluid">
+        <div class="main-container container-fluid">
             @yield('content')
         </div>
-    </div>
+    </body>
 @endsection

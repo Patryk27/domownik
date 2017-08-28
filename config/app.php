@@ -54,16 +54,12 @@ return [
 
 		App\Providers\AppServiceProvider::class,
 		App\Providers\LogServiceProvider::class,
-		App\Providers\RepositoryServiceProvider::class,
 
 		App\Providers\AuthServiceProvider::class,
 		App\Providers\EventServiceProvider::class,
 		App\Providers\SupportServiceProvider::class,
 		App\Providers\RouteServiceProvider::class,
 		App\Providers\ValidatorServiceProvider::class,
-
-		App\Providers\DashboardServiceProvider::class,
-		App\Providers\FinancesServiceProvider::class,
 	],
 
 	'aliases' => [
