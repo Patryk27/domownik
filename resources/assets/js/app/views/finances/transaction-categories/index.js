@@ -64,6 +64,11 @@ module.exports = (function() {
                     flat: true,
                 });
 
+                if (tree.length === 0) {
+                    bootbox.alert(__('views.finances.transaction-categories.index.validation.empty-tree'));
+                    return null;
+                }
+
                 return {
                     newTree: tree,
                     deletedNodeIds: deletedNodeIds,

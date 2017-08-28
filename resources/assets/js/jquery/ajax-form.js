@@ -138,10 +138,15 @@
             var formId = $(form).prop('id');
             var formData = options.prepareData($(form).serializeObject());
 
+            if (formData === null) {
+                console.log('Not submitting form with id [{0}] because prepareData() returned [null].'.format(formId));
+                return false;
+            }
+
             options.beforeSubmit(formData);
 
             // send the request
-            console.log('Submitting form with id=\'{0}\'...'.format(formId));
+            console.log('Submitting form with id [{0}].'.format(formId));
 
             context.setFormEnabled(false);
 
