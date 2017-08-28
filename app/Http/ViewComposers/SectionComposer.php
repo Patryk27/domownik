@@ -69,9 +69,10 @@ class SectionComposer {
 	public function compose(View $view) {
 		$sectionName = $this->controllerHelper->getSectionName();
 
-		$view->with('sectionNames', $this->sectionNames);
-		$view->with('sectionName', $sectionName);
-		$view->with('sidebar', Arr::get($this->sidebars, $sectionName, $this->nullSidebar));
+		$view
+			->with('sectionNames', $this->sectionNames)
+			->with('sectionName', $sectionName)
+			->with('sidebar', Arr::get($this->sidebars, $sectionName, $this->nullSidebar));
 	}
 
 }

@@ -2,6 +2,7 @@
 
 namespace App\Support\Classes;
 
+use App\Exceptions\Exception;
 use Illuminate\Routing\Route;
 
 class Controller {
@@ -9,15 +10,15 @@ class Controller {
 	/**
 	 * @var Route
 	 */
-	protected $currentRoute;
+	protected $route;
 
 	/**
-	 * The route parameter is nullable because it is null when the application is called from Artisan.
-	 * Not-nulling it does not make errors but raises warnings and in order to avoid them, this parameter is nulled.
-	 * @param Route|null $currentRoute
+	 * @param Route|null $route
 	 */
-	public function __construct(Route $currentRoute = null) {
-		$this->currentRoute = $currentRoute;
+	public function __construct(
+		Route $route = null // is 'null' when running from Artisan
+	) {
+		$this->route = $route;
 	}
 
 	/**
@@ -33,20 +34,20 @@ class Controller {
 	 * @return string
 	 */
 	public function getSectionName(): string {
-		$controllerNameParts = $this->getControllerNameParts();
-		return strtolower($controllerNameParts[3]);
+		$controllerPath = $this->getControllerPath();
+		return strtolower($controllerPath[3]);
 	}
 
 	/**
 	 * @return string
-	 * @throws \App\Exceptions\Exception
+	 * @throws Exception
 	 */
 	public function getControllerName(): string {
-		$controllerNameParts = $this->getControllerNameParts();
-		$controllerName = end($controllerNameParts);
+		$controllerPath = $this->getControllerPath();
+		$controllerName = end($controllerPath);
 
 		if (!ends_with($controllerName, 'Controller')) {
-			throw new \App\Exceptions\Exception('Route has unknown controller name: %s.', $controllerName);
+			throw new Exception('Route has unknown controller name: %s.', $controllerName);
 		}
 
 		$controllerName = strtolower(substr($controllerName, 0, -10));
@@ -57,15 +58,15 @@ class Controller {
 	 * @return string
 	 */
 	public function getActionName(): string {
-		return camel_case($this->currentRoute->getActionMethod());
+		return camel_case($this->route->getActionMethod());
 	}
 
 	/**
 	 * @return string[]
 	 */
-	protected function getControllerNameParts(): array {
-		if (isset($this->currentRoute)) {
-			return explode('\\', get_class($this->currentRoute->getController()));
+	protected function getControllerPath(): array {
+		if (isset($this->route)) {
+			return explode('\\', get_class($this->route->getController()));
 		} else {
 			return ['', '', '', '', ''];
 		}
