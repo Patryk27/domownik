@@ -10,13 +10,8 @@ class CreateSettingsTable
 	 */
 	public function up() {
 		$this->schemaBuilder->create('settings', function(Blueprint $table) {
-			if ($this->testing) {
-				$table->engine = 'MyISAM';
-			}
-
 			$table->increments('id');
-			$table->unsignedInteger('user_id')
-				  ->nullable();
+			$table->unsignedInteger('user_id')->nullable();
 			$table->char('key', 128);
 			$table->text('value');
 			$table->timestamps();

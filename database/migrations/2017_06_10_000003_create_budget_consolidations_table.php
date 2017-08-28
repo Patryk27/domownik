@@ -10,10 +10,6 @@ class CreateBudgetConsolidationsTable
 	 */
 	public function up() {
 		$this->schemaBuilder->create('budget_consolidations', function(Blueprint $table) {
-			if ($this->testing) {
-				$table->engine = 'MyISAM';
-			}
-
 			$table->increments('id');
 			$table->unsignedInteger('base_budget_id');
 			$table->unsignedInteger('subject_budget_id');

@@ -10,10 +10,6 @@ class CreateTransactionPeriodicityYearliesTable
 	 */
 	public function up() {
 		$this->schemaBuilder->create('transaction_periodicity_yearlies', function(Blueprint $table) {
-			if ($this->testing) {
-				$table->engine = 'MyISAM';
-			}
-
 			$table->increments('id');
 			$table->tinyInteger('month');
 			$table->tinyInteger('day');

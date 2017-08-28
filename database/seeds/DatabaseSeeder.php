@@ -10,8 +10,9 @@ class DatabaseSeeder
 	 */
 	public function run() {
 		$this->call(UserSeeder::class);
-		$this->call(TransactionCategorySeeder::class);
-		$this->call(BudgetSeeder::class);
-		$this->call(BudgetTransactionSeeder::class);
+
+		// $this->call(TransactionCategorySeeder::class);
+		// $this->call(BudgetSeeder::class);
+		// $this->call(BudgetTransactionSeeder::class);
 	}
 }

@@ -10,10 +10,6 @@ class CreateTransactionSchedulesTable
 	 */
 	public function up() {
 		$this->schemaBuilder->create('transaction_schedules', function(Blueprint $table) {
-			if ($this->testing) {
-				$table->engine = 'MyISAM';
-			}
-
 			$table->increments('id');
 			$table->unsignedInteger('transaction_id');
 			$table->dateTime('date');

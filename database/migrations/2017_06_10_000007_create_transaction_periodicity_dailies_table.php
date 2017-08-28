@@ -10,10 +10,6 @@ class CreateTransactionPeriodicityDailiesTable
 	 */
 	public function up() {
 		$this->schemaBuilder->create('transaction_periodicity_dailies', function(Blueprint $table) {
-			if ($this->testing) {
-				$table->engine = 'MyISAM';
-			}
-
 			$table->increments('id');
 			$table->timestamps();
 		});

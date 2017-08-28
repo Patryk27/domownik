@@ -10,10 +10,6 @@ class CreateTransactionPeriodicitiesTable
 	 */
 	public function up() {
 		$this->schemaBuilder->create('transaction_periodicities', function(Blueprint $table) {
-			if ($this->testing) {
-				$table->engine = 'MyISAM';
-			}
-
 			$table->increments('id');
 			$table->unsignedInteger('transaction_id');
 			$table->morphs('transaction_periodicity', 'fk_transaction_periodicities_1');

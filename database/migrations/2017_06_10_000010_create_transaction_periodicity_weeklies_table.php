@@ -10,10 +10,6 @@ class CreateTransactionPeriodicityWeekliesTable
 	 */
 	public function up() {
 		$this->schemaBuilder->create('transaction_periodicity_weeklies', function(Blueprint $table) {
-			if ($this->testing) {
-				$table->engine = 'MyISAM';
-			}
-
 			$table->increments('id');
 			$table->tinyInteger('weekday');
 			$table->timestamps();

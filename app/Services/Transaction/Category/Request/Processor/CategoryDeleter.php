@@ -52,17 +52,17 @@ class CategoryDeleter {
 	 */
 	protected function deleteCategoryById(int $categoryId): self {
 		if (!isset($this->categories[$categoryId])) {
-			throw new Exception('Could not find category with id=%d.', $categoryId);
+			throw new Exception('Could not find category with id [%d].', $categoryId);
 		}
 
-		// remove category children first
+		// firstly, remove children of currently processed category
 		foreach ($this->categories as $childCategory) {
 			if ($childCategory->parent_category_id === $categoryId) {
 				$this->deleteCategoryById($childCategory->id);
 			}
 		}
-
-		// we can safely remove the category itself
+		
+		// now we can safely remove the category itself
 		$this->transactionCategoryRepository->delete($categoryId);
 
 		return $this;

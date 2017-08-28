@@ -10,10 +10,6 @@ class CreateTransactionValueConstantsTable
 	 */
 	public function up() {
 		$this->schemaBuilder->create('transaction_value_constants', function(Blueprint $table) {
-			if ($this->testing) {
-				$table->engine = 'MyISAM';
-			}
-
 			$table->increments('id');
 			$table->decimal('value');
 			$table->timestamps();

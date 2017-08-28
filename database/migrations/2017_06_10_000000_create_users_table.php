@@ -10,10 +10,6 @@ class CreateUsersTable
 	 */
 	public function up() {
 		$this->schemaBuilder->create('users', function(Blueprint $table) {
-			if ($this->testing) {
-				$table->engine = 'MyISAM';
-			}
-
 			$table->increments('id');
 			$table->char('login', 64);
 			$table->char('password', 128);

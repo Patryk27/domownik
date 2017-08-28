@@ -10,10 +10,6 @@ class CreateTransactionValueRangesTable
 	 */
 	public function up() {
 		$this->schemaBuilder->create('transaction_value_ranges', function(Blueprint $table) {
-			if ($this->testing) {
-				$table->engine = 'MyISAM';
-			}
-
 			$table->increments('id');
 			$table->decimal('value_from');
 			$table->decimal('value_to');
