@@ -2,7 +2,7 @@
 
 namespace App\Console;
 
-use App\Services\Install\Manager as InstallManager;
+use App\Services\Install\ManagerContract as InstallManagerContract;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
 class Kernel
@@ -20,7 +20,7 @@ class Kernel
 	 * @inheritdoc
 	 */
 	public function commands() {
-		$installManager = $this->app->make(InstallManager::class);
+		$installManager = $this->app->make(InstallManagerContract::class);
 
 		if ($installManager->isApplicationInstalled()) {
 			$this->commands = $this->commandsApplication;
