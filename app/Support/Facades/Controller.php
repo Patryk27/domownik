@@ -10,8 +10,8 @@ class Controller
 	/**
 	 * @return string
 	 */
-	public static function getFacadeAccessor() {
-		return 'controller';
+	public static function getFacadeAccessor(): string {
+		return \App\Support\Classes\Controller::class;
 	}
 
 }

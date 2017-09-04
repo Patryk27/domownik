@@ -10,8 +10,8 @@ class Configuration
 	/**
 	 * @return string
 	 */
-	public static function getFacadeAccessor() {
-		return 'configuration';
+	public static function getFacadeAccessor(): string {
+		return \App\Support\Classes\Configuration::class;
 	}
 
 }

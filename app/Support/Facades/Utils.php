@@ -10,8 +10,8 @@ class Utils
 	/**
 	 * @return string
 	 */
-	public static function getFacadeAccessor() {
-		return 'utils';
+	public static function getFacadeAccessor(): string {
+		return \App\Support\Classes\Utils::class;
 	}
 
 }

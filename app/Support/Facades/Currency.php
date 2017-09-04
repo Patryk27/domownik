@@ -10,8 +10,8 @@ class Currency
 	/**
 	 * @return string
 	 */
-	public static function getFacadeAccessor() {
-		return 'currency';
+	public static function getFacadeAccessor(): string {
+		return \App\Support\Classes\Currency::class;
 	}
 
 }
