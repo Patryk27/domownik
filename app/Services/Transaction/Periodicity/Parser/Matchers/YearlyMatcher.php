@@ -17,14 +17,14 @@ class YearlyMatcher
 	protected $transactionPeriodicityRepository;
 
 	/**
-	 * @var Carbon[]
-	 */
-	public $dates;
-
-	/**
 	 * @var Collection|string[]
 	 */
 	protected $yearDays;
+
+	/**
+	 * @var Carbon[]
+	 */
+	public $dates;
 
 	/**
 	 * @param TransactionPeriodicityRepositoryContract $transactionPeriodicityRepository

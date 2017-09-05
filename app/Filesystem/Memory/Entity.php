@@ -77,21 +77,6 @@ class Entity {
 	/**
 	 * @param string|array $path
 	 * @return Entity|null
-	 * @throws FileNotFoundException
-	 */
-	public function findByPathOrFail($path): ?Entity {
-		$entity = $this->findByPath($path);
-
-		if (empty($entity)) {
-			throw new FileNotFoundException(Helper::pathToString($path));
-		}
-
-		return $entity;
-	}
-
-	/**
-	 * @param string|array $path
-	 * @return Entity|null
 	 */
 	public function findByPath($path): ?Entity {
 		if (is_string($path)) {
@@ -130,19 +115,18 @@ class Entity {
 	}
 
 	/**
-	 * @return Entity[]
+	 * @param string|array $path
+	 * @return Entity|null
+	 * @throws FileNotFoundException
 	 */
-	public function getChildren(): array {
-		return $this->children;
-	}
+	public function findByPathOrFail($path): ?Entity {
+		$entity = $this->findByPath($path);
 
-	/**
-	 * @param Entity[] $children
-	 * @return $this
-	 */
-	public function setChildren(array $children) {
-		$this->children = $children;
-		return $this;
+		if (empty($entity)) {
+			throw new FileNotFoundException(Helper::pathToString($path));
+		}
+
+		return $entity;
 	}
 
 	/**
@@ -162,6 +146,38 @@ class Entity {
 	}
 
 	/**
+	 * @return string
+	 */
+	public function getName(): string {
+		return $this->name;
+	}
+
+	/**
+	 * @param string $name
+	 * @return $this
+	 */
+	public function setName(string $name) {
+		$this->name = $name;
+		return $this;
+	}
+
+	/**
+	 * @return Entity[]
+	 */
+	public function getChildren(): array {
+		return $this->children;
+	}
+
+	/**
+	 * @param Entity[] $children
+	 * @return $this
+	 */
+	public function setChildren(array $children) {
+		$this->children = $children;
+		return $this;
+	}
+
+	/**
 	 * @param Entity $child
 	 * @return $this
 	 * @throws FileExistsException
@@ -176,22 +192,6 @@ class Entity {
 
 		$this->children[$childName] = $child;
 
-		return $this;
-	}
-
-	/**
-	 * @return string
-	 */
-	public function getName(): string {
-		return $this->name;
-	}
-
-	/**
-	 * @param string $name
-	 * @return $this
-	 */
-	public function setName(string $name) {
-		$this->name = $name;
 		return $this;
 	}
 

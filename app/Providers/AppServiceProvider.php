@@ -45,6 +45,76 @@ class AppServiceProvider
 	/**
 	 * @return $this
 	 */
+	protected function registerRepositories() {
+		$this->app->bind(\App\Repositories\Contracts\BudgetConsolidationRepositoryContract::class, \App\Repositories\Eloquent\BudgetConsolidationRepository::class);
+		$this->app->bind(\App\Repositories\Contracts\BudgetRepositoryContract::class, \App\Repositories\Eloquent\BudgetRepository::class);
+		$this->app->bind(\App\Repositories\Contracts\SettingRepositoryContract::class, \App\Repositories\Eloquent\SettingRepository::class);
+		$this->app->bind(\App\Repositories\Contracts\TransactionCategoryRepositoryContract::class, \App\Repositories\Eloquent\TransactionCategoryRepository::class);
+		$this->app->bind(\App\Repositories\Contracts\TransactionPeriodicityRepositoryContract::class, \App\Repositories\Eloquent\TransactionPeriodicityRepository::class);
+		$this->app->bind(\App\Repositories\Contracts\TransactionRepositoryContract::class, \App\Repositories\Eloquent\TransactionRepository::class);
+		$this->app->bind(\App\Repositories\Contracts\TransactionScheduleRepositoryContract::class, \App\Repositories\Eloquent\TransactionScheduleRepository::class);
+		$this->app->bind(\App\Repositories\Contracts\UserRepositoryContract::class, \App\Repositories\Eloquent\UserRepository::class);
+
+		return $this;
+	}
+
+	/**
+	 * @return $this
+	 */
+	protected function registerServices() {
+		$this->app->bind(\App\Services\Asset\CompilerContract::class, \App\Services\Asset\Compiler::class);
+
+		$this->app->singleton(\App\Services\Breadcrumb\ManagerContract::class, \App\Services\Breadcrumb\Manager::class);
+
+		$this->app->bind(\App\Services\Budget\Request\ProcessorContract::class, \App\Services\Budget\Request\Processor::class);
+		$this->app->bind(\App\Services\Budget\SummaryGeneratorContract::class, \App\Services\Budget\SummaryGenerator::class);
+
+		$this->app->bind(\App\Services\Install\ManagerContract::class, \App\Services\Install\Manager::class);
+
+		$this->app->bind(\App\Services\Search\Transaction\OneShotSearchContract::class, \App\Services\Search\Transaction\OneShotSearch::class);
+		$this->app->bind(\App\Services\Search\Transaction\ScheduleSearchContract::class, \App\Services\Search\Transaction\ScheduleSearch::class);
+
+		$this->app->bind(\App\Services\Section\ManagerContract::class, \App\Services\Section\Manager::class);
+
+		$this->app->bind(\App\Services\Sidebar\ManagerContract::class, \App\Services\Sidebar\Manager::class);
+		$this->app->bind(\App\Services\Sidebar\ParserContract::class, \App\Services\Sidebar\Parser::class);
+
+		$this->app->bind(\App\Services\Transaction\Category\Request\ProcessorContract::class, \App\Services\Transaction\Category\Request\Processor::class);
+		$this->app->bind(\App\Services\Transaction\Category\TransformatorContract::class, \App\Services\Transaction\Category\Transformator::class);
+		$this->app->bind(\App\Services\Transaction\Periodicity\ParserContract::class, \App\Services\Transaction\Periodicity\Parser::class);
+		$this->app->bind(\App\Services\Transaction\Request\ProcessorContract::class, \App\Services\Transaction\Request\Processor::class);
+		$this->app->bind(\App\Services\Transaction\Schedule\ProcessorContract::class, \App\Services\Transaction\Schedule\Processor::class);
+		$this->app->bind(\App\Services\Transaction\Schedule\UpdaterContract::class, \App\Services\Transaction\Schedule\Updater::class);
+
+		$this->app->bind(\App\Services\Translation\ManagerContract::class, \App\Services\Translation\Manager::class);
+
+		$this->app->bind(\App\Services\User\Request\ProcessorContract::class, \App\Services\User\Request\Processor::class);
+
+		return $this;
+	}
+
+	/**
+	 * @return $this
+	 */
+	protected function prepareDatabase() {
+		Relation::morphMap([
+			'budget' => Budget::class,
+			'transaction' => Transaction::class,
+			'transaction-periodicity-one-shot' => \App\Models\TransactionPeriodicityOneShot::class,
+			'transaction-periodicity-daily' => \App\Models\TransactionPeriodicityDaily::class,
+			'transaction-periodicity-weekly' => \App\Models\TransactionPeriodicityWeekly::class,
+			'transaction-periodicity-monthly' => \App\Models\TransactionPeriodicityMonthly::class,
+			'transaction-periodicity-yearly' => \App\Models\TransactionPeriodicityYearly::class,
+			'transaction-value-constant' => \App\Models\TransactionValueConstant::class,
+			'transaction-value-range' => \App\Models\TransactionValueRange::class,
+		]);
+
+		return $this;
+	}
+
+	/**
+	 * @return $this
+	 */
 	protected function prepareBreadcrumbs() {
 		$breadcrumbManager = $this->app->make(\App\Services\Breadcrumb\ManagerContract::class);
 		$breadcrumbManager->registerPushHandler(new class
@@ -107,76 +177,6 @@ class AppServiceProvider
 			}
 
 		});
-
-		return $this;
-	}
-
-	/**
-	 * @return $this
-	 */
-	protected function prepareDatabase() {
-		Relation::morphMap([
-			'budget' => Budget::class,
-			'transaction' => Transaction::class,
-			'transaction-periodicity-one-shot' => \App\Models\TransactionPeriodicityOneShot::class,
-			'transaction-periodicity-daily' => \App\Models\TransactionPeriodicityDaily::class,
-			'transaction-periodicity-weekly' => \App\Models\TransactionPeriodicityWeekly::class,
-			'transaction-periodicity-monthly' => \App\Models\TransactionPeriodicityMonthly::class,
-			'transaction-periodicity-yearly' => \App\Models\TransactionPeriodicityYearly::class,
-			'transaction-value-constant' => \App\Models\TransactionValueConstant::class,
-			'transaction-value-range' => \App\Models\TransactionValueRange::class,
-		]);
-
-		return $this;
-	}
-
-	/**
-	 * @return $this
-	 */
-	protected function registerServices() {
-		$this->app->bind(\App\Services\Asset\CompilerContract::class, \App\Services\Asset\Compiler::class);
-
-		$this->app->singleton(\App\Services\Breadcrumb\ManagerContract::class, \App\Services\Breadcrumb\Manager::class);
-
-		$this->app->bind(\App\Services\Budget\Request\ProcessorContract::class, \App\Services\Budget\Request\Processor::class);
-		$this->app->bind(\App\Services\Budget\SummaryGeneratorContract::class, \App\Services\Budget\SummaryGenerator::class);
-
-		$this->app->bind(\App\Services\Install\ManagerContract::class, \App\Services\Install\Manager::class);
-
-		$this->app->bind(\App\Services\Search\Transaction\OneShotSearchContract::class, \App\Services\Search\Transaction\OneShotSearch::class);
-		$this->app->bind(\App\Services\Search\Transaction\ScheduleSearchContract::class, \App\Services\Search\Transaction\ScheduleSearch::class);
-
-		$this->app->bind(\App\Services\Section\ManagerContract::class, \App\Services\Section\Manager::class);
-
-		$this->app->bind(\App\Services\Sidebar\ManagerContract::class, \App\Services\Sidebar\Manager::class);
-		$this->app->bind(\App\Services\Sidebar\ParserContract::class, \App\Services\Sidebar\Parser::class);
-
-		$this->app->bind(\App\Services\Transaction\Category\Request\ProcessorContract::class, \App\Services\Transaction\Category\Request\Processor::class);
-		$this->app->bind(\App\Services\Transaction\Category\TransformatorContract::class, \App\Services\Transaction\Category\Transformator::class);
-		$this->app->bind(\App\Services\Transaction\Periodicity\ParserContract::class, \App\Services\Transaction\Periodicity\Parser::class);
-		$this->app->bind(\App\Services\Transaction\Request\ProcessorContract::class, \App\Services\Transaction\Request\Processor::class);
-		$this->app->bind(\App\Services\Transaction\Schedule\ProcessorContract::class, \App\Services\Transaction\Schedule\Processor::class);
-		$this->app->bind(\App\Services\Transaction\Schedule\UpdaterContract::class, \App\Services\Transaction\Schedule\Updater::class);
-
-		$this->app->bind(\App\Services\Translation\ManagerContract::class, \App\Services\Translation\Manager::class);
-
-		$this->app->bind(\App\Services\User\Request\ProcessorContract::class, \App\Services\User\Request\Processor::class);
-
-		return $this;
-	}
-
-	/**
-	 * @return $this
-	 */
-	protected function registerRepositories() {
-		$this->app->bind(\App\Repositories\Contracts\BudgetConsolidationRepositoryContract::class, \App\Repositories\Eloquent\BudgetConsolidationRepository::class);
-		$this->app->bind(\App\Repositories\Contracts\BudgetRepositoryContract::class, \App\Repositories\Eloquent\BudgetRepository::class);
-		$this->app->bind(\App\Repositories\Contracts\SettingRepositoryContract::class, \App\Repositories\Eloquent\SettingRepository::class);
-		$this->app->bind(\App\Repositories\Contracts\TransactionCategoryRepositoryContract::class, \App\Repositories\Eloquent\TransactionCategoryRepository::class);
-		$this->app->bind(\App\Repositories\Contracts\TransactionPeriodicityRepositoryContract::class, \App\Repositories\Eloquent\TransactionPeriodicityRepository::class);
-		$this->app->bind(\App\Repositories\Contracts\TransactionRepositoryContract::class, \App\Repositories\Eloquent\TransactionRepository::class);
-		$this->app->bind(\App\Repositories\Contracts\TransactionScheduleRepositoryContract::class, \App\Repositories\Eloquent\TransactionScheduleRepository::class);
-		$this->app->bind(\App\Repositories\Contracts\UserRepositoryContract::class, \App\Repositories\Eloquent\UserRepository::class);
 
 		return $this;
 	}

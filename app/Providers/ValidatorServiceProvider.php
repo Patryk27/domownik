@@ -25,20 +25,11 @@ class ValidatorServiceProvider
 	 * @param ValidationFactory $validator
 	 * @return $this
 	 */
-	protected function setupGreaterThanField(ValidationFactory $validator) {
+	protected function setupPastOrToday(ValidationFactory $validator) {
 		/** @noinspection PhpUnusedParameterInspection */
-		$validator->extend('greater_than_field', function ($attribute, $value, $parameters, $validator) {
-			$fieldName = $parameters[0];
-
-			$fields = $validator->getData();
-			$fieldValue = $fields[$fieldName];
-
-			return $value > $fieldValue;
-		});
-
-		/** @noinspection PhpUnusedParameterInspection */
-		$validator->replacer('greater_than_field', function ($message, $attribute, $rule, $parameters) {
-			return str_replace(':field', $parameters[0], $message);
+		$validator->extend('past_or_today', function ($attribute, $value, $parameters, $validator) {
+			$value = new Carbon($value);
+			return $value->isPast() || $value->isToday();
 		});
 
 		return $this;
@@ -62,11 +53,20 @@ class ValidatorServiceProvider
 	 * @param ValidationFactory $validator
 	 * @return $this
 	 */
-	protected function setupPastOrToday(ValidationFactory $validator) {
+	protected function setupGreaterThanField(ValidationFactory $validator) {
 		/** @noinspection PhpUnusedParameterInspection */
-		$validator->extend('past_or_today', function ($attribute, $value, $parameters, $validator) {
-			$value = new Carbon($value);
-			return $value->isPast() || $value->isToday();
+		$validator->extend('greater_than_field', function ($attribute, $value, $parameters, $validator) {
+			$fieldName = $parameters[0];
+
+			$fields = $validator->getData();
+			$fieldValue = $fields[$fieldName];
+
+			return $value > $fieldValue;
+		});
+
+		/** @noinspection PhpUnusedParameterInspection */
+		$validator->replacer('greater_than_field', function ($message, $attribute, $rule, $parameters) {
+			return str_replace(':field', $parameters[0], $message);
 		});
 
 		return $this;

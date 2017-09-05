@@ -17,14 +17,14 @@ class MonthlyMatcher
 	protected $transactionPeriodicityRepository;
 
 	/**
-	 * @var Carbon[]
-	 */
-	public $dates;
-
-	/**
 	 * @var Collection|int[]
 	 */
 	protected $dayNumbers;
+
+	/**
+	 * @var Carbon[]
+	 */
+	public $dates;
 
 	/**
 	 * @param TransactionPeriodicityRepositoryContract $transactionPeriodicityRepository

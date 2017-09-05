@@ -198,6 +198,26 @@ class SummaryGenerator
 	}
 
 	/**
+	 * @param Collection|ScheduledTransaction[]|null $scheduledTransactions
+	 * @return $this
+	 */
+	protected function addTransactions(?Collection $scheduledTransactions) {
+		if (!isset($scheduledTransactions)) {
+			return $this;
+		}
+
+		foreach ($scheduledTransactions as $scheduledTransaction) {
+			$this->dailyCost
+				->get($scheduledTransaction->getDate()->day)
+				->push(EstimatedCost::build($scheduledTransaction->getTransaction()));
+
+			$this->transactions->push($scheduledTransaction);
+		}
+
+		return $this;
+	}
+
+	/**
 	 * @return BudgetSummary
 	 */
 	protected function prepareSummary(): BudgetSummary {
@@ -227,26 +247,6 @@ class SummaryGenerator
 			'estimatedProfit' => $estimatedProfit,
 			'transactions' => $this->transactions,
 		]);
-	}
-
-	/**
-	 * @param Collection|ScheduledTransaction[]|null $scheduledTransactions
-	 * @return $this
-	 */
-	protected function addTransactions(?Collection $scheduledTransactions) {
-		if (!isset($scheduledTransactions)) {
-			return $this;
-		}
-
-		foreach ($scheduledTransactions as $scheduledTransaction) {
-			$this->dailyCost
-				->get($scheduledTransaction->getDate()->day)
-				->push(EstimatedCost::build($scheduledTransaction->getTransaction()));
-
-			$this->transactions->push($scheduledTransaction);
-		}
-
-		return $this;
 	}
 
 }

@@ -18,14 +18,14 @@ class WeeklyMatcher
 	protected $transactionPeriodicityRepository;
 
 	/**
-	 * @var Carbon[]
-	 */
-	public $dates;
-
-	/**
 	 * @var Collection|int[]
 	 */
 	protected $weekDayNumbers;
+
+	/**
+	 * @var Carbon[]
+	 */
+	public $dates;
 
 	/**
 	 * @param TransactionPeriodicityRepositoryContract $transactionPeriodicityRepository
