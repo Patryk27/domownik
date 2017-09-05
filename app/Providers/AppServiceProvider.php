@@ -33,6 +33,16 @@ class AppServiceProvider
 	}
 
 	/**
+	 * @return void
+	 */
+	public function boot(): void {
+		// @todo should not be hard-coded
+		date_default_timezone_set('Europe/Warsaw');
+		Carbon::setLocale('pl');
+		setlocale(LC_TIME, 'pl', 'pl-PL');
+	}
+
+	/**
 	 * @return $this
 	 */
 	protected function prepareBreadcrumbs() {
@@ -169,16 +179,6 @@ class AppServiceProvider
 		$this->app->bind(\App\Repositories\Contracts\UserRepositoryContract::class, \App\Repositories\Eloquent\UserRepository::class);
 
 		return $this;
-	}
-
-	/**
-	 * @return void
-	 */
-	public function boot(): void {
-		// @todo should not be hard-coded
-		date_default_timezone_set('Europe/Warsaw');
-		Carbon::setLocale('pl');
-		setlocale(LC_TIME, 'pl', 'pl-PL');
 	}
 
 }

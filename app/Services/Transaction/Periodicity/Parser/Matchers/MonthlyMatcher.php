@@ -12,13 +12,15 @@ class MonthlyMatcher
 	implements MatcherContract {
 
 	/**
-	 * @var Carbon[]
-	 */
-	public $dates;
-	/**
 	 * @var TransactionPeriodicityRepositoryContract
 	 */
 	protected $transactionPeriodicityRepository;
+
+	/**
+	 * @var Carbon[]
+	 */
+	public $dates;
+
 	/**
 	 * @var Collection|int[]
 	 */

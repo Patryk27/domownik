@@ -81,31 +81,6 @@ class OneShotSearch
 	}
 
 	/**
-	 * @inheritDoc
-	 */
-	public function getChart(): array {
-		return $this
-			->get()
-			->sortBy('periodicity.date.timestamp', SORT_REGULAR)
-			->map(function (Transaction $transaction) {
-				/**
-				 * @var TransactionPeriodicityOneShot $transactionPeriodicity
-				 */
-				$transactionPeriodicity = $transaction->periodicity;
-
-				$date = $transactionPeriodicity->date;
-				$value = $this->getTransactionValue($transaction);
-
-				return [
-					[$date->year, $date->month, $date->day],
-					round($value, 2),
-				];
-			})
-			->values()
-			->toArray();
-	}
-
-	/**
 	 * @inheritdoc
 	 */
 	public function get(): Collection {
@@ -139,6 +114,31 @@ class OneShotSearch
 		}
 
 		return $result;
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public function getChart(): array {
+		return $this
+			->get()
+			->sortBy('periodicity.date.timestamp', SORT_REGULAR)
+			->map(function (Transaction $transaction) {
+				/**
+				 * @var TransactionPeriodicityOneShot $transactionPeriodicity
+				 */
+				$transactionPeriodicity = $transaction->periodicity;
+
+				$date = $transactionPeriodicity->date;
+				$value = $this->getTransactionValue($transaction);
+
+				return [
+					[$date->year, $date->month, $date->day],
+					round($value, 2),
+				];
+			})
+			->values()
+			->toArray();
 	}
 
 	/**

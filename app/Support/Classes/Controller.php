@@ -39,17 +39,6 @@ class Controller {
 	}
 
 	/**
-	 * @return string[]
-	 */
-	protected function getControllerPath(): array {
-		if (isset($this->route)) {
-			return explode('\\', get_class($this->route->getController()));
-		} else {
-			return ['', '', '', '', ''];
-		}
-	}
-
-	/**
 	 * @return string
 	 * @throws Exception
 	 */
@@ -70,6 +59,17 @@ class Controller {
 	 */
 	public function getActionName(): string {
 		return camel_case($this->route->getActionMethod());
+	}
+
+	/**
+	 * @return string[]
+	 */
+	protected function getControllerPath(): array {
+		if (isset($this->route)) {
+			return explode('\\', get_class($this->route->getController()));
+		} else {
+			return ['', '', '', '', ''];
+		}
 	}
 
 }

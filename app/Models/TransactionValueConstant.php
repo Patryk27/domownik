@@ -29,6 +29,13 @@ class TransactionValueConstant
 	];
 
 	/**
+	 * @return \Illuminate\Database\Eloquent\Relations\MorphOne
+	 */
+	public function transaction() {
+		return $this->morphOne(Transaction::class, 'value');
+	}
+
+	/**
 	 * @inheritDoc
 	 */
 	public static function getCacheConfiguration(): array {
@@ -44,13 +51,6 @@ class TransactionValueConstant
 				'Finances.TransactionValueConstant',
 			],
 		];
-	}
-
-	/**
-	 * @return \Illuminate\Database\Eloquent\Relations\MorphOne
-	 */
-	public function transaction() {
-		return $this->morphOne(Transaction::class, 'value');
 	}
 
 }

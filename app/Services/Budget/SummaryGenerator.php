@@ -109,66 +109,19 @@ class SummaryGenerator
 
 	/**
 	 * @return $this
+	 * @throws ValidationException
 	 */
-	protected function addScheduledTransactions() {
-		$this->scheduleProcessor
-			->setMonthRange($this->monthRange)
-			->setBudgetId($this->budgetId);
-
-		$this->addTransactions($this->scheduleProcessor->processAndGetItems());
-
-		return $this;
-	}
-
-	/**
-	 * @param Collection|ScheduledTransaction[]|null $scheduledTransactions
-	 * @return $this
-	 */
-	protected function addTransactions(?Collection $scheduledTransactions) {
-		if (!isset($scheduledTransactions)) {
-			return $this;
+	protected function validate() {
+		if (is_null($this->year)) {
+			throw new ValidationException('Year has not been set.');
 		}
 
-		foreach ($scheduledTransactions as $scheduledTransaction) {
-			$this->dailyCost
-				->get($scheduledTransaction->getDate()->day)
-				->push(EstimatedCost::build($scheduledTransaction->getTransaction()));
-
-			$this->transactions->push($scheduledTransaction);
+		if (is_null($this->month)) {
+			throw new ValidationException('Month has not been set.');
 		}
 
-		return $this;
-	}
-
-	/**
-	 * @return $this
-	 */
-	protected function addOneShotTransactions() {
-		$this->oneShotProcessor
-			->setMonthRange($this->monthRange)
-			->setBudgetId($this->budgetId);
-
-		$this->addTransactions($this->oneShotProcessor->processAndGetItems());
-
-		return $this;
-	}
-
-	/**
-	 * @return $this
-	 */
-	protected function prepare() {
-		$monthBegin = Carbon::create($this->year, $this->month, 1, 0, 0, 0);
-
-		$this->monthRange = new CarbonRange(
-			$monthBegin,
-			(clone $monthBegin)->endOfMonth()
-		);
-
-		$this->dailyCost = new Collection();
-		$this->transactions = new Collection();
-
-		for ($i = 1; $i <= 31; ++$i) {
-			$this->dailyCost[$i] = new Collection();
+		if (is_null($this->budgetId)) {
+			throw new ValidationException('Budget it has not been set.');
 		}
 
 		return $this;
@@ -199,20 +152,47 @@ class SummaryGenerator
 
 	/**
 	 * @return $this
-	 * @throws ValidationException
 	 */
-	protected function validate() {
-		if (is_null($this->year)) {
-			throw new ValidationException('Year has not been set.');
+	protected function prepare() {
+		$monthBegin = Carbon::create($this->year, $this->month, 1, 0, 0, 0);
+
+		$this->monthRange = new CarbonRange(
+			$monthBegin,
+			(clone $monthBegin)->endOfMonth()
+		);
+
+		$this->dailyCost = new Collection();
+		$this->transactions = new Collection();
+
+		for ($i = 1; $i <= 31; ++$i) {
+			$this->dailyCost[$i] = new Collection();
 		}
 
-		if (is_null($this->month)) {
-			throw new ValidationException('Month has not been set.');
-		}
+		return $this;
+	}
 
-		if (is_null($this->budgetId)) {
-			throw new ValidationException('Budget it has not been set.');
-		}
+	/**
+	 * @return $this
+	 */
+	protected function addOneShotTransactions() {
+		$this->oneShotProcessor
+			->setMonthRange($this->monthRange)
+			->setBudgetId($this->budgetId);
+
+		$this->addTransactions($this->oneShotProcessor->processAndGetItems());
+
+		return $this;
+	}
+
+	/**
+	 * @return $this
+	 */
+	protected function addScheduledTransactions() {
+		$this->scheduleProcessor
+			->setMonthRange($this->monthRange)
+			->setBudgetId($this->budgetId);
+
+		$this->addTransactions($this->scheduleProcessor->processAndGetItems());
 
 		return $this;
 	}
@@ -247,6 +227,26 @@ class SummaryGenerator
 			'estimatedProfit' => $estimatedProfit,
 			'transactions' => $this->transactions,
 		]);
+	}
+
+	/**
+	 * @param Collection|ScheduledTransaction[]|null $scheduledTransactions
+	 * @return $this
+	 */
+	protected function addTransactions(?Collection $scheduledTransactions) {
+		if (!isset($scheduledTransactions)) {
+			return $this;
+		}
+
+		foreach ($scheduledTransactions as $scheduledTransaction) {
+			$this->dailyCost
+				->get($scheduledTransaction->getDate()->day)
+				->push(EstimatedCost::build($scheduledTransaction->getTransaction()));
+
+			$this->transactions->push($scheduledTransaction);
+		}
+
+		return $this;
 	}
 
 }

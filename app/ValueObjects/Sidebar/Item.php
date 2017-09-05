@@ -45,6 +45,13 @@ class Item {
 	protected $children = [];
 
 	/**
+	 * @return bool
+	 */
+	public function hasParent(): bool {
+		return !is_null($this->parent);
+	}
+
+	/**
 	 * @return Item|null
 	 */
 	public function getParent() {
@@ -61,6 +68,29 @@ class Item {
 	}
 
 	/**
+	 * @return bool
+	 */
+	public function hasName(): bool {
+		return !empty($this->name);
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getName(): string {
+		return $this->name;
+	}
+
+	/**
+	 * @param string $name
+	 * @return $this
+	 */
+	public function setName(string $name): self {
+		$this->name = $name;
+		return $this;
+	}
+
+	/**
 	 * @return string
 	 */
 	public function getFullName(): string {
@@ -73,20 +103,6 @@ class Item {
 		$result .= $this->name;
 
 		return $result;
-	}
-
-	/**
-	 * @return bool
-	 */
-	public function hasParent(): bool {
-		return !is_null($this->parent);
-	}
-
-	/**
-	 * @return bool
-	 */
-	public function hasName(): bool {
-		return !empty($this->name);
 	}
 
 	/**
@@ -182,65 +198,33 @@ class Item {
 	}
 
 	/**
+	 * @param bool $isTemplate
+	 * @return $this
+	 */
+	public function setIsTemplate(bool $isTemplate): self {
+		$this->isTemplate = $isTemplate;
+		return $this;
+	}
+
+	/**
 	 * @return bool
 	 */
-	public function hasSubitems(): bool {
+	public function isTemplate(): bool {
+		return (bool)$this->isTemplate;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function isVisible() {
+		return !$this->isTemplate();
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function hasChildren(): bool {
 		return !empty($this->children);
-	}
-
-	/**
-	 * @param Item $item
-	 * @return $this
-	 */
-	public function addChild(Item $item): self {
-		$this->children[$item->getName()] = $item;
-		return $this;
-	}
-
-	/**
-	 * @return string
-	 */
-	public function getName(): string {
-		return $this->name;
-	}
-
-	/**
-	 * @param string $name
-	 * @return $this
-	 */
-	public function setName(string $name): self {
-		$this->name = $name;
-		return $this;
-	}
-
-	/**
-	 * @param string $itemName
-	 * @return Item|null
-	 */
-	public function findSubitemByName(string $itemName) {
-		$splitItemNames = explode('.', $itemName);
-
-		$currentItem = $this;
-
-		while (!empty($splitItemNames)) {
-			$itemName = $splitItemNames[0];
-
-			$currentSubitems = $currentItem->getChildren();
-
-			if (isset($currentSubitems[$itemName])) {
-				array_shift($splitItemNames);
-
-				if (empty($splitItemNames)) {
-					return $currentSubitems[$itemName];
-				}
-
-				$currentItem = $currentSubitems[$itemName];
-			} else {
-				return null;
-			}
-		}
-
-		return null;
 	}
 
 	/**
@@ -260,41 +244,30 @@ class Item {
 	}
 
 	/**
+	 * @param Item $item
+	 * @return $this
+	 */
+	public function addChild(Item $item): self {
+		$this->children[$item->getName()] = $item;
+		return $this;
+	}
+
+	/**
 	 * @return Item[]
 	 */
-	public function getVisibleSubitems(): array {
-		return array_filter($this->children, function ($subitem) {
-			/**
-			 * @var Item $subitem
-			 */
-
-			return $subitem->isVisible();
+	public function getVisibleChildren(): array {
+		return array_filter($this->children, function (Item $children) {
+			return $children->isVisible();
 		});
-	}
-
-	/**
-	 * @return bool
-	 */
-	public function isVisible() {
-		return !$this->isTemplate();
-	}
-
-	/**
-	 * @return bool
-	 */
-	public function isTemplate(): bool {
-		return (bool)$this->isTemplate;
 	}
 
 	/**
 	 * @return Item
 	 */
 	public function getClone(): Item {
-		$subitems = [];
-
-		foreach ($this->children as $subitem) {
-			$subitems[] = $subitem->getClone();
-		}
+		$children = array_map(function (Item $child) {
+			return $child->getClone();
+		}, $this->children);
 
 		$item = new Item();
 		$item
@@ -305,18 +278,9 @@ class Item {
 			->setIcon($this->icon)
 			->setBadge($this->badge)
 			->setIsTemplate(false)
-			->setChildren($subitems);
+			->setChildren($children);
 
 		return $item;
-	}
-
-	/**
-	 * @param bool $isTemplate
-	 * @return $this
-	 */
-	public function setIsTemplate(bool $isTemplate): self {
-		$this->isTemplate = $isTemplate;
-		return $this;
 	}
 
 }

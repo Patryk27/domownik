@@ -7,7 +7,7 @@ use Carbon\Carbon;
 class Calendar {
 
 	/**
-	 * Week days according to the ISO 8601.
+	 * Weekdays according to the ISO 8601.
 	 */
 	public const
 		MONDAY = 1,
@@ -44,18 +44,18 @@ class Calendar {
 	/**
 	 * Returns week days, in correct (depending on the calendar) order.
 	 * @return string[]
-	 * @see getWeekdaysCapitalized()
 	 */
-	public function getWeekdays(): array {
-		return array_map('strtolower', self::getWeekdaysCapitalized());
+	public function getWeekdaysCapitalized(): array {
+		return $this->weekdays;
 	}
 
 	/**
 	 * Returns week days, in correct (depending on the calendar) order.
 	 * @return string[]
+	 * @see getWeekdaysCapitalized()
 	 */
-	public function getWeekdaysCapitalized(): array {
-		return $this->weekdays;
+	public function getWeekdays(): array {
+		return array_map('strtolower', $this->getWeekdaysCapitalized());
 	}
 
 	/**

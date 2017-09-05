@@ -24,7 +24,7 @@
                 </span>
                 @endif
 
-                @include('layouts.app.auth.sidebar.subitems', ['sidebarItems' => $sidebarItem->getVisibleSubitems(), 'sidebarItems'])
+                @include('layouts.app.auth.sidebar.subitems', ['sidebarItems' => $sidebarItem->getVisibleChildren(), 'sidebarItems'])
             </li>
         @endforeach
     </ul>

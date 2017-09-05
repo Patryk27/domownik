@@ -25,19 +25,6 @@ class ValidatorServiceProvider
 	 * @param ValidationFactory $validator
 	 * @return $this
 	 */
-	protected function setupPositive(ValidationFactory $validator) {
-		/** @noinspection PhpUnusedParameterInspection */
-		$validator->extend('positive', function ($attribute, $value, $parameters, $validator) {
-			return $value > 0;
-		});
-
-		return $this;
-	}
-
-	/**
-	 * @param ValidationFactory $validator
-	 * @return $this
-	 */
 	protected function setupGreaterThanField(ValidationFactory $validator) {
 		/** @noinspection PhpUnusedParameterInspection */
 		$validator->extend('greater_than_field', function ($attribute, $value, $parameters, $validator) {
@@ -80,6 +67,19 @@ class ValidatorServiceProvider
 		$validator->extend('past_or_today', function ($attribute, $value, $parameters, $validator) {
 			$value = new Carbon($value);
 			return $value->isPast() || $value->isToday();
+		});
+
+		return $this;
+	}
+
+	/**
+	 * @param ValidationFactory $validator
+	 * @return $this
+	 */
+	protected function setupPositive(ValidationFactory $validator) {
+		/** @noinspection PhpUnusedParameterInspection */
+		$validator->extend('positive', function ($attribute, $value, $parameters, $validator) {
+			return $value > 0;
 		});
 
 		return $this;

@@ -36,6 +36,13 @@ class TransactionSchedule
 	];
 
 	/**
+	 * @return \Illuminate\Database\Eloquent\Relations\HasOne
+	 */
+	public function transaction() {
+		return $this->belongsTo(Transaction::class);
+	}
+
+	/**
 	 * @inheritDoc
 	 */
 	public static function getCacheConfiguration(): array {
@@ -50,13 +57,6 @@ class TransactionSchedule
 				'Finances.TransactionSchedule',
 			],
 		];
-	}
-
-	/**
-	 * @return \Illuminate\Database\Eloquent\Relations\HasOne
-	 */
-	public function transaction() {
-		return $this->hasOne(Transaction::class, 'id', 'transaction_id');
 	}
 
 }

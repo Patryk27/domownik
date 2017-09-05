@@ -61,18 +61,18 @@ class User
 	/**
 	 * @return array
 	 */
-	public static function getStatusesSelect(): array {
-		return map_translation(self::getStatuses(), 'models/user.enums.statuses.%s');
-	}
-
-	/**
-	 * @return array
-	 */
 	public static function getStatuses(): array {
 		return [
 			self::STATUS_ACTIVE,
 			self::STATUS_INACTIVE,
 		];
+	}
+
+	/**
+	 * @return array
+	 */
+	public static function getStatusesSelect(): array {
+		return map_translation(self::getStatuses(), 'models/user.enums.statuses.%s');
 	}
 
 	/**

@@ -39,6 +39,13 @@ class Manager
 	}
 
 	/**
+	 * @inheritDoc
+	 */
+	public function getSidebars(): array {
+		return $this->sidebars;
+	}
+
+	/**
 	 * Loads all the sidebars.
 	 * @return Manager
 	 */
@@ -71,13 +78,6 @@ class Manager
 		$this->sidebars[$sectionName] = $sidebar;
 
 		return $this;
-	}
-
-	/**
-	 * @inheritDoc
-	 */
-	public function getSidebars(): array {
-		return $this->sidebars;
 	}
 
 }

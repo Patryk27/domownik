@@ -12,13 +12,14 @@ class OneShotMatcher
 	implements MatcherContract {
 
 	/**
-	 * @var Carbon[]
-	 */
-	public $dates;
-	/**
 	 * @var TransactionPeriodicityRepositoryContract
 	 */
 	protected $transactionPeriodicityRepository;
+
+	/**
+	 * @var Carbon[]
+	 */
+	public $dates;
 
 	/**
 	 * @param TransactionPeriodicityRepositoryContract $transactionPeriodicityRepository
@@ -55,6 +56,7 @@ class OneShotMatcher
 		}
 
 		$this->dates = $filteredDates;
+		
 		return $this;
 	}
 

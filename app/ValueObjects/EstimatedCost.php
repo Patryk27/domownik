@@ -7,6 +7,7 @@ use App\Models\Transaction;
 use App\Models\TransactionValueConstant;
 use App\Models\TransactionValueRange;
 
+// @todo ranged cost?
 class EstimatedCost {
 
 	/**
@@ -49,6 +50,27 @@ class EstimatedCost {
 	}
 
 	/**
+	 * @return float
+	 */
+	public function getEstimateMin(): float {
+		return $this->estimateMin;
+	}
+
+	/**
+	 * @return float
+	 */
+	public function getEstimateMax(): float {
+		return $this->estimateMax;
+	}
+
+	/**
+	 * @return float
+	 */
+	public function getEstimate(): float {
+		return ($this->estimateMin + $this->estimateMax) / 2;
+	}
+
+	/**
 	 * @param Transaction $transaction
 	 * @return EstimatedCost
 	 */
@@ -68,20 +90,6 @@ class EstimatedCost {
 	}
 
 	/**
-	 * @return float
-	 */
-	public function getEstimateMax(): float {
-		return $this->estimateMax;
-	}
-
-	/**
-	 * @return float
-	 */
-	public function getEstimateMin(): float {
-		return $this->estimateMin;
-	}
-
-	/**
 	 * @param TransactionValueConstant|TransactionValueRange $transactionValue
 	 * @return EstimatedCost
 	 */
@@ -91,13 +99,6 @@ class EstimatedCost {
 		} else {
 			return new self($transactionValue->value_from, $transactionValue->value_to);
 		}
-	}
-
-	/**
-	 * @return float
-	 */
-	public function getEstimate(): float {
-		return ($this->estimateMin + $this->estimateMax) / 2;
 	}
 
 }

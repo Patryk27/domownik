@@ -76,76 +76,6 @@ class Transaction
 	];
 
 	/**
-	 * @return string[]
-	 */
-	public static function getTypesSelect(): array {
-		return map_translation(self::getTypes(), 'models/transaction.enums.types.%s');
-	}
-
-	/**
-	 * @return string[]
-	 */
-	public static function getTypes(): array {
-		return [
-			self::TYPE_INCOME,
-			self::TYPE_EXPENSE,
-		];
-	}
-
-	/**
-	 * @return string[]
-	 */
-	public static function getValueTypesSelect(): array {
-		return map_translation(self::getValueTypes(), 'models/transaction.enums.value-types.%s');
-	}
-
-	/**
-	 * @return string[]
-	 */
-	public static function getValueTypes(): array {
-		return [
-			self::VALUE_TYPE_CONSTANT,
-			self::VALUE_TYPE_RANGE,
-		];
-	}
-
-	/**
-	 * @return string[]
-	 */
-	public static function getPeriodicityTypesSelect(): array {
-		return map_translation(self::getPeriodicityTypes(), 'models/transaction.enums.periodicity-types.%s');
-	}
-
-	/**
-	 * @return string[]
-	 */
-	public static function getPeriodicityTypes(): array {
-		return [
-			self::PERIODICITY_TYPE_ONE_SHOT,
-			self::PERIODICITY_TYPE_DAILY,
-			self::PERIODICITY_TYPE_WEEKLY,
-			self::PERIODICITY_TYPE_MONTHLY,
-			self::PERIODICITY_TYPE_YEARLY,
-		];
-	}
-
-	/**
-	 * @inheritDoc
-	 */
-	public static function getCacheConfiguration(): array {
-		return [
-			'tags' => [
-				'Finances',
-				'Finances.Transaction',
-			],
-
-			'flush-tags' => [
-				'Finances.Transaction',
-			],
-		];
-	}
-
-	/**
 	 * @return \Illuminate\Database\Eloquent\Relations\MorphTo
 	 */
 	public function parent() {
@@ -220,6 +150,76 @@ class Transaction
 	 */
 	public function isExpense(): bool {
 		return $this->type === self::TYPE_EXPENSE;
+	}
+
+	/**
+	 * @return string[]
+	 */
+	public static function getTypes(): array {
+		return [
+			self::TYPE_INCOME,
+			self::TYPE_EXPENSE,
+		];
+	}
+
+	/**
+	 * @return string[]
+	 */
+	public static function getTypesSelect(): array {
+		return map_translation(self::getTypes(), 'models/transaction.enums.types.%s');
+	}
+
+	/**
+	 * @return string[]
+	 */
+	public static function getValueTypes(): array {
+		return [
+			self::VALUE_TYPE_CONSTANT,
+			self::VALUE_TYPE_RANGE,
+		];
+	}
+
+	/**
+	 * @return string[]
+	 */
+	public static function getValueTypesSelect(): array {
+		return map_translation(self::getValueTypes(), 'models/transaction.enums.value-types.%s');
+	}
+
+	/**
+	 * @return string[]
+	 */
+	public static function getPeriodicityTypes(): array {
+		return [
+			self::PERIODICITY_TYPE_ONE_SHOT,
+			self::PERIODICITY_TYPE_DAILY,
+			self::PERIODICITY_TYPE_WEEKLY,
+			self::PERIODICITY_TYPE_MONTHLY,
+			self::PERIODICITY_TYPE_YEARLY,
+		];
+	}
+
+	/**
+	 * @return string[]
+	 */
+	public static function getPeriodicityTypesSelect(): array {
+		return map_translation(self::getPeriodicityTypes(), 'models/transaction.enums.periodicity-types.%s');
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public static function getCacheConfiguration(): array {
+		return [
+			'tags' => [
+				'Finances',
+				'Finances.Transaction',
+			],
+
+			'flush-tags' => [
+				'Finances.Transaction',
+			],
+		];
 	}
 
 }

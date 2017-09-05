@@ -12,11 +12,7 @@
 
             @if (!empty($recentTransactionsChart))
                 <div class="inline-block">
-                    @php
-                        $itemKeys = array_keys((array)__('views/finances/budgets/show.history-group-mode'));
-                    @endphp
-
-                    {!! Form::select(null, map_translation($itemKeys, 'views/finances/budgets/show.history-group-mode.%s'), null, [
+                    {!! Form::select(null, __('views/finances/budgets/show.history.group-modes'), null, [
                         'id' => 'budget-history-group-mode',
                         'class' => 'form-control',
                     ]) !!}

@@ -32,6 +32,12 @@ abstract class AbstractCrudRepository
 	protected $model;
 
 	/**
+	 * Returns model name representing the repository.
+	 * @return string
+	 */
+	abstract protected function getModelName(): string;
+
+	/**
 	 * @param Application $app
 	 */
 	public function __construct(
@@ -43,10 +49,29 @@ abstract class AbstractCrudRepository
 	}
 
 	/**
-	 * Returns model name representing the repository.
-	 * @return string
+	 * @inheritDoc
 	 */
-	abstract protected function getModelName(): string;
+	public function get(int $id, array $columns = ['*']) {
+		$cacheKey = $this->getCacheKey(__FUNCTION__, func_get_args());
+		$cache = $this->getCache();
+
+		return $cache->rememberForever($cacheKey, function () use ($id, $columns) {
+			return $this->model->find($id, $columns);
+		});
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public function getOrFail(int $id, array $columns = ['*']) {
+		$model = $this->get($id, $columns);
+
+		if (empty($model)) {
+			throw new RepositoryException('A model of class %s with id %d could not have been found.', get_class($this->model), $id);
+		}
+
+		return $model;
+	}
 
 	/**
 	 * @inheritDoc
@@ -67,13 +92,6 @@ abstract class AbstractCrudRepository
 
 			return $stmt->get($columns);
 		});
-	}
-
-	/**
-	 * @inheritdoc
-	 */
-	public function getCache() {
-		return $this->model::getCache();
 	}
 
 	/**
@@ -106,7 +124,8 @@ abstract class AbstractCrudRepository
 		if (!empty($model)) {
 			$model->delete();
 
-			$this->getFlushCache()
+			$this
+				->getFlushCache()
 				->flush();
 		}
 
@@ -116,20 +135,18 @@ abstract class AbstractCrudRepository
 	/**
 	 * @inheritDoc
 	 */
-	public function get(int $id, array $columns = ['*']) {
-		$cacheKey = $this->getCacheKey(__FUNCTION__, func_get_args());
-		$cache = $this->getCache();
+	public function persist(Model $model): CrudRepositoryContract {
+		if (get_class($model) !== get_class($this->model)) {
+			throw new RepositoryException('persist() was given a model of class \'%s\' which does not match repository\'s model class \'%s\'.', get_class($model), get_class($this->model));
+		}
 
-		return $cache->rememberForever($cacheKey, function () use ($id, $columns) {
-			return $this->model->find($id, $columns);
-		});
-	}
+		$model->saveOrFail();
 
-	/**
-	 * @inheritdoc
-	 */
-	public function getFlushCache() {
-		return $this->model::getFlushCache();
+		$this
+			->getFlushCache()
+			->flush();
+
+		return $this;
 	}
 
 	/**
@@ -148,32 +165,17 @@ abstract class AbstractCrudRepository
 	}
 
 	/**
-	 * @inheritDoc
+	 * @inheritdoc
 	 */
-	public function getOrFail(int $id, array $columns = ['*']) {
-		$model = $this->get($id, $columns);
-
-		if (empty($model)) {
-			throw new RepositoryException('A model of class %s with id %d could not have been found.', get_class($this->model), $id);
-		}
-
-		return $model;
+	public function getCache() {
+		return $this->model::getCache();
 	}
 
 	/**
-	 * @inheritDoc
+	 * @inheritdoc
 	 */
-	public function persist(Model $model): CrudRepositoryContract {
-		if (get_class($model) !== get_class($this->model)) {
-			throw new RepositoryException('persist() was given a model of class \'%s\' which does not match repository\'s model class \'%s\'.', get_class($model), get_class($this->model));
-		}
-
-		$model->saveOrFail();
-
-		$this->getFlushCache()
-			->flush();
-
-		return $this;
+	public function getFlushCache() {
+		return $this->model::getFlushCache();
 	}
 
 }

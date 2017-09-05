@@ -28,6 +28,6 @@
     </div>
 
     <div id="{{ $panelId }}" class="panel-collapse collapse in">
-        @include('layouts.app.auth.sidebar.subitems', ['sidebarItems' => $sidebarItem->getVisibleSubitems(), 'sidebarItems'])
+        @include('layouts.app.auth.sidebar.subitems', ['sidebarItems' => $sidebarItem->getVisibleChildren(), 'sidebarItems'])
     </div>
 </div>

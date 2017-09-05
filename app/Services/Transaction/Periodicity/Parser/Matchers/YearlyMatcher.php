@@ -12,13 +12,15 @@ class YearlyMatcher
 	implements MatcherContract {
 
 	/**
-	 * @var Carbon[]
-	 */
-	public $dates;
-	/**
 	 * @var TransactionPeriodicityRepositoryContract
 	 */
 	protected $transactionPeriodicityRepository;
+
+	/**
+	 * @var Carbon[]
+	 */
+	public $dates;
+
 	/**
 	 * @var Collection|string[]
 	 */

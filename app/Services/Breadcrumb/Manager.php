@@ -43,13 +43,6 @@ class Manager
 	/**
 	 * @inheritDoc
 	 */
-	public function pushUrl(string $url, string $caption) {
-		return $this->push(new Breadcrumb($url, $caption));
-	}
-
-	/**
-	 * @inheritDoc
-	 */
 	public function push($value) {
 		foreach ($this->pushHandlers as $customPushHandler) {
 			$breadcrumb = $customPushHandler->handle($value);
@@ -69,6 +62,13 @@ class Manager
 		} else {
 			throw new InternalException('No valid custom push handler found for type [%s].', gettype($value));
 		}
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public function pushUrl(string $url, string $caption) {
+		return $this->push(new Breadcrumb($url, $caption));
 	}
 
 	/**

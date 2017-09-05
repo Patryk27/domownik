@@ -107,20 +107,6 @@ class BudgetsController
 	}
 
 	/**
-	 * @return Collection
-	 */
-	protected function getBudgetsSelect(): Collection {
-		return
-			$this->budgetRepository
-				->getActiveBudgets()
-				->mapWithKeys(function (Budget $budget) {
-					return [
-						$budget->id => $budget->name,
-					];
-				});
-	}
-
-	/**
 	 * @param BudgetStoreRequest $request
 	 * @return mixed
 	 */
@@ -249,6 +235,20 @@ class BudgetsController
 			'startingYear' => $startingYear,
 			'summary' => $summary,
 		]);
+	}
+
+	/**
+	 * @return Collection
+	 */
+	protected function getBudgetsSelect(): Collection {
+		return
+			$this->budgetRepository
+				->getActiveBudgets()
+				->mapWithKeys(function (Budget $budget) {
+					return [
+						$budget->id => $budget->name,
+					];
+				});
 	}
 
 }

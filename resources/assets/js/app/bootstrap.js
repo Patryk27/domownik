@@ -20,11 +20,11 @@ module.exports = (function () {
 
         // Highcharts
         Highcharts.setOptions({
-            lang: __('highcharts.language'),
+            lang: __('js.highcharts.language'),
         });
 
         // @fengyuanchen/datepicker
-        $.fn.datepicker.languages['pl-PL'] = __('datepicker.language');
+        $.fn.datepicker.languages['pl-PL'] = __('js.datepicker.language');
 
         $.fn.datepicker.setDefaults({
             autoHide: true,
