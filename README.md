@@ -44,9 +44,9 @@ If no, please read a tutorial appropriate for your OS/distribution/etc.
 
     1. `npm install`,
     
-    2. `composer install`,
+    2. `composer install`.
     
-5. Compile the assets: `npm run prod`.
+5. Compile primary assets: `npm run prod`.
 
 6. Create a database schema in MySQL / MariaDB.
 
@@ -58,4 +58,6 @@ If no, please read a tutorial appropriate for your OS/distribution/etc.
 
 10. Run `php artisan migrate --seed`, wait for the application to prepare the database.
 
-11. You may now sign in using the common `admin` / `admin` credentials :-)  
+11. Compile the rest of the assets (language files etc.): `php artisan assets:compile`.
+
+12. You may now sign in using the common `admin` / `admin` credentials :-)  

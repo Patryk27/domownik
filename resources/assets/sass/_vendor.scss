@@ -1,1 +1,8 @@
-@import 'vendor/jstree';
+@import 'skin/variables';
+@import '~bootstrap-sass/assets/stylesheets/bootstrap';
+@import 'skin/bootswatch';
+// --- //
+@import '~@fengyuanchen/datepicker/src/datepicker.css';
+@import '~bootstrap-year-calendar/css/bootstrap-year-calendar.css';
+@import '~font-awesome/css/font-awesome.css';
+@import '~jstree/dist/themes/default/style.css';

@@ -11,22 +11,22 @@
     "axios": "^0.15.3",
     "bootstrap-sass": "^3.3.7",
     "del": "^2.2.2",
-    "jquery": "^3.2.1",
-    "laravel-elixir-delete": "^1.0.1",
-    "laravel-elixir-rollup-official": "^1.1.0",
-    "laravel-elixir-webpack-official": "^1.0.10",
-    "lodash": "^4.17.4"
+    "jquery": "^3.2.1"
   },
   "dependencies": {
     "@fengyuanchen/datepicker": "github:fengyuanchen/datepicker",
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
     "bootbox": "^4.4.0",
     "bootstrap-validator": "^0.11.9",
     "bootstrap-year-calendar": "^1.1.1",
     "cross-env": "^5.0.5",
+    "font-awesome": "^4.7.0",
     "highcharts": "^5.0.12",
     "jstree": "^3.3.4",
-    "laravel-elixir": "^6.0.0-15",
+    "laravel-mix": "^1.4.2",
     "moment": "^2.18.1",
+    "sass-loader": "^6.0.6",
     "webpack": "^3.5.5"
   }
 }
