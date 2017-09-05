@@ -1,8 +1,9 @@
-<?php
-/**
- * @var \App\ValueObjects\Sidebar\Item[] $sidebarItems
- */
-?>
+@php
+    /**
+     * @var \App\ValueObjects\Sidebar\Item[] $sidebarItems
+     */
+@endphp
+
 @if (!empty($sidebarItems))
     <ul class="list-group">
         @foreach ($sidebarItems as $sidebarItem)

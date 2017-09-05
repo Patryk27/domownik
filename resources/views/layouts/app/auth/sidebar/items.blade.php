@@ -1,9 +1,10 @@
-<?php
-/**
- * @var \App\ValueObjects\Sidebar\Item $sidebarItem
- */
-?>
-@php ($panelId = 'sidebar-panel-' . str_replace('.', '-', $sidebarItem->getName()))
+@php
+    /**
+     * @var \App\ValueObjects\Sidebar\Item $sidebarItem
+     */
+
+    $panelId = 'sidebar-panel-' . str_replace('.', '-', $sidebarItem->getName())
+@endphp
 
 <div class="panel panel-default">
     <div class="panel-heading">
