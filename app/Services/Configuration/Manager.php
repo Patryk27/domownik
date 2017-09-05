@@ -31,6 +31,22 @@ class Manager {
 	}
 
 	/**
+	 * Returns given configuration unserialized option value or throws exception if option was not found.
+	 * @param string $key
+	 * @return mixed
+	 * @throws ConfigurationException
+	 */
+	public function getValueOrFail(string $key) {
+		$value = $this->getValueOrNull($key);
+
+		if (is_null($value)) {
+			throw new ConfigurationException('Configuration key not found: %s.', $key);
+		}
+
+		return $value;
+	}
+
+	/**
 	 * Returns given configuration unserialized option value or `null` if option was not found.
 	 * @param string $key
 	 * @return mixed|null
@@ -49,22 +65,6 @@ class Manager {
 
 		// check global settings
 		return $this->settingsRepository->getValueByKey($key);
-	}
-
-	/**
-	 * Returns given configuration unserialized option value or throws exception if option was not found.
-	 * @param string $key
-	 * @return mixed
-	 * @throws ConfigurationException
-	 */
-	public function getValueOrFail(string $key) {
-		$value = $this->getValueOrNull($key);
-
-		if (is_null($value)) {
-			throw new ConfigurationException('Configuration key not found: %s.', $key);
-		}
-
-		return $value;
 	}
 
 	/**

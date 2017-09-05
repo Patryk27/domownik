@@ -1,11 +1,11 @@
-(function($) {
+(function ($) {
 
     /**
      * Enables dynamic validation, submitting etc. on given form.
      * @param {array} options
      * @return {jQuery}
      */
-    $.fn.ajaxForm = function(options) {
+    $.fn.ajaxForm = function (options) {
         var form = $(this);
 
         //noinspection JSUnusedGlobalSymbols
@@ -15,14 +15,14 @@
              * Returns form DOM element.
              * @returns {jQuery}
              */
-            getForm: function() {
+            getForm: function () {
                 return form;
             },
 
             /**
              * Returns default form options.
              */
-            getDefaultOptions: function() {
+            getDefaultOptions: function () {
                 return {
 
                     /**
@@ -30,7 +30,7 @@
                      * @param {Object} data
                      * @returns {Object}
                      */
-                    prepareData: function(data) {
+                    prepareData: function (data) {
                         return data;
                     },
 
@@ -39,7 +39,7 @@
                      * @param {Object} data
                      * @returns {}
                      */
-                    beforeSubmit: function(data) {
+                    beforeSubmit: function (data) {
                         // dummy function
                     },
 
@@ -48,7 +48,7 @@
                      * @param {String|Object} msg
                      * @returns {}
                      */
-                    success: function(msg) {
+                    success: function (msg) {
                         if (msg.hasOwnProperty('redirectUrl')) {
                             window.location.href = msg.redirectUrl;
                             return;
@@ -68,14 +68,14 @@
                      * @param {String} errorThrown
                      * @returns {}
                      */
-                    error: function(xhr, textStatus, errorThrown) {
+                    error: function (xhr, textStatus, errorThrown) {
                         // dummy function
                     },
 
                     /**
                      * @returns {}
                      */
-                    always: function() {
+                    always: function () {
                         // dummy function
                     },
 
@@ -86,7 +86,7 @@
              * Changes form state (enables/disables it).
              * @param {Boolean} enabled
              */
-            setFormEnabled: function(enabled) {
+            setFormEnabled: function (enabled) {
                 var submitBtn = $(form.find('button[type="submit"]'));
 
                 if (enabled) {
@@ -100,9 +100,7 @@
                     form.form('disable');
 
                     if (submitBtn) {
-                        submitBtn.
-                            data('old-html', submitBtn.html()).
-                            html('<i class="fa fa-circle-o-notch fa-spin"></i>');
+                        submitBtn.data('old-html', submitBtn.html()).html('<i class="fa fa-circle-o-notch fa-spin"></i>');
                     }
                 }
             },
@@ -154,11 +152,11 @@
                 url: form.attr('action'),
                 method: form.attr('method'),
                 data: formData,
-            }).done(function(msg) {
+            }).done(function (msg) {
                 console.log('... succeeded.');
 
                 options.success.call(context, msg);
-            }).fail(function(xhr, textStatus, errorThrown) {
+            }).fail(function (xhr, textStatus, errorThrown) {
                 console.error('... failed.');
                 console.error('... -> xhr = ', xhr);
                 console.error('... -> textStatus = ', textStatus);
@@ -174,7 +172,7 @@
 
                 options.error(xhr, textStatus, errorThrown);
                 context.setFormEnabled(true);
-            }).always(function() {
+            }).always(function () {
                 options.always();
             });
 
@@ -186,8 +184,8 @@
         return this;
     };
 
-    $(function() {
-        $('.form-ajax').each(function() {
+    $(function () {
+        $('.form-ajax').each(function () {
             $(this).ajaxForm();
         });
     });

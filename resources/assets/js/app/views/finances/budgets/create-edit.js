@@ -1,4 +1,4 @@
-module.exports = (function() {
+module.exports = (function () {
     var form = undefined;
 
     function showConsolidatedBudgets(show) {
@@ -14,7 +14,7 @@ module.exports = (function() {
     function initialize() {
         form = $('#budgetForm');
 
-        form.on('change', '[name="type"]', function() {
+        form.on('change', '[name="type"]', function () {
             showConsolidatedBudgets($(this).val() === 'consolidated');
         });
 
@@ -22,7 +22,7 @@ module.exports = (function() {
     }
 
     return {
-        initializeView: function() {
+        initializeView: function () {
             $(initialize);
             return this;
         },

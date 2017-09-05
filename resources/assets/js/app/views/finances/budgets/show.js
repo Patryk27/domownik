@@ -1,4 +1,4 @@
-module.exports = function() {
+module.exports = function () {
     /**
      * @type {?Number}
      */
@@ -13,7 +13,7 @@ module.exports = function() {
      * @returns {}
      */
     function registerBinds() {
-        $('#budget-history-group-mode').on('change', function() {
+        $('#budget-history-group-mode').on('change', function () {
             if (chart === null) {
                 return;
             }
@@ -47,7 +47,7 @@ module.exports = function() {
     function prepareChart(rows) {
         var seriesData = [];
 
-        $(rows).each(function(idx, val) {
+        $(rows).each(function (idx, val) {
             var date = Date.UTC(val[0][0], val[0][1], val[0][2]),
                 value = val[1];
 
@@ -64,7 +64,7 @@ module.exports = function() {
                 },
 
                 title: {
-                    text: __('views.finances.budgets.show.chart.title'),
+                    text: __('views.finances.budgets.show.history.chart.title'),
                 },
 
                 xAxis: {
@@ -73,7 +73,7 @@ module.exports = function() {
 
                 yAxis: {
                     title: {
-                        text: __('views.finances.budgets.show.chart.y-axis-title'),
+                        text: __('views.finances.budgets.show.history.chart.y-axis-title'),
                     },
                 },
 
@@ -114,36 +114,36 @@ module.exports = function() {
                         {
                             type: 'day',
                             count: 3,
-                            text: __('highcharts.custom.range-selectors.3-days'),
+                            text: __('js.highcharts.custom.range-selectors.3-days'),
                         },
 
                         {
                             type: 'week',
                             count: 1,
-                            text: __('highcharts.custom.range-selectors.1-week'),
+                            text: __('js.highcharts.custom.range-selectors.1-week'),
                         },
 
                         {
                             type: 'month',
                             count: 1,
-                            text: __('highcharts.custom.range-selectors.1-month'),
+                            text: __('js.highcharts.custom.range-selectors.1-month'),
                         },
 
                         {
                             type: 'month',
                             count: 6,
-                            text: __('highcharts.custom.range-selectors.6-months'),
+                            text: __('js.highcharts.custom.range-selectors.6-months'),
                         },
 
                         {
                             type: 'year',
                             count: 1,
-                            text: __('highcharts.custom.range-selectors.1-year'),
+                            text: __('js.highcharts.custom.range-selectors.1-year'),
                         },
 
                         {
                             type: 'all',
-                            text: __('highcharts.custom.range-selectors.all'),
+                            text: __('js.highcharts.custom.range-selectors.all'),
                         },
                     ],
 
@@ -153,7 +153,7 @@ module.exports = function() {
                 series: [
                     {
                         type: 'area',
-                        name: __('views.finances.budgets.show.chart.y-axis-title'),
+                        name: __('views.finances.budgets.show.history.chart.y-axis-title'),
                         data: seriesData,
                     },
                 ],
@@ -169,10 +169,10 @@ module.exports = function() {
          * @param {{}} options
          * @return {}
          */
-        initializeView: function(options) {
+        initializeView: function (options) {
             budgetId = options.budgetId;
 
-            $(function() {
+            $(function () {
                 registerBinds();
                 prepareChart(options.recentTransactionsChart);
             });

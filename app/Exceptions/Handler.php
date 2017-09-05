@@ -46,6 +46,19 @@ class Handler
 	}
 
 	/**
+	 * @param Exception $exception
+	 * @return \Illuminate\Http\Response
+	 */
+	protected function renderExceptionWithWhoops(Exception $exception) {
+		$whoops = new \Whoops\Run();
+		$whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler());
+
+		return new \Illuminate\Http\Response(
+			$whoops->handleException($exception)
+		);
+	}
+
+	/**
 	 * @param Request $request
 	 * @return \Illuminate\Http\Response
 	 * @internal param \Illuminate\Auth\AuthenticationException $exception
@@ -58,19 +71,6 @@ class Handler
 		// @todo: show error 'you must be logged in to continue'
 
 		return redirect()->route('dashboard.auth.login');
-	}
-
-	/**
-	 * @param Exception $exception
-	 * @return \Illuminate\Http\Response
-	 */
-	protected function renderExceptionWithWhoops(Exception $exception) {
-		$whoops = new \Whoops\Run();
-		$whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler());
-
-		return new \Illuminate\Http\Response(
-			$whoops->handleException($exception)
-		);
 	}
 
 }

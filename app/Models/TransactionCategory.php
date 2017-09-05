@@ -44,20 +44,6 @@ class TransactionCategory
 	public $presenterClass = TransactionCategoryPresenter::class;
 
 	/**
-	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
-	 */
-	public function subcategories() {
-		return $this->hasMany(self::class, 'parent_category_id');
-	}
-
-	/**
-	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
-	 */
-	public function transactions() {
-		return $this->hasMany(Transaction::class, 'category_id');
-	}
-
-	/**
 	 * @inheritDoc
 	 */
 	public static function getCacheConfiguration(): array {
@@ -73,6 +59,20 @@ class TransactionCategory
 				'Finances.TransactionCategory',
 			],
 		];
+	}
+
+	/**
+	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
+	 */
+	public function subcategories() {
+		return $this->hasMany(self::class, 'parent_category_id');
+	}
+
+	/**
+	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
+	 */
+	public function transactions() {
+		return $this->hasMany(Transaction::class, 'category_id');
 	}
 
 }

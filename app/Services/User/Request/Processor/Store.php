@@ -13,7 +13,7 @@ class Store
 	 * @return UserStoreResult
 	 */
 	public function process(UserStoreRequest $request): UserStoreResult {
-		return $this->db->transaction(function() use ($request) {
+		return $this->db->transaction(function () use ($request) {
 			$this->log->info('Creating new user with login [%s].', $request->get('login'));
 
 			$user = $this->getUserFromRequest($request);

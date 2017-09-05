@@ -3,7 +3,7 @@
  * Each configuration value is loaded by the backend and set in the layout.
  */
 
-module.exports = (function() {
+module.exports = (function () {
     var config = {
 
         /**
@@ -20,7 +20,7 @@ module.exports = (function() {
          * @param {String} locale
          * @returns {module.exports}
          */
-        setLocale: function(locale) {
+        setLocale: function (locale) {
             config.locale = locale;
             return this;
         },
@@ -28,7 +28,7 @@ module.exports = (function() {
         /**
          * @returns {String}
          */
-        getLocale: function() {
+        getLocale: function () {
             return config.locale;
         },
 

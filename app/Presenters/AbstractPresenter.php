@@ -13,18 +13,18 @@ abstract class AbstractPresenter
 	protected $model;
 
 	/**
+	 * @inheritdoc
+	 */
+	public function getModel(): Model {
+		return $this->model;
+	}
+
+	/**
 	 * @inheritDoc
 	 */
 	public function setModel(Model $model): PresenterContract {
 		$this->model = $model;
 		return $this;
-	}
-
-	/**
-	 * @inheritdoc
-	 */
-	public function getModel(): Model {
-		return $this->model;
 	}
 
 }

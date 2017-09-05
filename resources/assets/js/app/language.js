@@ -1,4 +1,4 @@
-module.exports = (function() {
+module.exports = (function () {
 
     /**
      * Message list.
@@ -20,7 +20,7 @@ module.exports = (function() {
      * @param {String} key
      * @returns {String}
      */
-    window.__ = function(key) {
+    window.__ = function (key) {
         return module.exports.getMessage(key);
     };
 
@@ -31,7 +31,7 @@ module.exports = (function() {
          * @param {String} paramLocale
          * @returns {exports}
          */
-        initialize: function(paramLocale) {
+        initialize: function (paramLocale) {
             messages = window.AppLocalizationMessages;
             locale = paramLocale;
 
@@ -42,7 +42,7 @@ module.exports = (function() {
          * @param {String} key
          * @returns {String}
          */
-        getMessage: function(key) {
+        getMessage: function (key) {
             var keyPath = [locale].concat(key.split('.'));
 
             try {

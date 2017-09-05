@@ -28,7 +28,7 @@ class TransactionCategoryRepository
 		$cacheKey = $this->getCacheKey(__FUNCTION__, func_get_args());
 		$cache = $this->getCache();
 
-		return $cache->rememberForever($cacheKey, function() {
+		return $cache->rememberForever($cacheKey, function () {
 			return TransactionCategory
 				::whereNull('parent_category_id')
 				->orderBy('name')
@@ -43,7 +43,7 @@ class TransactionCategoryRepository
 		$cacheKey = $this->getCacheKey(__FUNCTION__, func_get_args());
 		$cache = $this->getCache();
 
-		return $cache->rememberForever($cacheKey, function() use ($parentId) {
+		return $cache->rememberForever($cacheKey, function () use ($parentId) {
 			return TransactionCategory
 				::where('parent_category_id', $parentId)
 				->orderBy('name')
@@ -58,7 +58,7 @@ class TransactionCategoryRepository
 		$cacheKey = $this->getCacheKey(__FUNCTION__, func_get_args());
 		$cache = $this->getCache();
 
-		return $cache->rememberForever($cacheKey, function() {
+		return $cache->rememberForever($cacheKey, function () {
 			$result = [];
 
 			while (!empty($categoryId)) {
@@ -92,14 +92,14 @@ class TransactionCategoryRepository
 		 * @var Callable $getFullName
 		 */
 		$getFullName = null;
-		$getFullName = function($categoryId) use (&$getFullName, &$categoryMap, &$cache) {
+		$getFullName = function ($categoryId) use (&$getFullName, &$categoryMap, &$cache) {
 			if (is_null($categoryId)) {
 				return [];
 			}
 
 			$cacheKey = $this->getCacheKey(__FUNCTION__ . ':getFullName', func_get_args());
 
-			return $cache->rememberForever($cacheKey, function() use (&$getFullName, &$categoryMap, $categoryId) {
+			return $cache->rememberForever($cacheKey, function () use (&$getFullName, &$categoryMap, $categoryId) {
 				if (!$categoryMap->has($categoryId)) {
 					$categoryMap[$categoryId] = $this->getOrFail($categoryId);
 				}

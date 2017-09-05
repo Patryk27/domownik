@@ -30,7 +30,7 @@ class Transformator
 	 */
 	public function convertListToTree(Collection $categories): TransactionCategoryTree {
 		return new TransactionCategoryTree([
-			'items' => $categories->map(function(TransactionCategory $transactionCategory) {
+			'items' => $categories->map(function (TransactionCategory $transactionCategory) {
 				$children = $this->transactionCategoryRepository->getChildren($transactionCategory->id);
 
 				return new TransactionCategoryTreeItem([
@@ -49,7 +49,7 @@ class Transformator
 		$categories = $categoryTree->getItems();
 
 		return $categories
-			->map(function(TransactionCategoryTreeItem $category) {
+			->map(function (TransactionCategoryTreeItem $category) {
 				return [
 					'id' => $category->getId(),
 					'text' => $category->getName(),

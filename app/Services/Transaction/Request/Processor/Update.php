@@ -14,7 +14,7 @@ class Update
 	 * @return TransactionUpdateResult
 	 */
 	public function process(TransactionUpdateRequest $request, int $id): TransactionUpdateResult {
-		return $this->db->transaction(function() use ($request, $id) {
+		return $this->db->transaction(function () use ($request, $id) {
 			$transaction = $this->transactionRepository->getOrFail($id);
 
 			$this->updateTransactionFromRequest($transaction, $request);

@@ -13,19 +13,17 @@ class WeeklyMatcher
 	implements MatcherContract {
 
 	/**
+	 * @var Carbon[]
+	 */
+	public $dates;
+	/**
 	 * @var TransactionPeriodicityRepositoryContract
 	 */
 	protected $transactionPeriodicityRepository;
-
 	/**
 	 * @var Collection|int[]
 	 */
 	protected $weekDayNumbers;
-
-	/**
-	 * @var Carbon[]
-	 */
-	public $dates;
 
 	/**
 	 * @param TransactionPeriodicityRepositoryContract $transactionPeriodicityRepository
@@ -42,7 +40,7 @@ class WeeklyMatcher
 	public function loadTransaction(Transaction $transaction): MatcherContract {
 		$rows = $this->transactionPeriodicityRepository->getWeekliesByTransactionId($transaction->id);
 
-		$this->weekDayNumbers = $rows->map(function(TransactionPeriodicityWeekly $row) {
+		$this->weekDayNumbers = $rows->map(function (TransactionPeriodicityWeekly $row) {
 			return $row->weekday;
 		});
 

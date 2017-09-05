@@ -52,17 +52,10 @@ class Budget
 	public $presenterClass = \App\Presenters\BudgetPresenter::class;
 
 	/**
-	 * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+	 * @return string[]
 	 */
-	public function consolidatedBudgets() {
-		return $this->belongsToMany(self::class, 'budget_consolidations', 'base_budget_id', 'subject_budget_id');
-	}
-
-	/**
-	 * @return \Illuminate\Database\Eloquent\Relations\MorphMany
-	 */
-	public function transactions() {
-		return $this->morphMany(Transaction::class, 'parent');
+	public static function getTypesSelect(): array {
+		return map_translation(self::getTypes(), 'models/budget.enums.types.%s');
 	}
 
 	/**
@@ -73,13 +66,6 @@ class Budget
 			self::TYPE_REGULAR,
 			self::TYPE_CONSOLIDATED,
 		];
-	}
-
-	/**
-	 * @return string[]
-	 */
-	public static function getTypesSelect(): array {
-		return map_translation(self::getTypes(), 'models/budget.enums.types.%s');
 	}
 
 	/**
@@ -96,6 +82,20 @@ class Budget
 				'Finances.Budget',
 			],
 		];
+	}
+
+	/**
+	 * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+	 */
+	public function consolidatedBudgets() {
+		return $this->belongsToMany(self::class, 'budget_consolidations', 'base_budget_id', 'subject_budget_id');
+	}
+
+	/**
+	 * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+	 */
+	public function transactions() {
+		return $this->morphMany(Transaction::class, 'parent');
 	}
 
 }

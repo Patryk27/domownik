@@ -26,7 +26,7 @@ class SettingRepository
 		$cacheKey = $this->getCacheKey(__FUNCTION__, func_get_args());
 		$cache = $this->getCache();
 
-		return $cache->rememberForever($cacheKey, function() use ($userId, $key) {
+		return $cache->rememberForever($cacheKey, function () use ($userId, $key) {
 			$model = $this->model
 				->where('user_id', $userId)
 				->where('key', $key)

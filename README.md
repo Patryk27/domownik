@@ -58,6 +58,6 @@ If no, please read a tutorial appropriate for your OS/distribution/etc.
 
 10. Run `php artisan migrate --seed`, wait for the application to prepare the database.
 
-11. Compile the rest of the assets (language files etc.): `php artisan assets:compile`.
+11. Compile the rest of the assets (language files etc.): `php artisan app:compile-assets`.
 
 12. You may now sign in using the common `admin` / `admin` credentials :-)  

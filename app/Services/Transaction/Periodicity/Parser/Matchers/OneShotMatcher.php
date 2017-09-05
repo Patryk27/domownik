@@ -12,14 +12,13 @@ class OneShotMatcher
 	implements MatcherContract {
 
 	/**
-	 * @var TransactionPeriodicityRepositoryContract
-	 */
-	protected $transactionPeriodicityRepository;
-
-	/**
 	 * @var Carbon[]
 	 */
 	public $dates;
+	/**
+	 * @var TransactionPeriodicityRepositoryContract
+	 */
+	protected $transactionPeriodicityRepository;
 
 	/**
 	 * @param TransactionPeriodicityRepositoryContract $transactionPeriodicityRepository
@@ -36,7 +35,7 @@ class OneShotMatcher
 	public function loadTransaction(Transaction $transaction): MatcherContract {
 		$rows = $this->transactionPeriodicityRepository->getOneShotsByTransactionId($transaction->id);
 
-		$this->dates = $rows->map(function(TransactionPeriodicityOneShot $row) {
+		$this->dates = $rows->map(function (TransactionPeriodicityOneShot $row) {
 			return $row->date;
 		});
 

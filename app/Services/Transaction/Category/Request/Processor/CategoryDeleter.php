@@ -61,7 +61,7 @@ class CategoryDeleter {
 				$this->deleteCategoryById($childCategory->id);
 			}
 		}
-		
+
 		// now we can safely remove the category itself
 		$this->transactionCategoryRepository->delete($categoryId);
 

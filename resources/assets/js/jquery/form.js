@@ -1,5 +1,5 @@
-(function($) {
-    $.fn.form = function(options, args) {
+(function ($) {
+    $.fn.form = function (options, args) {
         var form = $(this);
 
         /**
@@ -55,19 +55,19 @@
 
         // ----------------------- //
 
-        this.addError = function(args) {
+        this.addError = function (args) {
             addError(args.controlName, args.message);
         };
 
-        this.clearErrors = function() {
+        this.clearErrors = function () {
             clearErrors();
         };
 
-        this.enable = function() {
+        this.enable = function () {
             enable();
         };
 
-        this.disable = function() {
+        this.disable = function () {
             disable();
         };
 

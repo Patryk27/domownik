@@ -109,19 +109,32 @@ class SummaryGenerator
 
 	/**
 	 * @return $this
-	 * @throws ValidationException
 	 */
-	protected function validate() {
-		if (is_null($this->year)) {
-			throw new ValidationException('Year has not been set.');
+	protected function addScheduledTransactions() {
+		$this->scheduleProcessor
+			->setMonthRange($this->monthRange)
+			->setBudgetId($this->budgetId);
+
+		$this->addTransactions($this->scheduleProcessor->processAndGetItems());
+
+		return $this;
+	}
+
+	/**
+	 * @param Collection|ScheduledTransaction[]|null $scheduledTransactions
+	 * @return $this
+	 */
+	protected function addTransactions(?Collection $scheduledTransactions) {
+		if (!isset($scheduledTransactions)) {
+			return $this;
 		}
 
-		if (is_null($this->month)) {
-			throw new ValidationException('Month has not been set.');
-		}
+		foreach ($scheduledTransactions as $scheduledTransaction) {
+			$this->dailyCost
+				->get($scheduledTransaction->getDate()->day)
+				->push(EstimatedCost::build($scheduledTransaction->getTransaction()));
 
-		if (is_null($this->budgetId)) {
-			throw new ValidationException('Budget it has not been set.');
+			$this->transactions->push($scheduledTransaction);
 		}
 
 		return $this;
@@ -129,23 +142,13 @@ class SummaryGenerator
 
 	/**
 	 * @return $this
-	 * @throws UserInterfaceException
 	 */
-	protected function validateDate() {
-		$summaryDate = Carbon::create($this->year, $this->month, 31, 0, 0, 0);
+	protected function addOneShotTransactions() {
+		$this->oneShotProcessor
+			->setMonthRange($this->monthRange)
+			->setBudgetId($this->budgetId);
 
-		/**
-		 * As the 'transaction_schedules' table is created only with a year of spare time, we cannot show summary which
-		 * is further in past than a year.
-		 */
-
-		$summaryMaximumDate =
-			Carbon::now()
-				  ->addYear();
-
-		if ($summaryDate->greaterThanOrEqualTo($summaryMaximumDate)) {
-			throw new UserInterfaceException(__('requests/budget/summary.messages.too-far-into-future'));
-		}
+		$this->addTransactions($this->oneShotProcessor->processAndGetItems());
 
 		return $this;
 	}
@@ -173,45 +176,42 @@ class SummaryGenerator
 
 	/**
 	 * @return $this
+	 * @throws UserInterfaceException
 	 */
-	protected function addOneShotTransactions() {
-		$this->oneShotProcessor
-			->setMonthRange($this->monthRange)
-			->setBudgetId($this->budgetId);
+	protected function validateDate() {
+		$summaryDate = Carbon::create($this->year, $this->month, 31, 0, 0, 0);
 
-		$this->addTransactions($this->oneShotProcessor->processAndGetItems());
+		/**
+		 * As the 'transaction_schedules' table is created only with a year of spare time, we cannot show summary which
+		 * is further in past than a year.
+		 */
 
-		return $this;
-	}
+		$summaryMaximumDate =
+			Carbon::now()
+				->addYear();
 
-	/**
-	 * @return $this
-	 */
-	protected function addScheduledTransactions() {
-		$this->scheduleProcessor
-			->setMonthRange($this->monthRange)
-			->setBudgetId($this->budgetId);
-
-		$this->addTransactions($this->scheduleProcessor->processAndGetItems());
-
-		return $this;
-	}
-
-	/**
-	 * @param Collection|ScheduledTransaction[]|null $scheduledTransactions
-	 * @return $this
-	 */
-	protected function addTransactions(?Collection $scheduledTransactions) {
-		if (!isset($scheduledTransactions)) {
-			return $this;
+		if ($summaryDate->greaterThanOrEqualTo($summaryMaximumDate)) {
+			throw new UserInterfaceException(__('requests/budget/summary.messages.too-far-into-future'));
 		}
 
-		foreach ($scheduledTransactions as $scheduledTransaction) {
-			$this->dailyCost
-				->get($scheduledTransaction->getDate()->day)
-				->push(EstimatedCost::build($scheduledTransaction->getTransaction()));
+		return $this;
+	}
 
-			$this->transactions->push($scheduledTransaction);
+	/**
+	 * @return $this
+	 * @throws ValidationException
+	 */
+	protected function validate() {
+		if (is_null($this->year)) {
+			throw new ValidationException('Year has not been set.');
+		}
+
+		if (is_null($this->month)) {
+			throw new ValidationException('Month has not been set.');
+		}
+
+		if (is_null($this->budgetId)) {
+			throw new ValidationException('Budget it has not been set.');
 		}
 
 		return $this;

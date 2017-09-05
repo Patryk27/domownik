@@ -20,7 +20,7 @@
 
 @push('scripts')
     <script>
-        $(function() {
+        $(function () {
             @php
                 if (isset($transaction)) {
                     switch ($transaction->periodicity_type) {

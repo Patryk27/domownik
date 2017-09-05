@@ -14,7 +14,7 @@ class Store
 	 * @return BudgetStoreResult
 	 */
 	public function process(BudgetStoreRequest $request): BudgetStoreResult {
-		return $this->db->transaction(function() use ($request) {
+		return $this->db->transaction(function () use ($request) {
 			$budget = new Budget();
 			$budget->type = $request->get('type');
 			$budget->status = Budget::STATUS_ACTIVE;

@@ -1,4 +1,4 @@
-module.exports = (function() {
+module.exports = (function () {
 
     /**
      * @returns {}
@@ -42,7 +42,7 @@ module.exports = (function() {
             },
         });
 
-        $(document).ajaxError(function(event, request, settings) {
+        $(document).ajaxError(function (event, request, settings) {
             console.log('An ajax error has been caught:');
 
             console.log('-> event:');
@@ -66,7 +66,7 @@ module.exports = (function() {
         /**
          * @returns {}
          */
-        bootstrapApplication: function() {
+        bootstrapApplication: function () {
             console.log('Bootstrapping the application...');
 
             initializeTranslations();

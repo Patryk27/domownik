@@ -22,7 +22,7 @@ class TransactionRepository
 		$cacheKey = $this->getCacheKey(__FUNCTION__, func_get_args());
 		$cache = $this->getCache();
 
-		return $cache->rememberForever($cacheKey, function() use ($id, $columns) {
+		return $cache->rememberForever($cacheKey, function () use ($id, $columns) {
 			return
 				Transaction
 					::with(['value', 'periodicity'])
@@ -37,7 +37,7 @@ class TransactionRepository
 		$cacheKey = $this->getCacheKey(__FUNCTION__, func_get_args());
 		$cache = $this->getCache();
 
-		return $cache->rememberForever($cacheKey, function() use ($budgetId) {
+		return $cache->rememberForever($cacheKey, function () use ($budgetId) {
 			return
 				Transaction
 					::where('parent_type', Transaction::PARENT_TYPE_BUDGET)
@@ -53,10 +53,10 @@ class TransactionRepository
 		$cacheKey = $this->getCacheKey(__FUNCTION__, func_get_args());
 		$cache = $this->getCache();
 
-		return $cache->rememberForever($cacheKey, function() use ($transactionCategoryId) {
+		return $cache->rememberForever($cacheKey, function () use ($transactionCategoryId) {
 			return
 				Transaction::where('category_id', $transactionCategoryId)
-						   ->get();
+					->get();
 		});
 	}
 

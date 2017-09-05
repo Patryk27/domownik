@@ -16,10 +16,10 @@ class BudgetRepository
 		$cacheKey = $this->getCacheKey(__FUNCTION__, func_get_args());
 		$cache = $this->getCache();
 
-		return $cache->rememberForever($cacheKey, function() {
+		return $cache->rememberForever($cacheKey, function () {
 			return
 				Budget::where('status', Budget::STATUS_ACTIVE)
-					  ->get();
+					->get();
 		});
 	}
 

@@ -31,13 +31,6 @@ class TransactionPeriodicityYearly
 	];
 
 	/**
-	 * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
-	 */
-	public function transaction() {
-		return $this->morphToMany(Transaction::class, 'transaction_periodicity');
-	}
-
-	/**
 	 * @inheritDoc
 	 */
 	public static function getCacheConfiguration(): array {
@@ -52,6 +45,13 @@ class TransactionPeriodicityYearly
 				'Finances.TransactionPeriodicity',
 			],
 		];
+	}
+
+	/**
+	 * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
+	 */
+	public function transaction() {
+		return $this->morphToMany(Transaction::class, 'transaction_periodicity');
 	}
 
 }

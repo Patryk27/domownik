@@ -48,7 +48,7 @@ class TransactionPeriodicityRepository
 		$cacheKey = $this->getCacheKey(__FUNCTION__, func_get_args());
 		$cache = TransactionPeriodicityOneShot::getCache();
 
-		return $cache->rememberForever($cacheKey, function() use ($periodicityId, $joinTransaction) {
+		return $cache->rememberForever($cacheKey, function () use ($periodicityId, $joinTransaction) {
 			switch ($joinTransaction) {
 				case true:
 					return
@@ -69,7 +69,7 @@ class TransactionPeriodicityRepository
 		$cacheKey = $this->getCacheKey(__FUNCTION__, func_get_args());
 		$cache = TransactionPeriodicityOneShot::getCache();
 
-		return $cache->rememberForever($cacheKey, function() use ($periodicityIds, $joinTransactions) {
+		return $cache->rememberForever($cacheKey, function () use ($periodicityIds, $joinTransactions) {
 			switch ($joinTransactions) {
 				case true:
 					return
@@ -88,6 +88,44 @@ class TransactionPeriodicityRepository
 	 */
 	public function getOneShotsByTransactionId(int $transactionId): Collection {
 		return $this->getPeriodicities('transaction_periodicity_one_shots', TransactionPeriodicityOneShot::class, 'transaction-periodicity-one-shot', $transactionId);
+	}
+
+	/**
+	 * @param string $periodicityTableName
+	 * @param string $periodicityModelClass
+	 * @param string $periodicityType
+	 * @param int $transactionId
+	 * @return Collection
+	 */
+	protected function getPeriodicities(string $periodicityTableName, string $periodicityModelClass, string $periodicityType, int $transactionId): Collection {
+		// check cache
+		/**
+		 * @var Model $periodicityModel
+		 */
+		$periodicityModel = new $periodicityModelClass();
+
+		$cache = $periodicityModel::getCache();
+		$cacheKey = $this->getCacheKey(__METHOD__, [$transactionId]);
+
+		return $cache->rememberForever($cacheKey, function () use ($periodicityTableName, $periodicityModelClass, $periodicityType, $transactionId) {
+			$stmt = $this->db
+				->query()
+				->select('tpk.*')
+				->from(sprintf('%s AS tpk', $periodicityTableName))
+				->leftJoin('transaction_periodicities AS tp', function (JoinClause $join) use ($periodicityType) {
+					$join->on('tp.transaction_periodicity_id', '=', 'tpk.id');
+					$join->where('tp.transaction_periodicity_type', '=', $periodicityType);
+				})
+				->where('tp.transaction_id', $transactionId);
+
+			$result = new Collection();
+
+			foreach ($stmt->get() as $row) {
+				$result->push(new $periodicityModelClass((array)$row));
+			}
+
+			return $result;
+		});
 	}
 
 	/**
@@ -130,44 +168,6 @@ class TransactionPeriodicityRepository
 			->flush();
 
 		return $this;
-	}
-
-	/**
-	 * @param string $periodicityTableName
-	 * @param string $periodicityModelClass
-	 * @param string $periodicityType
-	 * @param int $transactionId
-	 * @return Collection
-	 */
-	protected function getPeriodicities(string $periodicityTableName, string $periodicityModelClass, string $periodicityType, int $transactionId): Collection {
-		// check cache
-		/**
-		 * @var Model $periodicityModel
-		 */
-		$periodicityModel = new $periodicityModelClass();
-
-		$cache = $periodicityModel::getCache();
-		$cacheKey = $this->getCacheKey(__METHOD__, [$transactionId]);
-
-		return $cache->rememberForever($cacheKey, function() use ($periodicityTableName, $periodicityModelClass, $periodicityType, $transactionId) {
-			$stmt = $this->db
-				->query()
-				->select('tpk.*')
-				->from(sprintf('%s AS tpk', $periodicityTableName))
-				->leftJoin('transaction_periodicities AS tp', function(JoinClause $join) use ($periodicityType) {
-					$join->on('tp.transaction_periodicity_id', '=', 'tpk.id');
-					$join->where('tp.transaction_periodicity_type', '=', $periodicityType);
-				})
-				->where('tp.transaction_id', $transactionId);
-
-			$result = new Collection();
-
-			foreach ($stmt->get() as $row) {
-				$result->push(new $periodicityModelClass((array)$row));
-			}
-
-			return $result;
-		});
 	}
 
 }

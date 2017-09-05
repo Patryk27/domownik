@@ -24,20 +24,6 @@ class BudgetConsolidation
 	public $timestamps = false;
 
 	/**
-	 * @return \Illuminate\Database\Eloquent\Relations\HasOne
-	 */
-	public function baseBudget() {
-		return $this->hasOne(Budget::class);
-	}
-
-	/**
-	 * @return \Illuminate\Database\Eloquent\Relations\HasOne
-	 */
-	public function subjectBudget() {
-		return $this->hasOne(Budget::class);
-	}
-
-	/**
 	 * @inheritDoc
 	 */
 	public static function getCacheConfiguration(): array {
@@ -51,6 +37,20 @@ class BudgetConsolidation
 				'Finances.BudgetConsolidation',
 			],
 		];
+	}
+
+	/**
+	 * @return \Illuminate\Database\Eloquent\Relations\HasOne
+	 */
+	public function baseBudget() {
+		return $this->hasOne(Budget::class);
+	}
+
+	/**
+	 * @return \Illuminate\Database\Eloquent\Relations\HasOne
+	 */
+	public function subjectBudget() {
+		return $this->hasOne(Budget::class);
 	}
 
 }

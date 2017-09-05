@@ -7,11 +7,11 @@
 
 @section('layout-content')
     <body class="app app-auth {{ Controller::getViewCssClass() }}">
-        @include('layouts.app.auth.navbar')
+    @include('layouts.app.auth.navbar')
 
-        <div class="main-container">
-            @include('layouts.app.auth.sidebar')
-            @include('layouts.app.auth.content')
-        </div>
+    <div class="main-container">
+        @include('layouts.app.auth.sidebar')
+        @include('layouts.app.auth.content')
+    </div>
     </body>
 @endsection

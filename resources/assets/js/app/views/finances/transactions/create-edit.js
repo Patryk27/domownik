@@ -1,4 +1,4 @@
-module.exports = (function() {
+module.exports = (function () {
 
     /**
      * @type {jQuery}
@@ -42,14 +42,14 @@ module.exports = (function() {
     function initialize() {
         form = $('#transaction_form');
 
-        $('#value_type').change(function() {
+        $('#value_type').change(function () {
             var activeTransactionValueType = $(this).val();
 
             $('.transaction-value-wrapper').hide().fieldsRequired(false);
             $('.transaction-value-wrapper[data-transaction-value-type="' + activeTransactionValueType + '"]').show().fieldsRequired(true);
         }).trigger('change');
 
-        $('#periodicity_type').change(function() {
+        $('#periodicity_type').change(function () {
             var selectedPeriodicity = $(this).val();
 
             $('.transaction-periodicity').hide();
@@ -64,7 +64,7 @@ module.exports = (function() {
                     var calendarOptions = {
                         language: App.Configuration.getLocale(),
 
-                        clickDay: function(e) {
+                        clickDay: function (e) {
                             var periodicityCalendarDates = calendarDates[getPeriodicityType()];
 
                             var date = moment(e.date).format('YYYY-MM-DD');
@@ -79,7 +79,7 @@ module.exports = (function() {
                             refreshCalendar();
                         },
 
-                        customDayRenderer: function(element, date) {
+                        customDayRenderer: function (element, date) {
                             var dateString = moment(date).format('YYYY-MM-DD');
                             var periodicityCalendarDates = calendarDates[getPeriodicityType()];
 
@@ -129,7 +129,7 @@ module.exports = (function() {
         }).trigger('change');
 
         form.ajaxForm({
-            prepareData: function(data) {
+            prepareData: function (data) {
                 data.calendar_dates = calendarDates[getPeriodicityType()];
                 return data;
             },
@@ -138,7 +138,7 @@ module.exports = (function() {
 
     //noinspection JSUnusedGlobalSymbols
     return {
-        initializeView: function() {
+        initializeView: function () {
             $(initialize);
             return this;
         },
@@ -151,7 +151,7 @@ module.exports = (function() {
                  * @param {String[]} dates
                  * @returns {exports}
                  */
-                prepare: function(dates) {
+                prepare: function (dates) {
                     var periodicityType = getPeriodicityType();
                     calendarDates[periodicityType] = dates;
 
@@ -168,8 +168,8 @@ module.exports = (function() {
                  * @param {Number[]} weekdays
                  * @returns {exports}
                  */
-                prepare: function(weekdays) {
-                    $('input[name="periodicity_weekly_days[]"]').each(function() {
+                prepare: function (weekdays) {
+                    $('input[name="periodicity_weekly_days[]"]').each(function () {
                         var isValid = weekdays.indexOf(parseInt($(this).val())) >= 0;
                         $(this).prop('checked', isValid);
                     });
@@ -185,8 +185,8 @@ module.exports = (function() {
                  * @param {Number[]} monthDays
                  * @returns {exports}
                  */
-                prepare: function(monthDays) {
-                    $('input[name="periodicity_monthly_days[]"]').each(function() {
+                prepare: function (monthDays) {
+                    $('input[name="periodicity_monthly_days[]"]').each(function () {
                         var isValid = monthDays.indexOf(parseInt($(this).val())) >= 0;
                         $(this).prop('checked', isValid);
                     });
@@ -202,12 +202,12 @@ module.exports = (function() {
                  * @param {Number[][]} dates
                  * @returns {exports}
                  */
-                prepare: function(dates) {
+                prepare: function (dates) {
                     var periodicityType = getPeriodicityType();
 
                     var year = new String(new Date().getFullYear());
 
-                    calendarDates[periodicityType] = dates.map(function(date) {
+                    calendarDates[periodicityType] = dates.map(function (date) {
                         var month = new String(date[0]),
                             day = new String(date[1]);
 

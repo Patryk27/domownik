@@ -5,42 +5,42 @@ namespace App\Services\Install;
 use Illuminate\Database\Connection as DatabaseConnection;
 
 class Manager
-    implements ManagerContract {
+	implements ManagerContract {
 
-    /**
-     * @var DatabaseConnection
-     */
-    protected $db;
+	/**
+	 * @var DatabaseConnection
+	 */
+	protected $db;
 
-    /**
-     * @param DatabaseConnection $db
-     */
-    public function __construct(
-        DatabaseConnection $db
-    ) {
-        $this->db = $db;
-    }
+	/**
+	 * @param DatabaseConnection $db
+	 */
+	public function __construct(
+		DatabaseConnection $db
+	) {
+		$this->db = $db;
+	}
 
-    /**
-     * @return bool
-     */
-    public function isApplicationInstalled(): bool {
-        // @todo some cache would be nice here
-        
-        // no application key -> application certainly not installed
-        if (is_null(env('APP_KEY'))) {
-            return false;
-        }
+	/**
+	 * @return bool
+	 */
+	public function isApplicationInstalled(): bool {
+		// @todo some cache would be nice here
 
-        // no 'migrations' table -> application certainly not installed
-        $schemaBuilder = $this->db->getSchemaBuilder();
+		// no application key -> application certainly not installed
+		if (is_null(env('APP_KEY'))) {
+			return false;
+		}
 
-        if (!$schemaBuilder->hasTable('migrations')) {
-            return false;
-        }
+		// no 'migrations' table -> application certainly not installed
+		$schemaBuilder = $this->db->getSchemaBuilder();
 
-        // as for now, the app's most likely been installed
-        return true;
-    }
+		if (!$schemaBuilder->hasTable('migrations')) {
+			return false;
+		}
+
+		// as for now, the app's most likely been installed
+		return true;
+	}
 
 }

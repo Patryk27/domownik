@@ -5,13 +5,13 @@ namespace App\Support\Facades;
 use Illuminate\Support\Facades\Facade;
 
 class Breadcrumb
-    extends Facade {
+	extends Facade {
 
-    /**
-     * @return string
-     */
-    public static function getFacadeAccessor(): string {
-        return \App\Support\Classes\Breadcrumb::class;
-    }
+	/**
+	 * @return string
+	 */
+	public static function getFacadeAccessor(): string {
+		return \App\Support\Classes\Breadcrumb::class;
+	}
 
 }

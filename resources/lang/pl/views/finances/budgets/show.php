@@ -29,12 +29,17 @@ return [
 
 	'history' => [
 		'header' => 'Historia budżetu',
-	],
 
-	'history-group-mode' => [
-		'daily' => 'dziennie',
-		'weekly' => 'tygodniowo',
-		'monthly' => 'miesięcznie',
-		'yearly' => 'rocznie',
+		'group-modes' => [
+			'daily' => 'dziennie',
+			'weekly' => 'tygodniowo',
+			'monthly' => 'miesięcznie',
+			'yearly' => 'rocznie',
+		],
+
+		'chart' => [
+			'title' => 'Historia budżetu',
+			'y-axis-title' => 'Kwota',
+		],
 	],
 ];

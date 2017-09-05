@@ -13,8 +13,8 @@ window.Highcharts = require('highcharts/highstock');
 require('highcharts/modules/exporting')(window.Highcharts);
 require('@fengyuanchen/datepicker');
 
-(function($) {
-    $(function() {
+(function ($) {
+    $(function () {
         var bootstrap = require('./app/bootstrap');
         bootstrap.bootstrapApplication();
     });

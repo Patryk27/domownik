@@ -32,12 +32,6 @@ abstract class AbstractCrudRepository
 	protected $model;
 
 	/**
-	 * Returns model name representing the repository.
-	 * @return string
-	 */
-	abstract protected function getModelName(): string;
-
-	/**
 	 * @param Application $app
 	 */
 	public function __construct(
@@ -49,29 +43,10 @@ abstract class AbstractCrudRepository
 	}
 
 	/**
-	 * @inheritDoc
+	 * Returns model name representing the repository.
+	 * @return string
 	 */
-	public function get(int $id, array $columns = ['*']) {
-		$cacheKey = $this->getCacheKey(__FUNCTION__, func_get_args());
-		$cache = $this->getCache();
-
-		return $cache->rememberForever($cacheKey, function() use ($id, $columns) {
-			return $this->model->find($id, $columns);
-		});
-	}
-
-	/**
-	 * @inheritDoc
-	 */
-	public function getOrFail(int $id, array $columns = ['*']) {
-		$model = $this->get($id, $columns);
-
-		if (empty($model)) {
-			throw new RepositoryException('A model of class %s with id %d could not have been found.', get_class($this->model), $id);
-		}
-
-		return $model;
-	}
+	abstract protected function getModelName(): string;
 
 	/**
 	 * @inheritDoc
@@ -80,7 +55,7 @@ abstract class AbstractCrudRepository
 		$cacheKey = $this->getCacheKey(__FUNCTION__, func_get_args());
 		$cache = $this->getCache();
 
-		return $cache->rememberForever($cacheKey, function() use ($fieldName, $fieldValue, $columns, $orderBy) {
+		return $cache->rememberForever($cacheKey, function () use ($fieldName, $fieldValue, $columns, $orderBy) {
 			/**
 			 * @var QueryBuilder $stmt
 			 */
@@ -95,13 +70,20 @@ abstract class AbstractCrudRepository
 	}
 
 	/**
+	 * @inheritdoc
+	 */
+	public function getCache() {
+		return $this->model::getCache();
+	}
+
+	/**
 	 * @inheritDoc
 	 */
 	public function getAll(array $columns = ['*'], $orderBy = null): Collection {
 		$cacheKey = $this->getCacheKey(__FUNCTION__, func_get_args());
 		$cache = $this->getCache();
 
-		return $cache->rememberForever($cacheKey, function() use ($columns, $orderBy) {
+		return $cache->rememberForever($cacheKey, function () use ($columns, $orderBy) {
 			if (empty($orderBy)) {
 				return
 					$this->model
@@ -125,7 +107,7 @@ abstract class AbstractCrudRepository
 			$model->delete();
 
 			$this->getFlushCache()
-				 ->flush();
+				->flush();
 		}
 
 		return $this;
@@ -134,17 +116,20 @@ abstract class AbstractCrudRepository
 	/**
 	 * @inheritDoc
 	 */
-	public function persist(Model $model): CrudRepositoryContract {
-		if (get_class($model) !== get_class($this->model)) {
-			throw new RepositoryException('persist() was given a model of class \'%s\' which does not match repository\'s model class \'%s\'.', get_class($model), get_class($this->model));
-		}
+	public function get(int $id, array $columns = ['*']) {
+		$cacheKey = $this->getCacheKey(__FUNCTION__, func_get_args());
+		$cache = $this->getCache();
 
-		$model->saveOrFail();
+		return $cache->rememberForever($cacheKey, function () use ($id, $columns) {
+			return $this->model->find($id, $columns);
+		});
+	}
 
-		$this->getFlushCache()
-			 ->flush();
-
-		return $this;
+	/**
+	 * @inheritdoc
+	 */
+	public function getFlushCache() {
+		return $this->model::getFlushCache();
 	}
 
 	/**
@@ -163,17 +148,32 @@ abstract class AbstractCrudRepository
 	}
 
 	/**
-	 * @inheritdoc
+	 * @inheritDoc
 	 */
-	public function getCache() {
-		return $this->model::getCache();
+	public function getOrFail(int $id, array $columns = ['*']) {
+		$model = $this->get($id, $columns);
+
+		if (empty($model)) {
+			throw new RepositoryException('A model of class %s with id %d could not have been found.', get_class($this->model), $id);
+		}
+
+		return $model;
 	}
 
 	/**
-	 * @inheritdoc
+	 * @inheritDoc
 	 */
-	public function getFlushCache() {
-		return $this->model::getFlushCache();
+	public function persist(Model $model): CrudRepositoryContract {
+		if (get_class($model) !== get_class($this->model)) {
+			throw new RepositoryException('persist() was given a model of class \'%s\' which does not match repository\'s model class \'%s\'.', get_class($model), get_class($this->model));
+		}
+
+		$model->saveOrFail();
+
+		$this->getFlushCache()
+			->flush();
+
+		return $this;
 	}
 
 }

@@ -53,23 +53,22 @@ abstract class Controller
 	}
 
 	/**
-	 * @param Transaction $transaction
+	 * Returns appropriate create/edit view with common data filled.
+	 * @param string $viewName
+	 * @param Transaction|null $transaction
 	 * @param Model $transactionParent
 	 * @param string $transactionParentType
 	 * @return mixed
 	 */
-	protected function getEditView(Transaction $transaction, Model $transactionParent, string $transactionParentType) {
-		if (isset($transaction->parent_transaction_id)) {
-			$parentTransaction = $this->transactionRepository->getOrFail($transaction->parent_transaction_id);
-			$this->breadcrumbManager->push($parentTransaction);
-		}
+	private function getCreateEditView(string $viewName, ?Transaction $transaction, Model $transactionParent, string $transactionParentType) {
+		$categories = $this->getCategories();
 
-		$this->breadcrumbManager
-			->pushUrl(route('finances.transactions.edit', $transaction->id), __('breadcrumbs.transactions.edit', [
-				'transactionName' => $transaction->name,
-			]));
-
-		return $this->getCreateEditView('views.finances.transactions.edit', $transaction, $transactionParent, $transactionParentType);
+		return view($viewName, [
+			'transaction' => $transaction,
+			'transactionParent' => $transactionParent,
+			'transactionParentType' => $transactionParentType,
+			'categories' => $categories,
+		]);
 	}
 
 	/**
@@ -95,22 +94,23 @@ abstract class Controller
 	}
 
 	/**
-	 * Returns appropriate create/edit view with common data filled.
-	 * @param string $viewName
-	 * @param Transaction|null $transaction
+	 * @param Transaction $transaction
 	 * @param Model $transactionParent
 	 * @param string $transactionParentType
 	 * @return mixed
 	 */
-	private function getCreateEditView(string $viewName, ?Transaction $transaction, Model $transactionParent, string $transactionParentType) {
-		$categories = $this->getCategories();
+	protected function getEditView(Transaction $transaction, Model $transactionParent, string $transactionParentType) {
+		if (isset($transaction->parent_transaction_id)) {
+			$parentTransaction = $this->transactionRepository->getOrFail($transaction->parent_transaction_id);
+			$this->breadcrumbManager->push($parentTransaction);
+		}
 
-		return view($viewName, [
-			'transaction' => $transaction,
-			'transactionParent' => $transactionParent,
-			'transactionParentType' => $transactionParentType,
-			'categories' => $categories,
-		]);
+		$this->breadcrumbManager
+			->pushUrl(route('finances.transactions.edit', $transaction->id), __('breadcrumbs.transactions.edit', [
+				'transactionName' => $transaction->name,
+			]));
+
+		return $this->getCreateEditView('views.finances.transactions.edit', $transaction, $transactionParent, $transactionParentType);
 	}
 
 }

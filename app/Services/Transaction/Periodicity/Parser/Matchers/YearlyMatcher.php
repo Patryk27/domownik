@@ -12,19 +12,17 @@ class YearlyMatcher
 	implements MatcherContract {
 
 	/**
+	 * @var Carbon[]
+	 */
+	public $dates;
+	/**
 	 * @var TransactionPeriodicityRepositoryContract
 	 */
 	protected $transactionPeriodicityRepository;
-
 	/**
 	 * @var Collection|string[]
 	 */
 	protected $yearDays;
-
-	/**
-	 * @var Carbon[]
-	 */
-	public $dates;
 
 	/**
 	 * @param TransactionPeriodicityRepositoryContract $transactionPeriodicityRepository
@@ -41,7 +39,7 @@ class YearlyMatcher
 	public function loadTransaction(Transaction $transaction): MatcherContract {
 		$rows = $this->transactionPeriodicityRepository->getYearliesByTransactionId($transaction->id);
 
-		$this->yearDays = $rows->map(function(TransactionPeriodicityYearly $row) {
+		$this->yearDays = $rows->map(function (TransactionPeriodicityYearly $row) {
 			return sprintf('%02d-%02d', $row->month, $row->day);
 		});
 

@@ -14,7 +14,7 @@ class Update
 	 * @return BudgetUpdateResult
 	 */
 	public function process(BudgetUpdateRequest $request, int $id): BudgetUpdateResult {
-		return $this->db->transaction(function() use ($request, $id) {
+		return $this->db->transaction(function () use ($request, $id) {
 			$budget = $this->budgetRepository->getOrFail($id);
 
 			$this->updateBudgetFromRequest($budget, $request);

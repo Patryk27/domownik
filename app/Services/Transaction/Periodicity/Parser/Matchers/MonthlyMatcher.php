@@ -12,19 +12,17 @@ class MonthlyMatcher
 	implements MatcherContract {
 
 	/**
+	 * @var Carbon[]
+	 */
+	public $dates;
+	/**
 	 * @var TransactionPeriodicityRepositoryContract
 	 */
 	protected $transactionPeriodicityRepository;
-
 	/**
 	 * @var Collection|int[]
 	 */
 	protected $dayNumbers;
-
-	/**
-	 * @var Carbon[]
-	 */
-	public $dates;
 
 	/**
 	 * @param TransactionPeriodicityRepositoryContract $transactionPeriodicityRepository
@@ -41,7 +39,7 @@ class MonthlyMatcher
 	public function loadTransaction(Transaction $transaction): MatcherContract {
 		$rows = $this->transactionPeriodicityRepository->getMonthliesByTransactionId($transaction->id);
 
-		$this->dayNumbers = $rows->map(function(TransactionPeriodicityMonthly $row) {
+		$this->dayNumbers = $rows->map(function (TransactionPeriodicityMonthly $row) {
 			return $row->day;
 		});
 

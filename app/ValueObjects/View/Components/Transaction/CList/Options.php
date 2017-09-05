@@ -37,17 +37,17 @@ class Options {
 	}
 
 	/**
-	 * @return string[]
-	 */
-	public function getButtons(): array {
-		return $this->buttons ?? [];
-	}
-
-	/**
 	 * @return bool
 	 */
 	public function hasButtons(): bool {
 		return !empty($this->getButtons());
+	}
+
+	/**
+	 * @return string[]
+	 */
+	public function getButtons(): array {
+		return $this->buttons ?? [];
 	}
 
 	/**

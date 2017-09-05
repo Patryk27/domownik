@@ -17,7 +17,7 @@ trait UsesCache {
 		$cacheKey = sprintf('%s:%s', $className, $functionName);
 
 		if (!empty($methodArgs)) {
-			$methodArgsString = implode(',', array_map(function($methodArg) {
+			$methodArgsString = implode(',', array_map(function ($methodArg) {
 				/**
 				 * We use Redis and thus, in order to simplify debugging, we do our best effort to make sure the cache
 				 * keys are human-readable.

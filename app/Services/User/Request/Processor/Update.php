@@ -14,7 +14,7 @@ class Update
 	 * @return UserUpdateResult
 	 */
 	public function process(UserUpdateRequest $request, int $id): UserUpdateResult {
-		return $this->db->transaction(function() use ($request, $id) {
+		return $this->db->transaction(function () use ($request, $id) {
 			$this->log->info('Updating user with id [%d].', $id);
 
 			$user = $this->getUserFromRequest($request);

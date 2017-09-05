@@ -45,13 +45,6 @@ class Item {
 	protected $children = [];
 
 	/**
-	 * @return bool
-	 */
-	public function hasParent(): bool {
-		return !is_null($this->parent);
-	}
-
-	/**
 	 * @return Item|null
 	 */
 	public function getParent() {
@@ -68,29 +61,6 @@ class Item {
 	}
 
 	/**
-	 * @return bool
-	 */
-	public function hasName(): bool {
-		return !empty($this->name);
-	}
-
-	/**
-	 * @return string
-	 */
-	public function getName(): string {
-		return $this->name;
-	}
-
-	/**
-	 * @param string $name
-	 * @return $this
-	 */
-	public function setName(string $name): self {
-		$this->name = $name;
-		return $this;
-	}
-
-	/**
 	 * @return string
 	 */
 	public function getFullName(): string {
@@ -103,6 +73,20 @@ class Item {
 		$result .= $this->name;
 
 		return $result;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function hasParent(): bool {
+		return !is_null($this->parent);
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function hasName(): bool {
+		return !empty($this->name);
 	}
 
 	/**
@@ -198,49 +182,10 @@ class Item {
 	}
 
 	/**
-	 * @param bool $isTemplate
-	 * @return $this
-	 */
-	public function setIsTemplate(bool $isTemplate): self {
-		$this->isTemplate = $isTemplate;
-		return $this;
-	}
-
-	/**
-	 * @return bool
-	 */
-	public function isTemplate(): bool {
-		return (bool)$this->isTemplate;
-	}
-
-	/**
-	 * @return bool
-	 */
-	public function isVisible() {
-		return !$this->isTemplate();
-	}
-
-	/**
 	 * @return bool
 	 */
 	public function hasSubitems(): bool {
 		return !empty($this->children);
-	}
-
-	/**
-	 * @inheritDoc
-	 */
-	public function getChildren(): array {
-		return $this->children;
-	}
-
-	/**
-	 * @param Item[] $children
-	 * @return $this
-	 */
-	public function setChildren(array $children): self {
-		$this->children = $children;
-		return $this;
 	}
 
 	/**
@@ -249,6 +194,22 @@ class Item {
 	 */
 	public function addChild(Item $item): self {
 		$this->children[$item->getName()] = $item;
+		return $this;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getName(): string {
+		return $this->name;
+	}
+
+	/**
+	 * @param string $name
+	 * @return $this
+	 */
+	public function setName(string $name): self {
+		$this->name = $name;
 		return $this;
 	}
 
@@ -283,16 +244,46 @@ class Item {
 	}
 
 	/**
+	 * @inheritDoc
+	 */
+	public function getChildren(): array {
+		return $this->children;
+	}
+
+	/**
+	 * @param Item[] $children
+	 * @return $this
+	 */
+	public function setChildren(array $children): self {
+		$this->children = $children;
+		return $this;
+	}
+
+	/**
 	 * @return Item[]
 	 */
 	public function getVisibleSubitems(): array {
-		return array_filter($this->children, function($subitem) {
+		return array_filter($this->children, function ($subitem) {
 			/**
 			 * @var Item $subitem
 			 */
 
 			return $subitem->isVisible();
 		});
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function isVisible() {
+		return !$this->isTemplate();
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function isTemplate(): bool {
+		return (bool)$this->isTemplate;
 	}
 
 	/**
@@ -317,6 +308,15 @@ class Item {
 			->setChildren($subitems);
 
 		return $item;
+	}
+
+	/**
+	 * @param bool $isTemplate
+	 * @return $this
+	 */
+	public function setIsTemplate(bool $isTemplate): self {
+		$this->isTemplate = $isTemplate;
+		return $this;
 	}
 
 }

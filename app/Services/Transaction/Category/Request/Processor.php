@@ -47,7 +47,7 @@ class Processor
 	public function store(TransactionCategoryStoreRequest $request): void {
 		$this->log->info('Updating transaction category list: %s.', $request);
 
-		$this->db->transaction(function() use ($request) {
+		$this->db->transaction(function () use ($request) {
 			$categoryUpdater = new CategoryUpdater();
 			$categoryUpdater->updateCategories($request->get('newTree'));
 

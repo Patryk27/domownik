@@ -112,25 +112,6 @@ class Parser
 	}
 
 	/**
-	 * @inheritDoc
-	 */
-	public function setTransactionId(int $transactionId) {
-		$this->transactionId = $transactionId;
-
-		return $this;
-	}
-
-	/**
-	 * @inheritDoc
-	 */
-	public function setDateRange(Carbon $dateFrom, Carbon $dateTo) {
-		$this->dateFrom = $dateFrom;
-		$this->dateTo = $dateTo;
-
-		return $this;
-	}
-
-	/**
 	 * @return $this
 	 * @throws ValidationException
 	 */
@@ -150,6 +131,25 @@ class Parser
 		if ($this->dateFrom > $this->dateTo) {
 			throw new ValidationException('Beginning date is further in future than ending date.');
 		}
+
+		return $this;
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public function setTransactionId(int $transactionId) {
+		$this->transactionId = $transactionId;
+
+		return $this;
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public function setDateRange(Carbon $dateFrom, Carbon $dateTo) {
+		$this->dateFrom = $dateFrom;
+		$this->dateTo = $dateTo;
 
 		return $this;
 	}

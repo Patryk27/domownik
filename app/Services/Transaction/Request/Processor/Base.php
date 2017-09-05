@@ -71,60 +71,6 @@ abstract class Base {
 	 * @param Transaction $transaction
 	 * @param TransactionCrudRequest $request
 	 * @return $this
-	 */
-	private function updateMeta(Transaction $transaction, TransactionCrudRequest $request) {
-		$transaction->type = $request->get('type');
-		$transaction->name = $request->get('name');
-		$transaction->category_id = $request->get('category_id');
-		$transaction->description = $request->get('description');
-		$transaction->value_type = $request->get('value_type');
-		$transaction->periodicity_type = $request->get('periodicity_type');
-
-		return $this;
-	}
-
-	/**
-	 * @param Transaction $transaction
-	 * @param TransactionCrudRequest $request
-	 * @return $this
-	 * @throws InvalidRequestException
-	 */
-	private function updateValue(Transaction $transaction, TransactionCrudRequest $request) {
-		switch ($request->get('value_type')) {
-			case Transaction::VALUE_TYPE_CONSTANT:
-				$transactionValue = new TransactionValueConstant();
-				$transactionValue->value = $request->get('value_constant_value');
-				$transactionValue->saveOrFail();
-
-				$transactionValue
-					->transaction()
-					->save($transaction);
-
-				break;
-
-			case Transaction::VALUE_TYPE_RANGE:
-				$transactionValue = new TransactionValueRange();
-				$transactionValue->value_from = $request->get('value_range_from');
-				$transactionValue->value_to = $request->get('value_range_to');
-				$transactionValue->saveOrfail();
-
-				$transactionValue
-					->transaction()
-					->save($transaction);
-
-				break;
-
-			default:
-				throw new InvalidRequestException('Unexpected transaction value type [%s].', $request->get('value_type'));
-		}
-
-		return $this;
-	}
-
-	/**
-	 * @param Transaction $transaction
-	 * @param TransactionCrudRequest $request
-	 * @return $this
 	 * @throws InvalidRequestException
 	 */
 	private function updatePeriodicity(Transaction $transaction, TransactionCrudRequest $request) {
@@ -187,6 +133,60 @@ abstract class Base {
 			default:
 				throw new InvalidRequestException('Unexpected transaction periodicity type [%s].', $request->get('periodicity_type'));
 		}
+
+		return $this;
+	}
+
+	/**
+	 * @param Transaction $transaction
+	 * @param TransactionCrudRequest $request
+	 * @return $this
+	 * @throws InvalidRequestException
+	 */
+	private function updateValue(Transaction $transaction, TransactionCrudRequest $request) {
+		switch ($request->get('value_type')) {
+			case Transaction::VALUE_TYPE_CONSTANT:
+				$transactionValue = new TransactionValueConstant();
+				$transactionValue->value = $request->get('value_constant_value');
+				$transactionValue->saveOrFail();
+
+				$transactionValue
+					->transaction()
+					->save($transaction);
+
+				break;
+
+			case Transaction::VALUE_TYPE_RANGE:
+				$transactionValue = new TransactionValueRange();
+				$transactionValue->value_from = $request->get('value_range_from');
+				$transactionValue->value_to = $request->get('value_range_to');
+				$transactionValue->saveOrfail();
+
+				$transactionValue
+					->transaction()
+					->save($transaction);
+
+				break;
+
+			default:
+				throw new InvalidRequestException('Unexpected transaction value type [%s].', $request->get('value_type'));
+		}
+
+		return $this;
+	}
+
+	/**
+	 * @param Transaction $transaction
+	 * @param TransactionCrudRequest $request
+	 * @return $this
+	 */
+	private function updateMeta(Transaction $transaction, TransactionCrudRequest $request) {
+		$transaction->type = $request->get('type');
+		$transaction->name = $request->get('name');
+		$transaction->category_id = $request->get('category_id');
+		$transaction->description = $request->get('description');
+		$transaction->value_type = $request->get('value_type');
+		$transaction->periodicity_type = $request->get('periodicity_type');
 
 		return $this;
 	}

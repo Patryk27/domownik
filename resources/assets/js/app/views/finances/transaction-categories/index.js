@@ -1,4 +1,4 @@
-module.exports = (function() {
+module.exports = (function () {
 
     var deletedNodeIds = [];
 
@@ -27,12 +27,12 @@ module.exports = (function() {
         });
 
         $('#transactionCategoryTree').on({
-            'ready.jstree': function() {
+            'ready.jstree': function () {
                 var jsTree = $('#transactionCategoryTree').jstree(true);
                 jsTree.open_all();
             },
 
-            'delete_node.jstree': function(e, data) {
+            'delete_node.jstree': function (e, data) {
                 var deletedNode = data.node;
 
                 if ($.isNumeric(deletedNode.id)) {
@@ -41,8 +41,8 @@ module.exports = (function() {
             },
         });
 
-        $('#btnCreateNewRootCategory').on('click', function() {
-            bootbox.prompt(__('views.finances.transaction-categories.index.prompts.new-root-category-name'), function(categoryName) {
+        $('#btnCreateNewRootCategory').on('click', function () {
+            bootbox.prompt(__('views.finances.transaction-categories.index.prompts.new-root-category-name'), function (categoryName) {
                 if (typeof categoryName === 'string') {
                     var jsTree = $('#transactionCategoryTree').jstree(true);
 
@@ -54,7 +54,7 @@ module.exports = (function() {
         });
 
         $('#editTransactionCategoriesForm').ajaxForm({
-            prepareData: function() {
+            prepareData: function () {
                 var jsTree = $('#transactionCategoryTree').jstree(true);
                 var tree = jsTree.get_json(null, {
                     no_state: true,
@@ -65,7 +65,7 @@ module.exports = (function() {
                 });
 
                 if (tree.length === 0) {
-                    bootbox.alert(__('views.finances.transaction-categories.index.validation.empty-tree'));
+                    bootbox.alert(__('requests.transaction.category.crud.validation.empty-tree'));
                     return null;
                 }
 
@@ -75,11 +75,11 @@ module.exports = (function() {
                 };
             },
 
-            success: function(msg) {
+            success: function (msg) {
                 this.getDefaultOptions().success(msg);
 
                 if (msg.success) {
-                    bootbox.alert(__('views.finances.transaction-categories.index.alerts.save-success'));
+                    bootbox.alert(__('requests.transaction.category.crud.messages.updated'));
                     deletedNodeIds = [];
                 }
             },
@@ -87,7 +87,7 @@ module.exports = (function() {
     }
 
     return {
-        initializeView: function() {
+        initializeView: function () {
             $(initialize);
             return this;
         },

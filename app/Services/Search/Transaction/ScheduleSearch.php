@@ -82,7 +82,7 @@ class ScheduleSearch
 				'ts.transaction_id',
 				'ts.date',
 			])
-			->map(function(stdClass $row) {
+			->map(function (stdClass $row) {
 				// @todo n+1 problem
 				$transaction = $this->transactionRepository->getOrFail($row->transaction_id);
 

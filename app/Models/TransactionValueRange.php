@@ -31,13 +31,6 @@ class TransactionValueRange
 	];
 
 	/**
-	 * @return \Illuminate\Database\Eloquent\Relations\MorphOne
-	 */
-	public function transaction() {
-		return $this->morphOne(Transaction::class, 'value');
-	}
-
-	/**
 	 * @inheritDoc
 	 */
 	public static function getCacheConfiguration(): array {
@@ -53,6 +46,13 @@ class TransactionValueRange
 				'Finances.TransactionValueRange',
 			],
 		];
+	}
+
+	/**
+	 * @return \Illuminate\Database\Eloquent\Relations\MorphOne
+	 */
+	public function transaction() {
+		return $this->morphOne(Transaction::class, 'value');
 	}
 
 }

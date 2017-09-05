@@ -1,5 +1,5 @@
-(function($) {
-    $(document).on('click', '.btn-confirm', function() {
+(function ($) {
+    $(document).on('click', '.btn-confirm', function () {
         var btn = $(this);
 
         function onConfirmed() {
@@ -22,7 +22,7 @@
             $.ajax({
                 url: url,
                 method: method,
-            }).done(function(msg) {
+            }).done(function (msg) {
                 if (typeof msg === 'object' && msg.hasOwnProperty('redirectUrl')) {
                     console.info('Redirecting to: ', msg.redirectUrl);
                     window.location.href = msg.redirectUrl;
@@ -32,7 +32,7 @@
             });
         }
 
-        bootbox.confirm(btn.data('confirm-message'), function(result) {
+        bootbox.confirm(btn.data('confirm-message'), function (result) {
             if (!result) {
                 return;
             }

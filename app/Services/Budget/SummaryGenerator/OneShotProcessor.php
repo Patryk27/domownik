@@ -69,7 +69,7 @@ class OneShotProcessor {
 
 		$transactions = $this->transactionOneShotSearch->get();
 
-		return $transactions->map(function(Transaction $transaction) {
+		return $transactions->map(function (Transaction $transaction) {
 			/**
 			 * @var TransactionPeriodicityOneShot $transactionPeriodicity
 			 */
@@ -77,6 +77,34 @@ class OneShotProcessor {
 
 			return new ScheduledTransaction(null, $transaction, $transactionPeriodicity->date);
 		});
+	}
+
+	/**
+	 * Returns whatever date is earlier: now or given month begin.
+	 * @return Carbon
+	 */
+	protected function getBeginDate(): Carbon {
+		$beginDate = Date::stripTime(Carbon::now());
+
+		if ($beginDate->lte($this->monthRange->getRangeBegin())) {
+			return $beginDate;
+		} else {
+			return $this->monthRange->getRangeBegin();
+		}
+	}
+
+	/**
+	 * Returns whatever date is earlier: now or given month end.
+	 * @return Carbon
+	 */
+	protected function getEndDate(): Carbon {
+		$endDate = Date::stripTime(Carbon::now());
+
+		if ($endDate->lte($this->monthRange->getRangeEnd())) {
+			return $endDate;
+		} else {
+			return $this->monthRange->getRangeEnd();
+		}
 	}
 
 	/**
@@ -109,34 +137,6 @@ class OneShotProcessor {
 	public function setBudgetId(int $budgetId) {
 		$this->budgetId = $budgetId;
 		return $this;
-	}
-
-	/**
-	 * Returns whatever date is earlier: now or given month begin.
-	 * @return Carbon
-	 */
-	protected function getBeginDate(): Carbon {
-		$beginDate = Date::stripTime(Carbon::now());
-
-		if ($beginDate->lte($this->monthRange->getRangeBegin())) {
-			return $beginDate;
-		} else {
-			return $this->monthRange->getRangeBegin();
-		}
-	}
-
-	/**
-	 * Returns whatever date is earlier: now or given month end.
-	 * @return Carbon
-	 */
-	protected function getEndDate(): Carbon {
-		$endDate = Date::stripTime(Carbon::now());
-
-		if ($endDate->lte($this->monthRange->getRangeEnd())) {
-			return $endDate;
-		} else {
-			return $this->monthRange->getRangeEnd();
-		}
 	}
 
 }

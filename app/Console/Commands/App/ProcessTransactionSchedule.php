@@ -30,6 +30,7 @@ class ProcessTransactionSchedule
 		TransactionScheduleProcessorContract $transactionScheduleProcessor
 	) {
 		parent::__construct();
+
 		$this->transactionScheduleProcessor = $transactionScheduleProcessor;
 	}
 
