@@ -9,7 +9,7 @@ class CreateTransactionValueConstantsTable
 	 * @return void
 	 */
 	public function up() {
-		$this->schemaBuilder->create('transaction_value_constants', function(Blueprint $table) {
+		$this->schemaBuilder->create('transaction_value_constants', function (Blueprint $table) {
 			$table->increments('id');
 			$table->decimal('value');
 			$table->timestamps();

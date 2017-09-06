@@ -10,8 +10,6 @@ class Delete
 	 * @return void
 	 */
 	public function process(int $id): void {
-		$this->transactionPeriodicityRepository->deleteByTransactionId($id);
-		$this->transactionScheduleRepository->deleteByTransactionId($id);
 		$this->transactionRepository->delete($id);
 	}
 

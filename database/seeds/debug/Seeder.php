@@ -1,0 +1,21 @@
+<?php
+
+namespace Database\Seeds\Debug;
+
+use Database\Seeds\Base\Seeder as BaseSeeder;
+
+class Seeder
+	extends BaseSeeder {
+
+	/**
+	 * @inheritDoc
+	 */
+	public function run(): void {
+		$this
+			->call(UserSeeder::class)
+			->call(TransactionCategorySeeder::class)
+			->call(BudgetSeeder::class)
+			->call(BudgetTransactionSeeder::class);
+	}
+
+}

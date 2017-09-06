@@ -58,7 +58,7 @@ class Updater
 	public function updateTransactionSchedule(int $transactionId): UpdaterContract {
 		$this->log->info('Updating schedule for transaction with id=%d.', $transactionId);
 
-		$today = Carbon::today();
+		$today = new Carbon();
 
 		$this->db->beginTransaction();
 
@@ -74,16 +74,16 @@ class Updater
 
 			foreach ($dates as $date) {
 				if ($date->lt($today)) {
-					$this->log->info('-> NOT adding to schedule date \'%s\', because it\'s in the past.', $date->format('Y-m-d'));
+					$this->log->info('-> skipping date \'%s\', because it\'s in the past.', $date->format('Y-m-d'));
 					continue;
 				}
 
-				$this->log->info('-> adding date to schedule: %s.', $date->format('Y-m-d'));
+				$this->log->info('-> including date: %s.', $date->format('Y-m-d'));
 
-				$transactionSchedule = new TransactionSchedule();
-				$transactionSchedule->transaction_id = $transactionId;
-				$transactionSchedule->date = $date;
-				$transactionSchedule->save();
+				(new TransactionSchedule([
+					'transaction_id' => $transactionId,
+					'date' => $date,
+				]))->saveOrFail(); // @todo use repository
 			}
 
 			$this->db->commit();

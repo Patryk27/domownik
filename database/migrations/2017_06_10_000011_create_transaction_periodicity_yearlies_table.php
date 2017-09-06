@@ -9,7 +9,7 @@ class CreateTransactionPeriodicityYearliesTable
 	 * @return void
 	 */
 	public function up() {
-		$this->schemaBuilder->create('transaction_periodicity_yearlies', function(Blueprint $table) {
+		$this->schemaBuilder->create('transaction_periodicity_yearlies', function (Blueprint $table) {
 			$table->increments('id');
 			$table->tinyInteger('month');
 			$table->tinyInteger('day');

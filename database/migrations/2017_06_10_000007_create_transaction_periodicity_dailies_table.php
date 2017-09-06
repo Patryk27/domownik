@@ -9,7 +9,7 @@ class CreateTransactionPeriodicityDailiesTable
 	 * @return void
 	 */
 	public function up() {
-		$this->schemaBuilder->create('transaction_periodicity_dailies', function(Blueprint $table) {
+		$this->schemaBuilder->create('transaction_periodicity_dailies', function (Blueprint $table) {
 			$table->increments('id');
 			$table->timestamps();
 		});

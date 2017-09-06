@@ -9,7 +9,7 @@ class CreateTransactionPeriodicityWeekliesTable
 	 * @return void
 	 */
 	public function up() {
-		$this->schemaBuilder->create('transaction_periodicity_weeklies', function(Blueprint $table) {
+		$this->schemaBuilder->create('transaction_periodicity_weeklies', function (Blueprint $table) {
 			$table->increments('id');
 			$table->tinyInteger('weekday');
 			$table->timestamps();

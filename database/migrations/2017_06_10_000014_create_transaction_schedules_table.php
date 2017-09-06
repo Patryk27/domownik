@@ -9,7 +9,7 @@ class CreateTransactionSchedulesTable
 	 * @return void
 	 */
 	public function up() {
-		$this->schemaBuilder->create('transaction_schedules', function(Blueprint $table) {
+		$this->schemaBuilder->create('transaction_schedules', function (Blueprint $table) {
 			$table->increments('id');
 			$table->unsignedInteger('transaction_id');
 			$table->dateTime('date');
@@ -17,9 +17,7 @@ class CreateTransactionSchedulesTable
 
 			$table->index('date');
 
-			$table->foreign('transaction_id')
-				  ->references('id')
-				  ->on('transactions');
+			$table->foreign('transaction_id')->references('id')->on('transactions')->onDelete('cascade');
 		});
 	}
 

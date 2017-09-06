@@ -9,7 +9,7 @@ class CreateSettingsTable
 	 * @return void
 	 */
 	public function up() {
-		$this->schemaBuilder->create('settings', function(Blueprint $table) {
+		$this->schemaBuilder->create('settings', function (Blueprint $table) {
 			$table->increments('id');
 			$table->unsignedInteger('user_id')->nullable();
 			$table->char('key', 128);
@@ -20,8 +20,8 @@ class CreateSettingsTable
 			$table->index(['user_id', 'key']);
 
 			$table->foreign('user_id')
-				  ->references('id')
-				  ->on('users');
+				->references('id')
+				->on('users');
 		});
 	}
 

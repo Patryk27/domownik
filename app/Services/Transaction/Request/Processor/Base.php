@@ -9,7 +9,6 @@ use App\Models\TransactionValueConstant;
 use App\Models\TransactionValueRange;
 use App\Repositories\Contracts\TransactionPeriodicityRepositoryContract;
 use App\Repositories\Contracts\TransactionRepositoryContract;
-use App\Repositories\Contracts\TransactionScheduleRepositoryContract;
 use App\Services\Transaction\Schedule\UpdaterContract as TransactionScheduleUpdaterContract;
 use Carbon\Carbon;
 use Illuminate\Database\Connection as DatabaseConnection;
@@ -32,11 +31,6 @@ abstract class Base {
 	protected $transactionPeriodicityRepository;
 
 	/**
-	 * @var TransactionScheduleRepositoryContract
-	 */
-	protected $transactionScheduleRepository;
-
-	/**
 	 * @var TransactionScheduleUpdaterContract
 	 */
 	protected $transactionScheduleUpdater;
@@ -45,20 +39,17 @@ abstract class Base {
 	 * @param DatabaseConnection $db
 	 * @param TransactionRepositoryContract $transactionRepository
 	 * @param TransactionPeriodicityRepositoryContract $transactionPeriodicityRepository
-	 * @param TransactionScheduleRepositoryContract $transactionScheduleRepository
 	 * @param TransactionScheduleUpdaterContract $transactionScheduleUpdater
 	 */
 	public function __construct(
 		DatabaseConnection $db,
 		TransactionRepositoryContract $transactionRepository,
 		TransactionPeriodicityRepositoryContract $transactionPeriodicityRepository,
-		TransactionScheduleRepositoryContract $transactionScheduleRepository,
 		TransactionScheduleUpdaterContract $transactionScheduleUpdater
 	) {
 		$this->db = $db;
 		$this->transactionRepository = $transactionRepository;
 		$this->transactionPeriodicityRepository = $transactionPeriodicityRepository;
-		$this->transactionScheduleRepository = $transactionScheduleRepository;
 		$this->transactionScheduleUpdater = $transactionScheduleUpdater;
 	}
 

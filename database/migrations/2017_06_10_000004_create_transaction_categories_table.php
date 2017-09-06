@@ -9,7 +9,7 @@ class CreateTransactionCategoriesTable
 	 * @return void
 	 */
 	public function up() {
-		$this->schemaBuilder->create('transaction_categories', function(Blueprint $table) {
+		$this->schemaBuilder->create('transaction_categories', function (Blueprint $table) {
 			$table->increments('id');
 			$table->unsignedInteger('parent_category_id')->nullable();
 			$table->char('name', 128);

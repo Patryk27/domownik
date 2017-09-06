@@ -9,7 +9,7 @@ class CreateTransactionPeriodicityOneShotsTable
 	 * @return void
 	 */
 	public function up() {
-		$this->schemaBuilder->create('transaction_periodicity_one_shots', function(Blueprint $table) {
+		$this->schemaBuilder->create('transaction_periodicity_one_shots', function (Blueprint $table) {
 			$table->increments('id');
 			$table->dateTime('date');
 			$table->timestamps();

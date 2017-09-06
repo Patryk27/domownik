@@ -9,7 +9,7 @@ class CreateBudgetsTable
 	 * @return void
 	 */
 	public function up() {
-		$this->schemaBuilder->create('budgets', function(Blueprint $table) {
+		$this->schemaBuilder->create('budgets', function (Blueprint $table) {
 			$table->increments('id');
 			$table->char('type', 32); // Laravel has some weird issues with enums and thus we use varchar
 			$table->char('name', 64);

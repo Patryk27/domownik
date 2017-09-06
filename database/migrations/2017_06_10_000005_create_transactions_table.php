@@ -9,7 +9,7 @@ class CreateTransactionsTable
 	 * @return void
 	 */
 	public function up() {
-		$this->schemaBuilder->create('transactions', function(Blueprint $table) {
+		$this->schemaBuilder->create('transactions', function (Blueprint $table) {
 			$table->increments('id');
 			$table->unsignedInteger('parent_transaction_id')->nullable();
 			$table->nullableMorphs('parent');
@@ -26,10 +26,7 @@ class CreateTransactionsTable
 			$table->index('type');
 			$table->index('name');
 
-			$table->foreign('category_id')
-				  ->references('id')
-				  ->on('transaction_categories')
-				  ->onDelete('set null');
+			$table->foreign('category_id')->references('id')->on('transaction_categories')->onDelete('set null');
 		});
 	}
 

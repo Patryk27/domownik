@@ -9,7 +9,7 @@ class CreateTransactionValueRangesTable
 	 * @return void
 	 */
 	public function up() {
-		$this->schemaBuilder->create('transaction_value_ranges', function(Blueprint $table) {
+		$this->schemaBuilder->create('transaction_value_ranges', function (Blueprint $table) {
 			$table->increments('id');
 			$table->decimal('value_from');
 			$table->decimal('value_to');

@@ -9,14 +9,12 @@ class CreateTransactionPeriodicitiesTable
 	 * @return void
 	 */
 	public function up() {
-		$this->schemaBuilder->create('transaction_periodicities', function(Blueprint $table) {
+		$this->schemaBuilder->create('transaction_periodicities', function (Blueprint $table) {
 			$table->increments('id');
 			$table->unsignedInteger('transaction_id');
 			$table->morphs('transaction_periodicity', 'fk_transaction_periodicities_1');
 
-			$table->foreign('transaction_id')
-				  ->references('id')
-				  ->on('transactions');
+			$table->foreign('transaction_id')->references('id')->on('transactions')->onDelete('cascade');
 		});
 	}
 

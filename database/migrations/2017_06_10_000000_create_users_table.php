@@ -9,7 +9,7 @@ class CreateUsersTable
 	 * @return void
 	 */
 	public function up() {
-		$this->schemaBuilder->create('users', function(Blueprint $table) {
+		$this->schemaBuilder->create('users', function (Blueprint $table) {
 			$table->increments('id');
 			$table->char('login', 64);
 			$table->char('password', 128);
