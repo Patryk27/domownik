@@ -56,7 +56,7 @@ module.exports = (function () {
 
             // do not show error on '422 Unprocessable Entity' because $.ajaxForm() already handles it
             if (request.status !== 422) {
-                bootbox.alert(__('ajax.alerts.error'));
+                bootbox.alert(__('js.ajax.alerts.error'));
             }
         });
     }

@@ -69,7 +69,7 @@ Route::group(['prefix' => 'finances', 'middleware' => 'auth'], function() {
 			'show' => 'finances.transactions.show',
 			'edit' => 'finances.transactions.edit',
 			'update' => 'finances.transactions.update',
-			'destroy' => 'finances.transactions.destroy', // @todo create this method
+			'destroy' => 'finances.transactions.destroy',
 		],
 	]);
 

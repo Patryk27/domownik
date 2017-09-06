@@ -86,4 +86,20 @@ class TransactionsController
 		]);
 	}
 
+	/**
+	 * @param Transaction $transaction
+	 * @return mixed
+	 */
+	public function destroy(Transaction $transaction) {
+		$transactionPresenter = $transaction->getPresenter();
+		$redirectUrl = $transactionPresenter->getParentShowUrl();
+
+		$this->transactionRequestProcessor->delete($transaction->id);
+		$this->putFlash('success', __('requests/transaction/crud.messages.deleted'));
+
+		return response()->json([
+			'redirectUrl' => $redirectUrl,
+		]);
+	}
+
 }

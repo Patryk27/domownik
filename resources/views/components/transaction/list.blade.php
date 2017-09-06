@@ -81,7 +81,7 @@
                     <td class="transaction-list-buttons">
                         @if ($options->hasButton('edit') && isset($transaction->parent_transaction_id))
                             <a class="btn btn-xs btn-default"
-                               href="{{ $transactionPresenter->getParentEditUrl() }}">
+                               href="{{ $transactionPresenter->getParentTransactionEditUrl() }}">
                                 <i class="fa fa-level-up"></i>
                             </a>
                         @endif

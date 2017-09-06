@@ -3,7 +3,7 @@
 namespace App\Repositories\Contracts;
 
 use App\Models\Model;
-use Illuminate\Cache\TaggedCache as TaggedCache;
+use Illuminate\Cache\TaggedCache;
 use Illuminate\Support\Collection;
 
 interface CrudRepositoryContract {
@@ -55,7 +55,8 @@ interface CrudRepositoryContract {
 	public function persist(Model $model): CrudRepositoryContract;
 
 	/**
-	 * Force-updates model in the database.
+	 * Updates model in the database.
+	 * Throws an exception if model does not already exist.
 	 * @param Model $model
 	 * @param int $id
 	 * @return CrudRepositoryContract
@@ -65,11 +66,11 @@ interface CrudRepositoryContract {
 	/**
 	 * @return TaggedCache
 	 */
-	public function getCache();
+	public function getCache(): TaggedCache;
 
 	/**
 	 * @return TaggedCache
 	 */
-	public function getFlushCache();
+	public function getFlushCache(): TaggedCache;
 
 }

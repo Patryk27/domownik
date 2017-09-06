@@ -17,16 +17,18 @@ abstract class Model
 	/**
 	 * @return TaggedCache
 	 */
-	public static function getCache() {
+	public static function getCache(): TaggedCache {
 		$cacheConfiguration = static::getCacheConfiguration();
+
 		return Cache::tags($cacheConfiguration['tags']);
 	}
 
 	/**
 	 * @return TaggedCache
 	 */
-	public static function getFlushCache() {
+	public static function getFlushCache(): TaggedCache {
 		$cacheConfiguration = static::getCacheConfiguration();
+
 		return Cache::tags($cacheConfiguration['flush-tags']);
 	}
 

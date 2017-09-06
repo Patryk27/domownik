@@ -9,7 +9,8 @@ use App\Models\TransactionValueConstant;
 use App\Models\TransactionValueRange;
 use App\Repositories\Contracts\TransactionPeriodicityRepositoryContract;
 use App\Repositories\Contracts\TransactionRepositoryContract;
-use App\Services\Transaction\Schedule\Updater as TransactionScheduleUpdater;
+use App\Repositories\Contracts\TransactionScheduleRepositoryContract;
+use App\Services\Transaction\Schedule\UpdaterContract as TransactionScheduleUpdaterContract;
 use Carbon\Carbon;
 use Illuminate\Database\Connection as DatabaseConnection;
 
@@ -31,7 +32,12 @@ abstract class Base {
 	protected $transactionPeriodicityRepository;
 
 	/**
-	 * @var TransactionScheduleUpdater
+	 * @var TransactionScheduleRepositoryContract
+	 */
+	protected $transactionScheduleRepository;
+
+	/**
+	 * @var TransactionScheduleUpdaterContract
 	 */
 	protected $transactionScheduleUpdater;
 
@@ -39,17 +45,20 @@ abstract class Base {
 	 * @param DatabaseConnection $db
 	 * @param TransactionRepositoryContract $transactionRepository
 	 * @param TransactionPeriodicityRepositoryContract $transactionPeriodicityRepository
-	 * @param TransactionScheduleUpdater $transactionScheduleUpdater
+	 * @param TransactionScheduleRepositoryContract $transactionScheduleRepository
+	 * @param TransactionScheduleUpdaterContract $transactionScheduleUpdater
 	 */
 	public function __construct(
 		DatabaseConnection $db,
 		TransactionRepositoryContract $transactionRepository,
 		TransactionPeriodicityRepositoryContract $transactionPeriodicityRepository,
-		TransactionScheduleUpdater $transactionScheduleUpdater
+		TransactionScheduleRepositoryContract $transactionScheduleRepository,
+		TransactionScheduleUpdaterContract $transactionScheduleUpdater
 	) {
 		$this->db = $db;
 		$this->transactionRepository = $transactionRepository;
 		$this->transactionPeriodicityRepository = $transactionPeriodicityRepository;
+		$this->transactionScheduleRepository = $transactionScheduleRepository;
 		$this->transactionScheduleUpdater = $transactionScheduleUpdater;
 	}
 
@@ -134,11 +143,11 @@ abstract class Base {
 
 		switch ($request->get('periodicity_type')) {
 			case Transaction::PERIODICITY_TYPE_ONE_SHOT:
-				foreach ($request->get('calendar_dates') as $calendarDate) {
+				foreach ($request->get('calendar_dates') as $date) {
 					$transaction
 						->periodicityOneShots()
 						->create([
-							'date' => $calendarDate,
+							'date' => $date,
 						]);
 				}
 
@@ -171,8 +180,8 @@ abstract class Base {
 				break;
 
 			case Transaction::PERIODICITY_TYPE_YEARLY:
-				foreach ($request->get('calendar_dates') as $calendarDate) {
-					$date = new Carbon($calendarDate);
+				foreach ($request->get('calendar_dates') as $date) {
+					$date = new Carbon($date);
 
 					$transaction
 						->periodicityYearlies()

@@ -6,6 +6,7 @@ use App\Exceptions\RepositoryException;
 use App\Models\Model;
 use App\Repositories\Contracts\CrudRepositoryContract;
 use App\Support\UsesCache;
+use Illuminate\Cache\TaggedCache;
 use Illuminate\Database\Connection as DatabaseConnection;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Foundation\Application;
@@ -119,15 +120,12 @@ abstract class AbstractCrudRepository
 	 * @inheritDoc
 	 */
 	public function delete(int $id): CrudRepositoryContract {
-		$model = $this->get($id);
+		$model = $this->getOrFail($id);
+		$model->delete();
 
-		if (!empty($model)) {
-			$model->delete();
-
-			$this
-				->getFlushCache()
-				->flush();
-		}
+		$this
+			->getFlushCache()
+			->flush();
 
 		return $this;
 	}
@@ -167,14 +165,14 @@ abstract class AbstractCrudRepository
 	/**
 	 * @inheritdoc
 	 */
-	public function getCache() {
+	public function getCache(): TaggedCache {
 		return $this->model::getCache();
 	}
 
 	/**
 	 * @inheritdoc
 	 */
-	public function getFlushCache() {
+	public function getFlushCache(): TaggedCache {
 		return $this->model::getFlushCache();
 	}
 

@@ -80,7 +80,7 @@
     @isset($transaction)
         @include('components.form.buttons.delete', [
             'url' => route('finances.transactions.destroy', $transaction->id),
-            'message' => __('views/finances/transactions/create-edit.delete-confirmation-message'),
+            'message' => __('requests/transaction/crud.prompts.delete'),
         ])
     @endisset
 </div>
