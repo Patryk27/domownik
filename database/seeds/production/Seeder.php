@@ -11,7 +11,9 @@ class Seeder
 	 * @inheritDoc
 	 */
 	public function run(): void {
-		// TODO: Implement run() method.
+		$this
+			->call(UserSeeder::class)
+			->call(TransactionCategorySeeder::class);
 	}
 
 }
