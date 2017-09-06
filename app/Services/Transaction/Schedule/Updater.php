@@ -80,10 +80,10 @@ class Updater
 
 				$this->log->info('-> including date: %s.', $date->format('Y-m-d'));
 
-				(new TransactionSchedule([
+				$this->transactionScheduleRepository->persist(new TransactionSchedule([
 					'transaction_id' => $transactionId,
 					'date' => $date,
-				]))->saveOrFail(); // @todo use repository
+				]));
 			}
 
 			$this->db->commit();
@@ -105,7 +105,7 @@ class Updater
 	 * @return Carbon
 	 */
 	protected function getScheduleUpdateFrom(): Carbon {
-		return Date::stripTime(new Carbon('now'));
+		return Date::stripTime(new Carbon());
 	}
 
 	/**
