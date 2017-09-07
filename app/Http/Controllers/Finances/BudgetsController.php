@@ -125,46 +125,6 @@ class BudgetsController
 	 * @param Budget $budget
 	 * @return mixed
 	 */
-	public function edit(Budget $budget) {
-		$this->breadcrumbManager
-			->pushUrl(route('finances.budgets.show', $budget->id), __('breadcrumbs.budgets.show', [
-				'budgetName' => $budget->name,
-			]))
-			->pushUrl(route('finances.budgets.edit', $budget->id), __('breadcrumbs.budgets.edit', [
-				'budgetName' => $budget->name,
-			]));
-
-		return view('views.finances.budgets.edit', [
-			'form' => [
-				'url' => route('finances.budgets.update', $budget->id),
-				'method' => 'put',
-			],
-
-			'budget' => $budget,
-			'budgetsSelect' => $this->getBudgetsSelect(),
-		]);
-	}
-
-	/**
-	 * @param BudgetUpdateRequest $request
-	 * @param int $id
-	 * @return mixed
-	 */
-	public function update(BudgetUpdateRequest $request, int $id) {
-		$result = $this->budgetRequestProcessor->update($request, $id);
-		$budget = $result->getBudget();
-
-		$this->putFlash('success', __('requests/budget/crud.messages.updated'));
-
-		return response()->json([
-			'redirectUrl' => route('finances.budgets.edit', $budget->id),
-		]);
-	}
-
-	/**
-	 * @param Budget $budget
-	 * @return mixed
-	 */
 	public function show(Budget $budget) {
 		$this->breadcrumbManager->push($budget);
 
@@ -203,6 +163,59 @@ class BudgetsController
 			'recentTransactions' => $recentTransactions,
 			'recentTransactionsChart' => $recentTransactionsChart,
 			'incomingTransactions' => $incomingTransactions,
+		]);
+	}
+
+	/**
+	 * @param Budget $budget
+	 * @return mixed
+	 */
+	public function edit(Budget $budget) {
+		$this->breadcrumbManager
+			->pushUrl(route('finances.budgets.show', $budget->id), __('breadcrumbs.budgets.show', [
+				'budgetName' => $budget->name,
+			]))
+			->pushUrl(route('finances.budgets.edit', $budget->id), __('breadcrumbs.budgets.edit', [
+				'budgetName' => $budget->name,
+			]));
+
+		return view('views.finances.budgets.edit', [
+			'form' => [
+				'url' => route('finances.budgets.update', $budget->id),
+				'method' => 'put',
+			],
+
+			'budget' => $budget,
+			'budgetsSelect' => $this->getBudgetsSelect(),
+		]);
+	}
+
+	/**
+	 * @param BudgetUpdateRequest $request
+	 * @param int $id
+	 * @return mixed
+	 */
+	public function update(BudgetUpdateRequest $request, int $id) {
+		$result = $this->budgetRequestProcessor->update($request, $id);
+		$budget = $result->getBudget();
+
+		$this->putFlash('success', __('requests/budget/crud.messages.updated'));
+
+		return response()->json([
+			'redirectUrl' => route('finances.budgets.edit', $budget->id),
+		]);
+	}
+
+	/**
+	 * @param int $id
+	 * @return mixed
+	 */
+	public function destroy(int $id) {
+		$this->budgetRequestProcessor->delete($id);
+		$this->putFlash('success', __('requests/budget/crud.messages.deleted'));
+
+		return response()->json([
+			'redirectUrl' => route('finances.budgets.index'),
 		]);
 	}
 

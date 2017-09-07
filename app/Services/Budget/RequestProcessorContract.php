@@ -22,6 +22,10 @@ interface RequestProcessorContract {
 	 */
 	public function update(BudgetUpdateRequest $request, int $id): BudgetUpdateResult;
 
-	// @todo delete()
+	/**
+	 * @param int $id
+	 * @return void
+	 */
+	public function delete(int $id): void;
 
 }

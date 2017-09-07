@@ -56,7 +56,7 @@ class OneShotMatcher
 		}
 
 		$this->dates = $filteredDates;
-		
+
 		return $this;
 	}
 
