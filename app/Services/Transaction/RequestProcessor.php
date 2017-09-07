@@ -93,8 +93,7 @@ class RequestProcessor
 	}
 
 	/**
-	 * @param int $id
-	 * @return void
+	 * @inheritdoc
 	 */
 	public function delete(int $id): void {
 		$this->transactionRepository->delete($id);

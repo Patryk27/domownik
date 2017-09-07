@@ -46,8 +46,7 @@ class RequestProcessor
 	}
 
 	/**
-	 * @param UserStoreRequest $request
-	 * @return UserStoreResult
+	 * @inheritdoc
 	 */
 	public function store(UserStoreRequest $request): UserStoreResult {
 		return $this->db->transaction(function () use ($request) {
@@ -63,9 +62,7 @@ class RequestProcessor
 	}
 
 	/**
-	 * @param UserUpdateRequest $request
-	 * @param int $id
-	 * @return UserUpdateResult
+	 * @inheritdoc
 	 */
 	public function update(UserUpdateRequest $request, int $id): UserUpdateResult {
 		return $this->db->transaction(function () use ($request, $id) {
@@ -81,8 +78,7 @@ class RequestProcessor
 	}
 
 	/**
-	 * @param int $id
-	 * @return void
+	 * @inheritdoc
 	 */
 	public function delete(int $id): void {
 		$this->db->transaction(function () use ($id) {
@@ -92,6 +88,7 @@ class RequestProcessor
 	}
 
 	/**
+	 * @param User $user
 	 * @param UserCrudRequest $request
 	 * @return $this
 	 */
