@@ -13,6 +13,7 @@ return [
 
 	'misc' => [
 		'found-count' => 'Odnaleziono <b>1</b> budżet.|Odnaleziono <b>:count</b> budżety.|Odnaleziono <b>:count</b> budżetów.',
+		'found-none' => 'Nie odnaleziono żadnych budżetów.',
 	],
 
 	'enums' => [

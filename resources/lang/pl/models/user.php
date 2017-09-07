@@ -13,6 +13,7 @@ return [
 
 	'misc' => [
 		'found-count' => 'Odnaleziono <b>1</b> użytkownika.|Odnaleziono <b>:count</b> użytkowników.|Odnaleziono <b>:count</b> użytkowników.',
+		'found-none' => 'Nie odnaleziono żadnych użytkowników.',
 	],
 
 	'enums' => [

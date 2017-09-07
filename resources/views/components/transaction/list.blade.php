@@ -15,19 +15,19 @@
     }
 @endphp
 
-@if ($options->getShowCounter())
-    <p>
-        {!! Lang::choice(__('models/transaction.misc.found-count', [
-            'count' => $transactions->count(),
-        ]), $transactions->count()) !!}
-    </p>
-@endif
-
 @if ($transactions->isEmpty())
     <p class="no-data">
         {{ __('models/transaction.misc.found-none') }}
     </p>
 @else
+    @if ($options->getShowCounter())
+        <p>
+            {!! Lang::choice(__('models/transaction.misc.found-count', [
+                'count' => $transactions->count(),
+            ]), $transactions->count()) !!}
+        </p>
+    @endif
+
     <table class="table table-hover table-striped transaction-list">
         <thead>
         <tr>
