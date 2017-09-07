@@ -68,7 +68,13 @@
 
 <div class="panel-footer">
     @include('components.form.buttons.save')
-    {{-- @todo delete button --}}
+
+    @isset($budget)
+        @include('components.form.buttons.delete', [
+            'url' => route('finances.budgets.destroy', $budget->id),
+            'message' => __('requests/budget/crud.prompts.delete'),
+        ])
+    @endisset
 </div>
 
 {!! Form::close() !!}

@@ -15,5 +15,10 @@ return [
 	'messages' => [
 		'stored' => 'Budżet został utworzony.',
 		'updated' => 'Budżet został zaktualizowany.',
+		'deleted' => 'Budżet został usunięty.',
+	],
+
+	'prompts' => [
+		'delete' => '<p>Czy na pewno chcesz usunąć ten budżet?<br>Usunięte zostaną również wszystkie transakcje z nim powiązane.</p>Tej operacji <b>nie można</b> cofnąć.',
 	],
 ];

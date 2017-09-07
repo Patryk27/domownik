@@ -1,5 +1,5 @@
 <div class="pull-right">
-    <a data-confirm-message="{{ $message }}"
+    <a data-confirm-message="{!! $message !!}"
        data-confirm-url="{{ $url }}"
        data-confirm-method="{{ $urlMethod or 'delete' }}"
        class="btn btn-danger btn-confirm">
