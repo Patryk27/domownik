@@ -117,7 +117,7 @@ class BudgetsController
 		$this->putFlash('success', __('requests/budget/crud.messages.stored'));
 
 		return response()->json([
-			'redirectUrl' => route('finances.budgets.edit', $budget->id),
+			'redirectUrl' => route('finances.budgets.show', $budget->id),
 		]);
 	}
 
