@@ -58,7 +58,7 @@ class Updater
 	public function updateTransactionSchedule(int $transactionId): UpdaterContract {
 		$this->log->info('Updating schedule for transaction with id=%d.', $transactionId);
 
-		$today = new Carbon();
+		$today = Carbon::now();
 
 		$this->db->beginTransaction();
 
