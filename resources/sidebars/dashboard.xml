@@ -8,9 +8,5 @@
         <item name="permissions"
               icon="fa fa-chain"
               url="/dashboard/permission/list"/>
-
-        <item name="modules"
-              icon="fa fa-cubes"
-              url="/dashboard/module/list"/>
     </item>
 </sidebar>
