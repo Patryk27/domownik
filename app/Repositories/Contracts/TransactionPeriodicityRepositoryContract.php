@@ -15,7 +15,7 @@ interface TransactionPeriodicityRepositoryContract {
 	 * @param bool $joinTransaction
 	 * @return TransactionPeriodicityOneShot|null
 	 */
-	public function getOneShotById(int $periodicityId, bool $joinTransaction = false);
+	public function getOneShotById(int $periodicityId, bool $joinTransaction = false): ?TransactionPeriodicityOneShot;
 
 	/**
 	 * @param int[] $periodicityIds

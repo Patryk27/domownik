@@ -116,7 +116,7 @@ class Processor
 	 * @return Processor
 	 * @throws Throwable
 	 */
-	protected function processScheduledTransaction(ScheduledTransaction $scheduledTransaction): self {
+	protected function processScheduledTransaction(ScheduledTransaction $scheduledTransaction) {
 		$stId = $scheduledTransaction->getId();
 		$stDate = $scheduledTransaction->getDate();
 		$stTransaction = $scheduledTransaction->getTransaction();

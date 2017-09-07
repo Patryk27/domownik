@@ -54,7 +54,7 @@ class Item {
 	/**
 	 * @return Item|null
 	 */
-	public function getParent() {
+	public function getParent(): ?Item {
 		return $this->parent;
 	}
 
@@ -62,7 +62,7 @@ class Item {
 	 * @param Item|null $parent
 	 * @return $this
 	 */
-	public function setParent($parent): self {
+	public function setParent(?Item $parent) {
 		$this->parent = $parent;
 		return $this;
 	}
@@ -85,7 +85,7 @@ class Item {
 	 * @param string $name
 	 * @return $this
 	 */
-	public function setName(string $name): self {
+	public function setName(string $name) {
 		$this->name = $name;
 		return $this;
 	}
@@ -123,7 +123,7 @@ class Item {
 	 * @param string $url
 	 * @return $this
 	 */
-	public function setUrl(string $url): self {
+	public function setUrl(string $url) {
 		$this->url = $url;
 		return $this;
 	}
@@ -146,7 +146,7 @@ class Item {
 	 * @param string $caption
 	 * @return $this
 	 */
-	public function setCaption(string $caption): self {
+	public function setCaption(string $caption) {
 		$this->caption = $caption;
 		return $this;
 	}
@@ -169,7 +169,7 @@ class Item {
 	 * @param string $icon
 	 * @return $this
 	 */
-	public function setIcon(string $icon): self {
+	public function setIcon(string $icon) {
 		$this->icon = $icon;
 		return $this;
 	}
@@ -192,7 +192,7 @@ class Item {
 	 * @param string $badge
 	 * @return $this
 	 */
-	public function setBadge(string $badge): self {
+	public function setBadge(string $badge) {
 		$this->badge = $badge;
 		return $this;
 	}
@@ -201,7 +201,7 @@ class Item {
 	 * @param bool $isTemplate
 	 * @return $this
 	 */
-	public function setIsTemplate(bool $isTemplate): self {
+	public function setIsTemplate(bool $isTemplate) {
 		$this->isTemplate = $isTemplate;
 		return $this;
 	}
@@ -216,7 +216,7 @@ class Item {
 	/**
 	 * @return bool
 	 */
-	public function isVisible() {
+	public function isVisible(): bool {
 		return !$this->isTemplate();
 	}
 
@@ -238,7 +238,7 @@ class Item {
 	 * @param Item[] $children
 	 * @return $this
 	 */
-	public function setChildren(array $children): self {
+	public function setChildren(array $children) {
 		$this->children = $children;
 		return $this;
 	}
@@ -247,7 +247,7 @@ class Item {
 	 * @param Item $item
 	 * @return $this
 	 */
-	public function addChild(Item $item): self {
+	public function addChild(Item $item) {
 		$this->children[$item->getName()] = $item;
 		return $this;
 	}

@@ -42,7 +42,7 @@ class Date {
 	 * @param \Carbon\Carbon|null $date
 	 * @return \Carbon\Carbon|null
 	 */
-	public function stripTime($date) {
+	public function stripTime(?Carbon $date): ?Carbon {
 		if (isset($date) && $date instanceof Carbon) {
 			$date = $date->copy();
 			$date->setTime(0, 0, 0);

@@ -44,7 +44,7 @@ class TransactionPeriodicityRepository
 	/**
 	 * @inheritDoc
 	 */
-	public function getOneShotById(int $periodicityId, bool $joinTransaction = false) {
+	public function getOneShotById(int $periodicityId, bool $joinTransaction = false): ?TransactionPeriodicityOneShot {
 		$cacheKey = $this->getCacheKey(__FUNCTION__, func_get_args());
 		$cache = TransactionPeriodicityOneShot::getCache();
 
