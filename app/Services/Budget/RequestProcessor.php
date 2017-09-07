@@ -8,12 +8,18 @@ use App\Http\Requests\Budget\Crud\UpdateRequest as BudgetUpdateRequest;
 use App\Models\Budget;
 use App\Repositories\Contracts\BudgetConsolidationRepositoryContract;
 use App\Repositories\Contracts\BudgetRepositoryContract;
+use App\Services\Logger\Contract as LoggerContract;
 use App\ValueObjects\Requests\Budget\StoreResult as BudgetStoreResult;
 use App\ValueObjects\Requests\Budget\UpdateResult as BudgetUpdateResult;
 use Illuminate\Database\Connection as DatabaseConnection;
 
 class RequestProcessor
 	implements RequestProcessorContract {
+
+	/**
+	 * @var LoggerContract
+	 */
+	protected $log;
 
 	/**
 	 * @var DatabaseConnection
@@ -31,15 +37,18 @@ class RequestProcessor
 	protected $budgetConsolidationRepository;
 
 	/**
+	 * @param LoggerContract $log
 	 * @param DatabaseConnection $db
 	 * @param BudgetRepositoryContract $budgetRepository
 	 * @param BudgetConsolidationRepositoryContract $budgetConsolidationRepository
 	 */
 	public function __construct(
+		LoggerContract $log,
 		DatabaseConnection $db,
 		BudgetRepositoryContract $budgetRepository,
 		BudgetConsolidationRepositoryContract $budgetConsolidationRepository
 	) {
+		$this->log = $log;
 		$this->db = $db;
 		$this->budgetRepository = $budgetRepository;
 		$this->budgetConsolidationRepository = $budgetConsolidationRepository;
@@ -56,7 +65,10 @@ class RequestProcessor
 			]);
 
 			$this->fillBudget($budget, $request);
+
+			$this->log->info('Creating new budget [name=%s].', $budget->name);
 			$this->budgetRepository->persist($budget);
+			$this->log->info('... assigned budget id: [%d].', $budget->id);
 
 			return new BudgetStoreResult($budget);
 		});
@@ -67,10 +79,12 @@ class RequestProcessor
 	 */
 	public function update(BudgetUpdateRequest $request, int $id): BudgetUpdateResult {
 		return $this->db->transaction(function () use ($request, $id) {
-			$budget = $this->budgetRepository->getOrFail($id);
+			$this->log->info('Updating budget [id=%d].', $id);
 
+			$budget = $this->budgetRepository->getOrFail($id);
 			$this->fillBudget($budget, $request);
-			$this->budgetRepository->persistUpdate($budget, $id);
+
+			$this->budgetRepository->persist($budget);
 
 			return new BudgetUpdateResult($budget);
 		});
@@ -81,6 +95,7 @@ class RequestProcessor
 	 */
 	public function delete(int $id): void {
 		$this->db->transaction(function () use ($id) {
+			$this->log->info('Deleting budget [id=%d].', $id);
 			$this->budgetRepository->delete($id);
 		});
 	}
@@ -91,8 +106,10 @@ class RequestProcessor
 	 * @return $this
 	 */
 	protected function fillBudget(Budget $budget, BudgetCrudRequest $request) {
-		$budget->name = $request->get('name');
-		$budget->description = $request->get('description');
+		$budget->fill([
+			'name' => $request->get('name'),
+			'description' => $request->get('description'),
+		]);
 
 		$budget
 			->consolidatedBudgets()

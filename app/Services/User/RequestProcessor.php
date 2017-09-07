@@ -2,66 +2,111 @@
 
 namespace App\Services\User;
 
+use App\Http\Requests\User\Crud\Request as UserCrudRequest;
 use App\Http\Requests\User\Crud\StoreRequest as UserStoreRequest;
 use App\Http\Requests\User\Crud\UpdateRequest as UserUpdateRequest;
-use App\Services\User\RequestProcessor\Delete as UserDeleteRequestProcessor;
-use App\Services\User\RequestProcessor\Store as UserStoreRequestProcessor;
-use App\Services\User\RequestProcessor\Update as UserUpdateRequestProcessor;
+use App\Models\User;
+use App\Repositories\Contracts\UserRepositoryContract;
+use App\Services\Logger\Contract as LoggerContract;
 use App\ValueObjects\Requests\User\StoreResult as UserStoreResult;
 use App\ValueObjects\Requests\User\UpdateResult as UserUpdateResult;
+use Illuminate\Database\Connection as DatabaseConnection;
 
 class RequestProcessor
 	implements RequestProcessorContract {
 
 	/**
-	 * @var UserStoreRequestProcessor
+	 * @var LoggerContract
 	 */
-	protected $storeRequestProcessor;
+	protected $log;
 
 	/**
-	 * @var UserUpdateRequestProcessor
+	 * @var DatabaseConnection
 	 */
-	protected $updateRequestProcessor;
+	protected $db;
 
 	/**
-	 * @var UserDeleteRequestProcessor
+	 * @var UserRepositoryContract
 	 */
-	protected $deleteRequestProcessor;
+	protected $userRepository;
 
 	/**
-	 * @param UserStoreRequestProcessor $storeRequestProcessor
-	 * @param UserUpdateRequestProcessor $updateRequestProcessor
-	 * @param UserDeleteRequestProcessor $deleteRequestProcessor
+	 * @param LoggerContract $log
+	 * @param DatabaseConnection $db
+	 * @param UserRepositoryContract $userRepository
 	 */
 	public function __construct(
-		UserStoreRequestProcessor $storeRequestProcessor,
-		UserUpdateRequestProcessor $updateRequestProcessor,
-		UserDeleteRequestProcessor $deleteRequestProcessor
+		LoggerContract $log,
+		DatabaseConnection $db,
+		UserRepositoryContract $userRepository
 	) {
-		$this->storeRequestProcessor = $storeRequestProcessor;
-		$this->updateRequestProcessor = $updateRequestProcessor;
-		$this->deleteRequestProcessor = $deleteRequestProcessor;
+		$this->log = $log;
+		$this->db = $db;
+		$this->userRepository = $userRepository;
 	}
 
 	/**
-	 * @inheritDoc
+	 * @param UserStoreRequest $request
+	 * @return UserStoreResult
 	 */
 	public function store(UserStoreRequest $request): UserStoreResult {
-		return $this->storeRequestProcessor->process($request);
+		return $this->db->transaction(function () use ($request) {
+			$user = new User();
+			$this->fillUser($user, $request);
+
+			$this->log->info('Creating new user [login=%s].', $user->login);
+			$this->userRepository->persist($user);
+			$this->log->info('... assigned user id: [%d].', $user->id);
+
+			return new UserStoreResult($user);
+		});
 	}
 
 	/**
-	 * @inheritDoc
+	 * @param UserUpdateRequest $request
+	 * @param int $id
+	 * @return UserUpdateResult
 	 */
 	public function update(UserUpdateRequest $request, int $id): UserUpdateResult {
-		return $this->updateRequestProcessor->process($request, $id);
+		return $this->db->transaction(function () use ($request, $id) {
+			$this->log->info('Updating user [id=%d].', $id);
+
+			$user = $this->userRepository->getOrFail($id);
+			$this->fillUser($user, $request);
+
+			$this->userRepository->persist($user);
+
+			return new UserUpdateResult($user);
+		});
 	}
 
 	/**
-	 * @inheritDoc
+	 * @param int $id
+	 * @return void
 	 */
 	public function delete(int $id): void {
-		$this->deleteRequestProcessor->process($id);
+		$this->db->transaction(function () use ($id) {
+			$this->log->info('Deleting user [id=%d].', $id);
+			$this->userRepository->delete($id);
+		});
+	}
+
+	/**
+	 * @param UserCrudRequest $request
+	 * @return $this
+	 */
+	protected function fillUser(User $user, UserCrudRequest $request) {
+		$user->fill([
+			'login' => $request->get('login'),
+			'full_name' => $request->get('full_name'),
+			'status' => $request->get('status'),
+		]);
+
+		if ($request->has('password')) {
+			$user->password = bcrypt($request->get('password'));
+		}
+
+		return $this;
 	}
 
 }

@@ -4,8 +4,14 @@ namespace App\Services\Transaction\Category\RequestProcessor;
 
 use App\Exceptions\Exception;
 use App\Models\TransactionCategory;
+use App\Repositories\Contracts\TransactionCategoryRepositoryContract;
 
 class CategoryUpdater {
+
+	/**
+	 * @var TransactionCategoryRepositoryContract
+	 */
+	protected $transactionCategoryRepository;
 
 	/**
 	 * @var array
@@ -13,11 +19,20 @@ class CategoryUpdater {
 	protected $categories;
 
 	/**
-	 * @param array $rawCategories
+	 * @param TransactionCategoryRepositoryContract $transactionCategoryRepository
+	 */
+	public function __construct(
+		TransactionCategoryRepositoryContract $transactionCategoryRepository
+	) {
+		$this->transactionCategoryRepository = $transactionCategoryRepository;
+	}
+
+	/**
+	 * @param array $categories
 	 * @return $this
 	 */
-	public function updateCategories(array $rawCategories): self {
-		$this->buildCategoryList($rawCategories);
+	public function updateCategories(array $categories) {
+		$this->buildCategoryList($categories);
 
 		foreach (array_keys($this->categories) as $categoryId) {
 			$this->saveCategory($categoryId);
@@ -27,19 +42,20 @@ class CategoryUpdater {
 	}
 
 	/**
-	 * @param array $rawCategories
+	 * @param array $categories
 	 * @return $this
 	 */
-	protected function buildCategoryList(array $rawCategories): self {
+	protected function buildCategoryList(array $categories) {
 		$this->categories = [];
 
-		foreach ($rawCategories as $rawCategory) {
-			$categoryId = $rawCategory['id'];
+		foreach ($categories as $category) {
+			$categoryId = $category['id'];
 
 			$this->categories[$categoryId] = [
 				'id' => $categoryId,
-				'name' => $rawCategory['text'],
-				'parent_id' => $rawCategory['parent'] === '#' ? null : $rawCategory['parent'],
+				'name' => $category['text'],
+				'parent_id' => $category['parent'] === '#' ? null : $category['parent'],
+
 				'meta' => [
 					'is_saved' => false,
 				],
@@ -50,14 +66,16 @@ class CategoryUpdater {
 	}
 
 	/**
-	 * Saves given category to the database, if required, and returns its id.
+	 * Saves given category to the database and returns its id.
+	 * Notice that $categoryId is deliberately a string because jsTree creates ids
+	 * like "1_2_3" which we must parse.
 	 * @param string $categoryId
 	 * @return int
 	 * @throws Exception
 	 */
 	protected function saveCategory(string $categoryId): int {
 		if (!isset($this->categories[$categoryId])) {
-			throw new Exception('Category with id=%s has not been found.', $categoryId);
+			throw new Exception('Category [id=%s] was not found.', $categoryId);
 		}
 
 		$category = $this->categories[$categoryId];
@@ -85,9 +103,9 @@ class CategoryUpdater {
 			$transactionCategory->exists = true;
 		}
 
-		$transactionCategory->saveOrFail();
+		$this->transactionCategoryRepository->persist($transactionCategory);
 
-		// update meta data
+		// update metadata
 		$category['id'] = $transactionCategory->id;
 		$category['meta']['is_saved'] = true;
 

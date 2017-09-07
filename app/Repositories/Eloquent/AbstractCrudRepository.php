@@ -148,21 +148,6 @@ abstract class AbstractCrudRepository
 	}
 
 	/**
-	 * @inheritDoc
-	 */
-	public function persistUpdate(Model $model, int $id): CrudRepositoryContract {
-		// assert model with given id exists
-		$this->getOrFail($id);
-
-		// update the model
-		/** @noinspection PhpUndefinedFieldInspection */
-		$model->id = $id;
-		$model->exists = true;
-
-		return $this->persist($model);
-	}
-
-	/**
 	 * @inheritdoc
 	 */
 	public function getCache(): TaggedCache {

@@ -14,6 +14,8 @@ class CreateTransactionCategoriesTable
 			$table->unsignedInteger('parent_category_id')->nullable();
 			$table->char('name', 128);
 			$table->timestamps();
+
+			$table->foreign('parent_category_id')->references('id')->on('transaction_categories')->onDelete('cascade');
 		});
 	}
 

@@ -28,32 +28,43 @@ class RequestProcessor
 	protected $transactionCategoryRepository;
 
 	/**
+	 * @var CategoryDeleter
+	 */
+	protected $categoryDeleter;
+
+	/**
+	 * @var CategoryUpdater
+	 */
+	protected $categoryUpdater;
+
+	/**
 	 * @param LoggerContract $log
 	 * @param DatabaseConnection $db
 	 * @param TransactionCategoryRepositoryContract $transactionCategoryRepository
+	 * @param CategoryDeleter $categoryDeleter
+	 * @param CategoryUpdater $categoryUpdater
 	 */
 	public function __construct(
 		LoggerContract $log,
 		DatabaseConnection $db,
-		TransactionCategoryRepositoryContract $transactionCategoryRepository
+		TransactionCategoryRepositoryContract $transactionCategoryRepository,
+		CategoryDeleter $categoryDeleter,
+		CategoryUpdater $categoryUpdater
 	) {
 		$this->log = $log;
 		$this->db = $db;
 		$this->transactionCategoryRepository = $transactionCategoryRepository;
+		$this->categoryDeleter = $categoryDeleter;
+		$this->categoryUpdater = $categoryUpdater;
 	}
 
 	/**
 	 * @inheritDoc
 	 */
 	public function store(TransactionCategoryStoreRequest $request): void {
-		$this->log->info('Updating transaction category list: %s.', $request);
-
 		$this->db->transaction(function () use ($request) {
-			$categoryUpdater = new CategoryUpdater();
-			$categoryUpdater->updateCategories($request->get('newTree'));
-
-			$categoryDeleter = new CategoryDeleter($this->transactionCategoryRepository);
-			$categoryDeleter->deleteCategories($request->get('deletedNodeIds', []));
+			$this->categoryUpdater->updateCategories($request->get('newTree'));
+			$this->categoryDeleter->deleteCategories($request->get('deletedNodeIds', []));
 
 			$this->transactionCategoryRepository
 				->getFlushCache()

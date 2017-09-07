@@ -42,6 +42,8 @@ interface CrudRepositoryContract {
 	public function getAll(array $columns = ['*'], $orderBy = null): Collection;
 
 	/**
+	 * Deletes model from the database.
+	 * If model does not exist, throws an exception.
 	 * @param int $id
 	 * @return CrudRepositoryContract
 	 */
@@ -53,15 +55,6 @@ interface CrudRepositoryContract {
 	 * @return CrudRepositoryContract
 	 */
 	public function persist(Model $model): CrudRepositoryContract;
-
-	/**
-	 * Updates model in the database.
-	 * Throws an exception if model does not already exist.
-	 * @param Model $model
-	 * @param int $id
-	 * @return CrudRepositoryContract
-	 */
-	public function persistUpdate(Model $model, int $id): CrudRepositoryContract;
 
 	/**
 	 * @return TaggedCache
