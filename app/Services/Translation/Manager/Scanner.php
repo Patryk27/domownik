@@ -24,6 +24,7 @@ class Scanner {
 	/**
 	 * @param string $language
 	 * @return array
+	 * @throws FileNotFoundException
 	 */
 	public function getTranslationByLanguage(string $language): array {
 		$languagePath = $this->getLanguagePath($language);
