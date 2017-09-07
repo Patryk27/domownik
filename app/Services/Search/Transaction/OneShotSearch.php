@@ -2,7 +2,7 @@
 
 namespace App\Services\Search\Transaction;
 
-use App\Exceptions\UnexpectedStateException;
+use App\Exceptions\Exception as AppException;
 use App\Models\Transaction;
 use App\Models\TransactionPeriodicityOneShot;
 use App\Models\TransactionValueConstant;
@@ -144,7 +144,7 @@ class OneShotSearch
 	/**
 	 * @param Transaction $transaction
 	 * @return float
-	 * @throws UnexpectedStateException
+	 * @throws AppException
 	 */
 	protected function getTransactionValue(Transaction $transaction): float {
 		switch ($transaction->value_type) {
@@ -165,7 +165,7 @@ class OneShotSearch
 				return ($value->value_from + $value->value_to) / 2.0;
 
 			default:
-				throw new UnexpectedStateException('Unexpected transaction value type [%s].', $transaction->value_type);
+				throw new AppException('Unexpected transaction value type [%s].', $transaction->value_type);
 		}
 	}
 
