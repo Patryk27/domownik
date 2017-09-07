@@ -16,7 +16,7 @@ class CompileAssets
 	/**
 	 * @var string
 	 */
-	protected $description = 'Compiles all the internal application\'s assets.';
+	protected $description = 'Compiles all the application\'s internal assets.';
 
 	/**
 	 * @var AssetCompilerContract

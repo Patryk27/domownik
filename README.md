@@ -24,19 +24,21 @@ If no, please read a tutorial appropriate for your OS/distribution/etc.
 
 1. Apache 2 *(you could technically use `nginx`, but I haven't tested this combination)*,
 
-1. PHP 7.1,
+2. PHP 7.1,
 
 3. MySQL / MariaDB + *optionally* Redis,
 
 4. Git,
 
-5. npm.
+5. npm,
+
+6. cron.
 
 ## Steps to install a development version
 
 1. `git clone` this repository. 
 
-2. Set appropriate permissions: `chmod 777 -R storage boostrap/cache`.
+2. Set up appropriate permissions: `chmod 777 -R storage boostrap/cache`.
 
 3. Prepare your Apache / nginx to point at `/wherever-you-cloned-this-repository/public`. `htaccess` support is required.
 
@@ -58,6 +60,8 @@ If no, please read a tutorial appropriate for your OS/distribution/etc.
 
 10. Run `php artisan migrate --seed`, wait for the application to prepare the database.
 
-11. Compile the rest of the assets (language files etc.): `php artisan app:compile-assets`.
+11. Add `* * * * * php /wherever-you-cloned-this-repository/artisan schedule:run >> /dev/null 2>&1` to `cron`. 
 
-12. You may now sign in using the common `admin` / `admin` credentials :-)  
+12. Compile the rest of the assets (language files etc.): `php artisan app:compile-assets`.
+
+13. You may now sign in using famous `admin` / `admin` credentials :-)

@@ -11,6 +11,7 @@ use App\Repositories\Contracts\TransactionScheduleRepositoryContract;
 use App\Services\Logger\Contract as LoggerContract;
 use App\Services\Search\Transaction\ScheduleSearchContract as TransactionScheduleSearchContract;
 use App\ValueObjects\ScheduledTransaction;
+use App\ValueObjects\Transaction\Schedule\Processor\Result as TransactionScheduleProcessorResult;
 use Carbon\Carbon;
 use Illuminate\Database\Connection as DatabaseConnection;
 use Illuminate\Support\Collection;
@@ -76,7 +77,7 @@ class Processor
 	/**
 	 * @inheritDoc
 	 */
-	public function processSchedule(): ProcessorContract {
+	public function processSchedule(): TransactionScheduleProcessorResult {
 		try {
 			$this->log->info('Fetching scheduled transactions...');
 			$scheduledTransactions = $this->getScheduledTransactions();
@@ -85,6 +86,10 @@ class Processor
 			foreach ($scheduledTransactions as $scheduledTransaction) {
 				$this->processScheduledTransaction($scheduledTransaction);
 			}
+
+			return new TransactionScheduleProcessorResult([
+				'processedTransactionCount' => $scheduledTransactions->count(),
+			]);
 		} finally {
 			$this->log->info('Cleaning up...');
 
@@ -96,11 +101,10 @@ class Processor
 				->getFlushCache()
 				->flush();
 		}
-
-		return $this;
 	}
 
 	/**
+	 * Returns all scheduled transactions up to (and including) yesterday.
 	 * @return Collection|ScheduledTransaction[]
 	 */
 	protected function getScheduledTransactions(): Collection {
@@ -117,23 +121,23 @@ class Processor
 	 * @throws Throwable
 	 */
 	protected function processScheduledTransaction(ScheduledTransaction $scheduledTransaction) {
-		$stId = $scheduledTransaction->getId();
-		$stDate = $scheduledTransaction->getDate();
-		$stTransaction = $scheduledTransaction->getTransaction();
+		$transactionScheduleId = $scheduledTransaction->getId();
+		$transactionScheduleDate = $scheduledTransaction->getDate();
+		$transaction = $scheduledTransaction->getTransaction();
 
-		$this->log->info('Processing scheduled transaction: id=%d, date=%s, transaction-id=%d.', $stId, $stDate->format('Y-m-d'), $stTransaction->id);
+		$this->log->info('Processing scheduled transaction: id=[%d], date=[%s], transaction-id=[%d].', $transactionScheduleId, $transactionScheduleDate->format('Y-m-d'), $transaction->id);
 
 		$this->db->beginTransaction();
 
 		try {
 			$newTransaction = new Transaction([
-				'parent_transaction_id' => $stTransaction->id,
-				'parent_id' => $stTransaction->parent_id,
-				'parent_type' => $stTransaction->parent_type,
-				'category_id' => $stTransaction->category_id,
-				'type' => $stTransaction->type,
-				'name' => $stTransaction->name,
-				'description' => $stTransaction->description,
+				'parent_transaction_id' => $transaction->id,
+				'parent_id' => $transaction->parent_id,
+				'parent_type' => $transaction->parent_type,
+				'category_id' => $transaction->category_id,
+				'type' => $transaction->type,
+				'name' => $transaction->name,
+				'description' => $transaction->description,
 				'periodicity_type' => Transaction::PERIODICITY_TYPE_ONE_SHOT,
 			]);
 
@@ -141,7 +145,7 @@ class Processor
 			/**
 			 * @var TransactionValueConstant|TransactionValueRange $newTransactionValue
 			 */
-			$newTransactionValue = $stTransaction->value->replicate();
+			$newTransactionValue = $transaction->value->replicate();
 			$newTransactionValue->saveOrFail();
 
 			$newTransactionValue
@@ -152,12 +156,12 @@ class Processor
 			$newTransaction
 				->periodicityOneShots()
 				->create([
-					'date' => $stDate,
+					'date' => $transactionScheduleDate,
 				]);
 
 			// save data and delete transaction from schedule
 			$this->transactionRepository->persist($newTransaction);
-			$this->transactionScheduleRepository->delete($stId);
+			$this->transactionScheduleRepository->delete($transactionScheduleId);
 
 			$this->log->info('-> created transaction: transaction-id=%d.', $newTransaction->id);
 

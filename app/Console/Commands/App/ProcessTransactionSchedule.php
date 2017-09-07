@@ -37,8 +37,10 @@ class ProcessTransactionSchedule
 	/**
 	 * @return void
 	 */
-	public function handle() {
-		$this->transactionScheduleProcessor->processSchedule();
+	public function handle(): void {
+		$this->info('Processing transaction schedule...');
+		$result = $this->transactionScheduleProcessor->processSchedule();
+		$this->info(sprintf('Found and processed %d transactions.', $result->getProcessedTransactionCount()));
 	}
 
 }
