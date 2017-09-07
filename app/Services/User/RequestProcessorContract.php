@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Services\User\Request;
+namespace App\Services\User;
 
 use App\Http\Requests\User\Crud\StoreRequest as UserStoreRequest;
 use App\Http\Requests\User\Crud\UpdateRequest as UserUpdateRequest;
 use App\ValueObjects\Requests\User\StoreResult as UserStoreResult;
 use App\ValueObjects\Requests\User\UpdateResult as UserUpdateResult;
 
-interface ProcessorContract {
+interface RequestProcessorContract {
 
 	/**
 	 * @param UserStoreRequest $request

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\User\Request\Processor;
+namespace App\Services\User\RequestProcessor;
 
 use App\Http\Requests\User\Crud\Request as UserCrudRequest;
 use App\Models\User;

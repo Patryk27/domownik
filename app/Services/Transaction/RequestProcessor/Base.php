@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Transaction\Request\Processor;
+namespace App\Services\Transaction\RequestProcessor;
 
 use App\Exceptions\InvalidRequestException;
 use App\Http\Requests\Transaction\Crud\Request as TransactionCrudRequest;

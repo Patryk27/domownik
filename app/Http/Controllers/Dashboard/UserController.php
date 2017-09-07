@@ -8,7 +8,7 @@ use App\Http\Requests\User\Crud\UpdateRequest as UserUpdateRequest;
 use App\Models\User;
 use App\Repositories\Contracts\UserRepositoryContract;
 use App\Services\Breadcrumb\ManagerContract as BreadcrumbManagerContract;
-use App\Services\User\Request\ProcessorContract as UserRequestProcessorContract;
+use App\Services\User\RequestProcessorContract as UserRequestProcessorContract;
 
 class UserController
 	extends BaseController {

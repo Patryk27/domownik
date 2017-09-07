@@ -1,26 +1,26 @@
 <?php
 
-namespace App\Services\Budget\Request;
+namespace App\Services\Budget;
 
 use App\Http\Requests\Budget\Crud\StoreRequest as BudgetStoreRequest;
 use App\Http\Requests\Budget\Crud\UpdateRequest as BudgetUpdateRequest;
-use App\Services\Budget\Request\Processor\Store as BudgetStoreRequestProcessor;
-use App\Services\Budget\Request\Processor\Update as BudgetUpdateRequestProcessor;
+use App\Services\Budget\RequestProcessor\Store as BudgetStoreRequestProcessor;
+use App\Services\Budget\RequestProcessor\Update as BudgetUpdateRequestProcessor;
 use App\ValueObjects\Requests\Budget\StoreResult as BudgetStoreResult;
 use App\ValueObjects\Requests\Budget\UpdateResult as BudgetUpdateResult;
 
-class Processor
-	implements ProcessorContract {
+class RequestProcessor
+	implements RequestProcessorContract {
 
 	/**
 	 * @var BudgetStoreRequestProcessor
 	 */
-	protected $creator;
+	protected $storeRequestProcessor;
 
 	/**
 	 * @var BudgetUpdateRequestProcessor
 	 */
-	protected $updater;
+	protected $updateRequestProcessor;
 
 	/**
 	 * @param BudgetStoreRequestProcessor $creator
@@ -30,22 +30,22 @@ class Processor
 		BudgetStoreRequestProcessor $creator,
 		BudgetUpdateRequestProcessor $updater
 	) {
-		$this->creator = $creator;
-		$this->updater = $updater;
+		$this->storeRequestProcessor = $creator;
+		$this->updateRequestProcessor = $updater;
 	}
 
 	/**
 	 * @inheritDoc
 	 */
 	public function store(BudgetStoreRequest $request): BudgetStoreResult {
-		return $this->creator->process($request);
+		return $this->storeRequestProcessor->process($request);
 	}
 
 	/**
 	 * @inheritDoc
 	 */
 	public function update(BudgetUpdateRequest $request, int $id): BudgetUpdateResult {
-		return $this->updater->process($request, $id);
+		return $this->updateRequestProcessor->process($request, $id);
 	}
 
 }

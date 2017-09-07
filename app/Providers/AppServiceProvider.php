@@ -66,7 +66,7 @@ class AppServiceProvider
 
 		$this->app->singleton(\App\Services\Breadcrumb\ManagerContract::class, \App\Services\Breadcrumb\Manager::class);
 
-		$this->app->bind(\App\Services\Budget\Request\ProcessorContract::class, \App\Services\Budget\Request\Processor::class);
+		$this->app->bind(\App\Services\Budget\RequestProcessorContract::class, \App\Services\Budget\RequestProcessor::class);
 		$this->app->bind(\App\Services\Budget\SummaryGeneratorContract::class, \App\Services\Budget\SummaryGenerator::class);
 
 		$this->app->bind(\App\Services\Install\ManagerContract::class, \App\Services\Install\Manager::class);
@@ -79,16 +79,16 @@ class AppServiceProvider
 		$this->app->bind(\App\Services\Sidebar\ManagerContract::class, \App\Services\Sidebar\Manager::class);
 		$this->app->bind(\App\Services\Sidebar\ParserContract::class, \App\Services\Sidebar\Parser::class);
 
-		$this->app->bind(\App\Services\Transaction\Category\Request\ProcessorContract::class, \App\Services\Transaction\Category\Request\Processor::class);
+		$this->app->bind(\App\Services\Transaction\Category\RequestProcessorContract::class, \App\Services\Transaction\Category\RequestProcessor::class);
 		$this->app->bind(\App\Services\Transaction\Category\TransformatorContract::class, \App\Services\Transaction\Category\Transformator::class);
 		$this->app->bind(\App\Services\Transaction\Periodicity\ParserContract::class, \App\Services\Transaction\Periodicity\Parser::class);
-		$this->app->bind(\App\Services\Transaction\Request\ProcessorContract::class, \App\Services\Transaction\Request\Processor::class);
+		$this->app->bind(\App\Services\Transaction\RequestProcessorContract::class, \App\Services\Transaction\RequestProcessor::class);
 		$this->app->bind(\App\Services\Transaction\Schedule\ProcessorContract::class, \App\Services\Transaction\Schedule\Processor::class);
 		$this->app->bind(\App\Services\Transaction\Schedule\UpdaterContract::class, \App\Services\Transaction\Schedule\Updater::class);
 
 		$this->app->bind(\App\Services\Translation\ManagerContract::class, \App\Services\Translation\Manager::class);
 
-		$this->app->bind(\App\Services\User\Request\ProcessorContract::class, \App\Services\User\Request\Processor::class);
+		$this->app->bind(\App\Services\User\RequestProcessorContract::class, \App\Services\User\RequestProcessor::class);
 
 		return $this;
 	}

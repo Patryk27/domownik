@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Transaction\Request\Processor;
+namespace App\Services\Transaction\RequestProcessor;
 
 use App\Http\Requests\Transaction\Crud\UpdateRequest as TransactionUpdateRequest;
 use App\ValueObjects\Requests\Transaction\UpdateResult as TransactionUpdateResult;

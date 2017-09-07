@@ -8,7 +8,7 @@ use App\Http\Requests\Transaction\Category\StoreRequest as TransactionCategorySt
 use App\Repositories\Contracts\TransactionCategoryRepositoryContract;
 use App\Repositories\Contracts\TransactionRepositoryContract;
 use App\Services\Breadcrumb\ManagerContract as BreadcrumbManagerContract;
-use App\Services\Transaction\Category\Request\ProcessorContract as TransactionCategoryRequestProcessorContract;
+use App\Services\Transaction\Category\RequestProcessorContract as TransactionCategoryRequestProcessorContract;
 use App\Services\Transaction\Category\TransformatorContract as TransactionCategoryTransformatorContract;
 use Illuminate\Http\Request;
 

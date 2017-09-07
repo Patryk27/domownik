@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Services\Transaction\Category\Request;
+namespace App\Services\Transaction\Category;
 
 use App\Http\Requests\Transaction\Category\StoreRequest as TransactionCategoryStoreRequest;
 
-interface ProcessorContract {
+interface RequestProcessorContract {
 
 	/**
 	 * @param TransactionCategoryStoreRequest $request

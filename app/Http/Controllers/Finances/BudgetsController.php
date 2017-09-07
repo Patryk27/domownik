@@ -10,7 +10,7 @@ use App\Models\Budget;
 use App\Models\Transaction;
 use App\Repositories\Contracts\BudgetRepositoryContract;
 use App\Services\Breadcrumb\ManagerContract as BreadcrumbManagerContract;
-use App\Services\Budget\Request\ProcessorContract as BudgetRequestProcessorContract;
+use App\Services\Budget\RequestProcessorContract as BudgetRequestProcessorContract;
 use App\Services\Budget\SummaryGeneratorContract as BudgetSummaryGeneratorContract;
 use App\Services\Search\Transaction\OneShotSearchContract as OneShotTransactionSearchContract;
 use App\Services\Search\Transaction\ScheduleSearchContract as TransactionScheduleSearchContract;

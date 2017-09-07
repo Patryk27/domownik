@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Transaction\Request\Processor;
+namespace App\Services\Transaction\RequestProcessor;
 
 class Delete
 	extends Base {

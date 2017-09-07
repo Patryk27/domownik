@@ -1,16 +1,16 @@
 <?php
 
-namespace App\Services\Transaction\Category\Request;
+namespace App\Services\Transaction\Category;
 
 use App\Http\Requests\Transaction\Category\StoreRequest as TransactionCategoryStoreRequest;
 use App\Repositories\Contracts\TransactionCategoryRepositoryContract;
 use App\Services\Logger\Contract as LoggerContract;
-use App\Services\Transaction\Category\Request\Processor\CategoryDeleter;
-use App\Services\Transaction\Category\Request\Processor\CategoryUpdater;
+use App\Services\Transaction\Category\RequestProcessor\CategoryDeleter;
+use App\Services\Transaction\Category\RequestProcessor\CategoryUpdater;
 use Illuminate\Database\Connection as DatabaseConnection;
 
-class Processor
-	implements ProcessorContract {
+class RequestProcessor
+	implements RequestProcessorContract {
 
 	/**
 	 * @var LoggerContract
@@ -21,6 +21,7 @@ class Processor
 	 * @var DatabaseConnection
 	 */
 	protected $db;
+
 	/**
 	 * @var TransactionCategoryRepositoryContract
 	 */

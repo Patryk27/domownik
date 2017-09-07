@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Budget\Request\Processor;
+namespace App\Services\Budget\RequestProcessor;
 
 use App\Http\Requests\Budget\Crud\Request;
 use App\Models\Budget;

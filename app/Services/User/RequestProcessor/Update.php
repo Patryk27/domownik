@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\User\Request\Processor;
+namespace App\Services\User\RequestProcessor;
 
 use App\Http\Requests\User\Crud\UpdateRequest as UserUpdateRequest;
 use App\ValueObjects\Requests\User\UpdateResult as UserUpdateResult;

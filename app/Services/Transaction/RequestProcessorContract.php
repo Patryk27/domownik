@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Services\Transaction\Request;
+namespace App\Services\Transaction;
 
 use App\Http\Requests\Transaction\Crud\StoreRequest as TransactionStoreRequest;
 use App\Http\Requests\Transaction\Crud\UpdateRequest as TransactionUpdateRequest;
 use App\ValueObjects\Requests\Transaction\StoreResult as TransactionStoreResult;
 use App\ValueObjects\Requests\Transaction\UpdateResult as TransactionUpdateResult;
 
-interface ProcessorContract {
+interface RequestProcessorContract {
 
 	/**
 	 * @param TransactionStoreRequest $request

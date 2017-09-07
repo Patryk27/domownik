@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\User\Request\Processor;
+namespace App\Services\User\RequestProcessor;
 
 use App\Http\Requests\User\Crud\StoreRequest as UserStoreRequest;
 use App\ValueObjects\Requests\User\StoreResult as UserStoreResult;

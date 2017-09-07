@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Budget\Request\Processor;
+namespace App\Services\Budget\RequestProcessor;
 
 use App\Http\Requests\Budget\Crud\UpdateRequest as BudgetUpdateRequest;
 use App\ValueObjects\Requests\Budget\UpdateResult as BudgetUpdateResult;

@@ -7,7 +7,7 @@ use App\Http\Controllers\Controller as BaseController;
 use App\Http\Requests\Transaction\Crud\StoreRequest as TransactionStoreRequest;
 use App\Http\Requests\Transaction\Crud\UpdateRequest as TransactionUpdateRequest;
 use App\Models\Transaction;
-use App\Services\Transaction\Request\ProcessorContract as TransactionRequestProcessorContract;
+use App\Services\Transaction\RequestProcessorContract as TransactionRequestProcessorContract;
 use Illuminate\Http\Request;
 
 class TransactionsController

@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Services\Budget\Request;
+namespace App\Services\Budget;
 
 use App\Http\Requests\Budget\Crud\StoreRequest as BudgetStoreRequest;
 use App\Http\Requests\Budget\Crud\UpdateRequest as BudgetUpdateRequest;
 use App\ValueObjects\Requests\Budget\StoreResult as BudgetStoreResult;
 use App\ValueObjects\Requests\Budget\UpdateResult as BudgetUpdateResult;
 
-interface ProcessorContract {
+interface RequestProcessorContract {
 
 	/**
 	 * @param BudgetStoreRequest $request

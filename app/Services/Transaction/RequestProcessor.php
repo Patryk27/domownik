@@ -1,32 +1,32 @@
 <?php
 
-namespace App\Services\Transaction\Request;
+namespace App\Services\Transaction;
 
 use App\Http\Requests\Transaction\Crud\StoreRequest as TransactionStoreRequest;
 use App\Http\Requests\Transaction\Crud\UpdateRequest as TransactionUpdateRequest;
-use App\Services\Transaction\Request\Processor\Delete as TransactionDeleteRequestProcessor;
-use App\Services\Transaction\Request\Processor\Store as TransactionStoreRequestProcessor;
-use App\Services\Transaction\Request\Processor\Update as TransactionUpdateRequestProcessor;
+use App\Services\Transaction\RequestProcessor\Delete as TransactionDeleteRequestProcessor;
+use App\Services\Transaction\RequestProcessor\Store as TransactionStoreRequestProcessor;
+use App\Services\Transaction\RequestProcessor\Update as TransactionUpdateRequestProcessor;
 use App\ValueObjects\Requests\Transaction\StoreResult as TransactionStoreResult;
 use App\ValueObjects\Requests\Transaction\UpdateResult as TransactionUpdateResult;
 
-class Processor
-	implements ProcessorContract {
+class RequestProcessor
+	implements RequestProcessorContract {
 
 	/**
 	 * @var TransactionStoreRequestProcessor
 	 */
-	protected $creator;
+	protected $storeRequestProcessor;
 
 	/**
 	 * @var TransactionUpdateRequestProcessor
 	 */
-	protected $updater;
+	protected $updateRequestProcessor;
 
 	/**
 	 * @var TransactionDeleteRequestProcessor
 	 */
-	protected $deleter;
+	protected $deleteRequestProcessor;
 
 	/**
 	 * @param TransactionStoreRequestProcessor $creator
@@ -38,30 +38,30 @@ class Processor
 		TransactionUpdateRequestProcessor $updater,
 		TransactionDeleteRequestProcessor $deleter
 	) {
-		$this->creator = $creator;
-		$this->updater = $updater;
-		$this->deleter = $deleter;
+		$this->storeRequestProcessor = $creator;
+		$this->updateRequestProcessor = $updater;
+		$this->deleteRequestProcessor = $deleter;
 	}
 
 	/**
 	 * @inheritDoc
 	 */
 	public function store(TransactionStoreRequest $request): TransactionStoreResult {
-		return $this->creator->process($request);
+		return $this->storeRequestProcessor->process($request);
 	}
 
 	/**
 	 * @inheritDoc
 	 */
 	public function update(TransactionUpdateRequest $request, int $id): TransactionUpdateResult {
-		return $this->updater->process($request, $id);
+		return $this->updateRequestProcessor->process($request, $id);
 	}
 
 	/**
 	 * @inheritDoc
 	 */
 	public function delete(int $id): void {
-		$this->deleter->process($id);
+		$this->deleteRequestProcessor->process($id);
 	}
 
 }

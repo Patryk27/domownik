@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Transaction\Category\Request\Processor;
+namespace App\Services\Transaction\Category\RequestProcessor;
 
 use App\Exceptions\Exception;
 use App\Models\TransactionCategory;
@@ -17,7 +17,6 @@ class CategoryUpdater {
 	 * @return $this
 	 */
 	public function updateCategories(array $rawCategories): self {
-		// create new and update existing categories
 		$this->buildCategoryList($rawCategories);
 
 		foreach (array_keys($this->categories) as $categoryId) {

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Transaction\Category\Request\Processor;
+namespace App\Services\Transaction\Category\RequestProcessor;
 
 use App\Exceptions\Exception;
 use App\Models\TransactionCategory;
