@@ -1,6 +1,8 @@
 @extends('layouts.app.auth')
 
 @section('content')
+    {{-- @todo --}}
+
     <div class="panel panel-default">
         <div class="panel-heading">
             <div class="panel-title">
@@ -9,8 +11,9 @@
         </div>
 
         <div class="panel-body">
-            <h3>Witaj, świecie!</h3>
-            {{-- @todo --}}
+            <a href="{{ route('finances.budgets.index') }}" class="btn btn-success">
+                Otwórz zarządzanie budżetami
+            </a>
         </div>
     </div>
 @endsection
