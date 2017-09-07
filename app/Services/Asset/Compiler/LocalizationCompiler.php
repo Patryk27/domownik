@@ -50,6 +50,8 @@ class LocalizationCompiler {
 		$localizationFileContent = sprintf('window.AppLocalizationMessages = %s;', json_encode($localizationMessages));
 
 		$this->fs->put($localizationFileName, $localizationFileContent);
+
+		return $this;
 	}
 
 	/**
