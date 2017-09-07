@@ -15,9 +15,10 @@ class Store
 	 */
 	public function process(TransactionStoreRequest $request): TransactionStoreResult {
 		return $this->db->transaction(function () use ($request) {
-			$transaction = new Transaction();
-			$transaction->parent_id = $request->get('parent_id');
-			$transaction->parent_type = $request->get('parent_type');
+			$transaction = new Transaction([
+				'parent_id' => $request->get('parent_id'),
+				'parent_type' => $request->get('parent_type'),
+			]);
 
 			$this->updateTransactionFromRequest($transaction, $request);
 

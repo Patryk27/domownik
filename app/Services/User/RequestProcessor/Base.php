@@ -45,15 +45,15 @@ abstract class Base {
 	 * @return User
 	 */
 	protected function getUserFromRequest(UserCrudRequest $request): User {
-		$user = new User();
-		$user->login = $request->get('login');
-		$user->full_name = $request->get('full_name');
+		$user = new User([
+			'login' => $request->get('login'),
+			'full_name' => $request->get('full_name'),
+			'status' => $request->get('status'),
+		]);
 
 		if ($request->has('password')) {
 			$user->password = bcrypt($request->get('password'));
 		}
-
-		$user->status = $request->get('status');
 
 		return $user;
 	}

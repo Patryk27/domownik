@@ -126,16 +126,16 @@ class Processor
 		$this->db->beginTransaction();
 
 		try {
-			// @todo consider using $stTransaction->replicate() (without children!)
-			$newTransaction = new Transaction();
-			$newTransaction->parent_transaction_id = $stTransaction->id;
-			$newTransaction->parent_id = $stTransaction->parent_id;
-			$newTransaction->parent_type = $stTransaction->parent_type;
-			$newTransaction->category_id = $stTransaction->category_id;
-			$newTransaction->type = $stTransaction->type;
-			$newTransaction->name = $stTransaction->name;
-			$newTransaction->description = $stTransaction->description;
-			$newTransaction->periodicity_type = Transaction::PERIODICITY_TYPE_ONE_SHOT;
+			$newTransaction = new Transaction([
+				'parent_transaction_id' => $stTransaction->id,
+				'parent_id' => $stTransaction->parent_id,
+				'parent_type' => $stTransaction->parent_type,
+				'category_id' => $stTransaction->category_id,
+				'type' => $stTransaction->type,
+				'name' => $stTransaction->name,
+				'description' => $stTransaction->description,
+				'periodicity_type' => Transaction::PERIODICITY_TYPE_ONE_SHOT,
+			]);
 
 			// prepare transaction value
 			/**
@@ -156,7 +156,7 @@ class Processor
 				]);
 
 			// save data and delete transaction from schedule
-			$newTransaction->saveOrFail();
+			$this->transactionRepository->persist($newTransaction);
 			$this->transactionScheduleRepository->delete($stId);
 
 			$this->log->info('-> created transaction: transaction-id=%d.', $newTransaction->id);

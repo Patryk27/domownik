@@ -92,8 +92,10 @@ abstract class Base {
 	private function updateValue(Transaction $transaction, TransactionCrudRequest $request) {
 		switch ($request->get('value_type')) {
 			case Transaction::VALUE_TYPE_CONSTANT:
-				$transactionValue = new TransactionValueConstant();
-				$transactionValue->value = $request->get('value_constant_value');
+				$transactionValue = new TransactionValueConstant([
+					'value' => $request->get('value_constant_value'),
+				]);
+
 				$transactionValue->saveOrFail();
 
 				$transactionValue
@@ -103,10 +105,12 @@ abstract class Base {
 				break;
 
 			case Transaction::VALUE_TYPE_RANGE:
-				$transactionValue = new TransactionValueRange();
-				$transactionValue->value_from = $request->get('value_range_from');
-				$transactionValue->value_to = $request->get('value_range_to');
-				$transactionValue->saveOrfail();
+				$transactionValue = new TransactionValueRange([
+					'value_from' => $request->get('value_range_from'),
+					'value_to' => $request->get('value_range_to'),
+				]);
+
+				$transactionValue->saveOrFail();
 
 				$transactionValue
 					->transaction()

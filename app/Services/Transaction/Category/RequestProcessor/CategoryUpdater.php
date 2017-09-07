@@ -75,9 +75,10 @@ class CategoryUpdater {
 		}
 
 		// prepare the transaction category model
-		$transactionCategory = new TransactionCategory();
-		$transactionCategory->name = $category['name'];
-		$transactionCategory->parent_category_id = $parentCategoryId;
+		$transactionCategory = new TransactionCategory([
+			'name' => $category['name'],
+			'parent_category_id' => $parentCategoryId,
+		]);
 
 		if (ctype_digit($categoryId)) {
 			$transactionCategory->id = (int)$categoryId;
