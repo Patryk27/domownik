@@ -36,7 +36,7 @@ class TransactionSchedule
 	];
 
 	/**
-	 * @return \Illuminate\Database\Eloquent\Relations\HasOne
+	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
 	 */
 	public function transaction() {
 		return $this->belongsTo(Transaction::class);
