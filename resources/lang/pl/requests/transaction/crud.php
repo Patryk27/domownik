@@ -13,6 +13,6 @@ return [
 	],
 
 	'prompts' => [
-		'delete' => 'Czy na pewno chcesz usunąć tę transakcję?',
+		'delete' => '<p>Czy na pewno chcesz usunąć tę transakcję?</p>Tej operacji <b>nie można</b> cofnąć.',
 	],
 ];

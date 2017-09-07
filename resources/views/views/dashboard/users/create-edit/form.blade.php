@@ -58,7 +58,7 @@
     @isset($user)
         @include('components.form.buttons.delete', [
             'url' => route('dashboard.users.destroy', $user),
-            'message' => __('requests/user/crud.confirms.delete'),
+            'message' => __('requests/user/crud.prompts.delete'),
         ])
     @endisset
 </div>

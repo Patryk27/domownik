@@ -23,7 +23,7 @@ return [
 		'deleted' => 'Użytkownik został usunięty.',
 	],
 
-	'confirms' => [
-		'delete' => 'Czy na pewno chcesz usunąć tego użytkownika?',
+	'prompts' => [
+		'delete' => '<p>Czy na pewno chcesz usunąć tego użytkownika?<br>Niektóre dane (np. jego budżety) pozostaną nienaruszone i będziesz musiał usunąć je ręcznie.</p>Tej operacji <b>nie można</b> cofnąć.',
 	],
 ];
